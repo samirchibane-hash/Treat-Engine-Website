@@ -2,7 +2,6 @@
   "name": "treat-engine-website",
   "version": "1.0.0",
   "description": "Treat Engine local dev server",
-  "main": "server.js",
   "scripts": {
     "dev": "node server.js"
   },
