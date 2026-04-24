@@ -328,6 +328,16 @@ a{text-decoration:none;color:inherit;}
 .testi-avatar{width:40px;height:40px;border-radius:50%;background:var(--cream-mid);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--navy);font-size:14px;border:1px solid var(--border);flex-shrink:0;}
 .testi-name{font-size:14px;font-weight:600;}
 .testi-role{font-size:12px;color:var(--ink-muted);margin-top:2px;}
+/* VIDEO TESTIMONIALS */
+.testi-video-section{padding:110px 32px;background:var(--white);}
+.testi-video-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:72px;max-width:1100px;margin-left:auto;margin-right:auto;}
+.testi-video-card{display:flex;flex-direction:column;}
+.testi-video-wrap{position:relative;width:100%;aspect-ratio:9/16;border-radius:14px;overflow:hidden;background:var(--cream-mid);border:1px solid var(--border);box-shadow:0 1px 2px rgba(20,30,48,0.04);}
+.testi-video-wrap iframe{width:100%!important;height:100%!important;position:absolute!important;inset:0!important;border:0;}
+.testi-video-meta{padding:18px 4px 0;}
+.testi-video-name{font-size:14px;font-weight:600;color:var(--ink);line-height:1.35;}
+.testi-video-role{font-size:12px;color:var(--ink-muted);margin-top:4px;line-height:1.5;}
+.testi-video-stars{color:var(--gold);font-size:11px;letter-spacing:2px;margin-top:10px;}
 
 /* TRUST */
 .trust-section{background:var(--cream-mid);padding:64px 32px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
@@ -390,6 +400,7 @@ a{text-decoration:none;color:inherit;}
   .about-inner{grid-template-columns:1fr;}
   .testi-grid{grid-template-columns:1fr;}
   .testi-card{border-right:none;border-bottom:1px solid var(--border);}
+  .testi-video-grid{grid-template-columns:repeat(2,1fr);gap:24px;max-width:520px;}
   .footer-top{grid-template-columns:1fr 1fr;}
   .nav-links{display:none;}
   .hero-section{padding:100px 20px 0;}
@@ -787,7 +798,45 @@ function About() {
   );
 }
 
-function Testimonials() { return null; }
+function Testimonials() {
+  const testis = [
+    {id:'962w9l5cvf', name:'Kinetico Water of SW ID', role:'Meridian, ID'},
+    {id:'ro32wp7l3l', name:'Select Source Water', role:'Riverside, CA'},
+    {id:'xvno1aiffc', name:'Pure Point Water', role:'Greenwich, CT'},
+    {id:'wwkwl0ovl3', name:'Lux Pure Alkaline', role:'Miami, FL'},
+  ];
+  return (
+    <section className="testi-video-section">
+      <div className="section-inner">
+        <div className="reveal">
+          <div className="eyebrow">Dealer results</div>
+          <h2 className="section-title">From the dealers<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>themselves.</em></h2>
+        </div>
+        <div className="testi-video-grid reveal">
+          {testis.map((t,i) => (
+            <div className="testi-video-card" key={i}>
+              <div className="testi-video-wrap">
+                <iframe
+                  src={`https://fast.wistia.net/embed/iframe/${t.id}?videoFoam=true&playerColor=1a2744`}
+                  title={`${t.name} testimonial`}
+                  allow="autoplay; fullscreen"
+                  allowFullScreen
+                  frameBorder="0"
+                  scrolling="no"
+                />
+              </div>
+              <div className="testi-video-meta">
+                <div className="testi-video-stars">★★★★★</div>
+                <div className="testi-video-name">{t.name}</div>
+                <div className="testi-video-role">{t.role}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function Trust() {
   const logos = [
@@ -883,6 +932,7 @@ function App() {
       <HowItFits/>
       <TheSystem/>
       <About/>
+      <Testimonials/>
       <Trust/>
       <CTA/>
       <Footer/>
