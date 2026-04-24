@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "routes": [
+    { "src": "/",         "dest": "/index.html" },
+    { "src": "/home",     "dest": "/Home.html" },
+    { "src": "/ads",      "dest": "/Water%20Leads%20Ads.html" },
+    { "src": "/booking",  "dest": "/Water%20Leads%20Booking.html" },
+    { "src": "/sales",    "dest": "/Water%20Sales.html" },
+    { "src": "/websites", "dest": "/Water%20Websites.html" },
+    { "src": "/v1",       "dest": "/index%20v1.html" },
+    { "src": "/(.*)",     "dest": "/$1" }
+  ]
+}
