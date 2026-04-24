@@ -2,6 +2,9 @@
   "version": 2,
   "builds": [
     { "src": "*.html",        "use": "@vercel/static" },
+    { "src": "*.png",         "use": "@vercel/static" },
+    { "src": "*.webp",        "use": "@vercel/static" },
+    { "src": "*.jpg",         "use": "@vercel/static" },
     { "src": "images/**",     "use": "@vercel/static" },
     { "src": "logos/**",      "use": "@vercel/static" },
     { "src": "uploads/**",    "use": "@vercel/static" },
