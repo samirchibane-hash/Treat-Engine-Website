@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Treat Engine — Sales & Marketing for Water Treatment Dealers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root {
+  --cream:     #faf7f2;
+  --cream-mid: #f0ebe0;
+  --cream-dark:#e5ddd0;
+  --ink:       #1c1814;
+  --ink-mid:   #3d3530;
+  --ink-muted: #7a6f65;
+  --navy:      #1a2744;
+  --navy-light:#243460;
+  --gold:      oklch(0.72 0.10 72);
+  --gold-dark: oklch(0.58 0.12 68);
+  --blue:      #3b82f6;
+  --blue-light: #eff6ff;
+  --blue-dark:  #1d4ed8;
+  --white:     #fffefb;
+  --border:    rgba(28,24,20,0.10);
+  --border-mid:rgba(28,24,20,0.06);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;}
+h1,h2,h3,h4{font-family:'Playfair Display',serif;line-height:1.12;}
+p{line-height:1.75;}
+a{text-decoration:none;color:inherit;}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,247,242,0.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+.nav-inner{max-width:1180px;margin:0 auto;padding:0 32px;height:70px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo img{height:34px;width:auto;}
+.nav-links{display:flex;align-items:center;gap:36px;}
+.nav-links a{font-size:13.5px;font-weight:500;color:var(--ink-muted);padding:7px 14px;border-radius:6px;letter-spacing:.01em;transition:all .2s;}
+.nav-links a:hover{color:var(--ink);background:var(--cream-mid);}
+.nav-links a.active{color:var(--blue);font-weight:600;background:var(--blue-light);}
+.nav-cta{background:var(--blue);color:#fff;border:none;padding:11px 22px;border-radius:6px;font-size:13.5px;font-weight:600;cursor:pointer;letter-spacing:0.02em;transition:background .2s,transform .15s;font-family:'DM Sans',sans-serif;}
+.nav-cta:hover{background:var(--blue-dark);transform:translateY(-1px);}
+
+/* ── HERO ── */
+.hero{padding:130px 32px 0;max-width:1180px;margin:0 auto;}
+.hero-top{display:grid;grid-template-columns:1fr 420px;gap:80px;align-items:end;padding-bottom:72px;border-bottom:1px solid var(--border);}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:28px;}
+.hero-tag-line{width:28px;height:1.5px;background:var(--blue);}
+.hero h1{font-size:clamp(46px,5.5vw,74px);font-weight:600;color:var(--ink);margin-bottom:28px;line-height:1.06;letter-spacing:-0.02em;}
+.hero h1 em{font-style:italic;color:var(--navy);}
+.hero-sub{font-size:17px;color:var(--ink-muted);max-width:520px;margin-bottom:40px;font-weight:400;line-height:1.8;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
+.btn-dark{background:var(--blue);color:#fff;border:none;padding:15px 28px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:0.01em;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-dark:hover{background:var(--blue-dark);transform:translateY(-2px);}
+.btn-text{background:none;border:none;font-size:15px;font-weight:500;color:var(--ink-muted);cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;padding:15px 0;transition:color .2s;}
+.btn-text:hover{color:var(--ink);}
+.hero-aside{padding-bottom:8px;}
+.hero-aside-label{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:16px;}
+.hero-stat-row{padding:18px 0;border-bottom:1px solid var(--border-mid);display:flex;flex-direction:column;gap:4px;}
+.hero-stat-row:last-child{border-bottom:none;}
+.hero-stat-num{font-family:'Playfair Display',serif;font-size:38px;font-weight:600;color:var(--navy);line-height:1;}
+.hero-stat-label{font-size:13px;color:var(--ink-muted);}
+
+/* Ticker */
+.hero-ticker{padding:22px 0;overflow:hidden;white-space:nowrap;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:0;}
+.hero-ticker-inner{display:inline-flex;gap:0;animation:ticker 28s linear infinite;}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.hero-ticker-item{display:inline-flex;align-items:center;gap:12px;padding:0 32px;font-size:13px;color:var(--ink-muted);font-weight:500;}
+.hero-ticker-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);flex-shrink:0;}
+
+/* ── TRUST ── */
+.trust{padding:60px 32px;background:var(--white);}
+.trust-inner{max-width:1180px;margin:0 auto;}
+.trust-label{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:28px;}
+.trust-logos{display:flex;align-items:center;gap:52px;flex-wrap:wrap;}
+.trust-logo{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:var(--ink);opacity:0.3;transition:opacity .2s;letter-spacing:0.01em;}
+.trust-logo:hover{opacity:0.7;}
+
+/* ── SECTION SHARED ── */
+.section{padding:110px 32px;}
+.section-inner{max-width:1180px;margin:0 auto;}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.eyebrow::before{content:'';display:block;width:20px;height:1.5px;background:var(--blue);}
+.section-title{font-size:clamp(30px,3.8vw,50px);font-weight:600;color:var(--ink);margin-bottom:20px;letter-spacing:-0.02em;}
+.section-sub{font-size:16.5px;color:var(--ink-muted);max-width:540px;line-height:1.8;}
+
+/* ── HOW IT WORKS ── */
+.how-section{background:var(--white);}
+.how-header{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;margin-bottom:72px;padding-bottom:56px;border-bottom:1px solid var(--border);}
+.how-steps{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.how-step{padding:36px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .2s;position:relative;}
+.how-step:nth-child(odd){padding-right:40px;border-right:1px solid var(--border);}
+.how-step:nth-child(even){padding-left:40px;}
+.how-step:nth-last-child(-n+2){border-bottom:none;}
+.how-step-num{font-family:'Playfair Display',serif;font-size:13px;font-weight:600;color:var(--ink-muted);margin-bottom:14px;letter-spacing:0.06em;}
+.how-step-title{font-size:17px;font-weight:600;color:var(--ink);margin-bottom:8px;font-family:'Playfair Display',serif;transition:color .2s;}
+.how-step:hover .how-step-title{color:var(--navy);}
+.how-step-desc{font-size:13.5px;color:var(--ink-muted);line-height:1.7;}
+
+/* ── ADS ── */
+.ads-section{background:var(--navy);padding:110px 32px;}
+.ads-inner{max-width:1180px;margin:0 auto;}
+.ads-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.ads-eyebrow::before{content:'';display:block;width:20px;height:1.5px;background:var(--blue);}
+.ads-title{font-size:clamp(30px,3.8vw,50px);font-weight:600;color:#fff;margin-bottom:20px;letter-spacing:-0.02em;}
+.ads-sub{font-size:16px;color:rgba(255,255,255,0.55);max-width:460px;line-height:1.8;margin-bottom:56px;}
+.ads-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.ad-card{border-radius:10px;overflow:hidden;aspect-ratio:9/16;position:relative;cursor:pointer;}
+.ad-card-bg{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:20px;}
+.ad-card:hover .ad-card-bg{filter:brightness(1.1);}
+.ad-card-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.6);margin-bottom:8px;}
+.ad-card-title{font-size:14px;font-weight:600;color:#fff;line-height:1.35;font-family:'Playfair Display',serif;}
+.ad-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:all .2s;}
+.ad-card:hover .ad-play{background:rgba(255,255,255,0.25);}
+
+/* ── WHY ── */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:72px;border:1px solid var(--border);}
+.why-card{padding:40px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);transition:background .2s;}
+.why-card:hover{background:var(--white);}
+.why-card:nth-child(even){border-right:none;}
+.why-card:nth-last-child(-n+2){border-bottom:none;}
+.why-num{font-family:'Playfair Display',serif;font-size:13px;color:var(--ink-muted);margin-bottom:20px;letter-spacing:0.06em;}
+.why-title{font-size:19px;font-weight:600;color:var(--ink);margin-bottom:10px;font-family:'Playfair Display',serif;}
+.why-desc{font-size:14px;color:var(--ink-muted);line-height:1.75;}
+
+/* ── GUARANTEE ── */
+.guarantee{background:var(--cream-mid);padding:110px 32px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.guarantee-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center;}
+.guarantee-left{border-right:1px solid var(--border);padding-right:96px;}
+.guarantee-number{font-family:'Playfair Display',serif;font-size:clamp(80px,12vw,148px);font-weight:700;color:var(--navy);line-height:1;letter-spacing:-0.04em;margin-bottom:-8px;}
+.guarantee-word{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,38px);font-style:italic;color:var(--ink-muted);margin-bottom:4px;}
+.guarantee-word2{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,38px);color:var(--ink-muted);margin-bottom:0;}
+.guarantee-title{font-size:clamp(26px,3vw,40px);font-weight:600;margin-bottom:18px;letter-spacing:-0.02em;}
+.guarantee-desc{font-size:16px;color:var(--ink-muted);margin-bottom:32px;line-height:1.8;}
+.guarantee-list{list-style:none;margin-bottom:36px;}
+.guarantee-list li{display:flex;align-items:flex-start;gap:12px;font-size:15px;color:var(--ink-mid);padding:10px 0;border-bottom:1px solid var(--border);}
+.guarantee-list li:first-child{border-top:1px solid var(--border);}
+.g-dash{color:var(--blue);font-weight:700;flex-shrink:0;margin-top:2px;}
+
+/* ── TESTIMONIALS ── */
+.testi-section{padding:110px 32px;background:var(--white);}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:72px;border:1px solid var(--border);}
+.testi-card{padding:40px;border-right:1px solid var(--border);transition:background .2s;}
+.testi-card:last-child{border-right:none;}
+.testi-card:hover{background:var(--cream);}
+.testi-quote{font-family:'Playfair Display',serif;font-size:17px;font-style:italic;color:var(--ink);line-height:1.7;margin-bottom:32px;}
+.testi-quote::before{content:'\201C';font-size:48px;color:var(--cream-dark);display:block;line-height:0.8;margin-bottom:16px;font-style:normal;}
+.testi-author{display:flex;align-items:center;gap:14px;padding-top:24px;border-top:1px solid var(--border);}
+.testi-avatar{width:40px;height:40px;border-radius:50%;background:var(--cream-mid);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--navy);font-size:14px;flex-shrink:0;border:1px solid var(--border);}
+.testi-name{font-size:14px;font-weight:600;color:var(--ink);}
+.testi-role{font-size:12px;color:var(--ink-muted);margin-top:2px;}
+.testi-stars{color:var(--gold);font-size:12px;letter-spacing:2px;margin-bottom:20px;}
+
+/* ── FAQ ── */
+.faq-section{padding:110px 32px;}
+.faq-inner{max-width:800px;margin:0 auto;}
+.faq-list{margin-top:56px;}
+.faq-item{border-bottom:1px solid var(--border);}
+.faq-item:first-child{border-top:1px solid var(--border);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:24px 0;cursor:pointer;gap:24px;}
+.faq-q-text{font-size:16px;font-weight:500;color:var(--ink);font-family:'Playfair Display',serif;transition:color .2s;}
+.faq-item.open .faq-q-text{color:var(--navy);}
+.faq-q:hover .faq-q-text{color:var(--navy);}
+.faq-icon{flex-shrink:0;transition:transform .25s;color:var(--ink-muted);}
+.faq-item.open .faq-icon{transform:rotate(45deg);}
+.faq-a{font-size:15px;color:var(--ink-muted);line-height:1.8;padding-bottom:24px;display:none;}
+.faq-item.open .faq-a{display:block;}
+
+/* ── CTA BANNER ── */
+.cta-banner{background:var(--navy);padding:120px 32px;text-align:center;position:relative;overflow:hidden;}
+.cta-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(59,130,246,0.08) 0%,transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(255,200,80,0.06) 0%,transparent 60%);}
+.cta-inner{max-width:640px;margin:0 auto;position:relative;}
+.cta-tag{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:10px;}
+.cta-tag::before,.cta-tag::after{content:'';display:block;width:28px;height:1px;background:var(--blue);}
+.cta-banner h2{font-size:clamp(32px,5vw,58px);color:#fff;margin-bottom:20px;letter-spacing:-0.025em;}
+.cta-banner h2 em{font-style:italic;opacity:0.7;}
+.cta-banner p{font-size:17px;color:rgba(255,255,255,0.6);margin-bottom:44px;line-height:1.8;}
+.cta-banner-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-cream{background:var(--cream);color:var(--navy);border:none;padding:15px 30px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;letter-spacing:0.01em;}
+.btn-cream:hover{background:#fff;transform:translateY(-2px);}
+.btn-ghost{background:transparent;color:rgba(255,255,255,0.7);border:1.5px solid rgba(255,255,255,0.2);padding:14px 28px;border-radius:6px;font-size:15px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.5);color:#fff;}
+
+/* ── FOOTER ── */
+.footer{background:var(--ink);padding:72px 32px 40px;}
+.footer-inner{max-width:1180px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:56px;padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.footer-brand p{font-size:13.5px;color:rgba(255,255,255,0.4);margin-top:20px;line-height:1.75;max-width:260px;}
+.footer-brand img{height:30px;filter:brightness(0) invert(1);}
+.footer-col h4{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.3);margin-bottom:18px;}
+.footer-col a{display:block;font-size:14px;color:rgba(255,255,255,0.55);margin-bottom:11px;transition:color .2s;}
+.footer-col a:hover{color:#fff;}
+.footer-bottom{padding-top:28px;display:flex;align-items:center;justify-content:space-between;}
+.footer-copy{font-size:13px;color:rgba(255,255,255,0.25);}
+
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+@media(max-width:960px){
+  .hero-top{grid-template-columns:1fr;gap:40px;padding:72px 0 48px;}
+  .hero-right-col{display:none;}
+  .how-header{grid-template-columns:1fr;}
+  .how-steps{grid-template-columns:1fr;}
+  .how-step:nth-child(odd){border-right:none;padding-right:0;}
+  .how-step:nth-child(even){padding-left:0;}
+  .how-step:nth-last-child(-n+2){border-bottom:1px solid var(--border);}
+  .how-step:last-child{border-bottom:none;}
+  .why-grid{grid-template-columns:1fr;}
+  .why-card{border-right:none;border-bottom:1px solid var(--border);}
+  .why-card:last-child{border-bottom:none;}
+  .testi-grid{grid-template-columns:1fr;}
+  .testi-card{border-right:none;border-bottom:1px solid var(--border);}
+  .ads-grid{grid-template-columns:repeat(2,1fr);}
+  .guarantee-inner{grid-template-columns:1fr;}
+  .guarantee-left{border-right:none;border-bottom:1px solid var(--border);padding-right:0;padding-bottom:48px;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:32px;}
+  .nav-links{display:none;}
+  .hero-micro-stats{flex-wrap:wrap;}
+  .hero-micro-stat{min-width:50%;}
+  .cta-inner{grid-template-columns:1fr;gap:48px;}
+  .section{padding-left:20px;padding-right:20px;}
+  .hero{padding-left:20px;padding-right:20px;}
+}
+@media(max-width:600px){
+  .hero h1{font-size:clamp(34px,9vw,52px);}
+  .hero-actions{flex-direction:column;align-items:stretch;}
+  .hero-actions .btn-dark,.hero-actions .btn-text{width:100%;justify-content:center;}
+  .ads-grid{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr;}
+  .hero-micro-stat{min-width:100%;}
+  .ads-section,.section{padding-left:20px;padding-right:20px;}
+  .topbar-item:not(:first-child){display:none;}
+  .topbar-divider{display:none;}
+}
+/* Video embed */
+.hero-video-wrap{border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 24px 64px rgba(28,24,20,0.12);background:var(--ink);aspect-ratio:16/9;position:relative;width:100%;}
+.hero-video-wrap .wistia_embed{width:100%!important;height:100%!important;position:absolute;inset:0;}
+.hero-video-badge{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:12px;color:var(--ink-muted);}
+.hero-video-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--blue);flex-shrink:0;animation:vbpulse 2s ease-in-out infinite;}
+@keyframes vbpulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.25)}}
+
+/* Rebuilt hero layout */
+.hero{padding:0 32px;max-width:1180px;margin:0 auto;}
+.hero-top{display:grid;grid-template-columns:1fr 480px;gap:72px;align-items:center;padding:100px 0 72px;border-bottom:1px solid var(--border);}
+.hero-left-col{}
+.hero-proof-bar{display:flex;align-items:center;gap:20px;margin-bottom:20px;flex-wrap:wrap;}
+.hero-proof-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-muted);font-weight:500;}
+.hero-proof-item svg{color:var(--blue);flex-shrink:0;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:24px;}
+.hero-tag-line{width:20px;height:1.5px;background:var(--blue);}
+.hero h1{font-size:clamp(40px,4.8vw,66px);font-weight:600;color:var(--ink);margin-bottom:24px;line-height:1.06;letter-spacing:-.025em;}
+.hero h1 em{font-style:italic;color:var(--navy);}
+.hero-sub{font-size:16.5px;color:var(--ink-muted);margin-bottom:36px;font-weight:400;line-height:1.8;max-width:480px;}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:32px;}
+.btn-dark{background:var(--blue);color:#fff;border:none;padding:16px 32px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-dark:hover{background:var(--blue-dark);transform:translateY(-2px);}
+.btn-text{background:none;border:none;font-size:14.5px;font-weight:500;color:var(--ink-muted);cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;padding:16px 0;transition:color .2s;}
+.btn-text:hover{color:var(--ink);}
+.hero-micro-stats{display:flex;gap:0;border:1px solid var(--border);}
+.hero-micro-stat{flex:1;padding:16px 20px;border-right:1px solid var(--border);}
+.hero-micro-stat:last-child{border-right:none;}
+.hero-micro-num{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--navy);line-height:1;}
+.hero-micro-label{font-size:11.5px;color:var(--ink-muted);margin-top:3px;line-height:1.4;}
+/* right col */
+.hero-right-col{display:flex;flex-direction:column;}
+.hero-aside-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:12px;}
+.hero-aside{padding-bottom:8px;}
+.hero-stat-row{padding:18px 0;border-bottom:1px solid var(--border-mid);display:flex;flex-direction:column;gap:4px;}
+.hero-stat-row:last-child{border-bottom:none;}
+.hero-stat-num{font-family:'Playfair Display',serif;font-size:38px;font-weight:600;color:var(--navy);line-height:1;}
+.hero-stat-label{font-size:13px;color:var(--ink-muted);}
+
+@media(max-width:960px){
+  .hero-top{grid-template-columns:1fr;gap:48px;padding:72px 0 56px;}
+  .hero-micro-stats{flex-wrap:wrap;}
+  .hero-micro-stat{min-width:50%;}
+}
+</style>
+<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState, useEffect, useRef} = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "headline": "Install 10-25 Extra Softeners a Month",
+  "subheadline": "Treat Engine is a boutique sales & marketing agency built exclusively for residential water treatment dealerships. We run the ads. We set the appointments. You close.",
+  "ctaText": "Book a Demo",
+  "guaranteeDays": "60",
+  "showTrustLogos": true
+}/*EDITMODE-END*/;
+
+function useReveal() {
+  useEffect(() => {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, {threshold: 0.1});
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+}
+
+function Nav({tweaks}) {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 30);
+    window.addEventListener('scroll', h);
+    return () => window.removeEventListener('scroll', h);
+  }, []);
+  const ctaLabel = (tweaks && tweaks.ctaText) ? tweaks.ctaText : 'Book a Demo';
+  return (
+    <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
+      <div className="nav-inner">
+        <a href="Home.html"><img src="uploads/Treat Engine Logo .png" alt="Treat Engine" style={{height:34}}/></a>
+        <div className="nav-links">
+          <a href="Home.html">Home</a>
+          <a href="Water Websites.html">Water Websites</a>
+          <a href="index.html" className="active">Water Leads</a>
+          <a href="Water Sales.html">Water Sales</a>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+function Hero({tweaks}) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    let frame, start = null;
+    const dur = 2000, target = 12400;
+    const go = ts => {
+      if(!start) start = ts;
+      const p = Math.min((ts-start)/dur, 1);
+      const eased = 1 - Math.pow(1-p, 3);
+      setCount(Math.floor(eased * target));
+      if(p < 1) frame = requestAnimationFrame(go);
+    };
+    const t = setTimeout(() => { frame = requestAnimationFrame(go); }, 400);
+    return () => { clearTimeout(t); cancelAnimationFrame(frame); };
+  }, []);
+
+  const tickerItems = [
+    'Exclusive territory protection',
+    'Done-for-you ad creative',
+    'Pre-qualified appointments',
+    'Facebook & Google campaigns',
+    'Real-time reporting dashboard',
+    'Month-to-month — no contracts',
+  ];
+
+  const lines = tweaks.headline.split('\n');
+
+  return (
+    <div>
+      <div className="hero">
+        <div className="hero-top reveal">
+          <div className="hero-left-col">
+            <div className="hero-tag">
+              <span className="hero-tag-line"/>
+              Exclusively for water treatment dealers
+            </div>
+            <h1>
+              {lines.map((line, i) => (
+                <span key={i} style={{display:'block', color: i===1 ? 'var(--navy)' : 'var(--ink)'}}>{line}</span>
+              ))}
+            </h1>
+            <p className="hero-sub">{tweaks.subheadline}</p>
+            <div className="hero-actions">
+              <a href="Water Leads Booking.html" className="btn-dark">{tweaks.ctaText} →</a>
+              <button className="btn-text">
+                See how it works
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
+            <div className="hero-micro-stats">
+              <div className="hero-micro-stat">
+                <div className="hero-micro-num">{count.toLocaleString()}+</div>
+                <div className="hero-micro-label">installs generated</div>
+              </div>
+              <div className="hero-micro-stat">
+                <div className="hero-micro-num">200+</div>
+                <div className="hero-micro-label">dealer partners</div>
+              </div>
+              <div className="hero-micro-stat">
+                <div className="hero-micro-num">4.8×</div>
+                <div className="hero-micro-label">avg. ROAS</div>
+              </div>
+            </div>
+          </div>
+          <div className="hero-right-col">
+            <div className="hero-aside-label">Watch the overview</div>
+            <div className="hero-video-wrap">
+              <div className="wistia_embed wistia_async_n6hfms7zb9 videoFoam=true" style={{height:'100%',position:'relative',width:'100%'}}>&nbsp;</div>
+            </div>
+            <div className="hero-video-badge">
+              <span className="hero-video-badge-dot"/>
+              How Water Leads works — 3 min
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="hero-ticker">
+        <div className="hero-ticker-inner">
+          {[...tickerItems, ...tickerItems].map((item, i) => (
+            <span className="hero-ticker-item" key={i}>
+              <span className="hero-ticker-dot" />
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Trust({tweaks}) {
+  if(!tweaks.showTrustLogos) return null;
+  const logos = ['Kinetico','RainSoft','Rheem','WaterBoss','EcoWater','Puronics'];
+  return (
+    <div className="trust">
+      <div className="trust-inner reveal">
+        <div className="trust-label">Trusted by leading dealers nationwide</div>
+        <div className="trust-logos">
+          {logos.map(l => <div className="trust-logo" key={l}>{l}</div>)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HowItWorks() {
+  const steps = [
+    {title:'Onboarding & territory lock', desc:'We map your service area and lock it — no competing dealer in your market will ever run our system. Then we build your targeting profile from the ground up.'},
+    {title:'Custom ad creative', desc:'Our team writes scripts and produces video and image ads for your specific market. No stock footage, no generic templates — every ad speaks to your buyer.'},
+    {title:'Launch on Meta & Google', desc:'Campaigns go live across Facebook, Instagram, and Google Search. We optimize daily: bids, audiences, creatives — relentlessly driving down your cost per install.'},
+    {title:'Pre-qualified appointments', desc:'Our nurture system follows up with every lead before they hit your calendar. You talk to people who are ready to buy, not just curious.'},
+    {title:'Transparent reporting & scale', desc:'A live dashboard shows your exact cost per lead, cost per install, and ROAS. When something works, we scale it. When it doesn\'t, we cut it.'},
+  ];
+  return (
+    <section className="section how-section" id="how">
+      <div className="section-inner">
+        <div className="how-header reveal">
+          <div>
+            <div className="eyebrow">Our process</div>
+            <h2 className="section-title">How we get you<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>installs, not just clicks</em></h2>
+          </div>
+          <div>
+            <p className="section-sub">A done-for-you system refined over years of working exclusively with water treatment dealers across the U.S.</p>
+          </div>
+        </div>
+        <div className="how-steps reveal">
+          {steps.map((s, i) => (
+            <div className="how-step" key={i}>
+              <div className="how-step-num">0{i+1}</div>
+              <div className="how-step-title">{s.title}</div>
+              <div className="how-step-desc">{s.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AdsShowcase() {
+  const ads = [
+    {title:'"Is your water making you sick?"', tag:'Video — scroll stopper', col:'linear-gradient(160deg, #1e3464 0%, #2d4a8a 100%)'},
+    {title:'"Free water test — limited slots in your area"', tag:'Lead gen — local urgency', col:'linear-gradient(160deg, #142240 0%, #1e3464 100%)'},
+    {title:'"Still thinking about it? Here\'s our guarantee."', tag:'Retargeting — objection handler', col:'linear-gradient(160deg, #1a2e58 0%, #243980 100%)'},
+    {title:'"Hard water costs the average family $800/yr"', tag:'Awareness — education hook', col:'linear-gradient(160deg, #0f1e40 0%, #1a3060 100%)'},
+  ];
+  return (
+    <section className="ads-section" id="ads">
+      <div className="ads-inner">
+        <div className="reveal">
+          <div className="ads-eyebrow">Creative</div>
+          <h2 className="ads-title">Ads that actually<br/><em style={{fontStyle:'italic',opacity:.7}}>stop the scroll</em></h2>
+          <p className="ads-sub">Written, produced, and tested by our team. Every ad is built around the water treatment buyer — not a generic homeowner.</p>
+        </div>
+        <div className="ads-grid reveal">
+          {ads.map((ad,i) => (
+            <div className="ad-card" key={i}>
+              <div className="ad-card-bg" style={{background:ad.col,position:'absolute',inset:0}} />
+              <div className="ad-card-bg" style={{position:'relative',zIndex:1}}>
+                <div className="ad-play">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M4 2.5l8 4.5-8 4.5V2.5z" fill="white"/>
+                  </svg>
+                </div>
+                <div className="ad-card-tag">{ad.tag}</div>
+                <div className="ad-card-title">{ad.title}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function WhyItWorks() {
+  const cards = [
+    {title:'Exclusive to your territory', desc:'One dealer per market. Once you\'re in, no competitor gets our system in your area. Your leads are yours — always.'},
+    {title:'Built for one industry', desc:'We only work with water treatment dealers. That means zero learning curve, proven playbooks, and creative that actually resonates.'},
+    {title:'Done-for-you, end to end', desc:'Strategy, creative, campaigns, follow-up, reporting. You show up to close. We handle everything before that call.'},
+    {title:'Hyper-local targeting', desc:'We target homeowners in your exact service zone using municipal water quality data, property attributes, and behavioral signals.'},
+    {title:'Pre-qualified buyers', desc:'Leads are nurtured before they reach you. Our system filters out tire-kickers so your team spends time on people ready to buy.'},
+    {title:'Month-to-month, always', desc:'No retainer lock-ins. No 12-month commitments. We earn your business every single month, or you walk. Simple as that.'},
+  ];
+  return (
+    <section className="section" id="why">
+      <div className="section-inner">
+        <div className="reveal">
+          <div className="eyebrow">Why Treat Engine</div>
+          <h2 className="section-title">Not a generalist.<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>A specialist.</em></h2>
+          <p className="section-sub" style={{marginBottom:0}}>There are thousands of marketing agencies. There is exactly one built for water treatment dealers.</p>
+        </div>
+        <div className="why-grid reveal">
+          {cards.map((c,i) => (
+            <div className="why-card" key={i}>
+              <div className="why-num">0{i+1}</div>
+              <div className="why-title">{c.title}</div>
+              <div className="why-desc">{c.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Guarantee({tweaks}) {
+  return (
+    <section className="guarantee">
+      <div className="guarantee-inner">
+        <div className="guarantee-left reveal">
+          <div className="guarantee-number">{tweaks.guaranteeDays}</div>
+          <div className="guarantee-word">day</div>
+          <div className="guarantee-word2">guarantee.</div>
+        </div>
+        <div className="reveal">
+          <div className="eyebrow">Our promise</div>
+          <h2 className="guarantee-title">We put it in writing.</h2>
+          <p className="guarantee-desc">If you don't see a meaningful return within {tweaks.guaranteeDays} days of launch, we work for free until you do. No exceptions, no fine print.</p>
+          <ul className="guarantee-list">
+            {[
+              'Minimum installs guaranteed in your contract',
+              'Month-to-month — cancel anytime',
+              'We own underperformance, not you',
+              'Full transparency on every dollar spent',
+            ].map((item, i) => (
+              <li key={i}><span className="g-dash">—</span> {item}</li>
+            ))}
+          </ul>
+          <a href="Water Leads Booking.html" className="btn-dark">Get the guarantee →</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Testimonials() {
+  const testis = [
+    {quote:'We hit 18 installs in a single month — after years of averaging 4 or 5 from other agencies. The difference is the quality of lead. These people actually want a system.', name:'Dave K.', role:'Owner — PureFlow Water Solutions, Phoenix AZ', init:'DK'},
+    {quote:'The territory exclusivity sold me first. No one else in my county is running these ads. That alone was worth the call. The 34 booked appointments last month sealed it.', name:'Lisa M.', role:'GM — Crystal Clear Water, Nashville TN', init:'LM'},
+    {quote:'I\'ve tried Google Ads, HomeAdvisor, door-to-door. Nothing compares. These leads already know they want a system. I just have to show up and close them.', name:'Rick T.', role:'Dealer Principal — Summit Water, Dallas TX', init:'RT'},
+  ];
+  return (
+    <section className="testi-section">
+      <div className="section-inner">
+        <div className="reveal">
+          <div className="eyebrow">Dealer results</div>
+          <h2 className="section-title">From the dealers<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>themselves.</em></h2>
+        </div>
+        <div className="testi-grid reveal">
+          {testis.map((t,i) => (
+            <div className="testi-card" key={i}>
+              <div className="testi-stars">★★★★★</div>
+              <div className="testi-quote">{t.quote}</div>
+              <div className="testi-author">
+                <div className="testi-avatar">{t.init}</div>
+                <div>
+                  <div className="testi-name">{t.name}</div>
+                  <div className="testi-role">{t.role}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FAQ() {
+  const [open, setOpen] = useState(null);
+  const faqs = [
+    {q:'How quickly can I expect results?', a:'Most dealers see their first booked appointments within 2 weeks of launch. Full momentum — a consistent flow of pre-qualified appointments — typically develops within 30–45 days as the campaign optimizes.'},
+    {q:'Is my territory actually exclusive?', a:'Yes. Once you sign, no other dealer in your defined service area works with us. We put this in writing. Your investment is protected, and your leads are yours alone.'},
+    {q:'What does done-for-you actually mean?', a:'Everything: strategy, ad creative production, campaign management, lead follow-up, and appointment setting. You focus on your installs. We handle everything that comes before the appointment.'},
+    {q:'How much do I need to spend on ads?', a:'We recommend a minimum monthly ad budget of $3,000. Most clients spend $5,000–$15,000/mo in ad spend and see 4–6× returns. We\'ll give you a realistic projection before you commit.'},
+    {q:'What platforms do you advertise on?', a:'Primarily Meta (Facebook & Instagram) and Google Search. Depending on your market, we may add YouTube or local display. We go where your buyers are — and we know where they are.'},
+    {q:'What\'s the contract length?', a:'Month-to-month, always. We earn your business every month. Our 60-day guarantee ensures you\'re never paying for poor performance.'},
+  ];
+  return (
+    <section className="faq-section" id="faq">
+      <div className="faq-inner">
+        <div className="reveal" style={{textAlign:'center'}}>
+          <div className="eyebrow" style={{justifyContent:'center'}}>Common questions</div>
+          <h2 className="section-title" style={{textAlign:'center'}}>Everything you want to know</h2>
+        </div>
+        <div className="faq-list reveal">
+          {faqs.map((f,i) => (
+            <div key={i} className={`faq-item ${open===i?'open':''}`}>
+              <div className="faq-q" onClick={() => setOpen(open===i ? null : i)}>
+                <span className="faq-q-text">{f.q}</span>
+                <svg className="faq-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M9 4v10M4 9h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+              </div>
+              <div className="faq-a">{f.a}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CTABanner({tweaks}) {
+  return (
+    <section className="cta-banner">
+      <div className="cta-inner">
+        <div className="cta-tag">Your next 50 installs</div>
+        <h2>Ready to stop<br/><em>chasing leads?</em></h2>
+        <p>Check if your territory is still available. Most markets fill fast — dealers who wait, wait longer for results.</p>
+        <div className="cta-banner-actions">
+          <a href="Water Leads Booking.html" className="btn-cream">{tweaks.ctaText} →</a>
+          <a href="Water Leads Booking.html" className="btn-ghost">Check territory availability</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="footer">
+      <div className="footer-inner">
+        <div className="footer-top">
+          <div className="footer-brand">
+            <img src="uploads/Treat Engine Logo .png" alt="Treat Engine" />
+            <p>Boutique sales & marketing for residential water treatment dealerships. We grow your install count — not your headaches.</p>
+          </div>
+          <div className="footer-col">
+            <h4>Services</h4>
+            <a href="#">Meta Advertising</a>
+            <a href="#">Google Search Ads</a>
+            <a href="#">Ad Creative</a>
+            <a href="#">Lead Nurturing</a>
+            <a href="#">CRM Integration</a>
+          </div>
+          <div className="footer-col">
+            <h4>Company</h4>
+            <a href="#">About</a>
+            <a href="#">Case Studies</a>
+            <a href="#">Blog</a>
+            <a href="#">Careers</a>
+          </div>
+          <div className="footer-col">
+            <h4>Get Started</h4>
+            <a href="Water Leads Booking.html">Check Your Territory</a>
+            <a href="Water Leads Booking.html">Book a Call</a>
+            <a href="#">Partner Program</a>
+            <a href="#">Contact</a>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <span className="footer-copy">© 2026 Treat Engine. All rights reserved.</span>
+          <span className="footer-copy">Privacy · Terms</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function TweaksPanel({tweaks, setTweaks, visible}) {
+  if(!visible) return null;
+  const update = (k,v) => {
+    const next = {...tweaks, [k]: v};
+    setTweaks(next);
+    window.parent.postMessage({type:'__edit_mode_set_keys', edits: next}, '*');
+  };
+  const fieldStyle = {width:'100%',padding:'8px 10px',border:'1px solid var(--border)',borderRadius:6,fontSize:13,fontFamily:'DM Sans,sans-serif',background:'var(--cream)',color:'var(--ink)',resize:'none'};
+  const labelStyle = {fontSize:11,fontWeight:600,color:'var(--ink-muted)',marginBottom:6,display:'block',textTransform:'uppercase',letterSpacing:'0.08em'};
+  return (
+    <div style={{position:'fixed',bottom:24,right:24,background:'var(--white)',borderRadius:12,boxShadow:'0 8px 40px rgba(28,24,20,0.12)',padding:24,width:300,zIndex:9999,border:'1px solid var(--border)',fontFamily:'DM Sans,sans-serif'}}>
+      <div style={{fontSize:12,fontWeight:700,color:'var(--ink-muted)',textTransform:'uppercase',letterSpacing:'0.1em',marginBottom:20,paddingBottom:16,borderBottom:'1px solid var(--border)'}}>Tweaks</div>
+      <div style={{marginBottom:14}}>
+        <label style={labelStyle}>Headline</label>
+        <textarea value={tweaks.headline} onChange={e=>update('headline',e.target.value)} rows={2} style={fieldStyle} />
+      </div>
+      <div style={{marginBottom:14}}>
+        <label style={labelStyle}>CTA Text</label>
+        <input value={tweaks.ctaText} onChange={e=>update('ctaText',e.target.value)} style={fieldStyle} />
+      </div>
+      <div style={{marginBottom:14}}>
+        <label style={labelStyle}>Guarantee (days)</label>
+        <input type="number" value={tweaks.guaranteeDays} onChange={e=>update('guaranteeDays',e.target.value)} style={fieldStyle} />
+      </div>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',paddingTop:14,borderTop:'1px solid var(--border)'}}>
+        <label style={{...labelStyle,margin:0}}>Show partner logos</label>
+        <input type="checkbox" checked={tweaks.showTrustLogos} onChange={e=>update('showTrustLogos',e.target.checked)} style={{width:16,height:16,accentColor:'var(--navy)'}} />
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+  const [tweaksVisible, setTweaksVisible] = useState(false);
+  useReveal();
+  useEffect(() => {
+    const h = e => {
+      if(e.data?.type === '__activate_edit_mode') setTweaksVisible(true);
+      if(e.data?.type === '__deactivate_edit_mode') setTweaksVisible(false);
+    };
+    window.addEventListener('message', h);
+    window.parent.postMessage({type:'__edit_mode_available'}, '*');
+    return () => window.removeEventListener('message', h);
+  }, []);
+  return (
+    <>
+      <Nav tweaks={tweaks} />
+      <Hero tweaks={tweaks} />
+      <Trust tweaks={tweaks} />
+      <HowItWorks />
+      <AdsShowcase />
+      <WhyItWorks />
+      <Guarantee tweaks={tweaks} />
+      <Testimonials />
+      <FAQ />
+      <CTABanner tweaks={tweaks} />
+      <Footer />
+      <TweaksPanel tweaks={tweaks} setTweaks={setTweaks} visible={tweaksVisible} />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

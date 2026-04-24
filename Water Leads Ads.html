@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Water Leads — Facebook Ad Set</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #1a1a1a; }
+
+  /* ─── AD SHELL ─── */
+  .ad { width: 100%; height: 100%; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+
+  /* ── AD 1: Dark Pain Point ── */
+  .ad1 { background: #0f1826; }
+  .ad1-noise { position: absolute; inset: 0; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 200px; }
+  .ad1-accent { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: #3b82f6; }
+  .ad1-body { position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 48px 52px; }
+  .ad1-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #3b82f6; }
+  .ad1-headline { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 700; color: #fff; line-height: 1.05; letter-spacing: -.02em; margin-top: 20px; }
+  .ad1-headline em { font-style: italic; color: #93c5fd; }
+  .ad1-sub { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.65; margin-top: 16px; max-width: 400px; }
+  .ad1-bottom { display: flex; align-items: center; justify-content: space-between; }
+  .ad1-cta { background: #3b82f6; color: #fff; border: none; padding: 14px 28px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+  .ad1-brand { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.35); letter-spacing: .04em; }
+  .ad1-divider { width: 100%; height: 1px; background: rgba(255,255,255,0.07); margin: 28px 0; }
+  .ad1-stats { display: flex; gap: 40px; }
+  .ad1-stat-num { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: #fff; line-height: 1; }
+  .ad1-stat-num span { color: #3b82f6; }
+  .ad1-stat-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+  /* ── AD 2: Cream Editorial ── */
+  .ad2 { background: #faf7f2; }
+  .ad2-body { display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 48px 52px; }
+  .ad2-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .ad2-brand { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #7a6f65; }
+  .ad2-tag { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #3b82f6; background: #eff6ff; padding: 5px 12px; }
+  .ad2-headline { font-family: 'Playfair Display', serif; font-size: 58px; font-weight: 600; color: #1c1814; line-height: 1.02; letter-spacing: -.025em; }
+  .ad2-headline em { font-style: italic; color: #1a2744; }
+  .ad2-rule { width: 40px; height: 2px; background: #3b82f6; margin: 28px 0; }
+  .ad2-sub { font-size: 15.5px; color: #7a6f65; line-height: 1.7; max-width: 420px; }
+  .ad2-bottom { display: flex; align-items: center; gap: 16px; }
+  .ad2-cta { background: #1a2744; color: #fff; padding: 15px 32px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .ad2-url { font-size: 12px; color: #7a6f65; }
+
+  /* ── AD 3: Testimonial ── */
+  .ad3 { background: #1a2744; }
+  .ad3-body { display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 48px 52px; }
+  .ad3-quote-mark { font-family: 'Playfair Display', serif; font-size: 120px; line-height: 0.7; color: rgba(59,130,246,0.25); font-weight: 700; }
+  .ad3-quote { font-family: 'Playfair Display', serif; font-size: 26px; font-style: italic; color: #fff; line-height: 1.5; letter-spacing: -.01em; margin-top: 16px; }
+  .ad3-attribution { margin-top: 28px; }
+  .ad3-name { font-size: 14px; font-weight: 700; color: #fff; }
+  .ad3-role { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+  .ad3-divider { width: 100%; height: 1px; background: rgba(255,255,255,0.08); margin: 28px 0; }
+  .ad3-bottom { display: flex; align-items: center; justify-content: space-between; }
+  .ad3-cta { background: #3b82f6; color: #fff; padding: 13px 26px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+  .ad3-brand { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.3); letter-spacing: .05em; text-transform: uppercase; }
+  .ad3-result-bar { display: flex; gap: 0; margin-top: 0; }
+  .ad3-result-item { flex: 1; padding: 18px 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); margin-right: -1px; }
+  .ad3-result-num { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: #fff; }
+  .ad3-result-num span { color: #3b82f6; font-style: italic; }
+  .ad3-result-label { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 3px; letter-spacing: .04em; }
+
+  /* ── AD 4: Demo Tease ── */
+  .ad4 { background: #eff6ff; }
+  .ad4-body { display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 48px 52px; }
+  .ad4-badge { display: inline-flex; align-items: center; gap: 8px; background: #3b82f6; color: #fff; padding: 7px 16px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; width: fit-content; }
+  .ad4-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); }
+  .ad4-headline { font-family: 'Playfair Display', serif; font-size: 50px; font-weight: 700; color: #1a2744; line-height: 1.04; letter-spacing: -.025em; margin-top: 20px; }
+  .ad4-headline em { font-style: italic; }
+  .ad4-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .ad4-list-item { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: #3d3530; line-height: 1.4; }
+  .ad4-check { width: 18px; height: 18px; background: #3b82f6; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  .ad4-check svg { width: 10px; height: 10px; }
+  .ad4-bottom { display: flex; align-items: center; justify-content: space-between; }
+  .ad4-cta { background: #1a2744; color: #fff; padding: 15px 32px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .ad4-brand { font-size: 11px; font-weight: 700; color: #7a6f65; letter-spacing: .06em; text-transform: uppercase; }
+
+  /* ── AD 5: Transform Story ── */
+  .ad5 { background: #0f1826; }
+  .ad5-accent-top { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .ad5-body { position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 52px 56px; }
+  .ad5-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #3b82f6; }
+  .ad5-before-after { display: flex; flex-direction: column; gap: 0; margin-top: 24px; }
+  .ad5-before { padding: 24px 28px; border: 1px solid rgba(255,255,255,0.08); }
+  .ad5-after { padding: 24px 28px; background: #3b82f6; margin-top: -1px; }
+  .ad5-ba-label { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+  .ad5-after .ad5-ba-label { color: rgba(255,255,255,0.7); }
+  .ad5-ba-num { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 700; color: rgba(255,255,255,0.25); line-height: 1; }
+  .ad5-after .ad5-ba-num { color: #fff; }
+  .ad5-ba-desc { font-size: 14px; color: rgba(255,255,255,0.35); margin-top: 4px; }
+  .ad5-after .ad5-ba-desc { color: rgba(255,255,255,0.8); }
+  .ad5-headline { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; color: #fff; line-height: 1.1; letter-spacing: -.02em; margin-top: 32px; }
+  .ad5-headline em { font-style: italic; color: #93c5fd; }
+  .ad5-sub { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.65; margin-top: 14px; }
+  .ad5-cta { background: #3b82f6; color: #fff; padding: 16px 32px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; display: inline-block; width: fit-content; margin-top: 32px; }
+  .ad5-brand { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.25); letter-spacing: .05em; text-transform: uppercase; margin-top: 28px; }
+
+  /* ── AD 7: Map + Leads (Dark Navy) ── */
+  .ad7 { background: #0d1625; font-family: 'DM Sans', sans-serif; }
+  .ad7-header { padding: 30px 36px 18px; }
+  .ad7-eyebrow { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.55); letter-spacing: .01em; margin-bottom: 6px; }
+  .ad7-headline { font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -.01em; line-height: 1.15; }
+  .ad7-headline strong { font-size: 42px; display: block; color: #3b82f6; letter-spacing: -.03em; line-height: 1; text-transform: uppercase; }
+  .ad7-headline span { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); display: block; margin-top: 4px; letter-spacing: 0; }
+  .ad7-map-area { position: relative; margin: 0 20px; height: 260px; }
+  .ad7-map-bg { width: 100%; height: 100%; background: #162035; border-radius: 12px; overflow: hidden; position: relative; }
+  .ad7-map-svg { width: 100%; height: 100%; }
+  .ad7-lead-card { position: absolute; background: #fff; border-radius: 6px; padding: 8px 10px; min-width: 140px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+  .ad7-lead-card::after { content: ''; position: absolute; bottom: -6px; left: 14px; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 7px solid #fff; }
+  .ad7-card-tag { font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 3px; }
+  .ad7-card-rev { font-size: 12px; font-weight: 800; color: #dc2626; }
+  .ad7-card-detail { font-size: 9.5px; color: #666; line-height: 1.5; margin-top: 2px; }
+  .ad7-pin { position: absolute; width: 20px; height: 20px; background: #3b82f6; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid #fff; }
+  .ad7-guarantee { margin: 12px 20px 0; background: #1a2744; border: 1px solid rgba(59,130,246,0.25); border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; }
+  .ad7-badge-circle { width: 46px; height: 46px; border-radius: 50%; background: #fbbf24; border: 2px solid #f59e0b; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .ad7-badge-pct { font-size: 12px; font-weight: 900; color: #78350f; line-height: 1; }
+  .ad7-badge-label { font-size: 7px; font-weight: 700; color: #78350f; text-transform: uppercase; letter-spacing: .04em; text-align: center; line-height: 1.2; }
+  .ad7-gtitle { font-size: 15px; font-weight: 800; color: #fff; }
+  .ad7-gsub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 1px; line-height: 1.4; }
+  .ad7-footer { padding: 14px 20px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .ad7-cta { background: #3b82f6; color: #fff; padding: 12px 22px; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; border-radius: 4px; }
+  .ad7-brand { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.3); letter-spacing: .05em; }
+
+  /* ── AD 8: Revenue-Led (Cream) ── */
+  .ad8 { background: #faf7f2; }
+  .ad8-top-bar { background: #1a2744; padding: 14px 36px; display: flex; align-items: center; justify-content: space-between; }
+  .ad8-top-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .ad8-top-brand { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #3b82f6; }
+  .ad8-body { padding: 28px 36px; }
+  .ad8-kicker { font-size: 12px; font-weight: 600; color: #7a6f65; letter-spacing: .05em; text-transform: uppercase; margin-bottom: 8px; }
+  .ad8-headline { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: #1c1814; line-height: 1.08; letter-spacing: -.02em; }
+  .ad8-headline em { font-style: italic; color: #1a2744; }
+  .ad8-cards { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+  .ad8-lead-card { background: #fff; border: 1px solid rgba(28,24,20,0.09); border-radius: 6px; padding: 12px 16px; display: flex; align-items: center; gap: 14px; }
+  .ad8-card-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .ad8-card-info { flex: 1; }
+  .ad8-card-type { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #7a6f65; }
+  .ad8-card-desc { font-size: 12.5px; font-weight: 600; color: #1c1814; margin-top: 1px; }
+  .ad8-card-rev { font-size: 13px; font-weight: 800; color: #16a34a; white-space: nowrap; }
+  .ad8-guarantee-bar { margin: 14px 0 0; background: #1a2744; padding: 14px 16px; display: flex; align-items: center; gap: 14px; border-radius: 6px; }
+  .ad8-g-badge { width: 40px; height: 40px; border-radius: 50%; background: #fbbf24; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #f59e0b; }
+  .ad8-g-pct { font-size: 11px; font-weight: 900; color: #78350f; line-height: 1; }
+  .ad8-g-lbl { font-size: 6px; font-weight: 700; color: #78350f; text-transform: uppercase; text-align: center; line-height: 1.2; }
+  .ad8-g-text { font-size: 12px; color: #fff; line-height: 1.45; }
+  .ad8-g-text strong { font-weight: 700; display: block; font-size: 13px; }
+  .ad8-footer { padding: 12px 36px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .ad8-cta { background: #3b82f6; color: #fff; padding: 13px 24px; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; border-radius: 4px; }
+  .ad8-url { font-size: 10px; color: #7a6f65; font-weight: 600; letter-spacing: .04em; }
+
+  /* ── AD 9: Guarantee-Led (High Contrast) ── */
+  .ad9 { background: #fff; }
+  .ad9-stripe { height: 6px; background: linear-gradient(90deg, #1a2744 50%, #3b82f6 50%); }
+  .ad9-body { padding: 28px 36px 0; }
+  .ad9-headline-block { margin-bottom: 18px; }
+  .ad9-pre { font-size: 12px; font-weight: 700; color: #7a6f65; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+  .ad9-headline { font-size: 15px; font-weight: 800; color: #1c1814; letter-spacing: -.01em; line-height: 1.1; }
+  .ad9-headline strong { font-size: 48px; display: block; color: #1a2744; letter-spacing: -.03em; line-height: 0.95; text-transform: uppercase; }
+  .ad9-headline span { color: #3b82f6; }
+  .ad9-sub { font-size: 13px; color: #7a6f65; margin-top: 6px; line-height: 1.5; }
+  .ad9-map-strip { margin: 16px 0; position: relative; height: 200px; background: #eef2f8; border-radius: 8px; overflow: hidden; }
+  .ad9-map-label { position: absolute; top: 12px; left: 14px; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #1a2744; background: rgba(255,255,255,0.9); padding: 3px 8px; border-radius: 3px; }
+  .ad9-card-float { position: absolute; background: #fff; border-radius: 5px; padding: 7px 10px; box-shadow: 0 3px 14px rgba(0,0,0,0.15); min-width: 130px; }
+  .ad9-cf-tag { font-size: 8px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 2px; }
+  .ad9-cf-rev { font-size: 11px; font-weight: 800; color: #dc2626; }
+  .ad9-cf-detail { font-size: 8.5px; color: #666; line-height: 1.5; margin-top: 1px; }
+  .ad9-guarantee { background: #0d1625; padding: 18px 36px; display: flex; align-items: center; gap: 16px; }
+  .ad9-g-seal { width: 52px; height: 52px; border-radius: 50%; background: #fbbf24; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 3px solid #f59e0b; }
+  .ad9-g-pct { font-size: 13px; font-weight: 900; color: #78350f; line-height: 1; }
+  .ad9-g-lbl { font-size: 6.5px; font-weight: 800; color: #78350f; text-transform: uppercase; text-align: center; line-height: 1.2; }
+  .ad9-g-content { }
+  .ad9-g-title { font-size: 17px; font-weight: 800; color: #fff; line-height: 1; }
+  .ad9-g-sub { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 4px; line-height: 1.45; }
+  .ad9-footer { padding: 16px 36px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .ad9-cta { background: #3b82f6; color: #fff; padding: 13px 26px; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; border-radius: 4px; }
+  .ad9-brand { font-size: 10px; font-weight: 700; color: #7a6f65; letter-spacing: .05em; text-transform: uppercase; }
+
+  /* ── STORY AD 6 ── */
+  .ad6 { background: #faf7f2; }
+  .ad6-body { display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 60px 52px; }
+  .ad6-top { }
+  .ad6-brand-line { display: flex; align-items: center; gap: 10px; margin-bottom: 40px; }
+  .ad6-brand-dot { width: 8px; height: 8px; background: #3b82f6; }
+  .ad6-brand-name { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #7a6f65; }
+  .ad6-headline { font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 700; color: #1c1814; line-height: 0.95; letter-spacing: -.03em; }
+  .ad6-headline em { font-style: italic; color: #1a2744; }
+  .ad6-rule { width: 48px; height: 3px; background: #3b82f6; margin: 32px 0; }
+  .ad6-body-text { font-size: 17px; color: #7a6f65; line-height: 1.75; }
+  .ad6-list { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .ad6-item { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; color: #3d3530; line-height: 1.45; }
+  .ad6-bullet { width: 20px; height: 20px; background: #1a2744; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+  .ad6-bullet svg { width: 10px; height: 10px; }
+  .ad6-cta-block { background: #1a2744; padding: 32px; }
+  .ad6-cta-text { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; color: #fff; margin-bottom: 16px; line-height: 1.25; }
+  .ad6-cta-btn { background: #3b82f6; color: #fff; padding: 15px 28px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; display: inline-block; width: 100%; text-align: center; }
+  .ad6-url { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 10px; text-align: center; letter-spacing: .04em; }
+</style>
+</head>
+<body>
+<script type="text/babel">
+
+const Check = () => (
+  <svg viewBox="0 0 10 10" fill="none">
+    <polyline points="1.5,5 4,7.5 8.5,2.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+// AD 1 — Dark Pain Point
+const Ad1 = () => (
+  <div className="ad ad1">
+    <div className="ad1-noise"/>
+    <div className="ad1-accent"/>
+    <div className="ad1-body">
+      <div>
+        <div className="ad1-eyebrow">Water Leads · Treat Engine</div>
+        <div className="ad1-headline">
+          Still waiting<br/>on the next<br/><em>knock back?</em>
+        </div>
+        <div className="ad1-sub">
+          Water treatment dealers lose thousands in revenue every month relying on door-knocking. There's a better way.
+        </div>
+      </div>
+      <div>
+        <div className="ad1-divider"/>
+        <div className="ad1-stats">
+          <div>
+            <div className="ad1-stat-num">20<span>+</span></div>
+            <div className="ad1-stat-label">Appointments/month</div>
+          </div>
+          <div>
+            <div className="ad1-stat-num">100<span>%</span></div>
+            <div className="ad1-stat-label">Exclusive territory</div>
+          </div>
+          <div>
+            <div className="ad1-stat-num">0</div>
+            <div className="ad1-stat-label">Door knocks needed</div>
+          </div>
+        </div>
+        <div className="ad1-divider"/>
+        <div className="ad1-bottom">
+          <div className="ad1-cta">Schedule a Demo →</div>
+          <div className="ad1-brand">treatleads.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+// AD 2 — Cream Editorial
+const Ad2 = () => (
+  <div className="ad ad2">
+    <div className="ad2-body">
+      <div className="ad2-top">
+        <div className="ad2-brand">Treat Engine</div>
+        <div className="ad2-tag">Water Leads</div>
+      </div>
+      <div>
+        <div className="ad2-headline">
+          Your calendar<br/>should fill<br/><em>itself.</em>
+        </div>
+        <div className="ad2-rule"/>
+        <div className="ad2-sub">
+          We build and run your Facebook & Google campaigns — and deliver pre-qualified, appointment-set homeowners straight to your calendar every week.
+        </div>
+      </div>
+      <div className="ad2-bottom">
+        <div className="ad2-cta">Schedule a Demo →</div>
+        <div className="ad2-url">treatleads.com</div>
+      </div>
+    </div>
+  </div>
+);
+
+// AD 3 — Testimonial
+const Ad3 = () => (
+  <div className="ad ad3">
+    <div className="ad3-body">
+      <div>
+        <div className="ad3-quote-mark">"</div>
+        <div className="ad3-quote">
+          We hit 18 installs in a single month — after years of averaging 4 or 5. The difference is the quality of lead.
+        </div>
+        <div className="ad3-attribution">
+          <div className="ad3-name">Dave K.</div>
+          <div className="ad3-role">Water Treatment Dealer · Water Leads Client</div>
+        </div>
+      </div>
+      <div>
+        <div className="ad3-result-bar">
+          <div className="ad3-result-item">
+            <div className="ad3-result-num"><span>4–5</span></div>
+            <div className="ad3-result-label">Installs/month before</div>
+          </div>
+          <div className="ad3-result-item">
+            <div className="ad3-result-num">18<span>+</span></div>
+            <div className="ad3-result-label">Installs/month after</div>
+          </div>
+        </div>
+        <div className="ad3-divider"/>
+        <div className="ad3-bottom">
+          <div className="ad3-cta">Schedule a Demo →</div>
+          <div className="ad3-brand">Treat Engine</div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+// AD 4 — Demo Tease
+const Ad4 = () => (
+  <div className="ad ad4">
+    <div className="ad4-body">
+      <div>
+        <div className="ad4-badge">
+          <div className="ad4-badge-dot"/>
+          Free Demo Available
+        </div>
+        <div className="ad4-headline">
+          See exactly<br/>how dealers fill<br/><em>their pipeline.</em>
+        </div>
+        <div className="ad4-list">
+          {[
+            'Exclusive appointments — only one dealer per market',
+            'Homeowners pre-qualified before they reach you',
+            'Done-for-you Facebook & Google ad campaigns',
+            'Live reporting dashboard — see every lead in real time',
+          ].map((item, i) => (
+            <div key={i} className="ad4-list-item">
+              <div className="ad4-check"><Check/></div>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="ad4-bottom">
+        <div className="ad4-cta">Schedule a Demo →</div>
+        <div className="ad4-brand">Treat Engine</div>
+      </div>
+    </div>
+  </div>
+);
+
+// AD 5 — Before/After Transform (Feed)
+const Ad5 = () => (
+  <div className="ad ad5">
+    <div className="ad5-accent-top"/>
+    <div className="ad5-body">
+      <div>
+        <div className="ad5-eyebrow">Water Leads · Treat Engine</div>
+        <div className="ad5-before-after">
+          <div className="ad5-before">
+            <div className="ad5-ba-label">Before</div>
+            <div className="ad5-ba-num">4–5</div>
+            <div className="ad5-ba-desc">installs per month. Inconsistent pipeline.</div>
+          </div>
+          <div className="ad5-after">
+            <div className="ad5-ba-label">After</div>
+            <div className="ad5-ba-num">18+</div>
+            <div className="ad5-ba-desc">installs per month. Calendar full every week.</div>
+          </div>
+        </div>
+        <div className="ad5-headline">
+          What happens when<br/>inbound leads are<br/><em>exclusive to you.</em>
+        </div>
+      </div>
+      <div>
+        <div className="ad5-cta">Schedule a Demo →</div>
+        <div className="ad5-brand">treatleads.com</div>
+      </div>
+    </div>
+  </div>
+);
+
+// AD 6 — Story (9:16)
+const Ad6 = () => (
+  <div className="ad ad6">
+    <div className="ad6-body">
+      <div className="ad6-top">
+        <div className="ad6-brand-line">
+          <div className="ad6-brand-dot"/>
+          <div className="ad6-brand-name">Treat Engine · Water Leads</div>
+        </div>
+        <div className="ad6-headline">
+          No more<br/>cold<br/><em>doors.</em>
+        </div>
+        <div className="ad6-rule"/>
+        <div className="ad6-body-text">
+          We run your ads, qualify your leads, and book them straight onto your calendar — so you show up to close, not to chase.
+        </div>
+        <div className="ad6-list">
+          {[
+            '20+ pre-qualified appointments/month',
+            'Your exclusive territory — no competing dealer',
+            'Full campaign management included',
+          ].map((item, i) => (
+            <div key={i} className="ad6-item">
+              <div className="ad6-bullet"><Check/></div>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="ad6-cta-block">
+        <div className="ad6-cta-text">See how it works in a free 20-min demo.</div>
+        <div className="ad6-cta-btn">Schedule a Demo →</div>
+        <div className="ad6-url">treatleads.com</div>
+      </div>
+    </div>
+  </div>
+);
+
+// Shared map SVG background
+const MapBg = ({ light }) => (
+  <svg viewBox="0 0 500 260" className="ad7-map-svg" xmlns="http://www.w3.org/2000/svg">
+    <rect width="500" height="260" fill={light ? '#dde8f5' : '#162035'}/>
+    {/* Road network */}
+    <line x1="0" y1="130" x2="500" y2="130" stroke={light ? '#c5d5e8' : '#1e3050'} strokeWidth="8"/>
+    <line x1="250" y1="0" x2="250" y2="260" stroke={light ? '#c5d5e8' : '#1e3050'} strokeWidth="8"/>
+    <line x1="0" y1="65" x2="500" y2="195" stroke={light ? '#c5d5e8' : '#1e3050'} strokeWidth="5"/>
+    <line x1="0" y1="195" x2="500" y2="65" stroke={light ? '#c5d5e8' : '#1e3050'} strokeWidth="5"/>
+    <line x1="0" y1="30" x2="500" y2="30" stroke={light ? '#c5d5e8' : '#1e3050'} strokeWidth="3"/>
+    <line x1="0" y1="230" x2="500" y2="230" stroke={light ? '#c5d5e8' : '#1e3050'} strokeWidth="3"/>
+    <line x1="125" y1="0" x2="125" y2="260" stroke={light ? '#c5d5e8' : '#1e3050'} strokeWidth="3"/>
+    <line x1="375" y1="0" x2="375" y2="260" stroke={light ? '#c5d5e8' : '#1e3050'} strokeWidth="3"/>
+    {/* Territory circle */}
+    <circle cx="250" cy="130" r="90" fill={light ? 'rgba(59,130,246,0.12)' : 'rgba(59,130,246,0.1)'} stroke="#3b82f6" strokeWidth="1.5" strokeDasharray="6 4"/>
+    {/* City label */}
+    <text x="250" y="118" textAnchor="middle" fill={light ? '#1a2744' : 'rgba(255,255,255,0.7)'} fontSize="14" fontWeight="700" fontFamily="DM Sans, sans-serif">Your City</text>
+    <text x="250" y="134" textAnchor="middle" fill={light ? '#3b82f6' : '#60a5fa'} fontSize="9" fontFamily="DM Sans, sans-serif" fontWeight="600" letterSpacing="1">EXCLUSIVE TERRITORY</text>
+    {/* checkmark */}
+    <circle cx="250" cy="152" r="10" fill="#3b82f6"/>
+    <polyline points="245,152 249,156 256,148" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+    {/* Nearby labels */}
+    <text x="100" y="52" textAnchor="middle" fill={light ? '#4b6080' : 'rgba(255,255,255,0.3)'} fontSize="9" fontFamily="DM Sans, sans-serif">Westfield</text>
+    <text x="400" y="52" textAnchor="middle" fill={light ? '#4b6080' : 'rgba(255,255,255,0.3)'} fontSize="9" fontFamily="DM Sans, sans-serif">Lakewood</text>
+    <text x="100" y="215" textAnchor="middle" fill={light ? '#4b6080' : 'rgba(255,255,255,0.3)'} fontSize="9" fontFamily="DM Sans, sans-serif">Riverside</text>
+    <text x="400" y="215" textAnchor="middle" fill={light ? '#4b6080' : 'rgba(255,255,255,0.3)'} fontSize="9" fontFamily="DM Sans, sans-serif">Millbrook</text>
+    {/* Dots for other towns */}
+    <circle cx="100" cy="43" r="3" fill={light ? '#94afc8' : 'rgba(255,255,255,0.15)'}/>
+    <circle cx="400" cy="43" r="3" fill={light ? '#94afc8' : 'rgba(255,255,255,0.15)'}/>
+    <circle cx="100" cy="207" r="3" fill={light ? '#94afc8' : 'rgba(255,255,255,0.15)'}/>
+    <circle cx="400" cy="207" r="3" fill={light ? '#94afc8' : 'rgba(255,255,255,0.15)'}/>
+  </svg>
+);
+
+const GoldBadge = ({ size = 46 }) => (
+  <div style={{ width: size, height: size, borderRadius: '50%', background: '#fbbf24', border: `${size > 44 ? 3 : 2}px solid #f59e0b`, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ fontSize: size * 0.27, fontWeight: 900, color: '#78350f', lineHeight: 1 }}>100%</div>
+    <div style={{ fontSize: size * 0.13, fontWeight: 700, color: '#78350f', textTransform: 'uppercase', letterSpacing: '.04em', textAlign: 'center', lineHeight: 1.2 }}>Money<br/>Back</div>
+  </div>
+);
+
+// AD 7 — Map + Leads Dark
+const Ad7 = () => (
+  <div className="ad ad7">
+    <div className="ad7-header">
+      <div className="ad7-eyebrow">Local, Pre-Qualified &amp; Exclusive</div>
+      <div className="ad7-headline">
+        <strong>Water Leads</strong>
+        <span>Fill your calendar with homeowners ready to buy.</span>
+      </div>
+    </div>
+    <div className="ad7-map-area">
+      <div className="ad7-map-bg">
+        <MapBg/>
+        {/* Lead cards */}
+        <div className="ad7-lead-card" style={{ top: 8, left: 8 }}>
+          <div className="ad7-card-tag" style={{ color: '#16a34a' }}>New Water Test Booking</div>
+          <div className="ad7-card-rev">Rev Potential: $7k–12k</div>
+          <div className="ad7-card-detail">Single Family · Well Water<br/>Urgency: 1–2 Weeks</div>
+        </div>
+        <div className="ad7-lead-card" style={{ top: 8, right: 8 }}>
+          <div className="ad7-card-tag" style={{ color: '#2563eb' }}>New Softener Lead</div>
+          <div className="ad7-card-rev">Rev Potential: $5k–10k</div>
+          <div className="ad7-card-detail">Single Family · City Water<br/>Urgency: 1–2 Weeks</div>
+        </div>
+        <div className="ad7-lead-card" style={{ bottom: 14, left: '50%', transform: 'translateX(-50%)' }}>
+          <div className="ad7-card-tag" style={{ color: '#16a34a' }}>New Water Test Booking</div>
+          <div className="ad7-card-rev">Rev Potential: $5k–10k</div>
+          <div className="ad7-card-detail">Multi Family · City Water · 1 Month</div>
+        </div>
+      </div>
+    </div>
+    <div className="ad7-guarantee">
+      <GoldBadge size={46}/>
+      <div>
+        <div className="ad7-gtitle">30 Day Guarantee</div>
+        <div className="ad7-gsub">Don't love the leads? Full refund. You keep the leads.</div>
+      </div>
+    </div>
+    <div className="ad7-footer">
+      <div className="ad7-cta">Schedule a Demo →</div>
+      <div className="ad7-brand">treatleads.com</div>
+    </div>
+  </div>
+);
+
+// AD 8 — Revenue-Led Cream
+const Ad8 = () => (
+  <div className="ad ad8">
+    <div className="ad8-top-bar">
+      <div className="ad8-top-label">Water Treatment Dealers</div>
+      <div className="ad8-top-brand">Treat Engine · Water Leads</div>
+    </div>
+    <div className="ad8-body">
+      <div className="ad8-kicker">What lands in your inbox every week</div>
+      <div className="ad8-headline">
+        Each lead is worth<br/><em>$5,000–$12,000</em><br/>to your business.
+      </div>
+      <div className="ad8-cards">
+        {[
+          { dot: '#16a34a', type: 'Water Test Booking', desc: 'Single Family · Well Water · Urgent', rev: '$7k–12k' },
+          { dot: '#2563eb', type: 'Softener Lead', desc: 'Single Family · City Water · 1–2 wks', rev: '$5k–10k' },
+          { dot: '#9333ea', type: 'RO System Inquiry', desc: 'Multi-Family · City Water · This Month', rev: '$4k–8k' },
+        ].map((c, i) => (
+          <div key={i} className="ad8-lead-card">
+            <div className="ad8-card-dot" style={{ background: c.dot }}/>
+            <div className="ad8-card-info">
+              <div className="ad8-card-type">{c.type}</div>
+              <div className="ad8-card-desc">{c.desc}</div>
+            </div>
+            <div className="ad8-card-rev">{c.rev}</div>
+          </div>
+        ))}
+      </div>
+      <div className="ad8-guarantee-bar">
+        <GoldBadge size={40}/>
+        <div className="ad8-g-text">
+          <strong>30 Day Money-Back Guarantee</strong>
+          Don't love the quality? Full refund — and you keep the leads.
+        </div>
+      </div>
+    </div>
+    <div className="ad8-footer">
+      <div className="ad8-cta">Schedule a Demo →</div>
+      <div className="ad8-url">treatleads.com</div>
+    </div>
+  </div>
+);
+
+// AD 9 — Guarantee-Led High Contrast
+const Ad9 = () => (
+  <div className="ad ad9">
+    <div className="ad9-stripe"/>
+    <div className="ad9-body">
+      <div className="ad9-headline-block">
+        <div className="ad9-pre">Local, Pre-Qualified &amp; Exclusive</div>
+        <div className="ad9-headline">
+          <strong>Water <span>Leads</span></strong>
+          <div className="ad9-sub">Pre-set appointments with homeowners who need a water system — delivered to your calendar every week.</div>
+        </div>
+      </div>
+      <div className="ad9-map-strip">
+        <MapBg light={true}/>
+        <div className="ad9-map-label">Your Exclusive Territory</div>
+        <div className="ad9-card-float" style={{ top: 10, right: 10 }}>
+          <div className="ad9-cf-tag" style={{ color: '#2563eb' }}>New Softener Lead</div>
+          <div className="ad9-cf-rev">Rev Potential: $5k–10k</div>
+          <div className="ad9-cf-detail">Single Family · City Water<br/>Urgency: 1–2 Weeks</div>
+        </div>
+        <div className="ad9-card-float" style={{ bottom: 10, left: 10 }}>
+          <div className="ad9-cf-tag" style={{ color: '#16a34a' }}>Water Test Booking</div>
+          <div className="ad9-cf-rev">Rev Potential: $7k–12k</div>
+          <div className="ad9-cf-detail">Single Family · Well Water<br/>Urgency: This Week</div>
+        </div>
+      </div>
+    </div>
+    <div className="ad9-guarantee">
+      <GoldBadge size={52}/>
+      <div className="ad9-g-content">
+        <div className="ad9-g-title">30 Day Guarantee</div>
+        <div className="ad9-g-sub">If you don't love the quality of your leads and appointments, we'll refund you in full and let you keep the leads.</div>
+      </div>
+    </div>
+    <div className="ad9-footer">
+      <div className="ad9-cta">Schedule a Demo →</div>
+      <div className="ad9-brand">Treat Engine</div>
+    </div>
+  </div>
+);
+
+function App() {
+  return (
+    <DesignCanvas title="Water Leads — Facebook Ad Set">
+      <DCSection id="feed" title="Feed Ads — 1:1 (1080×1080)">
+        <DCArtboard id="a1" label="01 · Dark Pain Point" width={540} height={540}>
+          <Ad1/>
+        </DCArtboard>
+        <DCArtboard id="a2" label="02 · Cream Editorial" width={540} height={540}>
+          <Ad2/>
+        </DCArtboard>
+        <DCArtboard id="a3" label="03 · Social Proof" width={540} height={540}>
+          <Ad3/>
+        </DCArtboard>
+        <DCArtboard id="a4" label="04 · Demo Tease" width={540} height={540}>
+          <Ad4/>
+        </DCArtboard>
+        <DCArtboard id="a5" label="05 · Before / After" width={540} height={540}>
+          <Ad5/>
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="story" title="Story / Reel — 9:16 (1080×1920)">
+        <DCArtboard id="a6" label="06 · Story — No More Cold Doors" width={405} height={720}>
+          <Ad6/>
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="conversion" title="Conversion-Optimized — Inspired by Best Performer">
+        <DCArtboard id="a7" label="07 · Map + Leads · Dark" width={540} height={540}>
+          <Ad7/>
+        </DCArtboard>
+        <DCArtboard id="a8" label="08 · Revenue-Led · Cream" width={540} height={540}>
+          <Ad8/>
+        </DCArtboard>
+        <DCArtboard id="a9" label="09 · Guarantee-Led · High Contrast" width={540} height={540}>
+          <Ad9/>
+        </DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+<div id="root"></div>
+</body>
+</html>

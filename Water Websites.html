@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Water Websites — Treat Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#faf7f2;
+  --cream-mid:#f0ebe0;
+  --cream-dark:#e5ddd0;
+  --ink:#1c1814;
+  --ink-mid:#3d3530;
+  --ink-muted:#7a6f65;
+  --navy:#1a2744;
+  --navy-light:#243460;
+  --gold:oklch(0.72 0.10 72);
+  --gold-dark:oklch(0.58 0.12 68);
+  --blue:#3b82f6;
+  --blue-light:#eff6ff;
+  --blue-dark:#1d4ed8;
+  --white:#fffefb;
+  --border:rgba(28,24,20,0.10);
+  --border-mid:rgba(28,24,20,0.06);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;}
+h1,h2,h3,h4{font-family:'Playfair Display',serif;line-height:1.12;}
+p{line-height:1.75;}
+a{text-decoration:none;color:inherit;}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,247,242,0.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+.nav-inner{max-width:1180px;margin:0 auto;padding:0 32px;height:70px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo img{height:34px;width:auto;}
+.nav-links{display:flex;align-items:center;gap:36px;}
+.nav-links a{font-size:13.5px;font-weight:500;color:var(--ink-muted);padding:7px 14px;border-radius:6px;letter-spacing:.01em;transition:all .2s;}
+.nav-links a:hover{color:var(--ink);background:var(--cream-mid);}
+.nav-links a.active{color:var(--blue);font-weight:600;background:var(--blue-light);}
+.nav-pill{display:flex;background:var(--cream-mid);border:1px solid var(--border);border-radius:100px;padding:3px;gap:2px;}
+.nav-pill a{font-size:12.5px;font-weight:600;padding:6px 16px;border-radius:100px;color:var(--ink-muted);transition:all .2s;letter-spacing:0.01em;}
+.nav-pill a.active{background:var(--blue);color:#fff;}
+.nav-pill a:hover:not(.active){color:var(--ink);}
+.nav-cta{background:var(--blue);color:#fff;border:none;padding:11px 22px;border-radius:6px;font-size:13.5px;font-weight:600;cursor:pointer;letter-spacing:.02em;transition:background .2s,transform .15s;font-family:'DM Sans',sans-serif;}
+.nav-cta:hover{background:var(--blue-dark);transform:translateY(-1px);}
+
+/* ── HERO ── */
+.hero{padding:130px 32px 0;max-width:1180px;margin:0 auto;}
+.hero-top{display:grid;grid-template-columns:1fr 400px;gap:80px;align-items:end;padding-bottom:72px;border-bottom:1px solid var(--border);}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:28px;}
+.hero-tag-line{width:28px;height:1.5px;background:var(--blue);}
+.service-badge{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;padding:7px 16px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:24px;}
+.service-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);}
+.hero h1{font-size:clamp(42px,5vw,70px);font-weight:600;color:var(--ink);margin-bottom:28px;letter-spacing:-.025em;line-height:1.06;}
+.hero h1 em{font-style:italic;color:var(--navy);}
+.hero-sub{font-size:17px;color:var(--ink-muted);max-width:520px;margin-bottom:40px;line-height:1.8;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
+.btn-dark{background:var(--blue);color:#fff;border:none;padding:15px 28px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-dark:hover{background:var(--blue-dark);transform:translateY(-2px);}
+.btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--border);padding:14px 24px;border-radius:6px;font-size:15px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-outline:hover{border-color:var(--ink-muted);}
+.hero-aside{padding-bottom:8px;}
+.hero-aside-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:16px;}
+.hero-stat-row{padding:18px 0;border-bottom:1px solid var(--border-mid);}
+.hero-stat-row:last-child{border-bottom:none;}
+.hero-stat-num{font-family:'Playfair Display',serif;font-size:38px;font-weight:600;color:var(--navy);line-height:1;}
+.hero-stat-label{font-size:13px;color:var(--ink-muted);margin-top:4px;}
+
+/* Ticker */
+.hero-ticker{padding:22px 0;overflow:hidden;white-space:nowrap;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.hero-ticker-inner{display:inline-flex;animation:ticker 30s linear infinite;}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.hero-ticker-item{display:inline-flex;align-items:center;gap:12px;padding:0 32px;font-size:13px;color:var(--ink-muted);font-weight:500;}
+.hero-ticker-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);flex-shrink:0;}
+
+/* ── SHARED ── */
+.section{padding:110px 32px;}
+.section-inner{max-width:1180px;margin:0 auto;}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.eyebrow::before{content:'';display:block;width:20px;height:1.5px;background:var(--blue);}
+.section-title{font-size:clamp(30px,3.8vw,50px);font-weight:600;color:var(--ink);margin-bottom:20px;letter-spacing:-.02em;}
+.section-sub{font-size:16.5px;color:var(--ink-muted);max-width:540px;line-height:1.8;}
+
+/* ── PROBLEM ── */
+.problem-section{background:var(--navy);padding:110px 32px;}
+.problem-inner{max-width:1180px;margin:0 auto;}
+.problem-eyebrow{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.problem-eyebrow::before{content:'';display:block;width:20px;height:1.5px;background:var(--blue);}
+.problem-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:72px;padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.problem-title{font-size:clamp(30px,3.8vw,50px);font-weight:600;color:#fff;letter-spacing:-.02em;}
+.problem-title em{font-style:italic;opacity:0.55;}
+.problem-sub{font-size:16px;color:rgba(255,255,255,0.55);line-height:1.8;}
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid rgba(255,255,255,0.08);}
+.problem-card{padding:40px;border-right:1px solid rgba(255,255,255,0.08);}
+.problem-card:last-child{border-right:none;}
+.problem-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:rgba(255,255,255,0.08);line-height:1;margin-bottom:16px;}
+.problem-title-sm{font-size:17px;font-weight:600;color:#fff;margin-bottom:10px;font-family:'Playfair Display',serif;}
+.problem-desc{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.75;}
+
+/* ── WEBSITE PREVIEW ── */
+.preview-section{background:var(--white);padding:110px 32px;}
+.preview-inner{max-width:1180px;margin:0 auto;}
+.preview-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:72px;padding-bottom:56px;border-bottom:1px solid var(--border);}
+/* Browser mockup */
+.browser{border-radius:10px;overflow:hidden;border:1px solid var(--border);box-shadow:0 24px 64px rgba(28,24,20,0.12);}
+.browser-bar{background:var(--cream-mid);padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.browser-dots{display:flex;gap:6px;}
+.browser-dot{width:10px;height:10px;border-radius:50%;}
+.browser-url{flex:1;background:var(--white);border:1px solid var(--border);border-radius:5px;padding:5px 12px;font-size:12px;color:var(--ink-muted);font-family:'DM Sans',sans-serif;text-align:center;}
+.browser-body{background:var(--white);min-height:300px;}
+
+/* Mock website hero */
+.mock-site-hero{background:linear-gradient(135deg,#1a2744,#243460);padding:48px 36px;display:flex;justify-content:space-between;align-items:center;gap:32px;}
+.mock-hero-left{flex:1;}
+.mock-tag{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:10px;}
+.mock-h1{font-family:'Playfair Display',serif;font-size:26px;color:#fff;font-weight:600;margin-bottom:10px;line-height:1.2;}
+.mock-sub{font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:18px;line-height:1.6;}
+.mock-btn{display:inline-block;background:oklch(0.72 0.10 72);color:#fff;padding:8px 18px;border-radius:5px;font-size:11px;font-weight:700;font-family:'DM Sans',sans-serif;}
+.mock-hero-right{width:140px;height:90px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(255,255,255,0.3);text-align:center;flex-shrink:0;font-family:'DM Sans',sans-serif;}
+.mock-features{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);}
+.mock-feat{padding:20px;border-right:1px solid var(--border);}
+.mock-feat:last-child{border-right:none;}
+.mock-feat-icon{width:28px;height:28px;border-radius:6px;background:var(--cream-mid);margin-bottom:10px;}
+.mock-feat-title{font-size:11px;font-weight:700;color:var(--ink);margin-bottom:4px;font-family:'Playfair Display',serif;}
+.mock-feat-desc{font-size:10px;color:var(--ink-muted);line-height:1.6;}
+.mock-trust{background:var(--cream);padding:14px 20px;display:flex;align-items:center;gap:24px;border-top:1px solid var(--border);}
+.mock-trust-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted);}
+.mock-trust-logos{display:flex;gap:20px;}
+.mock-trust-logo{font-size:10px;font-weight:600;color:var(--ink);opacity:0.4;font-family:'Playfair Display',serif;}
+
+/* before/after toggle */
+.ba-tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:32px;width:fit-content;}
+.ba-tab{padding:10px 24px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;border:none;background:transparent;color:var(--ink-muted);}
+.ba-tab.active{background:var(--navy);color:#fff;}
+
+/* ── FEATURES ── */
+.features-section{padding:110px 32px;}
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;margin-top:72px;border:1px solid var(--border);}
+.feature-card{padding:48px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);transition:background .2s;}
+.feature-card:hover{background:var(--white);}
+.feature-card:nth-child(even){border-right:none;}
+.feature-card:nth-last-child(-n+2){border-bottom:none;}
+.feature-num{font-family:'Playfair Display',serif;font-size:13px;color:var(--ink-muted);margin-bottom:20px;letter-spacing:.06em;}
+.feature-title{font-size:20px;font-weight:600;color:var(--ink);margin-bottom:10px;font-family:'Playfair Display',serif;}
+.feature-desc{font-size:14px;color:var(--ink-muted);line-height:1.8;}
+.feature-tag{display:inline-block;margin-top:16px;font-size:11px;font-weight:600;color:var(--blue-dark);letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;background:var(--blue-light);border-radius:4px;color:var(--blue-dark);}
+
+/* ── PROCESS ── */
+.process-section{background:var(--white);padding:110px 32px;}
+.process-steps{margin-top:72px;display:flex;flex-direction:column;gap:0;border:1px solid var(--border);}
+.process-step{display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-bottom:1px solid var(--border);align-items:start;transition:background .2s;}
+.process-step:last-child{border-bottom:none;}
+.process-step:hover{background:var(--cream);}
+.process-step-num{padding:36px 32px;border-right:1px solid var(--border);font-family:'Playfair Display',serif;font-size:24px;font-weight:600;color:var(--ink-muted);}
+.process-step-left{padding:36px 40px;border-right:1px solid var(--border);}
+.process-step-title{font-size:19px;font-weight:600;font-family:'Playfair Display',serif;color:var(--ink);margin-bottom:8px;}
+.process-step-time{font-size:12px;color:var(--gold-dark);font-weight:600;text-transform:uppercase;letter-spacing:.08em;}
+.process-step-right{padding:36px 40px;}
+.process-step-desc{font-size:14px;color:var(--ink-muted);line-height:1.8;}
+
+/* ── TESTIMONIAL ── */
+.testi-section{padding:110px 32px;background:var(--cream-mid);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.testi-inner{max-width:1180px;margin:0 auto;}
+.testi-featured{max-width:800px;margin:56px auto 0;}
+.testi-quote-big{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,32px);font-style:italic;color:var(--ink);line-height:1.55;margin-bottom:40px;position:relative;padding-left:32px;}
+.testi-quote-big::before{content:'\201C';position:absolute;left:-8px;top:-12px;font-size:80px;color:var(--cream-dark);font-style:normal;line-height:1;}
+.testi-author-row{display:flex;align-items:center;gap:16px;padding-top:32px;border-top:1px solid var(--border);}
+.testi-avatar{width:48px;height:48px;border-radius:50%;background:var(--cream-dark);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--navy);font-size:16px;border:1px solid var(--border);}
+.testi-name{font-size:15px;font-weight:600;}
+.testi-role{font-size:13px;color:var(--ink-muted);margin-top:2px;}
+
+/* ── CTA ── */
+.cta-banner{background:var(--navy);padding:96px 32px;position:relative;overflow:hidden;}
+.cta-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(59,130,246,0.08) 0%,transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(255,200,80,0.06) 0%,transparent 60%);}
+.cta-inner{max-width:1180px;margin:0 auto;position:relative;display:grid;grid-template-columns:1fr 480px;gap:80px;align-items:start;}
+.cta-left{}
+.cta-right{}
+.cta-tag{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:24px;display:flex;align-items:center;gap:10px;}
+.cta-tag::before{content:'';display:block;width:20px;height:1px;background:var(--blue);}
+.cta-banner h2{font-size:clamp(32px,4.5vw,52px);color:#fff;margin-bottom:18px;letter-spacing:-.025em;}
+.cta-banner h2 em{font-style:italic;opacity:.7;}
+.cta-banner p{font-size:16px;color:rgba(255,255,255,0.6);margin-bottom:36px;line-height:1.85;}
+.cta-checklist{list-style:none;display:flex;flex-direction:column;gap:0;margin-bottom:40px;}
+.cta-check-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:14px;color:rgba(255,255,255,0.7);}
+.cta-check-item:first-child{border-top:1px solid rgba(255,255,255,0.07);}
+.cta-check-icon{width:20px;height:20px;border-radius:50%;background:rgba(59,130,246,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cta-panel{background:var(--white);border-radius:10px;overflow:hidden;}
+.cta-panel-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;}
+.cta-panel-icon{width:38px;height:38px;border-radius:8px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cta-panel-title{font-size:14px;font-weight:700;color:var(--ink);}
+.cta-panel-sub{font-size:12px;color:var(--ink-muted);margin-top:2px;}
+.cta-trust{display:flex;gap:24px;flex-wrap:wrap;margin-top:20px;}
+.cta-trust-item{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,0.45);}
+@media(max-width:900px){.cta-inner{grid-template-columns:1fr;gap:48px;}}
+.btn-cream{background:var(--cream);color:var(--navy);border:none;padding:15px 30px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;letter-spacing:.01em;}
+.btn-cream:hover{background:#fff;transform:translateY(-2px);}
+.btn-ghost{background:transparent;color:rgba(255,255,255,0.7);border:1.5px solid rgba(255,255,255,0.2);padding:14px 28px;border-radius:6px;font-size:15px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.5);color:#fff;}
+
+/* ── FOOTER ── */
+.footer{background:var(--ink);padding:72px 32px 40px;}
+.footer-inner{max-width:1180px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:56px;padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.footer-brand p{font-size:13.5px;color:rgba(255,255,255,0.4);margin-top:20px;line-height:1.75;max-width:260px;}
+.footer-brand img{height:30px;filter:brightness(0) invert(1);}
+.footer-col h4{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,0.3);margin-bottom:18px;}
+.footer-col a{display:block;font-size:14px;color:rgba(255,255,255,0.55);margin-bottom:11px;transition:color .2s;}
+.footer-col a:hover{color:#fff;}
+.footer-bottom{padding-top:28px;display:flex;align-items:center;justify-content:space-between;}
+.footer-copy{font-size:13px;color:rgba(255,255,255,0.25);}
+
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+@media(max-width:960px){
+  .hero-top,.problem-header,.preview-header{grid-template-columns:1fr;gap:40px;}
+  .problem-grid,.features-grid{grid-template-columns:1fr;}
+  .process-step{grid-template-columns:48px 1fr;}
+  .process-step-right{display:none;}
+  .nav-links,.nav-pill{display:none;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:32px;}
+  .cta-banner{padding:72px 20px;}
+  .section{padding-left:20px;padding-right:20px;}
+  .hero-top{padding-left:20px;padding-right:20px;}
+}
+@media(max-width:600px){
+  .hero-top h1{font-size:clamp(34px,9vw,52px);}
+  .hero-actions{flex-direction:column;align-items:stretch;}
+  .hero-actions .btn-dark,.hero-actions .btn-outline,.hero-actions a{width:100%;text-align:center;justify-content:center;}
+  .footer-top{grid-template-columns:1fr;}
+  .cta-left h2{font-size:clamp(28px,7vw,40px);}
+  .topbar-item:not(:first-child){display:none;}
+  .topbar-divider{display:none;}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState, useEffect} = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "heroHeadline": "Your website should be your\nbest salesperson.",
+  "ctaText": "Book a Demo",
+  "showBefore": false
+}/*EDITMODE-END*/;
+
+function useReveal() {
+  useEffect(() => {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, {threshold: 0.08});
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+}
+
+function Nav({tweaks}) {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 30);
+    window.addEventListener('scroll', h);
+    return () => window.removeEventListener('scroll', h);
+  }, []);
+  const ctaLabel = (tweaks && tweaks.ctaText) ? tweaks.ctaText : 'Book a Demo';
+  return (
+    <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
+      <div className="nav-inner">
+        <a href="Home.html"><img src="uploads/Treat Engine Logo .png" alt="Treat Engine" style={{height:34}}/></a>
+        <div className="nav-links">
+          <a href="Home.html">Home</a>
+          <a href="Water Websites.html" className="active">Water Websites</a>
+          <a href="index.html">Water Leads</a>
+          <a href="Water Sales.html">Water Sales</a>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+function Hero({tweaks}) {
+  const lines = tweaks.heroHeadline.split('\n');
+  const tickerItems = [
+    'Mobile-first design','Local SEO optimized','Online booking built in',
+    'Conversion-focused copy','Fast load times','CRM integration',
+    'Dealer-specific templates','Launch in 2 weeks',
+  ];
+  return (
+    <div>
+      <div className="hero">
+        <div className="hero-top reveal">
+          <div>
+            <div className="service-badge">
+              <span className="service-badge-dot"/>
+              Water Websites
+            </div>
+            <h1>
+              {lines.map((line, i) => (
+                <span key={i} style={{display:'block', color: i===1?'var(--navy)':'var(--ink)'}}>{line}</span>
+              ))}
+            </h1>
+            <p className="hero-sub">Most water treatment dealer websites were built once and forgotten. They don't rank, don't convert, and don't reflect the quality of the business. We fix that — with a site built to generate leads, bookings, and installs.</p>
+            <div className="hero-actions">
+              <a href="#book" className="btn-dark">{tweaks.ctaText} →</a>
+              <button className="btn-outline">See example sites</button>
+            </div>
+          </div>
+          <div className="hero-aside">
+            <div className="hero-aside-label">What you get</div>
+            <div className="hero-stat-row">
+              <div className="hero-stat-num">2 wks</div>
+              <div className="hero-stat-label">average time to launch</div>
+            </div>
+            <div className="hero-stat-row">
+              <div className="hero-stat-num">3×</div>
+              <div className="hero-stat-label">more leads vs. average dealer site</div>
+            </div>
+            <div className="hero-stat-row">
+              <div className="hero-stat-num">100%</div>
+              <div className="hero-stat-label">water treatment industry focus</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="hero-ticker">
+        <div className="hero-ticker-inner">
+          {[...tickerItems,...tickerItems].map((item,i) => (
+            <span className="hero-ticker-item" key={i}>
+              <span className="hero-ticker-dot"/>
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Problem() {
+  const cards = [
+    {title:'Built to look pretty, not to sell', desc:'Most dealer sites are digital brochures. No clear calls to action, no lead capture, no urgency. A visitor lands, glances, and leaves.'},
+    {title:'Invisible on Google', desc:'If your site isn\'t ranking for "water softener [your city]," you\'re handing installs to a competitor. Most dealer sites have no local SEO foundation at all.'},
+    {title:'Not built for mobile buyers', desc:'Over 70% of your leads will find you on a phone. A site that isn\'t optimized for mobile kills conversions before they start.'},
+  ];
+  return (
+    <section className="problem-section">
+      <div className="problem-inner">
+        <div className="problem-header reveal">
+          <div>
+            <div className="problem-eyebrow">The problem</div>
+            <h2 className="problem-title">Your current website is<br/><em>costing you installs.</em></h2>
+          </div>
+          <div>
+            <p className="problem-sub">Most water treatment dealers are running a business that punches above its weight — but their website doesn't show it. That gap is costing you real revenue.</p>
+          </div>
+        </div>
+        <div className="problem-grid reveal">
+          {cards.map((c,i) => (
+            <div className="problem-card" key={i}>
+              <div className="problem-num">0{i+1}</div>
+              <div className="problem-title-sm">{c.title}</div>
+              <div className="problem-desc">{c.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SitePreview({tweaks}) {
+  const [tab, setTab] = useState('after');
+
+  const AfterSite = () => (
+    <div className="browser">
+      <div className="browser-bar">
+        <div className="browser-dots">
+          <div className="browser-dot" style={{background:'#f87171'}}/>
+          <div className="browser-dot" style={{background:'#fbbf24'}}/>
+          <div className="browser-dot" style={{background:'#4ade80'}}/>
+        </div>
+        <div className="browser-url">yourwaterco.com</div>
+      </div>
+      <div className="browser-body">
+        <div className="mock-site-hero">
+          <div className="mock-hero-left">
+            <div className="mock-tag">Serving Phoenix, AZ &amp; surrounding areas</div>
+            <div className="mock-h1">Cleaner water.<br/>Happier home.</div>
+            <div className="mock-sub">Kinetico-certified dealer. Free water test with every install. Financing available.</div>
+            <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
+              <span className="mock-btn">Book a Free Water Test →</span>
+              <span style={{fontSize:11,color:'rgba(255,255,255,0.5)',alignSelf:'center',fontFamily:'DM Sans,sans-serif'}}>or call (480) 555-0121</span>
+            </div>
+          </div>
+          <div className="mock-hero-right">[ product photo ]</div>
+        </div>
+        <div className="mock-trust">
+          <span className="mock-trust-label">Trusted by</span>
+          <div className="mock-trust-logos">
+            {['Kinetico','Rheem','WaterBoss'].map(l=><span className="mock-trust-logo" key={l}>{l}</span>)}
+          </div>
+          <span style={{marginLeft:'auto',fontSize:10,color:'var(--ink-muted)',fontFamily:'DM Sans,sans-serif'}}>★★★★★ 4.9 · 212 reviews</span>
+        </div>
+        <div className="mock-features">
+          {[
+            {t:'Free Water Test',d:'No obligation. We test, you decide.'},
+            {t:'Same-Day Installs',d:'Slots available this week.'},
+            {t:'60-Day Guarantee',d:'Love it or we make it right.'},
+          ].map((f,i)=>(
+            <div className="mock-feat" key={i}>
+              <div className="mock-feat-icon"/>
+              <div className="mock-feat-title">{f.t}</div>
+              <div className="mock-feat-desc">{f.d}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const BeforeSite = () => (
+    <div className="browser">
+      <div className="browser-bar">
+        <div className="browser-dots">
+          <div className="browser-dot" style={{background:'#f87171'}}/>
+          <div className="browser-dot" style={{background:'#fbbf24'}}/>
+          <div className="browser-dot" style={{background:'#4ade80'}}/>
+        </div>
+        <div className="browser-url">acmewatersystems.com</div>
+      </div>
+      <div className="browser-body">
+        <div style={{background:'#e8e8e8',padding:'32px',display:'flex',flexDirection:'column',gap:16}}>
+          <div style={{background:'#c0c0c0',height:60,borderRadius:4,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,color:'#666',fontFamily:'DM Sans,sans-serif'}}>[ logo ] &nbsp;&nbsp;&nbsp; Home &nbsp; About &nbsp; Services &nbsp; Contact</div>
+          <div style={{background:'#b0b8c4',height:140,borderRadius:4,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:8}}>
+            <div style={{fontSize:18,fontWeight:700,color:'#333',fontFamily:'DM Sans,sans-serif'}}>Welcome to Acme Water Systems</div>
+            <div style={{fontSize:11,color:'#666',fontFamily:'DM Sans,sans-serif'}}>We provide quality water treatment solutions</div>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+            {['About Us','Our Services','Contact Us','Get a Quote'].map(t=>(
+              <div key={t} style={{background:'#d0d0d0',height:60,borderRadius:4,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,color:'#666',fontFamily:'DM Sans,sans-serif'}}>{t}</div>
+            ))}
+          </div>
+          <div style={{fontSize:10,color:'#999',textAlign:'center',fontFamily:'DM Sans,sans-serif'}}>© 2019 Acme Water Systems. All rights reserved.</div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <section className="preview-section" id="preview">
+      <div className="preview-inner">
+        <div className="preview-header reveal">
+          <div>
+            <div className="eyebrow">The difference</div>
+            <h2 className="section-title">Built to convert,<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>not just exist.</em></h2>
+          </div>
+          <div>
+            <p className="section-sub">Every Water Websites build follows a conversion-first framework — designed around how a water treatment buyer actually thinks, searches, and decides.</p>
+          </div>
+        </div>
+        <div className="reveal">
+          <div className="ba-tabs">
+            <button className={`ba-tab ${tab==='before'?'active':''}`} onClick={()=>setTab('before')}>Before — typical dealer site</button>
+            <button className={`ba-tab ${tab==='after'?'active':''}`} onClick={()=>setTab('after')}>After — Water Websites build</button>
+          </div>
+          {tab === 'after' ? <AfterSite /> : <BeforeSite />}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Features() {
+  const features = [
+    {title:'Conversion-first design', desc:'Every layout decision is made with one question: will this get a visitor to book a water test or request a quote? Hero sections, CTAs, and trust signals are placed where they perform.', tag:'Design & UX'},
+    {title:'Local SEO foundation', desc:'Your site is built to rank for "[service] + [city]" searches. Proper schema markup, Google Business integration, optimized page titles, and local keyword targeting — built in from day one.', tag:'Search Visibility'},
+    {title:'Online booking & lead capture', desc:'A frictionless booking flow lets customers request a water test or schedule a consultation without picking up the phone. Leads flow directly into your CRM or inbox.', tag:'Lead Generation'},
+    {title:'Mobile-first, always', desc:'Over 70% of your visitors are on mobile. We design for the phone screen first — fast load times, tap-friendly CTAs, and a layout that converts on any device.', tag:'Mobile'},
+    {title:'Social proof & trust built in', desc:'Google reviews, partner logos, certification badges, and real testimonials are woven into the design — not bolted on. Trust is the #1 conversion driver for home services.', tag:'Trust & Authority'},
+    {title:'Water treatment copywriting', desc:'We write the copy. Every headline, subhead, and CTA is written by people who understand the water treatment buyer journey — the fears, objections, and motivators that get someone to book.', tag:'Copywriting'},
+  ];
+  return (
+    <section className="features-section" id="features">
+      <div className="section-inner">
+        <div className="reveal">
+          <div className="eyebrow">What's included</div>
+          <h2 className="section-title">Everything a dealer website<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>actually needs.</em></h2>
+          <p className="section-sub">No page builders, no generic templates. Every site is built to the exact needs of a residential water treatment dealership.</p>
+        </div>
+        <div className="features-grid reveal">
+          {features.map((f,i) => (
+            <div className="feature-card" key={i}>
+              <div className="feature-num">0{i+1}</div>
+              <div className="feature-title">{f.title}</div>
+              <div className="feature-desc">{f.desc}</div>
+              <div className="feature-tag">{f.tag}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Process() {
+  const steps = [
+    {title:'Discovery call', time:'Day 1', desc:'We learn your market, your services, your competitors, and your goals. We review your existing site (if you have one) and audit what\'s working and what isn\'t.'},
+    {title:'Strategy & sitemap', time:'Days 2–3', desc:'We map out your site architecture: which pages, what they say, and how they connect. You approve before a pixel is designed.'},
+    {title:'Design & copy', time:'Days 4–8', desc:'Our team designs your site and writes every word of copy. You\'ll see a full design mockup and provide feedback before we build anything.'},
+    {title:'Build & test', time:'Days 9–12', desc:'We build on a fast, secure platform — fully optimized for mobile and speed. We test every form, every flow, and every page across devices.'},
+    {title:'Launch & handoff', time:'Days 13–14', desc:'Your site goes live. We connect your Google Business profile, set up analytics, and hand over a simple dashboard so you can track leads from day one.'},
+  ];
+  return (
+    <section className="process-section" id="process">
+      <div className="section-inner">
+        <div className="reveal">
+          <div className="eyebrow">Timeline</div>
+          <h2 className="section-title">Live in two weeks.<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>Start to finish.</em></h2>
+          <p className="section-sub">We've done this enough times that we have a process. No months-long delays, no endless revision cycles.</p>
+        </div>
+        <div className="process-steps reveal">
+          {steps.map((s,i) => (
+            <div className="process-step" key={i}>
+              <div className="process-step-num">0{i+1}</div>
+              <div className="process-step-left">
+                <div className="process-step-title">{s.title}</div>
+                <div className="process-step-time">{s.time}</div>
+              </div>
+              <div className="process-step-right">
+                <div className="process-step-desc">{s.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Testimonial() {
+  return (
+    <section className="testi-section">
+      <div className="testi-inner">
+        <div className="reveal" style={{textAlign:'center'}}>
+          <div className="eyebrow" style={{justifyContent:'center'}}>A dealer's perspective</div>
+          <h2 className="section-title" style={{textAlign:'center'}}>What happens when<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>the site actually works.</em></h2>
+        </div>
+        <div className="testi-featured reveal">
+          <div className="testi-quote-big">
+            We had a website for six years and I couldn't tell you if it ever got us a single lead. Six weeks after the Water Websites launch, we had 14 water test requests come through the site alone — without running any ads. The local SEO alone paid for the whole thing.
+          </div>
+          <div className="testi-author-row">
+            <div className="testi-avatar">MH</div>
+            <div>
+              <div className="testi-name">Mark H.</div>
+              <div className="testi-role">Owner — H2O Home Services, Colorado Springs CO</div>
+            </div>
+            <div style={{marginLeft:'auto',fontSize:18,color:'oklch(0.72 0.10 72)',letterSpacing:2}}>★★★★★</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CTABanner({tweaks}) {
+  return (
+    <section className="cta-banner" id="book">
+      <div className="cta-inner">
+        <div className="cta-left">
+          <div className="cta-tag">Water Websites</div>
+          <h2>A site that actually<br/><em>brings in installs.</em></h2>
+          <p>Most dealer sites don't rank, don't convert, and don't reflect the quality of the business. Book a call and we'll show you exactly what yours is missing.</p>
+          <ul className="cta-checklist">
+            <li className="cta-check-item">
+              <div className="cta-check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+              Live in under 2 weeks
+            </li>
+            <li className="cta-check-item">
+              <div className="cta-check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+              Local SEO built in from day one
+            </li>
+            <li className="cta-check-item">
+              <div className="cta-check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+              Exclusive — one dealer per market
+            </li>
+            <li className="cta-check-item">
+              <div className="cta-check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+              Month-to-month, no contracts
+            </li>
+          </ul>
+        </div>
+        <div className="cta-right">
+          <div className="cta-panel">
+            <div className="cta-panel-header">
+              <div className="cta-panel-icon">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                  <rect x="2" y="4" width="16" height="14" rx="2" stroke="#3b82f6" strokeWidth="1.5"/>
+                  <path d="M2 8h16" stroke="#3b82f6" strokeWidth="1.5"/>
+                  <path d="M6 2v4M14 2v4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round"/>
+                  <circle cx="7" cy="12" r="1" fill="#3b82f6"/>
+                  <circle cx="10" cy="12" r="1" fill="#3b82f6"/>
+                  <circle cx="13" cy="12" r="1" fill="#3b82f6"/>
+                </svg>
+              </div>
+              <div>
+                <div className="cta-panel-title">Book a Free Website Review</div>
+                <div className="cta-panel-sub">30 min — we'll audit your current site live on the call.</div>
+              </div>
+            </div>
+            <iframe src="https://api.leadconnectorhq.com/widget/booking/YuIOGdSB5Qkplm3U60xx" style={{width:'100%',border:'none',overflow:'hidden',minHeight:660,display:'block'}} scrolling="no" id="msgsndr-calendar"></iframe>
+          </div>
+          <div className="cta-trust">
+            <div className="cta-trust-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>No contracts</div>
+            <div className="cta-trust-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>Live in 2 weeks</div>
+            <div className="cta-trust-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>Satisfaction guaranteed</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="footer">
+      <div className="footer-inner">
+        <div className="footer-top">
+          <div className="footer-brand">
+            <img src="uploads/Treat Engine Logo .png" alt="Treat Engine" />
+            <p>Boutique sales & marketing for residential water treatment dealerships. Water Leads. Water Websites.</p>
+          </div>
+          <div className="footer-col">
+            <h4>Services</h4>
+            <a href="index.html">Water Leads</a>
+            <a href="Water Websites.html">Water Websites</a>
+          </div>
+          <div className="footer-col">
+            <h4>Company</h4>
+            <a href="#">About</a>
+            <a href="#">Case Studies</a>
+            <a href="#">Blog</a>
+          </div>
+          <div className="footer-col">
+            <h4>Get Started</h4>
+            <a href="Water Leads Booking.html">Book a Demo</a>
+            <a href="Water Leads Booking.html">Check Territory</a>
+            <a href="#">Contact</a>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <span className="footer-copy">© 2026 Treat Engine. All rights reserved.</span>
+          <span className="footer-copy">Privacy · Terms</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function TweaksPanel({tweaks, setTweaks, visible}) {
+  if(!visible) return null;
+  const update = (k,v) => {
+    const next = {...tweaks, [k]: v};
+    setTweaks(next);
+    window.parent.postMessage({type:'__edit_mode_set_keys', edits: next}, '*');
+  };
+  const fs = {width:'100%',padding:'8px 10px',border:'1px solid var(--border)',borderRadius:6,fontSize:13,fontFamily:'DM Sans,sans-serif',background:'var(--cream)',color:'var(--ink)',resize:'none'};
+  const ls = {fontSize:11,fontWeight:600,color:'var(--ink-muted)',marginBottom:6,display:'block',textTransform:'uppercase',letterSpacing:'0.08em'};
+  return (
+    <div style={{position:'fixed',bottom:24,right:24,background:'var(--white)',borderRadius:12,boxShadow:'0 8px 40px rgba(28,24,20,0.12)',padding:24,width:300,zIndex:9999,border:'1px solid var(--border)',fontFamily:'DM Sans,sans-serif'}}>
+      <div style={{fontSize:12,fontWeight:700,color:'var(--ink-muted)',textTransform:'uppercase',letterSpacing:'0.1em',marginBottom:20,paddingBottom:16,borderBottom:'1px solid var(--border)'}}>Tweaks</div>
+      <div style={{marginBottom:14}}>
+        <label style={ls}>Hero Headline</label>
+        <textarea value={tweaks.heroHeadline} onChange={e=>update('heroHeadline',e.target.value)} rows={2} style={fs}/>
+      </div>
+      <div style={{marginBottom:14}}>
+        <label style={ls}>CTA Text</label>
+        <input value={tweaks.ctaText} onChange={e=>update('ctaText',e.target.value)} style={fs}/>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+  const [tweaksVisible, setTweaksVisible] = useState(false);
+  useReveal();
+  useEffect(() => {
+    const h = e => {
+      if(e.data?.type === '__activate_edit_mode') setTweaksVisible(true);
+      if(e.data?.type === '__deactivate_edit_mode') setTweaksVisible(false);
+    };
+    window.addEventListener('message', h);
+    window.parent.postMessage({type:'__edit_mode_available'}, '*');
+    return () => window.removeEventListener('message', h);
+  }, []);
+  return (
+    <>
+      <Nav tweaks={tweaks}/>
+      <Hero tweaks={tweaks}/>
+      <Problem/>
+      <SitePreview tweaks={tweaks}/>
+      <Features/>
+      <Process/>
+      <Testimonial/>
+      <CTABanner tweaks={tweaks}/>
+      <Footer/>
+      <TweaksPanel tweaks={tweaks} setTweaks={setTweaks} visible={tweaksVisible}/>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+<script src="https://link.msgsndr.com/js/embed.js" type="text/javascript"></script>
+</body>
+</html>
