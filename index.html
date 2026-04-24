@@ -370,7 +370,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "headline": "Install 10-25 Extra Softeners a Month",
   "subheadline": "Treat Engine is a boutique sales & marketing agency built exclusively for residential water treatment dealerships. We run the ads. We set the appointments. You close.",
   "ctaText": "Book a Demo",
-  "guaranteeDays": "60",
+  "guaranteeDays": "30",
   "showTrustLogos": true
 }/*EDITMODE-END*/;
 
@@ -775,13 +775,13 @@ function Guarantee({tweaks}) {
         <div className="reveal">
           <div className="eyebrow">Our promise</div>
           <h2 className="guarantee-title">We put it in writing.</h2>
-          <p className="guarantee-desc">If you don't see a meaningful return within {tweaks.guaranteeDays} days of launch, we work for free until you do. No exceptions, no fine print.</p>
+          <p className="guarantee-desc">If you're not satisfied with the quality of your leads and appointments within {tweaks.guaranteeDays} days, we make it right — no arguments, no fine print.</p>
           <ul className="guarantee-list">
             {[
-              'Minimum installs guaranteed in your contract',
+              'Satisfaction guarantee on every lead and appointment',
+              'We replace any appointment that doesn\'t meet quality standards',
               'Month-to-month — cancel anytime',
-              'We own underperformance, not you',
-              'Full transparency on every dollar spent',
+              'Full transparency on every lead and dollar spent',
             ].map((item, i) => (
               <li key={i}><span className="g-dash">—</span> {item}</li>
             ))}
@@ -842,7 +842,7 @@ function FAQ() {
     {q:'What does done-for-you actually mean?', a:'Everything: strategy, ad creative production, campaign management, lead follow-up, and appointment setting. You focus on your installs. We handle everything that comes before the appointment.'},
     {q:'How much do I need to spend on ads?', a:'We recommend a minimum monthly ad budget of $3,000. Most clients spend $5,000–$15,000/mo in ad spend and see 4–6× returns. We\'ll give you a realistic projection before you commit.'},
     {q:'What platforms do you advertise on?', a:'Primarily Meta (Facebook & Instagram) and Google Search. Depending on your market, we may add YouTube or local display. We go where your buyers are — and we know where they are.'},
-    {q:'What\'s the contract length?', a:'Month-to-month, always. We earn your business every month. Our 60-day guarantee ensures you\'re never paying for poor performance.'},
+    {q:'What\'s the contract length?', a:'Month-to-month, always. We earn your business every month. Our 30-day satisfaction guarantee on lead and appointment quality ensures you\'re never paying for poor performance.'},
   ];
   return (
     <section className="faq-section" id="faq">
