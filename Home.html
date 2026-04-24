@@ -444,12 +444,12 @@ function Nav({tweaks}) {
   return (
     <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
       <div className="nav-inner">
-        <a href="Home.html"><img src="uploads/Treat Engine Logo .png" alt="Treat Engine" style={{height:34}}/></a>
+        <a href="/home"><img src="uploads/Treat Engine Logo .png" alt="Treat Engine" style={{height:34}}/></a>
         <div className="nav-links">
-          <a href="Home.html" className="active">Home</a>
-          <a href="Water Websites.html">Water Websites</a>
-          <a href="index.html">Water Leads</a>
-          <a href="Water Sales.html">Water Sales</a>
+          <a href="/home" className="active">Home</a>
+          <a href="/websites">Water Websites</a>
+          <a href="/">Water Leads</a>
+          <a href="/sales">Water Sales</a>
         </div>
       </div>
     </nav>
@@ -459,9 +459,9 @@ function Nav({tweaks}) {
 
 function Hero() {
   const services = [
-    {href:'Water Websites.html', mark:'WW', label:'Service 01', name:'Water Websites', desc:'Conversion-optimized websites built for water treatment dealers.', tint:'#eff6ff'},
-    {href:'index.html', mark:'WL', label:'Service 02', name:'Water Leads', desc:'Exclusive appointments delivered to your calendar every week.', tint:'#f0fdf4'},
-    {href:'Water Sales.html', mark:'WS', label:'Service 03', name:'Water Sales — ClearDeals', desc:'In-field proposal and closing tool for your technicians.', tint:'#fefce8'},
+    {href:'/websites', mark:'WW', label:'Service 01', name:'Water Websites', desc:'Conversion-optimized websites built for water treatment dealers.', tint:'#eff6ff'},
+    {href:'/', mark:'WL', label:'Service 02', name:'Water Leads', desc:'Exclusive appointments delivered to your calendar every week.', tint:'#f0fdf4'},
+    {href:'/sales', mark:'WS', label:'Service 03', name:'Water Sales — ClearDeals', desc:'In-field proposal and closing tool for your technicians.', tint:'#fefce8'},
   ];
   return (
     <div>
@@ -651,7 +651,7 @@ function TheSystem() {
       stage:'Stage 01 · Water Websites',
       title:'Build the foundation.',
       sub:'A conversion-optimised site that ranks on Google, loads fast on mobile, and turns visitors into booked water tests.',
-      href:'Water Websites.html',
+      href:'/websites',
       cta:'See Water Websites',
       ctaSub:'Site teardown · 2-week build',
       items:['Local SEO built in from day one','Online booking and lead capture on every page','Written for the water treatment buyer','Live in under two weeks, start to finish'],
@@ -661,7 +661,7 @@ function TheSystem() {
       stage:'Stage 02 · Water Leads',
       title:'Fill the calendar.',
       sub:'Exclusive, pre-qualified appointments with homeowners who are ready to buy — delivered to your calendar every week.',
-      href:'index.html',
+      href:'/',
       cta:'Get Water Leads',
       ctaSub:'Check territory availability',
       items:['Facebook & Google campaigns built for water treatment','Pre-qualified and appointment-set before they reach you','Done-for-you creative — scripts, video, image ads','Live reporting on cost per lead and cost per install'],
@@ -671,7 +671,7 @@ function TheSystem() {
       stage:'Stage 03 · Water Sales',
       title:'Close at the door.',
       sub:'ClearDeals gives your technicians everything they need to present, quote, and sign on the very first visit.',
-      href:'Water Sales.html',
+      href:'/sales',
       cta:'Demo ClearDeals',
       ctaSub:'15-min live walkthrough',
       items:['Branded proposals built in 5 minutes on a tablet','E-signatures, financing options, and deposits on the spot','Dealer-controlled pricing floors protect your margins','30%+ increase in average first-visit close rate'],
@@ -848,9 +848,9 @@ function Footer() {
           </div>
           <div className="footer-col">
             <h4>Services</h4>
-            <a href="index.html">Water Leads</a>
-            <a href="Water Websites.html">Water Websites</a>
-            <a href="Water Sales.html">Water Sales</a>
+            <a href="/">Water Leads</a>
+            <a href="/websites">Water Websites</a>
+            <a href="/sales">Water Sales</a>
           </div>
           <div className="footer-col">
             <h4>Contact</h4>
