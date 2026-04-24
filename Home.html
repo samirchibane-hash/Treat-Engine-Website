@@ -255,6 +255,42 @@ a{text-decoration:none;color:inherit;}
 .sys-step-link svg{transition:transform .2s;}
 .sys-step-link:hover svg{transform:translateX(3px);}
 
+/* Service-specific primary CTA block */
+.sys-step-cta{
+  display:inline-flex;flex-direction:column;align-items:flex-start;gap:4px;
+  margin-top:32px;align-self:flex-start;
+  padding:14px 22px 12px;
+  background:var(--ink);color:#fff;
+  border:1.5px solid var(--ink);
+  border-radius:8px;
+  text-decoration:none;
+  transition:background .25s ease, border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+  box-shadow:0 1px 0 rgba(0,0,0,0.04);
+  position:relative;overflow:hidden;
+}
+.sys-step-cta::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(100deg, transparent 0%, transparent 45%, rgba(59,130,246,0.22) 50%, transparent 55%, transparent 100%);
+  transform:translateX(-120%);
+  transition:transform .7s ease;
+  pointer-events:none;
+}
+.sys-step-cta:hover{background:var(--blue);border-color:var(--blue);transform:translateY(-1px);box-shadow:0 12px 28px -12px rgba(59,130,246,0.55);}
+.sys-step-cta:hover::before{transform:translateX(120%);}
+.sys-step-cta-main{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:14.5px;font-weight:600;letter-spacing:-0.005em;line-height:1;
+}
+.sys-step-cta-main svg{transition:transform .25s ease;flex-shrink:0;}
+.sys-step-cta:hover .sys-step-cta-main svg{transform:translateX(4px);}
+.sys-step-cta-sub{
+  font-size:11px;font-weight:500;letter-spacing:.04em;
+  color:rgba(255,255,255,0.55);
+  text-transform:uppercase;
+  transition:color .25s ease;
+}
+.sys-step-cta:hover .sys-step-cta-sub{color:rgba(255,255,255,0.85);}
+
 @media(max-width:960px){
   .sys-step{grid-template-columns:1fr;}
   .sys-step-top{border-right:none;border-bottom:1px solid var(--border);}
@@ -266,7 +302,7 @@ a{text-decoration:none;color:inherit;}
 .about-section{background:var(--white);padding:120px 32px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
 .about-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:start;}
 .about-left{}
-.about-big{font-family:'Playfair Display',serif;font-size:clamp(60px,10vw,120px);font-weight:700;color:var(--navy);line-height:.9;letter-spacing:-.04em;margin-bottom:4px;}
+.about-big{font-family:'Playfair Display',serif;font-size:clamp(48px,7.5vw,96px);font-weight:700;color:var(--navy);line-height:.95;letter-spacing:-.035em;margin-bottom:10px;}
 .about-big-sub{font-family:'Playfair Display',serif;font-size:clamp(20px,3vw,32px);font-style:italic;color:var(--ink-muted);}
 .about-right{}
 .about-title{font-size:clamp(26px,3vw,40px);font-weight:600;margin-bottom:20px;letter-spacing:-.02em;}
@@ -297,34 +333,39 @@ a{text-decoration:none;color:inherit;}
 .trust-section{background:var(--cream-mid);padding:64px 32px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
 .trust-inner{max-width:1180px;margin:0 auto;}
 .trust-label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:24px;}
-.trust-logos{display:flex;align-items:center;gap:52px;flex-wrap:wrap;}
-.trust-logo{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:var(--ink);opacity:.3;transition:opacity .2s;}
-.trust-logo:hover{opacity:.7;}
+.trust-logos{display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:nowrap;width:100%;}
+.trust-logo{display:flex;align-items:center;justify-content:center;height:32px;flex:0 1 auto;min-width:0;filter:grayscale(100%);opacity:0.45;transition:opacity .25s ease, filter .25s ease;}
+.trust-logo img{max-height:100%;max-width:100%;width:auto;height:auto;display:block;object-fit:contain;}
+.trust-logo:hover{opacity:1;filter:grayscale(0%);}
+.trust-logo.is-circle{height:40px;}
+@media (max-width: 900px){
+  .trust-logos{flex-wrap:wrap;justify-content:center;gap:24px 32px;}
+  .trust-logo{height:28px;}
+  .trust-logo.is-circle{height:36px;}
+}
 
 /* CTA */
-.cta-section{background:var(--navy);padding:130px 32px;overflow:hidden;position:relative;}
-.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(59,130,246,0.12) 0%,transparent 55%),radial-gradient(ellipse at 80% 50%,rgba(59,130,246,0.08) 0%,transparent 55%);}
-.cta-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center;position:relative;}
-.cta-left h2{font-size:clamp(34px,5vw,58px);color:#fff;letter-spacing:-.025em;margin-bottom:20px;}
-.cta-left h2 em{font-style:italic;opacity:.65;}
-.cta-left p{font-size:17px;color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:36px;}
-.cta-actions{display:flex;gap:14px;flex-wrap:wrap;}
-.btn-cream{background:var(--cream);color:var(--navy);border:none;padding:15px 30px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.cta-section{background:var(--navy);padding:140px 32px;overflow:hidden;position:relative;}
+.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(59,130,246,0.14) 0%,transparent 60%);}
+.cta-inner{max-width:760px;margin:0 auto;text-align:center;position:relative;}
+.cta-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:28px;}
+.cta-eyebrow::before,.cta-eyebrow::after{content:'';width:24px;height:1px;background:rgba(255,255,255,0.25);}
+.cta-headline{font-size:clamp(38px,5.2vw,64px);color:#fff;letter-spacing:-.025em;margin-bottom:22px;line-height:1.05;}
+.cta-headline em{font-style:italic;color:var(--blue);opacity:.95;font-weight:500;}
+.cta-sub{font-size:17px;color:rgba(255,255,255,0.65);line-height:1.75;margin:0 auto 40px;max-width:560px;}
+.cta-actions{display:inline-flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:40px;}
+.btn-cream{background:var(--cream);color:var(--navy);border:none;padding:16px 32px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
 .btn-cream:hover{background:#fff;transform:translateY(-2px);}
-.btn-ghost{background:transparent;color:rgba(255,255,255,0.7);border:1.5px solid rgba(255,255,255,0.2);padding:14px 28px;border-radius:6px;font-size:15px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
-.btn-ghost:hover{border-color:rgba(255,255,255,0.5);color:#fff;}
-.cta-right{}
-.cta-checklist{list-style:none;display:flex;flex-direction:column;gap:0;}
-.cta-check-item{display:flex;align-items:flex-start;gap:16px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,0.08);}
-.cta-check-item:first-child{border-top:1px solid rgba(255,255,255,0.08);}
-.cta-check-num{font-family:'Playfair Display',serif;font-size:13px;color:rgba(255,255,255,0.25);flex-shrink:0;margin-top:2px;width:20px;}
-.cta-check-title{font-size:16px;font-weight:600;color:#fff;margin-bottom:3px;font-family:'Playfair Display',serif;}
-.cta-check-sub{font-size:13px;color:rgba(255,255,255,0.5);}
+.btn-ghost{background:transparent;color:rgba(255,255,255,0.85);border:1.5px solid rgba(255,255,255,0.25);padding:15px 28px;border-radius:6px;font-size:15px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.6);color:#fff;}
+.cta-meta{display:inline-flex;align-items:center;gap:20px;font-size:12.5px;color:rgba(255,255,255,0.45);letter-spacing:.02em;padding-top:28px;border-top:1px solid rgba(255,255,255,0.1);flex-wrap:wrap;justify-content:center;}
+.cta-meta-item{display:inline-flex;align-items:center;gap:8px;}
+.cta-meta-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);}
 
 /* FOOTER */
 .footer{background:var(--ink);padding:72px 32px 40px;}
 .footer-inner{max-width:1180px;margin:0 auto;}
-.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:56px;padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1.2fr;gap:56px;padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,0.08);}
 .footer-brand p{font-size:13.5px;color:rgba(255,255,255,0.4);margin-top:20px;line-height:1.75;max-width:260px;}
 .footer-brand img{height:30px;filter:brightness(0) invert(1);}
 .footer-col h4{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,0.3);margin-bottom:18px;}
@@ -346,7 +387,7 @@ a{text-decoration:none;color:inherit;}
   .system-steps{grid-template-columns:1fr;}
   .sys-step{border-right:none;border-bottom:1px solid var(--border);}
   .sys-step-top{border-right:none;border-bottom:1px solid var(--border);}
-  .about-inner,.cta-inner{grid-template-columns:1fr;}
+  .about-inner{grid-template-columns:1fr;}
   .testi-grid{grid-template-columns:1fr;}
   .testi-card{border-right:none;border-bottom:1px solid var(--border);}
   .footer-top{grid-template-columns:1fr 1fr;}
@@ -418,9 +459,9 @@ function Nav({tweaks}) {
 
 function Hero() {
   const services = [
-    {href:'Water Websites.html', icon:'🌐', label:'Service 01', name:'Water Websites', desc:'Conversion-optimized websites built for water treatment dealers.', bg:'#f0fdf4'},
-    {href:'index.html', icon:'📡', label:'Service 02', name:'Water Leads', desc:'Exclusive appointments delivered to your calendar every week.', bg:'#eff6ff'},
-    {href:'Water Sales.html', icon:'📋', label:'Service 03', name:'Water Sales — ClearDeals', desc:'In-field proposal and closing tool for your technicians.', bg:'#fefce8'},
+    {href:'Water Websites.html', mark:'WW', label:'Service 01', name:'Water Websites', desc:'Conversion-optimized websites built for water treatment dealers.', tint:'#eff6ff'},
+    {href:'index.html', mark:'WL', label:'Service 02', name:'Water Leads', desc:'Exclusive appointments delivered to your calendar every week.', tint:'#f0fdf4'},
+    {href:'Water Sales.html', mark:'WS', label:'Service 03', name:'Water Sales — ClearDeals', desc:'In-field proposal and closing tool for your technicians.', tint:'#fefce8'},
   ];
   return (
     <div>
@@ -436,14 +477,13 @@ function Hero() {
           <div className="hero-left">
             <p className="hero-sub">Treat Engine is a boutique agency built exclusively for residential water treatment dealerships. We fill your calendar, build your online presence, and arm your technicians to close — all under one roof.</p>
             <div className="hero-actions">
-              <a href="Water Leads Booking.html" className="btn-blue">Book a free strategy call →</a>
-              <button className="btn-outline">Explore our services</button>
+              <a href="#services" className="btn-blue">Explore our services →</a>
             </div>
           </div>
           <div className="hero-right">
             {services.map((s,i) => (
               <a href={s.href} className="hero-service-row" key={i}>
-                <div className="hero-service-icon" style={{background:s.bg}}>{s.icon}</div>
+                <div className="hero-service-icon" style={{background:s.tint, fontFamily:"'Playfair Display', serif", fontWeight:600, color:'var(--navy)', fontSize:13, letterSpacing:'.02em'}}>{s.mark}</div>
                 <div style={{flex:1}}>
                   <div className="hero-service-label">{s.label}</div>
                   <div className="hero-service-name">{s.name}</div>
@@ -460,7 +500,7 @@ function Hero() {
       <div className="ticker">
         <div className="ticker-inner">
           {[...Array(2)].map((_,rep) => (
-            ['Water Leads','Exclusive territories','Done-for-you ads','Water Websites','Local SEO','Online booking','Water Sales','ClearDeals','E-signatures','In-home proposals','Integrated financing','Real-time analytics'].map((item,i) => (
+            ['Water Leads','Done-for-you ads','Pre-qualified appointments','Water Websites','Local SEO','Online booking','Water Sales','ClearDeals','E-signatures','In-home proposals','Integrated financing','Real-time analytics'].map((item,i) => (
               <span className="ticker-item" key={`${rep}-${i}`}>
                 <span className="ticker-dot"/>
                 {item}
@@ -473,44 +513,25 @@ function Hero() {
   );
 }
 
-function Stats() {
-  const [counts, setCounts] = useState([0,0,0,0]);
-  const targets = [12400, 200, 4.8, 60];
-  const formats = [v => `${Math.floor(v).toLocaleString()}+`, v => `${Math.floor(v)}+`, v => `${v.toFixed(1)}×`, v => `${Math.floor(v)}`];
-  const ref = useRef(null);
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => {
-      if(!e.isIntersecting) return;
-      obs.disconnect();
-      const dur = 2000; let start = null;
-      const go = ts => {
-        if(!start) start = ts;
-        const p = Math.min((ts-start)/dur, 1);
-        const eased = 1 - Math.pow(1-p, 3);
-        setCounts(targets.map(t => eased * t));
-        if(p < 1) requestAnimationFrame(go);
-      };
-      requestAnimationFrame(go);
-    }, {threshold: 0.3});
-    if(ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
-
-  const stats = [
-    {label:'Installs generated for dealers', suffix:''},
-    {label:'Dealer partners nationwide', suffix:''},
-    {label:'Average return on ad spend', suffix:''},
-    {label:'Day guarantee — or we work for free', suffix:''},
-  ];
+function HowItFits() {
   return (
-    <section className="stats-section" ref={ref}>
-      <div className="stats-inner">
-        {stats.map((s,i) => (
-          <div className="stat-cell reveal" key={i}>
-            <div className="stat-num">{formats[i](counts[i])}</div>
-            <div className="stat-label">{s.label}</div>
-          </div>
-        ))}
+    <section className="stats-section">
+      <div className="stats-inner" style={{gridTemplateColumns:'repeat(3,1fr)'}}>
+        <div className="stat-cell reveal">
+          <div style={{fontFamily:"'Playfair Display',serif",fontSize:12,letterSpacing:'.14em',color:'var(--blue)',textTransform:'uppercase',marginBottom:16,fontWeight:600}}>01 · Presence</div>
+          <div style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(22px,2.2vw,28px)',fontWeight:500,color:'#fff',lineHeight:1.25,letterSpacing:'-.01em'}}>A website that <em style={{fontStyle:'italic',color:'var(--blue)',opacity:.85}}>ranks and converts.</em></div>
+          <div style={{fontSize:13.5,color:'rgba(255,255,255,0.5)',marginTop:18,lineHeight:1.7}}>Local SEO, online booking, and copy written for the water treatment buyer.</div>
+        </div>
+        <div className="stat-cell reveal">
+          <div style={{fontFamily:"'Playfair Display',serif",fontSize:12,letterSpacing:'.14em',color:'var(--blue)',textTransform:'uppercase',marginBottom:16,fontWeight:600}}>02 · Demand</div>
+          <div style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(22px,2.2vw,28px)',fontWeight:500,color:'#fff',lineHeight:1.25,letterSpacing:'-.01em'}}>Booked appointments, <em style={{fontStyle:'italic',color:'var(--blue)',opacity:.85}}>every week.</em></div>
+          <div style={{fontSize:13.5,color:'rgba(255,255,255,0.5)',marginTop:18,lineHeight:1.7}}>Done-for-you ads and pre-qualified homeowners delivered straight to your calendar.</div>
+        </div>
+        <div className="stat-cell reveal" style={{borderRight:'none'}}>
+          <div style={{fontFamily:"'Playfair Display',serif",fontSize:12,letterSpacing:'.14em',color:'var(--blue)',textTransform:'uppercase',marginBottom:16,fontWeight:600}}>03 · Close</div>
+          <div style={{fontFamily:"'Playfair Display',serif",fontSize:'clamp(22px,2.2vw,28px)',fontWeight:500,color:'#fff',lineHeight:1.25,letterSpacing:'-.01em'}}>Signatures at <em style={{fontStyle:'italic',color:'var(--blue)',opacity:.85}}>the kitchen table.</em></div>
+          <div style={{fontSize:13.5,color:'rgba(255,255,255,0.5)',marginTop:18,lineHeight:1.7}}>A tablet-based proposal and closing tool built for water treatment technicians, not salespeople.</div>
+        </div>
       </div>
     </section>
   );
@@ -631,6 +652,8 @@ function TheSystem() {
       title:'Build the foundation.',
       sub:'A conversion-optimised site that ranks on Google, loads fast on mobile, and turns visitors into booked water tests.',
       href:'Water Websites.html',
+      cta:'See Water Websites',
+      ctaSub:'Site teardown · 2-week build',
       items:['Local SEO built in from day one','Online booking and lead capture on every page','Written for the water treatment buyer','Live in under two weeks, start to finish'],
     },
     {
@@ -639,7 +662,9 @@ function TheSystem() {
       title:'Fill the calendar.',
       sub:'Exclusive, pre-qualified appointments with homeowners who are ready to buy — delivered to your calendar every week.',
       href:'index.html',
-      items:['Facebook & Google campaigns built for water treatment','Exclusive territory — no competing dealer in your market','Pre-qualified and appointment-set before they reach you','Live reporting on cost per lead and cost per install'],
+      cta:'Get Water Leads',
+      ctaSub:'Check territory availability',
+      items:['Facebook & Google campaigns built for water treatment','Pre-qualified and appointment-set before they reach you','Done-for-you creative — scripts, video, image ads','Live reporting on cost per lead and cost per install'],
     },
     {
       num:'03',
@@ -647,6 +672,8 @@ function TheSystem() {
       title:'Close at the door.',
       sub:'ClearDeals gives your technicians everything they need to present, quote, and sign on the very first visit.',
       href:'Water Sales.html',
+      cta:'Demo ClearDeals',
+      ctaSub:'15-min live walkthrough',
       items:['Branded proposals built in 5 minutes on a tablet','E-signatures, financing options, and deposits on the spot','Dealer-controlled pricing floors protect your margins','30%+ increase in average first-visit close rate'],
     },
   ];
@@ -709,11 +736,14 @@ function TheSystem() {
                     </li>
                   ))}
                 </ul>
-                <a href={s.href} className="sys-step-link">
-                  Learn more
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                <a href={s.href} className="sys-step-cta">
+                  <span className="sys-step-cta-main">
+                    <span className="sys-step-cta-label">{s.cta}</span>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
+                  <span className="sys-step-cta-sub">{s.ctaSub}</span>
                 </a>
               </div>
             </div>
@@ -728,15 +758,15 @@ function About() {
   const pillars = [
     {title:'One industry, only', desc:'We work exclusively with water treatment dealers. No learning curve, no generalist guesswork.'},
     {title:'Boutique by design', desc:'Small team, deep expertise, personal relationships. Your account isn\'t handed to a junior coordinator.'},
-    {title:'Exclusive territories', desc:'One dealer per market across all three services. Your investment is protected.'},
-    {title:'Month-to-month', desc:'No long-term contracts. We earn your business every single month.'},
+    {title:'Month-to-month', desc:'No long-term contracts on any service. We earn your business every single month.'},
+    {title:'Dealer-first, always', desc:'Your data, your brand, your customers. We build the engine; you own the results.'},
   ];
   return (
     <section className="about-section">
       <div className="about-inner">
         <div className="reveal">
-          <div className="about-big">100%</div>
-          <div className="about-big-sub">water treatment,<br/>always.</div>
+          <div className="about-big">One<br/>industry.</div>
+          <div className="about-big-sub">Three services.<br/>Zero generalists.</div>
         </div>
         <div className="reveal">
           <div className="eyebrow">About Treat Engine</div>
@@ -757,32 +787,28 @@ function About() {
   );
 }
 
-function Testimonials() {
-  const testis = [
-    {tag:'Water Leads', quote:'We hit 18 installs in a single month — after years of averaging 4 or 5. The difference is the quality of lead. These people actually want a system.', name:'Dave K.', role:'PureFlow Water Solutions — Phoenix, AZ', init:'DK'},
-    {tag:'Water Websites', quote:'Six weeks after the Water Websites launch, we had 14 water test requests come through the site — without running any ads. The local SEO alone paid for the whole thing.', name:'Mark H.', role:'H2O Home Services — Colorado Springs, CO', init:'MH'},
-    {tag:'Water Sales — ClearDeals', quote:'Before ClearDeals our close rate on first visits was around 40%. Within 60 days we were consistently hitting 68%. The financing integration changed everything.', name:'Tony R.', role:'RiverRock Water Systems — Tampa, FL', init:'TR'},
+function Testimonials() { return null; }
+
+function Trust() {
+  const logos = [
+    {name:'Watersurgeon', src:'logos/watersurgeon.webp'},
+    {name:'Miami Alkaline Water', src:'logos/miami-alkaline.webp'},
+    {name:'Lux Pure Alkaline', src:'logos/lux.webp'},
+    {name:'Alka Magnum', src:'logos/alka-magnum.webp'},
+    {name:'D\u2019Orange Services', src:'logos/dorange.webp'},
+    {name:'One Green Filter', src:'logos/one-green-filter.webp'},
+    {name:'Select Source Water', src:'logos/select-source.png'},
+    {name:'Tarheel Pure Water', src:'logos/tarheel.png'},
+    {name:'Kevin\u2019s Soft Water', src:'logos/kevins-soft-water.png'},
   ];
   return (
-    <section className="testi-section">
-      <div className="testi-inner">
-        <div className="reveal" style={{textAlign:'center'}}>
-          <div className="eyebrow" style={{justifyContent:'center'}}>Dealer results</div>
-          <h2 className="section-title" style={{textAlign:'center'}}>Across all three services.<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>Real dealer wins.</em></h2>
-        </div>
-        <div className="testi-grid reveal">
-          {testis.map((t,i) => (
-            <div className="testi-card" key={i}>
-              <span className="testi-service-tag">{t.tag}</span>
-              <div className="testi-quote">{t.quote}</div>
-              <div className="testi-author">
-                <div className="testi-avatar">{t.init}</div>
-                <div>
-                  <div className="testi-name">{t.name}</div>
-                  <div className="testi-role">{t.role}</div>
-                </div>
-                <div style={{marginLeft:'auto',color:'oklch(0.72 0.10 72)',fontSize:14,letterSpacing:2}}>★★★★★</div>
-              </div>
+    <section className="trust-section">
+      <div className="trust-inner reveal">
+        <div className="trust-label">Clients we've worked with</div>
+        <div className="trust-logos">
+          {logos.map(l => (
+            <div className={`trust-logo${['Select Source Water','Tarheel Pure Water','Lux Pure Alkaline'].includes(l.name)?' is-circle':''}`} key={l.name} title={l.name}>
+              <img src={l.src} alt={l.name} />
             </div>
           ))}
         </div>
@@ -791,49 +817,20 @@ function Testimonials() {
   );
 }
 
-function Trust() {
-  const logos = ['Kinetico','RainSoft','Rheem','WaterBoss','EcoWater','Puronics'];
-  return (
-    <section className="trust-section">
-      <div className="trust-inner reveal">
-        <div className="trust-label">Trusted by dealers carrying</div>
-        <div className="trust-logos">
-          {logos.map(l => <div className="trust-logo" key={l}>{l}</div>)}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function CTA() {
-  const items = [
-    {title:'Water Leads', sub:'Exclusive booked appointments in your market, every week.'},
-    {title:'Water Websites', sub:'A site that ranks, converts, and runs while you sleep.'},
-    {title:'Water Sales — ClearDeals', sub:'Your techs close more deals, on the first visit.'},
-  ];
   return (
     <section className="cta-section">
-      <div className="cta-inner">
-        <div className="reveal">
-          <h2>Ready to run<br/><em>the full system?</em></h2>
-          <p>Start with one service or all three. Either way, your territory might still be available — most markets fill fast once a dealer signs.</p>
-          <div className="cta-actions">
-            <a href="Water Leads Booking.html" className="btn-cream">Book a free strategy call →</a>
-            <a href="Water Leads Booking.html" className="btn-ghost">Check territory availability</a>
-          </div>
+      <div className="cta-inner reveal">
+        <div className="cta-eyebrow">One system, three services</div>
+        <h2 className="cta-headline">Ready to run<br/><em>the full system?</em></h2>
+        <p className="cta-sub">Explore the three services that make up the Treat Engine system. Start with the one that fits where you are today — or run the full stack from day one.</p>
+        <div className="cta-actions">
+          <a href="#services" className="btn-cream">Explore our services →</a>
         </div>
-        <div className="reveal">
-          <ul className="cta-checklist">
-            {items.map((item,i) => (
-              <li className="cta-check-item" key={i}>
-                <div className="cta-check-num">0{i+1}</div>
-                <div>
-                  <div className="cta-check-title">{item.title}</div>
-                  <div className="cta-check-sub">{item.sub}</div>
-                </div>
-              </li>
-            ))}
-          </ul>
+        <div className="cta-meta">
+          <span className="cta-meta-item"><span className="cta-meta-dot"/>No pitch deck, no pressure</span>
+          <span className="cta-meta-item"><span className="cta-meta-dot"/>30 minutes, straight answers</span>
+          <span className="cta-meta-item"><span className="cta-meta-dot"/>Month-to-month, always</span>
         </div>
       </div>
     </section>
@@ -856,17 +853,9 @@ function Footer() {
             <a href="Water Sales.html">Water Sales</a>
           </div>
           <div className="footer-col">
-            <h4>Company</h4>
-            <a href="#">About</a>
-            <a href="#">Case Studies</a>
-            <a href="#">Blog</a>
-            <a href="#">Careers</a>
-          </div>
-          <div className="footer-col">
-            <h4>Get Started</h4>
-            <a href="Water Leads Booking.html">Book a Demo</a>
-            <a href="Water Leads Booking.html">Check Territory</a>
-            <a href="#">Contact</a>
+            <h4>Contact</h4>
+            <a href="mailto:Info@TreatLeads.com">Info@TreatLeads.com</a>
+            <a href="tel:+16173156471">+1 (617) 315-6471</a>
           </div>
         </div>
         <div className="footer-bottom">
@@ -891,10 +880,9 @@ function App() {
     <>
       <Nav tweaks={{}}/>
       <Hero/>
-      <Stats/>
+      <HowItFits/>
       <TheSystem/>
       <About/>
-      <Testimonials/>
       <Trust/>
       <CTA/>
       <Footer/>
