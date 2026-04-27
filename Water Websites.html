@@ -359,10 +359,8 @@ a{text-decoration:none;color:inherit;}
 .site-stack-hint-key{display:inline-flex;align-items:center;justify-content:center;background:var(--cream-mid);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;color:var(--ink);font-family:'DM Sans',sans-serif;}
 
 /* Expanded modal */
-.site-modal-backdrop{position:fixed;inset:0;background:rgba(28,24,20,0.78);backdrop-filter:blur(14px);z-index:200;display:flex;align-items:center;justify-content:center;padding:32px;opacity:0;animation:fadeIn .35s forwards;}
-@keyframes fadeIn{to{opacity:1;}}
-.site-modal{width:100%;max-width:1280px;height:86vh;background:#fff;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 60px 120px -20px rgba(0,0,0,0.6);transform:scale(.96);animation:popIn .4s cubic-bezier(.22,.9,.32,1.2) forwards;}
-@keyframes popIn{to{transform:scale(1);}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1;}}
+@keyframes popIn{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1;}}
 
 
 
@@ -519,7 +517,7 @@ function SiteStack({mobileOnly}) {
         </div>
       </div>
 
-      {expanded !== null && (
+      {expanded !== null && ReactDOM.createPortal(
         <div className="site-modal-backdrop" onClick={(e) => { if(e.target===e.currentTarget) setExpanded(null); }}>
           <div className="site-modal">
             <div className="site-modal-bar">
@@ -536,7 +534,8 @@ function SiteStack({mobileOnly}) {
             </div>
             <iframe key={expanded} className="site-modal-iframe" src={sites[expanded].src} title={sites[expanded].name} sandbox="allow-same-origin allow-scripts allow-forms allow-popups"/>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
