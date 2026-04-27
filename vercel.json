@@ -6,6 +6,7 @@
     { "src": "*.webp",        "use": "@vercel/static" },
     { "src": "*.jpg",         "use": "@vercel/static" },
     { "src": "*.js",          "use": "@vercel/static" },
+    { "src": "*.jsx",         "use": "@vercel/static" },
     { "src": "*.css",         "use": "@vercel/static" },
     { "src": "images/**",     "use": "@vercel/static" },
     { "src": "logos/**",      "use": "@vercel/static" },
