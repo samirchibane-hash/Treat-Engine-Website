@@ -1,0 +1,133 @@
+/* ============================================================
+   UNIFIED HERO SYSTEM — desktop & tablet
+   Shared across: Home.html, Water Leads.html, Water Sales.html,
+   Water Websites.html. Mobile (≤768px) is handled in mobile.css
+   which always wins later in the cascade.
+   ============================================================ */
+
+@media (min-width: 769px){
+
+  /* --- Container ---------------------------------------------- */
+  .hero,
+  .hero-section{
+    padding:120px 32px 0 !important;
+    max-width:1200px !important;
+    margin:0 auto !important;
+  }
+
+  /* --- Top grid (eyebrow / headline / sub / CTA  ↔  right col) - */
+  .hero-top,
+  .hero-body{
+    display:grid !important;
+    grid-template-columns:minmax(0,1.05fr) minmax(0,420px) !important;
+    gap:72px !important;
+    align-items:center !important;
+    padding:8px 0 80px !important;
+    border-bottom:1px solid var(--border) !important;
+  }
+
+  /* --- Eyebrow / service badge — same vertical rhythm --------- */
+  .hero-eyebrow,
+  .hero-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-size:11.5px !important;
+    font-weight:600 !important;
+    letter-spacing:0.12em !important;
+    text-transform:uppercase;
+    color:var(--ink-muted);
+    margin-bottom:24px !important;
+  }
+  .hero-eyebrow-line,
+  .hero-tag-line{
+    width:24px;
+    height:1.5px;
+    background:var(--blue);
+  }
+  /* Pill-style service badges keep their fill but match spacing */
+  .service-badge{
+    margin-bottom:24px !important;
+    white-space:nowrap !important;
+  }
+
+  /* --- Headline — uniform scale + tracking -------------------- */
+  .hero-headline,
+  .hero-top h1,
+  .hero h1{
+    font-family:'Playfair Display', serif !important;
+    font-size:clamp(48px, 6vw, 78px) !important;
+    font-weight:600 !important;
+    color:var(--ink);
+    letter-spacing:-0.025em !important;
+    line-height:1.05 !important;
+    margin:0 0 28px !important;
+  }
+  .hero-headline em,
+  .hero-top h1 em,
+  .hero h1 em{
+    font-style:italic;
+    color:var(--navy);
+  }
+
+  /* --- Subhead — same size / measure / rhythm ----------------- */
+  .hero-sub{
+    font-size:17px !important;
+    color:var(--ink-muted);
+    line-height:1.7 !important;
+    max-width:520px !important;
+    margin:0 0 36px !important;
+    font-weight:400;
+  }
+
+  /* --- Bullets (Water Sales) — same gap from sub -------------- */
+  .hero-bullets{
+    margin:0 0 36px !important;
+  }
+
+  /* --- Primary CTA cluster — uniform button geometry ---------- */
+  .hero-actions{
+    display:flex !important;
+    gap:14px !important;
+    flex-wrap:wrap !important;
+    align-items:center !important;
+    margin:0 !important;
+  }
+  .hero-actions .btn-blue,
+  .hero-actions .btn-dark{
+    padding:16px 30px !important;
+    font-size:15px !important;
+    font-weight:600 !important;
+    border-radius:6px !important;
+    letter-spacing:0.01em !important;
+  }
+  .hero-actions .btn-outline,
+  .hero-actions .btn-text{
+    padding:15px 24px !important;
+    font-size:15px !important;
+    font-weight:500 !important;
+    border-radius:6px !important;
+  }
+
+  /* --- Right column — keep visuals to a consistent width ------ */
+  .hero-right,
+  .hero-right-col,
+  .hero-aside,
+  .hero-visual{
+    width:100% !important;
+    max-width:460px !important;
+    justify-self:end !important;
+  }
+
+  /* Water Sales tablet image needs more breathing room */
+  .hero-visual{
+    max-width:560px !important;
+    min-height:auto !important;
+  }
+
+  /* --- Micro-stats / strip below the hero --------------------- */
+  .hero-micro-stats,
+  .hero-stats-strip{
+    margin-top:32px !important;
+  }
+}

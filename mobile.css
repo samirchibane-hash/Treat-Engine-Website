@@ -257,11 +257,20 @@ body.drawer-locked{overflow:hidden;}
   .trust-label{text-align:center;}
 
   /* Hide non-essential desktop chrome on mobile */
-  .ticker,.hero-right-col,.hero-visual,
+  .ticker,
   .compare-divider,.process-step-right,
   .topbar-item:not(:first-child){
     display:none !important;
   }
+  /* Hero right col / visual: keep visible on mobile, but stack below text and constrain size */
+  .hero-right-col,.hero-visual,.hero-visual-col,.hero-graphic-col{
+    width:100% !important;
+    max-width:100% !important;
+    margin-top:8px !important;
+  }
+  .hero-visual{min-height:auto !important;}
+  .hero-visual-img{max-width:100% !important;height:auto !important;}
+  .hero-video-wrap{aspect-ratio:16/9 !important;}
   .hero-top,.hero-body{
     grid-template-columns:1fr !important;
     gap:32px !important;
@@ -348,7 +357,139 @@ body.drawer-locked{overflow:hidden;}
   }
 }
 
-/* === Hide desktop hero visuals on small screens === */
+/* === Process / How-It-Works decorative graphics — keep behind text on mobile === */
 @media (max-width: 768px){
-  .hero-right-col,.hero-visual-col,.hero-graphic-col{display:none !important;}
+  .how-step-gfx{
+    opacity:0.12 !important;
+    width:64px !important;
+    height:64px !important;
+    right:8px !important;
+  }
+  .how-step:nth-child(even) .how-step-gfx{left:8px !important;right:auto !important;}
+  .how-step-title,
+  .how-step-desc,
+  .how-step:nth-child(even) .how-step-title,
+  .how-step:nth-child(even) .how-step-desc,
+  .how-step:nth-child(even) .how-step-num{
+    max-width:calc(100% - 76px) !important;
+    margin-left:0 !important;
+  }
+  .how-step:nth-child(even) .how-step-num,
+  .how-step:nth-child(even) .how-step-title,
+  .how-step:nth-child(even) .how-step-desc{
+    margin-left:76px !important;
+  }
+}
+
+/* ============================================================
+   UNIFIED MOBILE HERO — service pages (Water Leads / Sales / Websites)
+   Conversion-optimized stack order:
+     1. Eyebrow / service badge / hero-tag
+     2. Headline
+     3. Subhead
+     4. Bullets (where present)
+     5. VISUAL PROOF ASSET (video / product image / stat block)
+     6. Primary CTA (full-width)
+     7. Secondary CTA / micro-stats / meta
+   ============================================================ */
+@media (max-width: 768px){
+
+  /* Hero container — uniform spacing across all three pages */
+  .hero{padding:96px 20px 0 !important;}
+  .hero-top{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:24px !important;
+    padding:8px 0 48px !important;
+    align-items:stretch !important;
+  }
+
+  /* Flatten wrapper columns so children participate in the hero-top flex.
+     Water Leads uses .hero-left-col / .hero-right-col.
+     Water Sales uses .hero-left + .hero-visual.
+     Water Websites uses an unnamed <div> wrapper + .hero-aside. */
+  .hero-left-col,
+  .hero-left,
+  .hero-top > div:not([class]):first-child{
+    display:contents;
+  }
+
+  /* --- Eyebrow / badge --- */
+  .hero-tag,
+  .service-badge{order:1;margin-bottom:0 !important;}
+
+  /* --- Headline --- */
+  .hero h1,
+  .hero-top h1{
+    order:2;
+    font-size:clamp(34px,9vw,46px) !important;
+    line-height:1.08 !important;
+    margin:0 !important;
+  }
+
+  /* --- Subhead --- */
+  .hero-sub{
+    order:3;
+    font-size:16px !important;
+    line-height:1.65 !important;
+    margin:0 !important;
+    max-width:none !important;
+  }
+
+  /* --- Bullets (Water Sales) --- */
+  .hero-bullets{order:4;margin:0 !important;}
+
+  /* --- VISUAL PROOF (above the CTAs) --- */
+  .hero-right-col,            /* Water Leads — Wistia video */
+  .hero-visual,               /* Water Sales — tablets image */
+  .hero-aside{                /* Water Websites — stat block */
+    order:5 !important;
+    width:100% !important;
+    max-width:100% !important;
+    margin:0 !important;
+    min-height:auto !important;
+  }
+  .hero-visual-img{max-width:100% !important;height:auto !important;}
+  .hero-video-wrap{aspect-ratio:16/9 !important;}
+  .hero-aside-label{margin-bottom:10px !important;}
+
+  /* --- Primary CTAs — full-width, stacked, large touch targets --- */
+  .hero-actions{
+    order:6 !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:10px !important;
+    margin:0 !important;
+    width:100% !important;
+  }
+  .hero-actions .btn-dark,
+  .hero-actions .btn-outline,
+  .hero-actions .btn-text,
+  .hero-actions a,
+  .hero-actions button{
+    width:100% !important;
+    text-align:center !important;
+    justify-content:center !important;
+    padding:16px 24px !important;
+    font-size:15px !important;
+    min-height:52px !important;
+  }
+
+  /* --- Secondary / micro elements after CTA --- */
+  .hero-micro-stats{order:7 !important;}
+  .hero-actions-meta,
+  .hero-badge-asterisk{order:8 !important;text-align:center !important;}
+
+  /* Hide the floating circular tablet badge on mobile — too cramped to be readable */
+  .hero-tablet-badge{display:none !important;}
+
+  /* Stat strip below the hero — tighten for mobile */
+  .hero-stats-strip{
+    grid-template-columns:1fr 1fr !important;
+  }
+  .hero-stats-strip .stat-cell{padding:20px 16px !important;}
+  .hero-stats-strip .stat-cell:nth-child(2n){border-right:none !important;}
+  .hero-stats-strip .stat-cell:nth-child(-n+2){border-bottom:1px solid var(--border) !important;}
+  .hero-stats-strip .stat-num{font-size:30px !important;}
 }
