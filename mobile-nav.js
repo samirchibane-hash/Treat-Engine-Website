@@ -5,9 +5,9 @@
   window.__teMobileNavInstalled = true;
 
   const NAV_LINKS = [
-    { href: '/home',     label: 'Home',           match: /home\.html$|^\/home\b|^\/$/i },
+    { href: '/home',     label: 'Home',           match: /home\.html$|^\/home\b/i },
     { href: '/websites', label: 'Water Websites', match: /water websites\.html$|^\/websites\b/i },
-    { href: '/',         label: 'Water Leads',    match: /index\.html$|^\/$|^\/leads\b/i },
+    { href: '/ads',      label: 'Water Leads',    match: /water leads\.html$|^\/ads\b/i },
     { href: '/sales',    label: 'Water Sales',    match: /water sales\.html$|^\/sales\b/i },
   ];
 
