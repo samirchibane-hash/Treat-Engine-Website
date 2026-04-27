@@ -16,7 +16,7 @@
   "routes": [
     { "src": "/",         "dest": "/Home.html" },
     { "src": "/home",     "dest": "/Home.html" },
-    { "src": "/ads",      "dest": "/Water%20Leads%20Ads.html" },
+    { "src": "/ads",      "dest": "/Water%20Leads.html" },
     { "src": "/booking",  "dest": "/Water%20Leads%20Booking.html" },
     { "src": "/sales",    "dest": "/Water%20Sales.html" },
     { "src": "/websites", "dest": "/Water%20Websites.html" },
