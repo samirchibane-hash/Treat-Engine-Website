@@ -414,7 +414,7 @@ function Hero({tweaks}) {
   const [count, setCount] = useState(0);
   useEffect(() => {
     let frame, start = null;
-    const dur = 2000, target = 12400;
+    const dur = 2000, target = 10000;
     const go = ts => {
       if(!start) start = ts;
       const p = Math.min((ts-start)/dur, 1);
@@ -464,15 +464,15 @@ function Hero({tweaks}) {
             <div className="hero-micro-stats">
               <div className="hero-micro-stat">
                 <div className="hero-micro-num">{count.toLocaleString()}+</div>
-                <div className="hero-micro-label">installs generated</div>
+                <div className="hero-micro-label">water leads generated</div>
               </div>
               <div className="hero-micro-stat">
-                <div className="hero-micro-num">200+</div>
-                <div className="hero-micro-label">dealer partners</div>
+                <div className="hero-micro-num">2,700+</div>
+                <div className="hero-micro-label">water tests booked</div>
               </div>
               <div className="hero-micro-stat">
-                <div className="hero-micro-num">4.8×</div>
-                <div className="hero-micro-label">avg. ROAS</div>
+                <div className="hero-micro-num">32%</div>
+                <div className="hero-micro-label">avg. closing ratio</div>
               </div>
             </div>
           </div>
