@@ -428,9 +428,11 @@ a{text-decoration:none;color:inherit;}
   .topbar-inner{gap:10px;}
 }
 </style>
+<link rel="stylesheet" href="mobile.css"/>
 </head>
 <body>
 <div id="root"></div>
+<script src="mobile-nav.js" defer></script>
 <script type="text/babel">
 const {useState, useEffect, useRef} = React;
 
@@ -706,7 +708,7 @@ function TheSystem() {
     <section className="system-section" id="services">
       <div className="system-inner">
         <div className="system-header reveal">
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:80,alignItems:'end'}}>
+          <div className="system-header-grid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:80,alignItems:'end'}}>
             <div>
               <div className="eyebrow">The system</div>
               <h2 className="section-title">Three services.<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>One complete engine.</em></h2>

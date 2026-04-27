@@ -5,13 +5,15 @@
     { "src": "*.png",         "use": "@vercel/static" },
     { "src": "*.webp",        "use": "@vercel/static" },
     { "src": "*.jpg",         "use": "@vercel/static" },
+    { "src": "*.js",          "use": "@vercel/static" },
+    { "src": "*.css",         "use": "@vercel/static" },
     { "src": "images/**",     "use": "@vercel/static" },
     { "src": "logos/**",      "use": "@vercel/static" },
     { "src": "uploads/**",    "use": "@vercel/static" },
     { "src": "screenshots/**","use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/",         "dest": "/index.html" },
+    { "src": "/",         "dest": "/Home.html" },
     { "src": "/home",     "dest": "/Home.html" },
     { "src": "/ads",      "dest": "/Water%20Leads%20Ads.html" },
     { "src": "/booking",  "dest": "/Water%20Leads%20Booking.html" },
