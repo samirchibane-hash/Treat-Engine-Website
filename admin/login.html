@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login · Treat Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#faf7f2;--cream-mid:#f0ebe0;
+  --ink:#1c1814;--ink-muted:#7a6f65;
+  --navy:#1a2744;--blue:#3b82f6;--blue-light:#eff6ff;--blue-dark:#1d4ed8;
+  --white:#fffefb;--border:rgba(28,24,20,0.10);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+h1,h2{font-family:'Playfair Display',serif;}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:48px 40px;width:100%;max-width:400px;box-shadow:0 4px 32px rgba(28,24,20,.06);}
+.card-logo{text-align:center;margin-bottom:32px;}
+.card-logo img{height:32px;}
+.card-title{font-size:26px;font-weight:600;color:var(--ink);text-align:center;margin-bottom:6px;}
+.card-sub{font-size:14px;color:var(--ink-muted);text-align:center;margin-bottom:32px;}
+
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:20px;}
+.field label{font-size:13px;font-weight:600;color:var(--ink);}
+.field input{padding:13px 15px;border:1.5px solid var(--border);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--ink);background:var(--white);outline:none;transition:border-color .2s;}
+.field input:focus{border-color:var(--blue);}
+
+.btn{width:100%;background:var(--blue);color:#fff;border:none;padding:15px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn:hover{background:var(--blue-dark);}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.spinner{width:16px;height:16px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading .spinner{display:block;}
+.loading .btn-text{display:none;}
+
+.error-msg{background:#fef2f2;border:1px solid rgba(220,38,38,.2);border-radius:7px;padding:12px 16px;font-size:13.5px;color:#dc2626;margin-bottom:16px;display:none;}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-logo">
+    <img src="/uploads/Treat Engine Logo .png" alt="Treat Engine">
+  </div>
+  <h1 class="card-title">Admin Portal</h1>
+  <p class="card-sub">Treat Engine internal dashboard</p>
+
+  <div class="error-msg" id="error-msg">Incorrect password. Please try again.</div>
+
+  <form id="login-form">
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password" name="password" required autofocus placeholder="Enter admin password">
+    </div>
+    <button type="submit" class="btn" id="login-btn">
+      <span class="btn-text">Sign in</span>
+      <div class="spinner"></div>
+    </button>
+  </form>
+</div>
+
+<script>
+// If already logged in, redirect
+if (localStorage.getItem('te_admin_token')) {
+  window.location.href = '/admin';
+}
+
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('login-btn');
+  const errMsg = document.getElementById('error-msg');
+  const password = document.getElementById('password').value;
+
+  btn.classList.add('loading');
+  btn.disabled = true;
+  errMsg.style.display = 'none';
+
+  try {
+    const res = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    localStorage.setItem('te_admin_token', data.token);
+    window.location.href = '/admin';
+  } catch {
+    errMsg.style.display = 'block';
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

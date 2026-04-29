@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to Water Websites · Treat Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#faf7f2;--cream-mid:#f0ebe0;--cream-dark:#e5ddd0;
+  --ink:#1c1814;--ink-muted:#7a6f65;
+  --navy:#1a2744;--blue:#3b82f6;--blue-light:#eff6ff;--blue-dark:#1d4ed8;
+  --white:#fffefb;--border:rgba(28,24,20,0.10);--border-mid:rgba(28,24,20,0.06);
+  --green:#16a34a;--green-light:#f0fdf4;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);}
+h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.12;}
+a{text-decoration:none;color:inherit;}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,247,242,0.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+.nav-inner{max-width:1180px;margin:0 auto;padding:0 32px;height:70px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo img{height:34px;width:auto;}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-links a{font-size:13.5px;font-weight:500;color:var(--ink-muted);padding:7px 14px;border-radius:6px;transition:all .2s;}
+.nav-links a:hover{color:var(--ink);background:var(--cream-mid);}
+@media(max-width:900px){.nav-links{display:none;}}
+
+.overlay{position:fixed;inset:0;background:var(--cream);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+.overlay-icon{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.overlay-icon.loading{background:var(--blue-light);}
+.overlay-icon.error{background:#fef2f2;}
+.overlay-icon.success{background:var(--green-light);}
+.overlay h2{font-size:24px;text-align:center;}
+.overlay p{font-size:15px;color:var(--ink-muted);text-align:center;max-width:440px;line-height:1.7;}
+.spinner-lg{width:28px;height:28px;border:3px solid rgba(59,130,246,.2);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.page{padding:110px 32px 80px;max-width:720px;margin:0 auto;display:none;}
+.page-header{margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+.success-badge{display:inline-flex;align-items:center;gap:8px;background:var(--green-light);color:var(--green);border:1px solid rgba(22,163,74,.2);padding:7px 16px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:20px;}
+.page-tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;}
+.page-title{font-size:clamp(30px,4.5vw,48px);font-weight:600;color:var(--ink);margin-bottom:14px;letter-spacing:-.02em;}
+.page-title em{font-style:italic;color:var(--navy);}
+.page-sub{font-size:15.5px;color:var(--ink-muted);line-height:1.8;}
+
+.form-section{padding:36px 0;border-bottom:1px solid var(--border);}
+.form-section:last-of-type{border-bottom:none;}
+.section-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+.section-title{font-size:20px;font-weight:600;color:var(--ink);margin-bottom:24px;}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media(max-width:580px){.form-grid{grid-template-columns:1fr;}}
+.form-full{grid-column:1/-1;}
+
+.field{display:flex;flex-direction:column;gap:7px;}
+.field label{font-size:13px;font-weight:600;color:var(--ink);}
+.field label .req{color:var(--blue);margin-left:2px;}
+.field input,.field select,.field textarea{
+  padding:12px 15px;border:1.5px solid var(--border);border-radius:7px;
+  font-family:'DM Sans',sans-serif;font-size:15px;color:var(--ink);
+  background:var(--white);transition:border-color .2s;outline:none;width:100%;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);}
+.field textarea{resize:vertical;min-height:100px;line-height:1.65;}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237a6f65' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
+.field-hint{font-size:12px;color:var(--ink-muted);line-height:1.5;}
+
+.check-group{display:flex;flex-wrap:wrap;gap:9px;margin-top:2px;}
+.check-pill{display:flex;align-items:center;gap:7px;padding:9px 16px;border:1.5px solid var(--border);border-radius:100px;cursor:pointer;transition:all .2s;user-select:none;}
+.check-pill input{display:none;}
+.check-pill:has(input:checked){border-color:var(--blue);background:var(--blue-light);color:var(--blue);}
+.check-pill span{font-size:13.5px;font-weight:500;}
+
+.radio-group{display:flex;flex-wrap:wrap;gap:9px;}
+.radio-pill{display:flex;align-items:center;gap:7px;padding:9px 16px;border:1.5px solid var(--border);border-radius:100px;cursor:pointer;transition:all .2s;user-select:none;}
+.radio-pill input{display:none;}
+.radio-pill:has(input:checked){border-color:var(--blue);background:var(--blue-light);color:var(--blue);}
+.radio-pill span{font-size:13.5px;font-weight:500;}
+
+.conditional{display:none;}
+
+.form-footer{padding-top:36px;}
+.btn-submit{background:var(--blue);color:#fff;border:none;padding:17px 36px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:10px;}
+.btn-submit:hover{background:var(--blue-dark);transform:translateY(-1px);}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.spinner-sm{width:17px;height:17px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+.submitting .spinner-sm{display:block;}
+.submitting .submit-label{display:none;}
+.form-note{font-size:12.5px;color:var(--ink-muted);margin-top:14px;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/home"><img src="/uploads/Treat Engine Logo .png" alt="Treat Engine" style="height:34px"></a>
+    <div class="nav-links">
+      <a href="/home">Home</a>
+      <a href="/websites">Water Websites</a>
+      <a href="/ads">Water Leads</a>
+      <a href="/sales">Water Sales</a>
+    </div>
+  </div>
+</nav>
+
+<div class="overlay" id="overlay-loading">
+  <div class="overlay-icon loading"><div class="spinner-lg"></div></div>
+  <h2>Verifying your payment…</h2>
+  <p>Just a moment while we confirm your order.</p>
+</div>
+
+<div class="overlay" id="overlay-error" style="display:none;">
+  <div class="overlay-icon error">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+  </div>
+  <h2>Payment not found</h2>
+  <p>We couldn't verify your payment. Please contact us at <a href="mailto:Info@TreatEngine.com" style="color:var(--blue)">Info@TreatEngine.com</a> and we'll sort it out immediately.</p>
+</div>
+
+<div class="overlay" id="overlay-success" style="display:none;">
+  <div class="overlay-icon success">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#16a34a" stroke-width="2.5"><circle cx="14" cy="14" r="12"/><polyline points="8,14 12,18 20,10"/></svg>
+  </div>
+  <h2 style="color:var(--navy)">Onboarding complete!</h2>
+  <p>Your project brief is submitted. We'll follow up within 24 hours to confirm details and kick off your discovery call.</p>
+  <a href="/websites" style="margin-top:8px;color:var(--blue);font-size:14px;font-weight:600;">← Back to Water Websites</a>
+</div>
+
+<div class="page" id="form-page">
+  <div class="page-header">
+    <div class="success-badge">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg>
+      Payment confirmed
+    </div>
+    <div class="page-tag">Water Websites — Onboarding</div>
+    <h1 class="page-title">Let's build your <em>perfect dealership site.</em></h1>
+    <p class="page-sub">Fill out the details below so we can build exactly what your business needs. The more you share, the better your site will be.</p>
+  </div>
+
+  <form id="onboarding-form">
+
+    <div class="form-section">
+      <div class="section-eyebrow">Step 01</div>
+      <div class="section-title">Contact information</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Full name <span class="req">*</span></label>
+          <input type="text" name="fullName" required placeholder="Jane Smith">
+        </div>
+        <div class="field">
+          <label>Business name <span class="req">*</span></label>
+          <input type="text" name="businessName" required placeholder="Smith Water Treatment">
+        </div>
+        <div class="field">
+          <label>Email address <span class="req">*</span></label>
+          <input type="email" name="email" required placeholder="jane@smithwater.com">
+        </div>
+        <div class="field">
+          <label>Phone number <span class="req">*</span></label>
+          <input type="tel" name="phone" required placeholder="(617) 555-0100">
+        </div>
+        <div class="field form-full">
+          <label>Best contact for project updates</label>
+          <input type="text" name="projectContact" placeholder="Same as above, or enter another name & email">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-eyebrow">Step 02</div>
+      <div class="section-title">Your business</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Primary city / service area <span class="req">*</span></label>
+          <input type="text" name="city" required placeholder="Boston">
+        </div>
+        <div class="field">
+          <label>State <span class="req">*</span></label>
+          <select name="state" required>
+            <option value="">Select state…</option>
+            <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
+            <option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option>
+            <option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option>
+            <option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option>
+            <option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option>
+            <option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
+            <option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option>
+            <option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option>
+            <option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
+            <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option>
+            <option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option>
+            <option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option>
+            <option>Wisconsin</option><option>Wyoming</option>
+          </select>
+        </div>
+        <div class="field form-full">
+          <label>Brands you carry <span class="req">*</span></label>
+          <div class="check-group">
+            <label class="check-pill"><input type="checkbox" name="brands" value="Kinetico"><span>Kinetico</span></label>
+            <label class="check-pill"><input type="checkbox" name="brands" value="RainSoft"><span>RainSoft</span></label>
+            <label class="check-pill"><input type="checkbox" name="brands" value="EcoWater"><span>EcoWater</span></label>
+            <label class="check-pill"><input type="checkbox" name="brands" value="Rheem"><span>Rheem</span></label>
+            <label class="check-pill"><input type="checkbox" name="brands" value="Culligan"><span>Culligan</span></label>
+            <label class="check-pill"><input type="checkbox" name="brands" value="Pentair"><span>Pentair</span></label>
+            <label class="check-pill"><input type="checkbox" name="brands" value="WaterTech"><span>WaterTech</span></label>
+            <label class="check-pill"><input type="checkbox" name="brands" value="Other"><span>Other</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-eyebrow">Step 03</div>
+      <div class="section-title">Your current online presence</div>
+      <div class="form-grid">
+        <div class="field form-full">
+          <label>Do you have an existing website?</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="hasWebsite" value="yes" onchange="toggleConditional('existing-url', true)"><span>Yes</span></label>
+            <label class="radio-pill"><input type="radio" name="hasWebsite" value="no" onchange="toggleConditional('existing-url', false)"><span>No</span></label>
+          </div>
+        </div>
+        <div class="field form-full conditional" id="existing-url">
+          <label>Current website URL</label>
+          <input type="url" name="existingWebsiteUrl" placeholder="https://yourwebsite.com">
+        </div>
+        <div class="field form-full">
+          <label>Do you have a logo?</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="hasLogo" value="yes"><span>Yes — I'll send it</span></label>
+            <label class="radio-pill"><input type="radio" name="hasLogo" value="no"><span>No — please design one</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Google Business Profile listing</label>
+          <input type="url" name="googleBusinessUrl" placeholder="https://g.page/yourpage or leave blank">
+        </div>
+        <div class="field">
+          <label>Facebook Page URL</label>
+          <input type="url" name="facebookUrl" placeholder="https://facebook.com/yourpage">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-eyebrow">Step 04</div>
+      <div class="section-title">Site design preferences</div>
+      <div class="form-grid">
+        <div class="field form-full">
+          <label>Pages you want on your site</label>
+          <div class="check-group">
+            <label class="check-pill"><input type="checkbox" name="pages" value="Home" checked><span>Home</span></label>
+            <label class="check-pill"><input type="checkbox" name="pages" value="About Us"><span>About Us</span></label>
+            <label class="check-pill"><input type="checkbox" name="pages" value="Products / Systems"><span>Products / Systems</span></label>
+            <label class="check-pill"><input type="checkbox" name="pages" value="Water Testing"><span>Water Testing</span></label>
+            <label class="check-pill"><input type="checkbox" name="pages" value="Services / Installs"><span>Services / Installs</span></label>
+            <label class="check-pill"><input type="checkbox" name="pages" value="Financing"><span>Financing</span></label>
+            <label class="check-pill"><input type="checkbox" name="pages" value="Reviews / Testimonials"><span>Reviews</span></label>
+            <label class="check-pill"><input type="checkbox" name="pages" value="Contact"><span>Contact</span></label>
+            <label class="check-pill"><input type="checkbox" name="pages" value="Blog"><span>Blog</span></label>
+          </div>
+        </div>
+        <div class="field form-full">
+          <label>Color or style preferences</label>
+          <input type="text" name="colorPreferences" placeholder="e.g. Blue and white, clean and modern — or 'match our logo colors'">
+        </div>
+        <div class="field form-full">
+          <label>Websites you like the look or feel of</label>
+          <input type="text" name="websiteInspiration" placeholder="Paste URLs of sites you like, or describe the style">
+        </div>
+        <div class="field form-full">
+          <label>Key messages or selling points to feature prominently</label>
+          <textarea name="keyMessages" placeholder="e.g. Family-owned for 25 years, free water test, financing available, exclusive RainSoft dealer in [city]…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-eyebrow">Step 05</div>
+      <div class="section-title">Anything else?</div>
+      <div class="form-grid">
+        <div class="field form-full">
+          <label>Additional notes or requests</label>
+          <textarea name="additionalNotes" placeholder="Special features, competitors to differentiate from, content you already have written, images we should use, etc."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button type="submit" class="btn-submit" id="submit-btn">
+        <span class="submit-label">Submit project brief</span>
+        <div class="spinner-sm"></div>
+      </button>
+      <p class="form-note">We'll review your brief and schedule a discovery call within 24 hours. Questions? <a href="mailto:Info@TreatEngine.com" style="color:var(--blue)">Info@TreatEngine.com</a></p>
+    </div>
+
+  </form>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const sessionId = params.get('session_id');
+
+function toggleConditional(id, show) {
+  document.getElementById(id).style.display = show ? 'flex' : 'none';
+}
+
+async function verifyAndLoad() {
+  if (!sessionId) { showOverlay('error'); return; }
+  try {
+    const res = await fetch(`/api/verify-session?session_id=${sessionId}`);
+    if (!res.ok) { showOverlay('error'); return; }
+    const session = await res.json();
+    if (session.service !== 'websites') { showOverlay('error'); return; }
+    if (session.customerEmail) document.querySelector('[name="email"]').value = session.customerEmail;
+    if (session.customerName)  document.querySelector('[name="fullName"]').value = session.customerName;
+    showOverlay(null);
+  } catch { showOverlay('error'); }
+}
+
+function showOverlay(type) {
+  document.getElementById('overlay-loading').style.display = 'none';
+  document.getElementById('overlay-error').style.display = 'none';
+  document.getElementById('overlay-success').style.display = 'none';
+  if (type === 'error')   document.getElementById('overlay-error').style.display = 'flex';
+  else if (type === 'success') document.getElementById('overlay-success').style.display = 'flex';
+  else document.getElementById('form-page').style.display = 'block';
+}
+
+document.getElementById('onboarding-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  btn.classList.add('submitting');
+  btn.disabled = true;
+  const fd = new FormData(e.target);
+  const data = {};
+  for (const [k, v] of fd.entries()) {
+    data[k] = data[k] ? [].concat(data[k], v) : v;
+  }
+  try {
+    const res = await fetch('/api/onboarding', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, service: 'websites', data }),
+    });
+    if (!res.ok) throw new Error();
+    showOverlay('success');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch {
+    alert('Something went wrong. Please try again or email Info@TreatEngine.com');
+    btn.classList.remove('submitting');
+    btn.disabled = false;
+  }
+});
+
+verifyAndLoad();
+</script>
+</body>
+</html>

@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Treat Engine — Brand Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+
+<!-- ext-resource-dependency tags for bundler -->
+<meta name="ext-resource-dependency" content="Treat Engine Logo .png" data-resource-id="logoColor"/>
+<meta name="ext-resource-dependency" content="treat-engine-logo-white.png" data-resource-id="logoWhite"/>
+<meta name="ext-resource-dependency" content="images/cleardeals-tablets-hero.png" data-resource-id="cleardealImg"/>
+
+<template id="__bundler_thumbnail" data-bg-color="#faf7f2">
+  <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="600" fill="#faf7f2"/>
+    <rect x="60" y="60" width="680" height="4" fill="#3b82f6"/>
+    <rect x="60" y="100" width="320" height="48" rx="4" fill="#1a2744"/>
+    <rect x="60" y="164" width="220" height="16" rx="3" fill="#e5ddd0"/>
+    <rect x="60" y="190" width="280" height="16" rx="3" fill="#e5ddd0"/>
+    <rect x="60" y="260" width="100" height="100" rx="6" fill="#1a2744"/>
+    <rect x="180" y="260" width="100" height="100" rx="6" fill="#3b82f6"/>
+    <rect x="300" y="260" width="100" height="100" rx="6" fill="#faf7f2" stroke="#e5ddd0" stroke-width="2"/>
+    <rect x="60" y="400" width="680" height="1" fill="#e5ddd0"/>
+    <rect x="60" y="430" width="180" height="12" rx="3" fill="#e5ddd0"/>
+    <rect x="60" y="454" width="140" height="12" rx="3" fill="#e5ddd0"/>
+  </svg>
+</template>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream:      #faf7f2;
+  --cream-mid:  #f0ebe0;
+  --cream-dark: #e5ddd0;
+  --ink:        #1c1814;
+  --ink-mid:    #3d3530;
+  --ink-muted:  #7a6f65;
+  --navy:       #1a2744;
+  --navy-light: #243460;
+  --blue:       #3b82f6;
+  --blue-lt:    #eff6ff;
+  --blue-dark:  #1d4ed8;
+  --white:      #fffefb;
+  --border:     rgba(28,24,20,0.09);
+  --border-mid: rgba(28,24,20,0.06);
+  --page:       1080px;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); line-height: 1.6; }
+
+/* ── PAGE SHELL ── */
+.page { max-width: var(--page); margin: 0 auto; padding: 0 60px 120px; }
+
+/* ── COVER ── */
+.cover {
+  background: var(--navy);
+  padding: 100px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 560px;
+  position: relative;
+  overflow: hidden;
+}
+.cover::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: var(--blue);
+}
+.cover-logo img { height: 40px; width: auto; filter: brightness(0) invert(1); }
+.cover-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(52px, 6vw, 84px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.0;
+  letter-spacing: -.03em;
+  margin-top: 56px;
+}
+.cover-headline em { font-style: italic; color: #93c5fd; }
+.cover-sub { font-size: 16px; color: rgba(255,255,255,0.5); margin-top: 20px; max-width: 520px; line-height: 1.7; }
+.cover-meta { display: flex; gap: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 32px; margin-top: 56px; }
+.cover-meta-item { }
+.cover-meta-label { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 4px; }
+.cover-meta-val { font-size: 14px; color: rgba(255,255,255,0.7); font-weight: 500; }
+
+/* ── SECTION HEADERS ── */
+.section { padding: 80px 0 0; }
+.section + .section { border-top: 1px solid var(--border); margin-top: 80px; }
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--blue);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--blue-lt); }
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px; font-weight: 700; color: var(--ink);
+  letter-spacing: -.02em; line-height: 1.1;
+  margin-bottom: 8px;
+}
+.section-sub { font-size: 15px; color: var(--ink-muted); max-width: 560px; margin-bottom: 48px; line-height: 1.65; }
+
+/* ── LOGO ── */
+.logo-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; }
+.logo-swatch {
+  padding: 48px 40px;
+  display: flex; flex-direction: column; align-items: flex-start;
+  justify-content: space-between; gap: 28px;
+  border-radius: 8px;
+}
+.logo-swatch-label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.logo-bg-cream { background: var(--cream); border: 1px solid var(--border); }
+.logo-bg-navy  { background: var(--navy); }
+.logo-bg-dark  { background: #0f1826; }
+.logo-swatch img { height: 36px; width: auto; }
+.logo-dont-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 32px; }
+.logo-dont {
+  border: 1px solid var(--border); border-radius: 8px; padding: 28px 24px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.logo-dont-img { height: 28px; width: auto; }
+.logo-dont-rule { font-size: 11px; font-weight: 700; color: #dc2626; letter-spacing: .04em; text-align: center; }
+.logo-dont-sub { font-size: 11px; color: var(--ink-muted); text-align: center; line-height: 1.5; }
+.logo-clearspace {
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 48px; display: flex; flex-direction: column;
+  align-items: center; gap: 16px; background: #fff; margin-top: 16px;
+}
+.logo-clearspace img { height: 38px; }
+.logo-cs-annotation { font-size: 11px; color: var(--ink-muted); text-align: center; line-height: 1.6; }
+
+/* ── COLORS ── */
+.color-row { display: flex; gap: 3px; margin-bottom: 3px; }
+.color-swatch {
+  flex: 1; border-radius: 8px; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.color-swatch-block { height: 120px; }
+.color-swatch-info { padding: 14px 16px; background: #fff; border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px; }
+.color-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+.color-hex  { font-size: 11.5px; color: var(--ink-muted); font-family: 'DM Sans', monospace; margin-top: 2px; }
+.color-use  { font-size: 10.5px; color: var(--ink-muted); margin-top: 4px; line-height: 1.4; }
+
+/* ── TYPOGRAPHY ── */
+.type-specimens { display: flex; flex-direction: column; gap: 3px; }
+.type-row {
+  background: #fff; border: 1px solid var(--border); border-radius: 8px;
+  padding: 32px 36px; display: flex; align-items: baseline;
+  justify-content: space-between; gap: 40px;
+}
+.type-sample { flex: 1; }
+.type-meta { width: 220px; flex-shrink: 0; }
+.type-meta-family { font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: .04em; text-transform: uppercase; }
+.type-meta-detail { font-size: 11.5px; color: var(--ink-muted); margin-top: 4px; line-height: 1.6; }
+
+.t-display { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 700; color: var(--ink); letter-spacing: -.03em; line-height: 1; }
+.t-h1      { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; color: var(--ink); letter-spacing: -.025em; line-height: 1.04; }
+.t-h2      { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 600; color: var(--ink); letter-spacing: -.02em; line-height: 1.1; }
+.t-h3      { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 600; color: var(--ink); letter-spacing: -.015em; line-height: 1.15; }
+.t-lead    { font-family: 'DM Sans', sans-serif; font-size: 18px; font-weight: 400; color: var(--ink-mid); line-height: 1.75; }
+.t-body    { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 400; color: var(--ink-mid); line-height: 1.75; }
+.t-label   { font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 700; color: var(--ink-muted); letter-spacing: .12em; text-transform: uppercase; }
+.t-caption { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: var(--ink-muted); line-height: 1.6; }
+
+.type-pairing {
+  background: var(--cream); border: 1px solid var(--border); border-radius: 8px;
+  padding: 40px; margin-top: 16px;
+}
+.type-pairing-label { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: 24px; }
+.tp-headline { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; color: var(--ink); letter-spacing: -.025em; line-height: 1.04; }
+.tp-headline em { font-style: italic; color: var(--navy); }
+.tp-body { font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--ink-muted); margin-top: 14px; line-height: 1.75; max-width: 560px; }
+.tp-cta { display: inline-block; background: var(--blue); color: #fff; padding: 13px 26px; border-radius: 6px; font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; margin-top: 20px; }
+
+/* ── VOICE & TONE ── */
+.voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.voice-card {
+  border: 1px solid var(--border); border-radius: 8px; padding: 28px 30px;
+  background: #fff;
+}
+.voice-card-label { font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px; }
+.voice-card-label.do   { color: #16a34a; }
+.voice-card-label.dont { color: #dc2626; }
+.voice-example { display: flex; flex-direction: column; gap: 10px; }
+.voice-line { font-size: 14px; color: var(--ink-mid); line-height: 1.5; padding: 10px 14px; border-radius: 6px; }
+.voice-line.good { background: #f0fdf4; border-left: 3px solid #16a34a; }
+.voice-line.bad  { background: #fef2f2; border-left: 3px solid #dc2626; text-decoration: line-through; color: var(--ink-muted); }
+
+.copy-framework {
+  background: #fff; border: 1px solid var(--border); border-radius: 8px;
+  padding: 32px 36px; margin-top: 16px;
+}
+.copy-framework-label { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: 20px; }
+.copy-steps { display: flex; flex-direction: column; gap: 0; }
+.copy-step { display: flex; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--border-mid); }
+.copy-step:last-child { border-bottom: none; }
+.copy-step-num { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--blue); line-height: 1; width: 32px; flex-shrink: 0; }
+.copy-step-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.copy-step-desc { font-size: 13px; color: var(--ink-muted); line-height: 1.55; }
+.copy-step-eg { font-size: 12.5px; font-style: italic; color: var(--blue); margin-top: 4px; }
+
+/* ── COMPONENTS ── */
+.component-section { margin-top: 40px; }
+.component-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+
+.btn-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.btn { display: inline-flex; align-items: center; gap: 8px; font-family: 'DM Sans', sans-serif; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; cursor: pointer; border-radius: 6px; border: none; }
+.btn-primary { background: var(--blue); color: #fff; padding: 13px 26px; font-size: 13px; }
+.btn-navy    { background: var(--navy); color: #fff; padding: 13px 26px; font-size: 13px; }
+.btn-outline { background: transparent; color: var(--navy); border: 1.5px solid var(--navy); padding: 12px 24px; font-size: 13px; }
+.btn-ghost   { background: transparent; color: var(--blue); padding: 12px 0; font-size: 13px; }
+.btn-sm      { background: var(--blue); color: #fff; padding: 9px 18px; font-size: 11.5px; }
+.btn-lg      { background: var(--blue); color: #fff; padding: 17px 34px; font-size: 15px; }
+
+.pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.pill-item {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 14px; border-radius: 100px;
+  font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+}
+.pill-blue   { background: var(--blue-lt); color: var(--blue); }
+.pill-navy   { background: rgba(26,39,68,0.08); color: var(--navy); }
+.pill-cream  { background: var(--cream-dark); color: var(--ink-muted); }
+.pill-dot-el { width: 5px; height: 5px; border-radius: 50%; }
+.pill-blue   .pill-dot-el { background: var(--blue); }
+.pill-navy   .pill-dot-el { background: var(--navy); }
+.pill-cream  .pill-dot-el { background: var(--ink-muted); }
+
+.stat-row { display: flex; gap: 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-top: 12px; }
+.stat-cell { flex: 1; padding: 22px 24px; border-right: 1px solid var(--border); background: #fff; }
+.stat-cell:last-child { border-right: none; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; color: var(--navy); line-height: 1; letter-spacing: -.02em; }
+.stat-num span { color: var(--blue); }
+.stat-label { font-size: 11px; color: var(--ink-muted); margin-top: 4px; }
+
+.card-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 12px; }
+.card {
+  border: 1px solid var(--border); border-radius: 8px; padding: 22px 24px;
+  background: #fff; display: flex; flex-direction: column; gap: 10px;
+}
+.card-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); }
+.card-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1.2; }
+.card-body { font-size: 13px; color: var(--ink-muted); line-height: 1.6; }
+.card-link { font-size: 12px; font-weight: 700; color: var(--blue); letter-spacing: .04em; text-transform: uppercase; margin-top: 4px; }
+
+.check-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.check-item { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--ink-mid); line-height: 1.45; }
+.check-box { width: 20px; height: 20px; border-radius: 4px; background: var(--blue); flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+
+.guarantee-badge {
+  display: inline-flex; align-items: center; gap: 16px;
+  background: var(--navy); border-radius: 8px; padding: 18px 24px;
+  margin-top: 12px;
+}
+.g-seal { width: 52px; height: 52px; border-radius: 50%; background: #fbbf24; border: 3px solid #f59e0b; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.g-pct { font-size: 12px; font-weight: 900; color: #78350f; line-height: 1; }
+.g-lbl { font-size: 6px; font-weight: 800; color: #78350f; text-transform: uppercase; letter-spacing: .04em; text-align: center; line-height: 1.3; }
+.g-text { color: #fff; }
+.g-title { font-size: 16px; font-weight: 700; line-height: 1; }
+.g-sub { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 4px; line-height: 1.45; }
+
+/* ── SERVICES ── */
+.services-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; }
+.service-card { border-radius: 8px; overflow: hidden; }
+.service-card-top { padding: 32px 28px; }
+.service-card-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+.service-card-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--ink); line-height: 1.15; letter-spacing: -.015em; }
+.service-card-sub { font-size: 13px; color: var(--ink-muted); margin-top: 8px; line-height: 1.6; }
+.service-card-bottom { padding: 18px 28px; display: flex; flex-direction: column; gap: 8px; }
+.service-bullet { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-mid); font-weight: 500; }
+.service-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+
+/* ── IMAGERY GUIDELINES ── */
+.imagery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+.imagery-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.imagery-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.imagery-card-body { padding: 18px 20px; background: #fff; }
+.imagery-card-label { font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px; }
+.imagery-card-label.use   { color: #16a34a; }
+.imagery-card-label.avoid { color: #dc2626; }
+.imagery-card-desc { font-size: 12.5px; color: var(--ink-muted); line-height: 1.55; }
+
+/* ── AD TEMPLATES ── */
+.ad-templates { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 16px; }
+.ad-thumb { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.ad-thumb-preview {
+  height: 220px; padding: 20px 22px;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.ad-thumb-label { padding: 10px 14px; background: var(--cream-mid); border-top: 1px solid var(--border); }
+.ad-thumb-name { font-size: 12px; font-weight: 700; color: var(--ink); }
+.ad-thumb-service { font-size: 10px; color: var(--ink-muted); margin-top: 2px; }
+
+/* ── SPACING ── */
+.spacing-row { display: flex; gap: 0; align-items: flex-end; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-top: 8px; }
+.spacing-cell { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 12px 8px 14px; border-right: 1px solid var(--border); background: #fff; }
+.spacing-cell:last-child { border-right: none; }
+.spacing-block { background: var(--blue-lt); border: 1px solid #bfdbfe; border-radius: 3px; width: 100%; }
+.spacing-val { font-size: 11.5px; font-weight: 700; color: var(--navy); margin-top: 8px; }
+.spacing-name { font-size: 10px; color: var(--ink-muted); margin-top: 2px; }
+
+/* ── FOOTER ── */
+.guide-footer {
+  background: var(--navy); padding: 56px 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 100px;
+}
+.footer-logo img { height: 32px; filter: brightness(0) invert(1); }
+.footer-meta { font-size: 12px; color: rgba(255,255,255,0.35); text-align: right; line-height: 1.7; }
+
+/* ── PRINT ── */
+@media print {
+  body { background: white; }
+  .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .section { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-logo">
+    <img id="logo-white-cover" src="treat-engine-logo-white.png" alt="Treat Engine"/>
+  </div>
+  <div>
+    <div class="cover-headline">Brand<br/><em>Guide</em></div>
+    <div class="cover-sub">The visual language, voice, and design standards for Treat Engine and its three core services: Water Leads, ClearDeals, and Water Websites.</div>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Version</div>
+        <div class="cover-meta-val">1.0 — 2026</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Website</div>
+        <div class="cover-meta-val">treatleads.com</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Category</div>
+        <div class="cover-meta-val">B2B SaaS · Water Treatment</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ── LOGO ── -->
+  <div class="section">
+    <div class="section-label">01 · Identity</div>
+    <div class="section-title">Logo</div>
+    <div class="section-sub">The Treat Engine logo consists of a blue gear-and-drop icon paired with the wordmark set in Playfair Display. Always use the approved lockups — never redraw or alter them.</div>
+
+    <div class="logo-grid">
+      <div class="logo-swatch logo-bg-cream">
+        <img id="logo-color-1" src="Treat Engine Logo .png" alt="Treat Engine — color on cream"/>
+        <div class="logo-swatch-label" style="color:var(--ink-muted)">Color on Cream</div>
+      </div>
+      <div class="logo-swatch logo-bg-navy">
+        <img id="logo-white-1" src="treat-engine-logo-white.png" alt="Treat Engine — white on navy"/>
+        <div class="logo-swatch-label" style="color:rgba(255,255,255,0.4)">White on Navy</div>
+      </div>
+      <div class="logo-swatch logo-bg-dark">
+        <img id="logo-white-2" src="treat-engine-logo-white.png" alt="Treat Engine — white on dark"/>
+        <div class="logo-swatch-label" style="color:rgba(255,255,255,0.3)">White on Dark</div>
+      </div>
+    </div>
+
+    <div class="logo-clearspace">
+      <img id="logo-color-cs" src="Treat Engine Logo .png" alt="Logo clearspace" style="height:38px"/>
+      <div class="logo-cs-annotation">
+        <strong>Clear space rule:</strong> Always maintain a minimum clear space equal to the height of the gear icon on all four sides of the logo.<br/>Never place the logo closer than this distance to any other element, edge, or text.
+      </div>
+    </div>
+
+    <div class="logo-dont-grid">
+      <div class="logo-dont">
+        <img id="logo-dont-1" src="Treat Engine Logo .png" style="opacity:0.25; filter:grayscale(1)" alt=""/>
+        <div class="logo-dont-rule">✕ Don't use low-contrast</div>
+        <div class="logo-dont-sub">Never place the full-color logo on a mid-tone background where it loses contrast.</div>
+      </div>
+      <div class="logo-dont">
+        <img id="logo-dont-2" src="Treat Engine Logo .png" style="transform:scaleX(1.4); filter:hue-rotate(120deg)" alt=""/>
+        <div class="logo-dont-rule">✕ Don't recolor or stretch</div>
+        <div class="logo-dont-sub">Never recolor individual elements or distort the lockup's proportions.</div>
+      </div>
+      <div class="logo-dont">
+        <img id="logo-dont-3" src="Treat Engine Logo .png" style="transform:rotate(-15deg)" alt=""/>
+        <div class="logo-dont-rule">✕ Don't rotate</div>
+        <div class="logo-dont-sub">The logo should always appear at 0° — never tilted, skewed, or on a diagonal.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COLORS ── -->
+  <div class="section">
+    <div class="section-label">02 · Color</div>
+    <div class="section-title">Color Palette</div>
+    <div class="section-sub">A warm-neutral base with a bold navy and a confident blue. The palette is designed to feel editorial and trustworthy without relying on aggressive saturation.</div>
+
+    <div class="color-row">
+      <div class="color-swatch">
+        <div class="color-swatch-block" style="background:#1a2744"></div>
+        <div class="color-swatch-info">
+          <div class="color-name">Navy</div>
+          <div class="color-hex">#1A2744</div>
+          <div class="color-use">Primary background · Dark surfaces · CTA button fill</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch-block" style="background:#3b82f6"></div>
+        <div class="color-swatch-info">
+          <div class="color-name">Blue</div>
+          <div class="color-hex">#3B82F6</div>
+          <div class="color-use">Primary action · Accents · Links · Pills</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch-block" style="background:#1d4ed8"></div>
+        <div class="color-swatch-info">
+          <div class="color-name">Blue Dark</div>
+          <div class="color-hex">#1D4ED8</div>
+          <div class="color-use">Hover states · Pressed states</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch-block" style="background:#eff6ff"></div>
+        <div class="color-swatch-info">
+          <div class="color-name">Blue Light</div>
+          <div class="color-hex">#EFF6FF</div>
+          <div class="color-use">Pill backgrounds · Subtle highlights</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="color-row" style="margin-top:3px">
+      <div class="color-swatch">
+        <div class="color-swatch-block" style="background:#faf7f2; border:1px solid #e5ddd0; border-bottom:none; border-radius:8px 8px 0 0"></div>
+        <div class="color-swatch-info">
+          <div class="color-name">Cream</div>
+          <div class="color-hex">#FAF7F2</div>
+          <div class="color-use">Page background · Primary surface</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch-block" style="background:#f0ebe0"></div>
+        <div class="color-swatch-info">
+          <div class="color-name">Cream Mid</div>
+          <div class="color-hex">#F0EBE0</div>
+          <div class="color-use">Card backgrounds · Hover states</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch-block" style="background:#e5ddd0"></div>
+        <div class="color-swatch-info">
+          <div class="color-name">Cream Dark</div>
+          <div class="color-hex">#E5DDD0</div>
+          <div class="color-use">Borders · Dividers on warm surfaces</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch-block" style="background:#fffefb; border:1px solid #e5ddd0; border-bottom:none; border-radius:8px 8px 0 0"></div>
+        <div class="color-swatch-info">
+          <div class="color-name">White</div>
+          <div class="color-hex">#FFFEFB</div>
+          <div class="color-use">Cards on cream · Clean surfaces</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="color-row" style="margin-top:3px">
+      <div class="color-swatch">
+        <div class="color-swatch-block" style="background:#1c1814"></div>
+        <div class="color-swatch-info">
+          <div class="color-name">Ink</div>
+          <div class="color-hex">#1C1814</div>
+          <div class="color-use">Headlines · Primary text</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch-block" style="background:#3d3530"></div>
+        <div class="color-swatch-info">
+          <div class="color-name">Ink Mid</div>
+          <div class="color-hex">#3D3530</div>
+          <div class="color-use">Body copy · Secondary text</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch-block" style="background:#7a6f65"></div>
+        <div class="color-swatch-info">
+          <div class="color-name">Ink Muted</div>
+          <div class="color-hex">#7A6F65</div>
+          <div class="color-use">Labels · Captions · Meta text</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-swatch-block" style="background:#fbbf24"></div>
+        <div class="color-swatch-info">
+          <div class="color-name">Gold</div>
+          <div class="color-hex">#FBBF24</div>
+          <div class="color-use">Guarantee badge only</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TYPOGRAPHY ── -->
+  <div class="section">
+    <div class="section-label">03 · Typography</div>
+    <div class="section-title">Type System</div>
+    <div class="section-sub">Two typefaces only. Playfair Display carries the editorial authority of the brand. DM Sans handles everything functional — UI, body, labels.</div>
+
+    <div class="type-specimens">
+      <div class="type-row">
+        <div class="type-sample">
+          <div class="t-display">Display / Hero</div>
+        </div>
+        <div class="type-meta">
+          <div class="type-meta-family">Playfair Display</div>
+          <div class="type-meta-detail">64px · Weight 700<br/>Tracking −0.03em<br/>Use: hero headlines, large ad copy, numbers</div>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-sample">
+          <div class="t-h1">Heading 1</div>
+        </div>
+        <div class="type-meta">
+          <div class="type-meta-family">Playfair Display</div>
+          <div class="type-meta-detail">48px · Weight 700<br/>Tracking −0.025em<br/>Use: page titles, section openers</div>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-sample">
+          <div class="t-h2">Heading 2</div>
+        </div>
+        <div class="type-meta">
+          <div class="type-meta-family">Playfair Display</div>
+          <div class="type-meta-detail">36px · Weight 600<br/>Tracking −0.02em<br/>Use: section titles, card headlines</div>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-sample">
+          <div class="t-h3">Heading 3</div>
+        </div>
+        <div class="type-meta">
+          <div class="type-meta-family">Playfair Display</div>
+          <div class="type-meta-detail">26px · Weight 600<br/>Tracking −0.015em<br/>Use: subheadings, testimonials</div>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-sample">
+          <div class="t-lead">Lead copy — the first paragraph below a headline that sets the scene and draws the reader in.</div>
+        </div>
+        <div class="type-meta">
+          <div class="type-meta-family">DM Sans</div>
+          <div class="type-meta-detail">18px · Weight 400<br/>Line height 1.75<br/>Use: hero subtext, intro paragraphs</div>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-sample">
+          <div class="t-body">Body copy — used for feature descriptions, longer explanations, and marketing copy throughout.</div>
+        </div>
+        <div class="type-meta">
+          <div class="type-meta-family">DM Sans</div>
+          <div class="type-meta-detail">15px · Weight 400<br/>Line height 1.75<br/>Use: general body text, card descriptions</div>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-sample">
+          <div class="t-label">Label / Eyebrow — Water Leads · Treat Engine</div>
+        </div>
+        <div class="type-meta">
+          <div class="type-meta-family">DM Sans</div>
+          <div class="type-meta-detail">11px · Weight 700<br/>Tracking 0.12em · ALL CAPS<br/>Use: eyebrows, section labels, tags</div>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-sample">
+          <div class="t-caption">Caption / Meta — treatleads.com · 2026 · Water Treatment Dealers</div>
+        </div>
+        <div class="type-meta">
+          <div class="type-meta-family">DM Sans</div>
+          <div class="type-meta-detail">12px · Weight 500<br/>Line height 1.6<br/>Use: URLs, footnotes, meta info</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="type-pairing">
+      <div class="type-pairing-label">Type Pairing in Practice</div>
+      <div class="tp-headline">Your calendar should fill <em>itself.</em></div>
+      <div class="tp-body">We build and run your Facebook &amp; Google campaigns — and book pre-qualified homeowners for in-home water test appointments your reps can show up and close.</div>
+      <div class="tp-cta">Schedule a Demo →</div>
+    </div>
+  </div>
+
+  <!-- ── SERVICES ── -->
+  <div class="section">
+    <div class="section-label">04 · Services</div>
+    <div class="section-title">The Three Services</div>
+    <div class="section-sub">Each service has its own distinct value proposition, but shares the same visual language and brand voice.</div>
+
+    <div class="services-grid">
+      <div class="service-card" style="border:1px solid var(--border)">
+        <div class="service-card-top" style="background:#fff">
+          <div class="service-card-icon" style="background:var(--blue-lt)">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#3b82f6" stroke-width="1.5"/><path d="M10 6v4l2.5 2.5" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="service-card-title">Water Leads</div>
+          <div class="service-card-sub">Done-for-you Facebook &amp; Google lead generation. Pre-qualified in-home water test appointments booked to your reps' calendars.</div>
+        </div>
+        <div class="service-card-bottom" style="background:var(--cream)">
+          <div class="service-bullet"><div class="service-dot"></div>20+ appointments/month</div>
+          <div class="service-bullet"><div class="service-dot"></div>Exclusive territory</div>
+          <div class="service-bullet"><div class="service-dot"></div>30-day money-back guarantee</div>
+        </div>
+      </div>
+      <div class="service-card" style="border:1px solid var(--border)">
+        <div class="service-card-top" style="background:#fff">
+          <div class="service-card-icon" style="background:var(--blue-lt)">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="10" rx="2" stroke="#3b82f6" stroke-width="1.5"/><path d="M7 17h6M10 14v3" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="service-card-title">ClearDeals</div>
+          <div class="service-card-sub">The guided in-home sales app built for water treatment reps. Proposals, pricing, financing, and e-sign — all in one tablet.</div>
+        </div>
+        <div class="service-card-bottom" style="background:var(--cream)">
+          <div class="service-bullet"><div class="service-dot"></div>8-step guided sales process</div>
+          <div class="service-bullet"><div class="service-dot"></div>Smart Tablets included</div>
+          <div class="service-bullet"><div class="service-dot"></div>~40% avg. close rate increase</div>
+        </div>
+      </div>
+      <div class="service-card" style="border:1px solid var(--border)">
+        <div class="service-card-top" style="background:#fff">
+          <div class="service-card-icon" style="background:var(--blue-lt)">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="12" rx="2" stroke="#3b82f6" stroke-width="1.5"/><path d="M2 7h16M6 16h8" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="service-card-title">Water Websites</div>
+          <div class="service-card-sub">Done-for-you websites built exclusively for water treatment dealers — with local SEO, water quality education, and built-in lead capture.</div>
+        </div>
+        <div class="service-card-bottom" style="background:var(--cream)">
+          <div class="service-bullet"><div class="service-dot"></div>Live in 30 days</div>
+          <div class="service-bullet"><div class="service-dot"></div>Local SEO included</div>
+          <div class="service-bullet"><div class="service-dot"></div>Ongoing updates &amp; support</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── VOICE ── -->
+  <div class="section">
+    <div class="section-label">05 · Voice &amp; Tone</div>
+    <div class="section-title">Brand Voice</div>
+    <div class="section-sub">Treat Engine speaks like a results-obsessed partner, not a vendor. Confident and specific — never hype-y or vague. We respect our audience's intelligence.</div>
+
+    <div class="voice-grid">
+      <div class="voice-card">
+        <div class="voice-card-label do">✓ Write like this</div>
+        <div class="voice-example">
+          <div class="voice-line good">"Stop knocking. Start closing."</div>
+          <div class="voice-line good">"20+ pre-qualified water test appointments, booked to your calendar every month."</div>
+          <div class="voice-line good">"Don't love the leads? Full refund. You keep the leads."</div>
+          <div class="voice-line good">"We hit 18 installs in a single month."</div>
+        </div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-card-label dont">✕ Not like this</div>
+        <div class="voice-example">
+          <div class="voice-line bad">"Unlock your true growth potential today!"</div>
+          <div class="voice-line bad">"We leverage cutting-edge AI-powered lead generation solutions."</div>
+          <div class="voice-line bad">"The best water leads in the industry — guaranteed!"</div>
+          <div class="voice-line bad">"Take your business to the next level with our platform."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="copy-framework">
+      <div class="copy-framework-label">Ad Copy Framework — PASA</div>
+      <div class="copy-steps">
+        <div class="copy-step">
+          <div class="copy-step-num">P</div>
+          <div>
+            <div class="copy-step-title">Pain — name the frustration</div>
+            <div class="copy-step-desc">Call out the specific problem water treatment dealers feel every day. Be precise — not "grow your business" but "still waiting on the next knock back."</div>
+            <div class="copy-step-eg">e.g. "Still cold-calling homeowners who aren't ready to buy?"</div>
+          </div>
+        </div>
+        <div class="copy-step">
+          <div class="copy-step-num">A</div>
+          <div>
+            <div class="copy-step-title">Agitate — show the cost</div>
+            <div class="copy-step-desc">Make the pain real with a number or a consequence. This is where stats live — installs lost, time wasted, deals that slipped.</div>
+            <div class="copy-step-eg">e.g. "Water treatment dealers lose thousands every month relying on door-knocking."</div>
+          </div>
+        </div>
+        <div class="copy-step">
+          <div class="copy-step-num">S</div>
+          <div>
+            <div class="copy-step-title">Solution — introduce the mechanism</div>
+            <div class="copy-step-desc">Explain what Treat Engine does, concisely. Name the specific deliverable — not "leads" but "pre-qualified in-home water test appointments."</div>
+            <div class="copy-step-eg">e.g. "We run your ads and book pre-qualified homeowners straight to your reps' calendars."</div>
+          </div>
+        </div>
+        <div class="copy-step">
+          <div class="copy-step-num">A</div>
+          <div>
+            <div class="copy-step-title">Action — remove the risk</div>
+            <div class="copy-step-desc">Close with a low-friction CTA and — where appropriate — the 30-day guarantee to eliminate hesitation.</div>
+            <div class="copy-step-eg">e.g. "Schedule a free 20-min demo. 30-day money-back guarantee."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+      <div style="background:#fff; border:1px solid var(--border); border-radius:8px; padding:22px 24px;">
+        <div style="font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--blue); margin-bottom:10px;">Tone Attributes</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:13px; color:var(--ink-mid);">↗ Confident, not arrogant</div>
+          <div style="font-size:13px; color:var(--ink-mid);">↗ Specific, not vague</div>
+          <div style="font-size:13px; color:var(--ink-mid);">↗ Peer-to-peer, not salesy</div>
+          <div style="font-size:13px; color:var(--ink-mid);">↗ Direct, not harsh</div>
+        </div>
+      </div>
+      <div style="background:#fff; border:1px solid var(--border); border-radius:8px; padding:22px 24px;">
+        <div style="font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--blue); margin-bottom:10px;">Headline Formulas</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:13px; color:var(--ink-mid);">"Stop [bad thing]. Start [good thing]."</div>
+          <div style="font-size:13px; color:var(--ink-mid);">"Your [noun] should [verb] itself."</div>
+          <div style="font-size:13px; color:var(--ink-mid);">"[Number] [specific result] — [timeframe]."</div>
+          <div style="font-size:13px; color:var(--ink-mid);">"[Outcome] without [objection]."</div>
+        </div>
+      </div>
+      <div style="background:#fff; border:1px solid var(--border); border-radius:8px; padding:22px 24px;">
+        <div style="font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--blue); margin-bottom:10px;">Words We Use</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:13px; color:var(--ink-mid);">pre-qualified · exclusive · booked</div>
+          <div style="font-size:13px; color:var(--ink-mid);">in-home · pipeline · calendar</div>
+          <div style="font-size:13px; color:var(--ink-mid);">close · install · appointment</div>
+          <div style="font-size:13px; color:var(--ink-mid);">done-for-you · guaranteed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COMPONENTS ── -->
+  <div class="section">
+    <div class="section-label">06 · Components</div>
+    <div class="section-title">UI Components</div>
+    <div class="section-sub">Core building blocks used across the website, ads, and sales materials. Use these consistently — never invent new patterns without a clear reason.</div>
+
+    <div class="component-section">
+      <div class="component-label">Buttons</div>
+      <div class="btn-row">
+        <div class="btn btn-primary">Schedule a Demo →</div>
+        <div class="btn btn-navy">Get Started →</div>
+        <div class="btn btn-outline">Learn More</div>
+        <div class="btn btn-ghost">See how it works →</div>
+      </div>
+      <div class="btn-row" style="margin-top:12px">
+        <div class="btn btn-sm">Small CTA →</div>
+        <div class="btn btn-lg">Book Your Free Demo →</div>
+      </div>
+    </div>
+
+    <div class="component-section" style="margin-top:32px">
+      <div class="component-label">Service Pills</div>
+      <div class="pill-row">
+        <div class="pill-item pill-blue"><div class="pill-dot-el"></div>Water Leads</div>
+        <div class="pill-item pill-blue"><div class="pill-dot-el"></div>ClearDeals · Water Sales</div>
+        <div class="pill-item pill-blue"><div class="pill-dot-el"></div>Water Websites</div>
+        <div class="pill-item pill-navy"><div class="pill-dot-el"></div>Treat Engine</div>
+        <div class="pill-item pill-cream"><div class="pill-dot-el"></div>Free Demo Available</div>
+      </div>
+    </div>
+
+    <div class="component-section" style="margin-top:32px">
+      <div class="component-label">Stat Blocks</div>
+      <div class="stat-row">
+        <div class="stat-cell">
+          <div class="stat-num">20<span>+</span></div>
+          <div class="stat-label">Appointments/month</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num">100<span>%</span></div>
+          <div class="stat-label">Exclusive territory</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num">18<span>+</span></div>
+          <div class="stat-label">Installs/month (client result)</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num">40<span>%</span></div>
+          <div class="stat-label">Avg. close rate increase</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="component-section" style="margin-top:32px">
+      <div class="component-label">Check Lists</div>
+      <div class="check-list">
+        <div class="check-item"><div class="check-box"><svg viewBox="0 0 10 10" fill="none" style="width:10px;height:10px"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Exclusive water test appointments — only one dealer per market</div>
+        <div class="check-item"><div class="check-box"><svg viewBox="0 0 10 10" fill="none" style="width:10px;height:10px"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Done-for-you Facebook &amp; Google campaigns — fully managed</div>
+        <div class="check-item"><div class="check-box"><svg viewBox="0 0 10 10" fill="none" style="width:10px;height:10px"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Live reporting dashboard — see every lead in real time</div>
+      </div>
+    </div>
+
+    <div class="component-section" style="margin-top:32px">
+      <div class="component-label">Guarantee Badge</div>
+      <div class="guarantee-badge">
+        <div class="g-seal">
+          <div class="g-pct">100%</div>
+          <div class="g-lbl">Money<br/>Back</div>
+        </div>
+        <div class="g-text">
+          <div class="g-title">30 Day Guarantee</div>
+          <div class="g-sub">Don't love the quality? Full refund — and you keep the leads.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="component-section" style="margin-top:32px">
+      <div class="component-label">Content Cards</div>
+      <div class="card-row">
+        <div class="card">
+          <div class="card-eyebrow">Water Leads</div>
+          <div class="card-title">Pre-Qualified Appointments</div>
+          <div class="card-body">Homeowners who've raised their hand and are ready for an in-home water test — booked to your calendar.</div>
+          <div class="card-link">Learn more →</div>
+        </div>
+        <div class="card">
+          <div class="card-eyebrow">ClearDeals</div>
+          <div class="card-title">In-Home Sales System</div>
+          <div class="card-body">A guided 8-step process that walks your reps through every appointment — from water test to signed agreement.</div>
+          <div class="card-link">Learn more →</div>
+        </div>
+        <div class="card">
+          <div class="card-eyebrow">Water Websites</div>
+          <div class="card-title">Built to Rank &amp; Convert</div>
+          <div class="card-body">Done-for-you websites with local SEO, water quality content, and booking forms that work while you sleep.</div>
+          <div class="card-link">Learn more →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SPACING ── -->
+  <div class="section">
+    <div class="section-label">07 · Spacing</div>
+    <div class="section-title">Spacing Scale</div>
+    <div class="section-sub">An 8px base grid. Stick to these values for padding, margins, and gaps — this keeps the layout tight and intentional.</div>
+
+    <div class="spacing-row">
+      <div class="spacing-cell"><div class="spacing-block" style="height:4px"></div><div class="spacing-val">4px</div><div class="spacing-name">xs</div></div>
+      <div class="spacing-cell"><div class="spacing-block" style="height:8px"></div><div class="spacing-val">8px</div><div class="spacing-name">sm</div></div>
+      <div class="spacing-cell"><div class="spacing-block" style="height:12px"></div><div class="spacing-val">12px</div><div class="spacing-name">—</div></div>
+      <div class="spacing-cell"><div class="spacing-block" style="height:16px"></div><div class="spacing-val">16px</div><div class="spacing-name">md</div></div>
+      <div class="spacing-cell"><div class="spacing-block" style="height:24px"></div><div class="spacing-val">24px</div><div class="spacing-name">—</div></div>
+      <div class="spacing-cell"><div class="spacing-block" style="height:32px"></div><div class="spacing-val">32px</div><div class="spacing-name">lg</div></div>
+      <div class="spacing-cell"><div class="spacing-block" style="height:48px"></div><div class="spacing-val">48px</div><div class="spacing-name">xl</div></div>
+      <div class="spacing-cell"><div class="spacing-block" style="height:64px"></div><div class="spacing-val">64px</div><div class="spacing-name">2xl</div></div>
+      <div class="spacing-cell"><div class="spacing-block" style="height:80px"></div><div class="spacing-val">80px</div><div class="spacing-name">3xl</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="guide-footer">
+  <div class="footer-logo">
+    <img id="logo-footer" src="treat-engine-logo-white.png" alt="Treat Engine"/>
+  </div>
+  <div class="footer-meta">
+    Treat Engine Brand Guide · Version 1.0 · 2026<br/>
+    treatleads.com
+  </div>
+</div>
+
+<script>
+// Replace img srcs with bundled resources once available
+document.addEventListener('DOMContentLoaded', () => {
+  const r = window.__resources;
+  if (!r) return;
+  const setAll = (ids, key) => ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && r[key]) el.src = r[key];
+  });
+  setAll(['logo-color-1','logo-color-cs','logo-dont-1','logo-dont-2','logo-dont-3'], 'logoColor');
+  setAll(['logo-white-cover','logo-white-1','logo-white-2','logo-footer'], 'logoWhite');
+  setAll([], 'cleardealImg');
+});
+</script>
+</body>
+</html>

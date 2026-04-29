@@ -1,9 +1,15 @@
 {
   "name": "treat-engine-website",
   "version": "1.0.0",
-  "description": "Treat Engine local dev server",
+  "description": "Treat Engine website and backend",
   "scripts": {
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "setup-stripe": "node scripts/setup-stripe.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.47.0",
+    "jsonwebtoken": "^9.0.2",
+    "stripe": "^16.0.0"
   },
   "engines": {
     "node": ">=18"

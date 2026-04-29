@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Dashboard · Treat Engine Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#faf7f2;--cream-mid:#f0ebe0;--cream-dark:#e5ddd0;
+  --ink:#1c1814;--ink-mid:#3d3530;--ink-muted:#7a6f65;
+  --navy:#1a2744;--blue:#3b82f6;--blue-light:#eff6ff;--blue-dark:#1d4ed8;
+  --white:#fffefb;--border:rgba(28,24,20,0.10);--border-mid:rgba(28,24,20,0.06);
+  --green:#16a34a;--green-light:#f0fdf4;
+  --amber:#d97706;--amber-light:#fffbeb;
+  --red:#dc2626;--red-light:#fef2f2;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
+h1,h2,h3{font-family:'Playfair Display',serif;}
+a{text-decoration:none;color:inherit;}
+
+/* Top bar */
+.topbar{background:var(--navy);color:#fff;padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.topbar-left{display:flex;align-items:center;gap:20px;}
+.topbar-logo img{height:28px;filter:brightness(0) invert(1);}
+.topbar-title{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.7;}
+.topbar-right{display:flex;align-items:center;gap:16px;}
+.topbar-email{font-size:13px;opacity:.7;}
+.btn-logout{background:rgba(255,255,255,.1);color:#fff;border:none;padding:7px 16px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;}
+.btn-logout:hover{background:rgba(255,255,255,.2);}
+
+/* Page */
+.page{padding:32px;}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:16px;}
+.page-title{font-size:28px;font-weight:600;}
+.refresh-btn{background:var(--white);border:1px solid var(--border);color:var(--ink-muted);padding:9px 18px;border-radius:6px;font-size:13.5px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:7px;transition:all .2s;}
+.refresh-btn:hover{border-color:var(--blue);color:var(--blue);}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:28px;}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:20px 24px;}
+.stat-label{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px;}
+.stat-value{font-family:'Playfair Display',serif;font-size:36px;font-weight:600;color:var(--navy);}
+.stat-sub{font-size:12px;color:var(--ink-muted);margin-top:4px;}
+
+/* Filters */
+.filters{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-btn{background:var(--white);border:1.5px solid var(--border);padding:8px 18px;border-radius:100px;font-size:13.5px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;color:var(--ink-muted);}
+.filter-btn:hover{border-color:var(--blue);color:var(--blue);}
+.filter-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600;}
+.search-input{padding:9px 16px;border:1.5px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);background:var(--white);outline:none;min-width:220px;}
+.search-input:focus{border-color:var(--blue);}
+
+/* Table */
+.table-wrap{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:var(--cream-mid);}
+th{padding:12px 16px;text-align:left;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted);border-bottom:1px solid var(--border);}
+tbody tr{border-bottom:1px solid var(--border-mid);cursor:pointer;transition:background .15s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:var(--blue-light);}
+td{padding:14px 16px;font-size:14px;vertical-align:top;}
+.td-name{font-weight:600;color:var(--ink);}
+.td-business{font-size:12.5px;color:var(--ink-muted);margin-top:2px;}
+.td-email{color:var(--ink-muted);font-size:13px;}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:100px;font-size:11.5px;font-weight:600;}
+.badge-leads{background:#dbeafe;color:#1d4ed8;}
+.badge-websites{background:#fce7f3;color:#be185d;}
+.badge-sales{background:#fef9c3;color:#854d0e;}
+.badge-pending{background:var(--amber-light);color:var(--amber);}
+.badge-onboarded{background:var(--green-light);color:var(--green);}
+.badge-active{background:#dcfce7;color:#15803d;}
+.badge-cancelled{background:var(--red-light);color:var(--red);}
+
+.td-amount{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;}
+.td-date{color:var(--ink-muted);font-size:13px;}
+
+/* Detail panel */
+.detail-panel{position:fixed;right:0;top:0;bottom:0;width:520px;background:var(--white);border-left:1px solid var(--border);box-shadow:-8px 0 40px rgba(28,24,20,.08);overflow-y:auto;transform:translateX(100%);transition:transform .3s ease;z-index:50;padding:0;}
+.detail-panel.open{transform:translateX(0);}
+.detail-header{padding:24px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white);z-index:1;}
+.detail-title{font-size:18px;font-weight:600;}
+.detail-close{background:var(--cream-mid);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink-muted);font-size:18px;line-height:1;transition:background .2s;}
+.detail-close:hover{background:var(--cream-dark);}
+.detail-body{padding:28px;}
+.detail-section{margin-bottom:28px;}
+.detail-section-title{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.detail-row{display:flex;gap:12px;margin-bottom:12px;}
+.detail-key{font-size:13px;color:var(--ink-muted);font-weight:500;min-width:140px;flex-shrink:0;}
+.detail-val{font-size:13.5px;color:var(--ink);font-weight:500;word-break:break-word;}
+
+/* Onboarding data */
+.ob-field{margin-bottom:12px;}
+.ob-key{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-muted);margin-bottom:3px;}
+.ob-val{font-size:13.5px;color:var(--ink);background:var(--cream);padding:10px 14px;border-radius:6px;line-height:1.65;}
+
+/* Loading / empty */
+.table-placeholder{padding:64px 32px;text-align:center;color:var(--ink-muted);}
+.table-placeholder p{font-size:14px;line-height:1.7;}
+.spinner-lg{width:28px;height:28px;border:3px solid var(--cream-dark);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.empty-state{padding:80px 32px;text-align:center;}
+.empty-icon{font-size:40px;margin-bottom:16px;}
+.empty-title{font-size:18px;font-weight:600;margin-bottom:8px;}
+.empty-sub{font-size:14px;color:var(--ink-muted);}
+
+@media(max-width:900px){
+  .detail-panel{width:100%;}
+  .page{padding:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="/home" class="topbar-logo"><img src="/uploads/Treat Engine Logo .png" alt="Treat Engine"></a>
+    <span class="topbar-title">Admin Dashboard</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn-logout" onclick="logout()">Sign out</button>
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Customers</h1>
+    <button class="refresh-btn" onclick="loadCustomers()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 7a5 5 0 1 0 1-3M2 2v3h3"/></svg>
+      Refresh
+    </button>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-label">Total customers</div>
+      <div class="stat-value" id="stat-total">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Water Leads</div>
+      <div class="stat-value" id="stat-leads">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Water Websites</div>
+      <div class="stat-value" id="stat-websites">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Water Sales</div>
+      <div class="stat-value" id="stat-sales">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Pending onboarding</div>
+      <div class="stat-value" id="stat-pending">—</div>
+      <div class="stat-sub">Need follow-up</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total revenue</div>
+      <div class="stat-value" id="stat-revenue">—</div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">All</button>
+    <button class="filter-btn" data-filter="leads" onclick="setFilter('leads', this)">Water Leads</button>
+    <button class="filter-btn" data-filter="websites" onclick="setFilter('websites', this)">Water Websites</button>
+    <button class="filter-btn" data-filter="sales" onclick="setFilter('sales', this)">Water Sales</button>
+    <button class="filter-btn" data-filter="pending" onclick="setFilter('pending', this)">Pending</button>
+    <input class="search-input" type="search" id="search" placeholder="Search name, business, email…" oninput="renderTable()">
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-placeholder" id="loading-state">
+      <div class="spinner-lg"></div>
+      <p>Loading customers…</p>
+    </div>
+    <table id="customers-table" style="display:none;">
+      <thead>
+        <tr>
+          <th>Customer</th>
+          <th>Service</th>
+          <th>Plan</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+    <div class="empty-state" id="empty-state" style="display:none;">
+      <div class="empty-icon">📋</div>
+      <div class="empty-title">No customers yet</div>
+      <div class="empty-sub">Customers will appear here after completing checkout.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Detail panel -->
+<div class="detail-panel" id="detail-panel">
+  <div class="detail-header">
+    <div class="detail-title" id="detail-title">Customer detail</div>
+    <button class="detail-close" onclick="closeDetail()">×</button>
+  </div>
+  <div class="detail-body" id="detail-body"></div>
+</div>
+<div id="panel-overlay" style="display:none;position:fixed;inset:0;z-index:40;background:rgba(28,24,20,.15);" onclick="closeDetail()"></div>
+
+<script>
+let allCustomers = [];
+let activeFilter = 'all';
+const token = localStorage.getItem('te_admin_token');
+
+if (!token) window.location.href = '/admin/login';
+
+function logout() {
+  localStorage.removeItem('te_admin_token');
+  window.location.href = '/admin/login';
+}
+
+async function loadCustomers() {
+  document.getElementById('loading-state').style.display = 'block';
+  document.getElementById('customers-table').style.display = 'none';
+  document.getElementById('empty-state').style.display = 'none';
+
+  try {
+    const res = await fetch('/api/admin/customers', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (res.status === 401) { logout(); return; }
+    const { customers } = await res.json();
+    allCustomers = customers || [];
+    updateStats();
+    renderTable();
+  } catch (err) {
+    document.getElementById('loading-state').innerHTML = `<p style="color:#dc2626">Failed to load customers. Please refresh.</p>`;
+  }
+}
+
+function updateStats() {
+  const total    = allCustomers.length;
+  const leads    = allCustomers.filter(c => c.service === 'leads').length;
+  const websites = allCustomers.filter(c => c.service === 'websites').length;
+  const sales    = allCustomers.filter(c => c.service === 'sales').length;
+  const pending  = allCustomers.filter(c => c.status === 'pending').length;
+  const revenue  = allCustomers.reduce((sum, c) => sum + (c.amount_paid || 0), 0);
+
+  document.getElementById('stat-total').textContent    = total;
+  document.getElementById('stat-leads').textContent    = leads;
+  document.getElementById('stat-websites').textContent = websites;
+  document.getElementById('stat-sales').textContent    = sales;
+  document.getElementById('stat-pending').textContent  = pending;
+  document.getElementById('stat-revenue').textContent  = `$${(revenue / 100).toLocaleString()}`;
+}
+
+function setFilter(filter, btn) {
+  activeFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function renderTable() {
+  const search = document.getElementById('search').value.toLowerCase();
+  let filtered = allCustomers;
+
+  if (activeFilter === 'pending') {
+    filtered = filtered.filter(c => c.status === 'pending');
+  } else if (activeFilter !== 'all') {
+    filtered = filtered.filter(c => c.service === activeFilter);
+  }
+
+  if (search) {
+    filtered = filtered.filter(c =>
+      (c.name || '').toLowerCase().includes(search) ||
+      (c.email || '').toLowerCase().includes(search) ||
+      (c.business_name || '').toLowerCase().includes(search)
+    );
+  }
+
+  document.getElementById('loading-state').style.display = 'none';
+
+  if (filtered.length === 0) {
+    document.getElementById('customers-table').style.display = 'none';
+    document.getElementById('empty-state').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('customers-table').style.display = 'table';
+
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = filtered.map(c => `
+    <tr onclick="openDetail(${JSON.stringify(c).replace(/"/g, '&quot;')})">
+      <td>
+        <div class="td-name">${esc(c.name || '—')}</div>
+        <div class="td-business">${esc(c.business_name || '')}${c.business_name && c.email ? ' · ' : ''}${esc(c.email || '')}</div>
+      </td>
+      <td><span class="badge badge-${c.service}">${serviceLabel(c.service)}</span></td>
+      <td style="font-size:13px;color:var(--ink-muted);">${planLabel(c.plan)}</td>
+      <td class="td-amount">${c.amount_paid ? '$' + (c.amount_paid / 100).toLocaleString() : '—'}</td>
+      <td><span class="badge badge-${c.status}">${statusLabel(c.status)}</span></td>
+      <td class="td-date">${formatDate(c.created_at)}</td>
+    </tr>
+  `).join('');
+}
+
+function openDetail(customer) {
+  const ob = customer.onboarding?.[0];
+  const data = ob?.data || {};
+
+  document.getElementById('detail-title').textContent = customer.business_name || customer.name || 'Customer';
+  document.getElementById('detail-body').innerHTML = `
+    <div class="detail-section">
+      <div class="detail-section-title">Account</div>
+      ${detailRow('Service', `<span class="badge badge-${customer.service}">${serviceLabel(customer.service)}</span>`)}
+      ${detailRow('Status',  `<span class="badge badge-${customer.status}">${statusLabel(customer.status)}</span>`)}
+      ${detailRow('Plan', planLabel(customer.plan))}
+      ${detailRow('Amount paid', customer.amount_paid ? '$' + (customer.amount_paid / 100).toLocaleString() : '—')}
+      ${detailRow('Signed up', formatDate(customer.created_at))}
+      ${customer.stripe_customer_id ? detailRow('Stripe customer', `<a href="https://dashboard.stripe.com/customers/${customer.stripe_customer_id}" target="_blank" style="color:var(--blue);">View in Stripe ↗</a>`) : ''}
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title">Contact</div>
+      ${detailRow('Name',     esc(customer.name || '—'))}
+      ${detailRow('Business', esc(customer.business_name || '—'))}
+      ${detailRow('Email',    customer.email ? `<a href="mailto:${customer.email}" style="color:var(--blue)">${esc(customer.email)}</a>` : '—')}
+      ${detailRow('Phone',    customer.phone ? `<a href="tel:${customer.phone}" style="color:var(--blue)">${esc(customer.phone)}</a>` : '—')}
+    </div>
+
+    ${ob ? `
+    <div class="detail-section">
+      <div class="detail-section-title">Onboarding · submitted ${formatDate(ob.submitted_at)}</div>
+      ${renderOnboardingData(data)}
+    </div>` : `
+    <div class="detail-section">
+      <div class="detail-section-title">Onboarding</div>
+      <div style="font-size:14px;color:var(--amber);background:var(--amber-light);padding:12px 16px;border-radius:8px;">
+        ⚠️ Onboarding not yet completed. Follow up with the customer.
+      </div>
+    </div>`}
+  `;
+
+  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('panel-overlay').style.display = 'block';
+}
+
+function renderOnboardingData(data) {
+  return Object.entries(data).map(([k, v]) => {
+    const label = k.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase());
+    const val = Array.isArray(v) ? v.join(', ') : (v || '—');
+    return `<div class="ob-field">
+      <div class="ob-key">${esc(label)}</div>
+      <div class="ob-val">${esc(String(val))}</div>
+    </div>`;
+  }).join('');
+}
+
+function closeDetail() {
+  document.getElementById('detail-panel').classList.remove('open');
+  document.getElementById('panel-overlay').style.display = 'none';
+}
+
+function detailRow(key, val) {
+  return `<div class="detail-row"><div class="detail-key">${key}</div><div class="detail-val">${val}</div></div>`;
+}
+
+function serviceLabel(s) {
+  return { leads: 'Water Leads', websites: 'Water Websites', sales: 'Water Sales' }[s] || s;
+}
+function planLabel(p) {
+  return { monthly: '$1,500/mo', 'one-time': '$1,799 one-time', installment: '2× $997', license: '$5k/yr license' }[p] || (p || '—');
+}
+function statusLabel(s) {
+  return { pending: 'Pending', onboarded: 'Onboarded', active: 'Active', cancelled: 'Cancelled' }[s] || s;
+}
+function formatDate(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+loadCustomers();
+</script>
+</body>
+</html>

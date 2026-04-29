@@ -18,13 +18,21 @@ const mimeTypes = {
 };
 
 const pages = {
-  '/':          'index.html',
-  '/home':      'Home.html',
-  '/ads':       'Water Leads Ads.html',
-  '/booking':   'Water Leads Booking.html',
-  '/sales':     'Water Sales.html',
-  '/websites':  'Water Websites.html',
-  '/v1':        'index v1.html',
+  '/':                    'index.html',
+  '/home':                'Home.html',
+  '/ads':                 'Water Leads Ads.html',
+  '/booking':             'Water Leads Booking.html',
+  '/sales':               'Water Sales.html',
+  '/websites':            'Water Websites.html',
+  '/v1':                  'index v1.html',
+  '/websites/checkout':   'checkout/websites.html',
+  '/sales/checkout':      'checkout/sales.html',
+  '/ads/checkout':        'checkout/leads.html',
+  '/ads/onboarding':      'onboarding/leads.html',
+  '/websites/onboarding': 'onboarding/websites.html',
+  '/sales/onboarding':    'onboarding/sales.html',
+  '/admin':               'admin/index.html',
+  '/admin/login':         'admin/login.html',
 };
 
 const server = http.createServer((req, res) => {

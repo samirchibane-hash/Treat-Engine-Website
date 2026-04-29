@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Started — Water Websites · Treat Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#faf7f2;--cream-mid:#f0ebe0;--cream-dark:#e5ddd0;
+  --ink:#1c1814;--ink-mid:#3d3530;--ink-muted:#7a6f65;
+  --navy:#1a2744;--blue:#3b82f6;--blue-light:#eff6ff;--blue-dark:#1d4ed8;
+  --white:#fffefb;--border:rgba(28,24,20,0.10);--border-mid:rgba(28,24,20,0.06);
+  --green:#16a34a;--green-light:#f0fdf4;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
+h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.12;}
+a{text-decoration:none;color:inherit;}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,247,242,0.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+.nav-inner{max-width:1180px;margin:0 auto;padding:0 32px;height:70px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo img{height:34px;width:auto;}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-links a{font-size:13.5px;font-weight:500;color:var(--ink-muted);padding:7px 14px;border-radius:6px;transition:all .2s;}
+.nav-links a:hover{color:var(--ink);background:var(--cream-mid);}
+.nav-links a.active{color:var(--blue);font-weight:600;background:var(--blue-light);}
+@media(max-width:900px){.nav-links{display:none;}}
+
+.page{padding:130px 32px 80px;max-width:760px;margin:0 auto;}
+.breadcrumb{font-size:12px;color:var(--ink-muted);margin-bottom:28px;display:flex;align-items:center;gap:8px;}
+.breadcrumb a{color:var(--blue);}
+.breadcrumb-sep{opacity:.4;}
+.page-tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
+.page-title{font-size:clamp(32px,5vw,52px);font-weight:600;color:var(--ink);margin-bottom:16px;letter-spacing:-.02em;}
+.page-title em{font-style:italic;color:var(--navy);}
+.page-sub{font-size:16px;color:var(--ink-muted);line-height:1.8;margin-bottom:48px;}
+
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:40px;}
+@media(max-width:600px){.plans{grid-template-columns:1fr;}}
+
+.plan-card{background:var(--white);border:2px solid var(--border);border-radius:12px;padding:32px;cursor:pointer;transition:all .25s;position:relative;}
+.plan-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 8px 32px rgba(59,130,246,.12);}
+.plan-card.selected{border-color:var(--blue);background:var(--blue-light);box-shadow:0 8px 32px rgba(59,130,246,.15);}
+.plan-badge{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:100px;margin-bottom:20px;}
+.plan-badge.popular{background:var(--blue);color:#fff;}
+.plan-badge.flex{background:var(--cream-mid);color:var(--ink-muted);}
+.plan-price{font-family:'Playfair Display',serif;font-size:44px;font-weight:600;color:var(--ink);line-height:1;}
+.plan-price sup{font-size:22px;vertical-align:top;margin-top:6px;}
+.plan-period{font-size:13px;color:var(--ink-muted);margin-top:6px;}
+.plan-divider{height:1px;background:var(--border);margin:20px 0;}
+.plan-name{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+.plan-desc{font-size:13.5px;color:var(--ink-muted);line-height:1.7;}
+.plan-check{position:absolute;top:16px;right:16px;width:22px;height:22px;border-radius:50%;background:var(--blue);display:none;align-items:center;justify-content:center;}
+.plan-card.selected .plan-check{display:flex;}
+.plan-check svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2.5;}
+
+.savings-note{background:var(--green-light);border:1px solid rgba(22,163,74,.2);border-radius:8px;padding:14px 18px;font-size:13.5px;color:var(--green);font-weight:500;margin-bottom:32px;display:flex;align-items:center;gap:10px;}
+.savings-note svg{flex-shrink:0;}
+
+.btn-primary{width:100%;background:var(--blue);color:#fff;border:none;padding:17px 28px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;}
+.btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px);}
+.btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none;}
+.btn-ghost{background:transparent;color:var(--ink-muted);border:none;padding:14px;font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:12px;width:100%;}
+.btn-ghost:hover{color:var(--ink);}
+
+.trust-row{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:28px;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-muted);}
+.trust-item svg{flex-shrink:0;color:var(--blue);}
+
+.spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading .spinner{display:block;}
+.loading .btn-text{display:none;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/home"><img src="/uploads/Treat Engine Logo .png" alt="Treat Engine" style="height:34px"></a>
+    <div class="nav-links">
+      <a href="/home">Home</a>
+      <a href="/websites" class="active">Water Websites</a>
+      <a href="/ads">Water Leads</a>
+      <a href="/sales">Water Sales</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="breadcrumb">
+    <a href="/websites">Water Websites</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Choose your plan</span>
+  </div>
+
+  <div class="page-tag">Water Websites</div>
+  <h1 class="page-title">Choose your <em>payment plan</em></h1>
+  <p class="page-sub">Your new site is a one-time project. Pay in full and save, or split it into two easy payments — whatever works best for your business.</p>
+
+  <div class="plans">
+    <div class="plan-card selected" id="card-onetime" onclick="selectPlan('one-time')">
+      <div class="plan-check">
+        <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+      </div>
+      <div class="plan-badge popular">Best value</div>
+      <div class="plan-price"><sup>$</sup>1,799</div>
+      <div class="plan-period">One-time payment · Save $195</div>
+      <div class="plan-divider"></div>
+      <div class="plan-name">Pay in full</div>
+      <div class="plan-desc">Single payment, project starts immediately. Includes everything — design, copy, SEO setup, and launch.</div>
+    </div>
+
+    <div class="plan-card" id="card-installment" onclick="selectPlan('installment')">
+      <div class="plan-check">
+        <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+      </div>
+      <div class="plan-badge flex">Flexible</div>
+      <div class="plan-price"><sup>$</sup>997</div>
+      <div class="plan-period">× 2 monthly payments · $1,994 total</div>
+      <div class="plan-divider"></div>
+      <div class="plan-name">Split payments</div>
+      <div class="plan-desc">Two equal payments, one month apart. Subscription auto-cancels after the second payment — nothing to manage.</div>
+    </div>
+  </div>
+
+  <div class="savings-note" id="savings-note">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="7"/><path d="M8 5v3.5l2 2"/></svg>
+    <span id="savings-text">You're saving $195 by paying in full.</span>
+  </div>
+
+  <button class="btn-primary" id="checkout-btn" onclick="startCheckout()">
+    <span class="btn-text">Continue to payment</span>
+    <div class="spinner"></div>
+    <svg id="arrow-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+  </button>
+  <button class="btn-ghost" onclick="window.location='/websites'">← Back to Water Websites</button>
+
+  <div class="trust-row">
+    <div class="trust-item">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 1l1.5 4H13l-3.5 2.5 1.5 4L7 9 3 11.5l1.5-4L1 5h4.5z"/></svg>
+      60-day satisfaction guarantee
+    </div>
+    <div class="trust-item">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="10" height="8" rx="1"/><path d="M5 5V4a2 2 0 014 0v1"/></svg>
+      Secured by Stripe
+    </div>
+    <div class="trust-item">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
+      No lock-in contracts
+    </div>
+  </div>
+</div>
+
+<script>
+let selectedPlan = 'one-time';
+
+function selectPlan(plan) {
+  selectedPlan = plan;
+  document.getElementById('card-onetime').classList.toggle('selected', plan === 'one-time');
+  document.getElementById('card-installment').classList.toggle('selected', plan === 'installment');
+
+  const note = document.getElementById('savings-text');
+  const savingsBox = document.getElementById('savings-note');
+  if (plan === 'one-time') {
+    note.textContent = "You're saving $195 by paying in full.";
+    savingsBox.style.background = 'var(--green-light)';
+    savingsBox.style.color = 'var(--green)';
+    savingsBox.style.borderColor = 'rgba(22,163,74,.2)';
+  } else {
+    note.textContent = "Split into 2 payments of $997. The subscription cancels automatically after your second payment.";
+    savingsBox.style.background = 'var(--blue-light)';
+    savingsBox.style.color = 'var(--blue)';
+    savingsBox.style.borderColor = 'rgba(59,130,246,.2)';
+  }
+}
+
+async function startCheckout() {
+  const btn = document.getElementById('checkout-btn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+  document.getElementById('arrow-icon').style.display = 'none';
+
+  try {
+    const res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ service: 'websites', plan: selectedPlan }),
+    });
+    const { url, error } = await res.json();
+    if (error) throw new Error(error);
+    window.location.href = url;
+  } catch (err) {
+    alert('Something went wrong. Please try again or contact us at Info@TreatEngine.com');
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    document.getElementById('arrow-icon').style.display = 'block';
+  }
+}
+</script>
+</body>
+</html>
