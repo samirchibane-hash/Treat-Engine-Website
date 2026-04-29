@@ -12,24 +12,30 @@
     { "src": "*.png",             "use": "@vercel/static" },
     { "src": "*.jpg",             "use": "@vercel/static" },
     { "src": "*.webp",            "use": "@vercel/static" },
-    { "src": "*.css",             "use": "@vercel/static" },
-    { "src": "*.js",              "use": "@vercel/static" }
+    { "src": "*.css",             "use": "@vercel/static" }
   ],
-  "rewrites": [
-    { "source": "/",                    "destination": "/Home.html" },
-    { "source": "/home",                "destination": "/Home.html" },
-    { "source": "/ads",                 "destination": "/Water%20Leads.html" },
-    { "source": "/ads/checkout",        "destination": "/checkout/leads.html" },
-    { "source": "/ads/onboarding",      "destination": "/onboarding/leads.html" },
-    { "source": "/booking",             "destination": "/Water%20Leads%20Booking.html" },
-    { "source": "/sales",               "destination": "/Water%20Sales.html" },
-    { "source": "/sales/checkout",      "destination": "/checkout/sales.html" },
-    { "source": "/sales/onboarding",    "destination": "/onboarding/sales.html" },
-    { "source": "/websites",            "destination": "/Water%20Websites.html" },
-    { "source": "/websites/checkout",   "destination": "/checkout/websites.html" },
-    { "source": "/websites/onboarding", "destination": "/onboarding/websites.html" },
-    { "source": "/admin",               "destination": "/admin/index.html" },
-    { "source": "/admin/login",         "destination": "/admin/login.html" },
-    { "source": "/v1",                  "destination": "/index%20v1.html" }
+  "routes": [
+    { "src": "/api/checkout",          "dest": "/api/checkout.js" },
+    { "src": "/api/webhook",           "dest": "/api/webhook.js" },
+    { "src": "/api/verify-session",    "dest": "/api/verify-session.js" },
+    { "src": "/api/onboarding",        "dest": "/api/onboarding.js" },
+    { "src": "/api/admin/login",       "dest": "/api/admin/login.js" },
+    { "src": "/api/admin/customers",   "dest": "/api/admin/customers.js" },
+    { "src": "/",                      "dest": "/Home.html" },
+    { "src": "/home",                  "dest": "/Home.html" },
+    { "src": "/ads",                   "dest": "/Water%20Leads.html" },
+    { "src": "/ads/checkout",          "dest": "/checkout/leads.html" },
+    { "src": "/ads/onboarding",        "dest": "/onboarding/leads.html" },
+    { "src": "/booking",               "dest": "/Water%20Leads%20Booking.html" },
+    { "src": "/sales",                 "dest": "/Water%20Sales.html" },
+    { "src": "/sales/checkout",        "dest": "/checkout/sales.html" },
+    { "src": "/sales/onboarding",      "dest": "/onboarding/sales.html" },
+    { "src": "/websites",              "dest": "/Water%20Websites.html" },
+    { "src": "/websites/checkout",     "dest": "/checkout/websites.html" },
+    { "src": "/websites/onboarding",   "dest": "/onboarding/websites.html" },
+    { "src": "/admin",                 "dest": "/admin/index.html" },
+    { "src": "/admin/login",           "dest": "/admin/login.html" },
+    { "src": "/v1",                    "dest": "/index%20v1.html" },
+    { "src": "/(.*)",                  "dest": "/$1" }
   ]
 }
