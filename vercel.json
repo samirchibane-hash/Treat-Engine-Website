@@ -1,5 +1,20 @@
 {
   "version": 2,
+  "builds": [
+    { "src": "api/**/*.js",       "use": "@vercel/node" },
+    { "src": "*.html",            "use": "@vercel/static" },
+    { "src": "checkout/*.html",   "use": "@vercel/static" },
+    { "src": "onboarding/*.html", "use": "@vercel/static" },
+    { "src": "admin/*.html",      "use": "@vercel/static" },
+    { "src": "images/**",         "use": "@vercel/static" },
+    { "src": "logos/**",          "use": "@vercel/static" },
+    { "src": "uploads/**",        "use": "@vercel/static" },
+    { "src": "*.png",             "use": "@vercel/static" },
+    { "src": "*.jpg",             "use": "@vercel/static" },
+    { "src": "*.webp",            "use": "@vercel/static" },
+    { "src": "*.css",             "use": "@vercel/static" },
+    { "src": "*.js",              "use": "@vercel/static" }
+  ],
   "rewrites": [
     { "source": "/",                    "destination": "/Home.html" },
     { "source": "/home",                "destination": "/Home.html" },
