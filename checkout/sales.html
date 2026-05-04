@@ -13,6 +13,7 @@
   --ink:#1c1814;--ink-muted:#7a6f65;
   --navy:#1a2744;--blue:#3b82f6;--blue-light:#eff6ff;--blue-dark:#1d4ed8;
   --white:#fffefb;--border:rgba(28,24,20,0.10);--border-mid:rgba(28,24,20,0.06);
+  --green:#16a34a;--green-light:#f0fdf4;
 }
 html{scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
@@ -36,6 +37,7 @@ a{text-decoration:none;color:inherit;}
 .page-title em{font-style:italic;color:var(--navy);}
 .page-sub{font-size:16px;color:var(--ink-muted);line-height:1.8;margin-bottom:48px;}
 
+/* Pricing card */
 .pricing-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:32px;margin-bottom:32px;}
 .pricing-row{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--border-mid);}
 .pricing-row:last-child{border-bottom:none;padding-bottom:0;}
@@ -45,13 +47,36 @@ a{text-decoration:none;color:inherit;}
 .pricing-total-label{font-size:15px;font-weight:600;}
 .pricing-total-value{font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:var(--navy);}
 
-.tier-table{width:100%;border-collapse:collapse;margin-top:12px;}
-.tier-table th{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted);text-align:left;padding:6px 0;border-bottom:1px solid var(--border);}
-.tier-table th:last-child{text-align:right;}
-.tier-table td{font-size:13.5px;color:var(--ink);padding:9px 0;border-bottom:1px solid var(--border-mid);}
-.tier-table td:last-child{text-align:right;font-weight:600;color:var(--navy);}
-.tier-table tr:last-child td{border-bottom:none;}
-.tier-best{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--blue-light);color:var(--blue);border-radius:4px;padding:2px 7px;margin-left:8px;vertical-align:middle;}
+/* Usage estimator card */
+.estimator-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:32px;margin-bottom:32px;}
+.estimator-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:6px;}
+.estimator-title{font-size:17px;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.estimator-sub{font-size:13px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px;}
+
+.slider-wrap{position:relative;margin-bottom:10px;}
+.slider{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:var(--cream-mid);outline:none;cursor:pointer;}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--blue);cursor:pointer;box-shadow:0 2px 8px rgba(59,130,246,.35);transition:transform .15s;}
+.slider::-webkit-slider-thumb:hover{transform:scale(1.15);}
+.slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--blue);cursor:pointer;border:none;box-shadow:0 2px 8px rgba(59,130,246,.35);}
+
+.slider-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-muted);margin-bottom:28px;}
+
+.estimate-result{background:var(--blue-light);border:1px solid rgba(59,130,246,.15);border-radius:10px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.estimate-left{}
+.estimate-volume{font-size:13px;color:var(--blue);font-weight:500;margin-bottom:2px;}
+.estimate-tier{font-size:12px;color:var(--ink-muted);}
+.estimate-right{text-align:right;}
+.estimate-cost{font-family:'Playfair Display',serif;font-size:30px;font-weight:600;color:var(--navy);line-height:1;}
+.estimate-cost-label{font-size:11.5px;color:var(--ink-muted);margin-top:3px;}
+
+.tier-rows{margin-top:24px;display:flex;flex-direction:column;gap:0;}
+.tier-row{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:6px;transition:background .2s;}
+.tier-row.active{background:var(--blue-light);}
+.tier-row-vol{font-size:13px;color:var(--ink-muted);}
+.tier-row-rate{font-size:13px;font-weight:600;color:var(--ink);}
+.tier-row.active .tier-row-vol{color:var(--blue);font-weight:500;}
+.tier-row.active .tier-row-rate{color:var(--blue);}
+.tier-badge{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--blue);color:#fff;border-radius:4px;padding:2px 6px;margin-left:8px;vertical-align:middle;}
 
 .info-box{background:var(--blue-light);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:16px 20px;margin-bottom:32px;}
 .info-box p{font-size:13.5px;color:var(--blue);line-height:1.7;}
@@ -94,7 +119,7 @@ a{text-decoration:none;color:inherit;}
 
   <div class="page-tag">Water Sales — ClearDeals</div>
   <h1 class="page-title">Set up your <em>team license</em></h1>
-  <p class="page-sub">Start with the annual platform license. Per-agreement usage fees are invoiced monthly based on agreements generated — so you only pay for what your team closes.</p>
+  <p class="page-sub">One annual license covers your whole team. Usage fees are tracked automatically and billed at the end of each month — nothing extra due today.</p>
 
   <div class="pricing-card">
     <div class="pricing-row">
@@ -104,27 +129,12 @@ a{text-decoration:none;color:inherit;}
       </div>
       <div class="pricing-value">$10,000 / yr</div>
     </div>
-    <div class="pricing-row" style="align-items:flex-start;">
-      <div style="flex:1;">
+    <div class="pricing-row">
+      <div>
         <div class="pricing-label">Per-agreement usage</div>
-        <div style="font-size:12px;color:var(--ink-muted);margin-top:2px;margin-bottom:14px;">Invoiced monthly · based on agreements generated</div>
-        <table class="tier-table">
-          <thead>
-            <tr>
-              <th>Agreements / month</th>
-              <th>Rate per agreement</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>1 – 100</td><td>$7.00</td></tr>
-            <tr><td>101 – 500</td><td>$5.50</td></tr>
-            <tr><td>501 – 2,000</td><td>$4.25</td></tr>
-            <tr><td>2,001 – 5,000</td><td>$3.75</td></tr>
-            <tr><td>5,001 – 10,000</td><td>$3.50</td></tr>
-            <tr><td>10,000+<span class="tier-best">Best rate</span></td><td>$3.25</td></tr>
-          </tbody>
-        </table>
+        <div style="font-size:12px;color:var(--ink-muted);margin-top:2px;">Tracked automatically · billed end of each month</div>
       </div>
+      <div class="pricing-value" style="color:var(--ink-muted);font-weight:500;">See estimator ↓</div>
     </div>
     <div class="pricing-total-row">
       <div class="pricing-total-label">Due today</div>
@@ -132,8 +142,63 @@ a{text-decoration:none;color:inherit;}
     </div>
   </div>
 
+  <!-- Usage estimator -->
+  <div class="estimator-card">
+    <div class="estimator-label">Usage estimator</div>
+    <div class="estimator-title">Estimate your monthly usage cost</div>
+    <div class="estimator-sub">Drag the slider to your expected agreements per month. Usage is billed end-of-month — volume automatically earns you a lower rate.</div>
+
+    <input type="range" class="slider" id="vol-slider" min="0" max="100" value="20" oninput="updateEstimator()">
+    <div class="slider-labels">
+      <span>1</span>
+      <span>100</span>
+      <span>500</span>
+      <span>2,000</span>
+      <span>5,000</span>
+      <span>10,000+</span>
+    </div>
+
+    <div class="estimate-result">
+      <div class="estimate-left">
+        <div class="estimate-volume" id="est-volume">20 agreements / month</div>
+        <div class="estimate-tier" id="est-tier">Tier: 1 – 100 · $7.00 per agreement</div>
+      </div>
+      <div class="estimate-right">
+        <div class="estimate-cost" id="est-cost">$140</div>
+        <div class="estimate-cost-label">est. / month</div>
+      </div>
+    </div>
+
+    <div class="tier-rows" style="margin-top:20px;">
+      <div class="tier-row active" id="tier-0">
+        <span class="tier-row-vol">1 – 100 agreements</span>
+        <span class="tier-row-rate">$7.00 / agreement</span>
+      </div>
+      <div class="tier-row" id="tier-1">
+        <span class="tier-row-vol">101 – 500 agreements</span>
+        <span class="tier-row-rate">$5.50 / agreement</span>
+      </div>
+      <div class="tier-row" id="tier-2">
+        <span class="tier-row-vol">501 – 2,000 agreements</span>
+        <span class="tier-row-rate">$4.25 / agreement</span>
+      </div>
+      <div class="tier-row" id="tier-3">
+        <span class="tier-row-vol">2,001 – 5,000 agreements</span>
+        <span class="tier-row-rate">$3.75 / agreement</span>
+      </div>
+      <div class="tier-row" id="tier-4">
+        <span class="tier-row-vol">5,001 – 10,000 agreements</span>
+        <span class="tier-row-rate">$3.50 / agreement</span>
+      </div>
+      <div class="tier-row" id="tier-5">
+        <span class="tier-row-vol">10,000+ agreements<span class="tier-badge">Best rate</span></span>
+        <span class="tier-row-rate">$3.25 / agreement</span>
+      </div>
+    </div>
+  </div>
+
   <div class="info-box">
-    <p><strong>How per-agreement billing works:</strong> After your account is set up, we track agreements generated each month across your team. You're billed at the rate matching your volume — higher volume automatically drops your per-agreement cost. Usage invoices are sent via Stripe at the start of each month.</p>
+    <p><strong>No surprises.</strong> Your license is the only thing you pay today. We track agreements generated across your team each month and send a usage invoice at month's end — automatically, via Stripe.</p>
   </div>
 
   <button class="btn-primary" id="checkout-btn" onclick="startCheckout()">
@@ -149,16 +214,66 @@ a{text-decoration:none;color:inherit;}
     </div>
     <div class="trust-item">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
-      Pay only for what you close
+      Unlimited users included
     </div>
     <div class="trust-item">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
-      Unlimited users included
+      Usage billed end of month
     </div>
   </div>
 </div>
 
 <script>
+// Slider position 0-100 maps logarithmically to 1–12,000 agreements
+function sliderToVolume(pos) {
+  if (pos === 0) return 1;
+  // log scale: pos 0→1, pos 100→12000
+  return Math.round(Math.exp(pos / 100 * Math.log(12000)));
+}
+
+const tiers = [
+  { max: 100,   rate: 7.00,  label: '1 – 100',         id: 'tier-0' },
+  { max: 500,   rate: 5.50,  label: '101 – 500',        id: 'tier-1' },
+  { max: 2000,  rate: 4.25,  label: '501 – 2,000',      id: 'tier-2' },
+  { max: 5000,  rate: 3.75,  label: '2,001 – 5,000',    id: 'tier-3' },
+  { max: 10000, rate: 3.50,  label: '5,001 – 10,000',   id: 'tier-4' },
+  { max: Infinity, rate: 3.25, label: '10,000+',        id: 'tier-5' },
+];
+
+function getTier(vol) {
+  return tiers.find(t => vol <= t.max);
+}
+
+function fmt(n) {
+  return n >= 10000 ? n.toLocaleString() + '+' : n.toLocaleString();
+}
+
+function updateEstimator() {
+  const pos = parseInt(document.getElementById('vol-slider').value);
+  const vol = sliderToVolume(pos);
+  const tier = getTier(vol);
+  const cost = Math.round(vol * tier.rate);
+  const displayVol = vol >= 10000 ? '10,000+' : vol.toLocaleString();
+
+  document.getElementById('est-volume').textContent = displayVol + ' agreements / month';
+  document.getElementById('est-tier').textContent = 'Tier: ' + tier.label + ' · $' + tier.rate.toFixed(2) + ' per agreement';
+  document.getElementById('est-cost').textContent = '$' + cost.toLocaleString();
+
+  // Update slider fill
+  const slider = document.getElementById('vol-slider');
+  const pct = pos + '%';
+  slider.style.background = `linear-gradient(to right, var(--blue) ${pct}, var(--cream-mid) ${pct})`;
+
+  // Highlight active tier row
+  tiers.forEach(t => {
+    const row = document.getElementById(t.id);
+    row.classList.toggle('active', t.id === tier.id);
+  });
+}
+
+// Init
+updateEstimator();
+
 async function startCheckout() {
   const btn = document.getElementById('checkout-btn');
   btn.classList.add('loading');
