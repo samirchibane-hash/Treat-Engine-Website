@@ -62,19 +62,26 @@ async function main() {
   results.STRIPE_PRICE_WEBSITES_INSTALLMENT = websitesInstallmentPrice.id;
   console.log(`✅  Water Websites $997×2 installment  →  ${websitesInstallmentPrice.id}`);
 
-  // ── Water Sales — $5,000 annual license ──────────────────────────────────
+  // ── Water Sales — $10,000 annual license ─────────────────────────────────
+  // Per-agreement usage fees (invoiced separately, monthly):
+  //   1–100:        $7.00/agreement
+  //   101–500:      $5.50/agreement
+  //   501–2,000:    $4.25/agreement
+  //   2,001–5,000:  $3.75/agreement
+  //   5,001–10,000: $3.50/agreement
+  //   10,000+:      $3.25/agreement
   const salesProduct = await stripe.products.create({
     name: 'Water Sales — ClearDeals',
-    description: 'Annual license for the ClearDeals in-field proposal and closing platform.',
+    description: 'Annual license for the ClearDeals in-field proposal and closing platform. Unlimited users. Per-agreement usage billed monthly.',
   });
   const salesLicensePrice = await stripe.prices.create({
     product: salesProduct.id,
-    unit_amount: 500000,
+    unit_amount: 1000000,
     currency: 'usd',
     nickname: 'Water Sales Annual License',
   });
   results.STRIPE_PRICE_SALES_LICENSE = salesLicensePrice.id;
-  console.log(`✅  Water Sales $5,000 license  →  ${salesLicensePrice.id}`);
+  console.log(`✅  Water Sales $10,000 license  →  ${salesLicensePrice.id}`);
 
   console.log('\n──────────────────────────────────────────────────────────────');
   console.log('Add these to your Vercel environment variables:\n');

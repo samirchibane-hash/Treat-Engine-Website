@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
   const origin = process.env.SITE_URL || `https://${req.headers.host}`;
 
-  const { service, plan, userCount } = req.body || {};
+  const { service, plan } = req.body || {};
 
   try {
     let sessionParams;
@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
       sessionParams = {
         mode: 'payment',
         line_items: [{ price: process.env.STRIPE_PRICE_SALES_LICENSE, quantity: 1 }],
-        metadata: { service: 'sales', plan: 'license', userCount: String(userCount || 1) },
+        metadata: { service: 'sales', plan: 'license' },
         success_url: `${origin}/sales/onboarding?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/sales/checkout`,
       };

@@ -45,12 +45,13 @@ a{text-decoration:none;color:inherit;}
 .pricing-total-label{font-size:15px;font-weight:600;}
 .pricing-total-value{font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:var(--navy);}
 
-.user-control{display:flex;align-items:center;gap:0;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;width:fit-content;}
-.user-btn{width:44px;height:44px;border:none;background:var(--cream-mid);color:var(--ink);font-size:20px;font-weight:400;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;line-height:1;}
-.user-btn:hover{background:var(--cream-dark);}
-.user-count{width:60px;text-align:center;font-size:18px;font-weight:600;background:var(--white);border:none;outline:none;height:44px;font-family:'DM Sans',sans-serif;color:var(--ink);}
-
-.user-note{font-size:12.5px;color:var(--ink-muted);margin-top:10px;line-height:1.6;}
+.tier-table{width:100%;border-collapse:collapse;margin-top:12px;}
+.tier-table th{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted);text-align:left;padding:6px 0;border-bottom:1px solid var(--border);}
+.tier-table th:last-child{text-align:right;}
+.tier-table td{font-size:13.5px;color:var(--ink);padding:9px 0;border-bottom:1px solid var(--border-mid);}
+.tier-table td:last-child{text-align:right;font-weight:600;color:var(--navy);}
+.tier-table tr:last-child td{border-bottom:none;}
+.tier-best{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--blue-light);color:var(--blue);border-radius:4px;padding:2px 7px;margin-left:8px;vertical-align:middle;}
 
 .info-box{background:var(--blue-light);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:16px 20px;margin-bottom:32px;}
 .info-box p{font-size:13.5px;color:var(--blue);line-height:1.7;}
@@ -93,41 +94,50 @@ a{text-decoration:none;color:inherit;}
 
   <div class="page-tag">Water Sales — ClearDeals</div>
   <h1 class="page-title">Set up your <em>team license</em></h1>
-  <p class="page-sub">Start with the annual license, then tell us how many salespeople you're setting up. Per-user billing is invoiced separately after your account is configured.</p>
+  <p class="page-sub">Start with the annual platform license. Per-agreement usage fees are invoiced monthly based on agreements generated — so you only pay for what your team closes.</p>
 
   <div class="pricing-card">
     <div class="pricing-row">
       <div>
         <div class="pricing-label">Annual License Fee</div>
-        <div style="font-size:12px;color:var(--ink-muted);margin-top:2px;">Billed once per year · includes all platform features</div>
+        <div style="font-size:12px;color:var(--ink-muted);margin-top:2px;">Billed once per year · unlimited users · all platform features</div>
       </div>
-      <div class="pricing-value">$5,000 / yr</div>
+      <div class="pricing-value">$10,000 / yr</div>
     </div>
-    <div class="pricing-row">
-      <div>
-        <div class="pricing-label">Number of salespeople</div>
-        <div class="user-note">Per-user fee: $49/month each · invoiced separately</div>
-      </div>
-      <div>
-        <div class="user-control">
-          <button class="user-btn" onclick="adjustUsers(-1)">−</button>
-          <input class="user-count" id="user-count" type="number" value="1" min="1" max="50" onchange="updatePricing()">
-          <button class="user-btn" onclick="adjustUsers(1)">+</button>
-        </div>
+    <div class="pricing-row" style="align-items:flex-start;">
+      <div style="flex:1;">
+        <div class="pricing-label">Per-agreement usage</div>
+        <div style="font-size:12px;color:var(--ink-muted);margin-top:2px;margin-bottom:14px;">Invoiced monthly · based on agreements generated</div>
+        <table class="tier-table">
+          <thead>
+            <tr>
+              <th>Agreements / month</th>
+              <th>Rate per agreement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1 – 100</td><td>$7.00</td></tr>
+            <tr><td>101 – 500</td><td>$5.50</td></tr>
+            <tr><td>501 – 2,000</td><td>$4.25</td></tr>
+            <tr><td>2,001 – 5,000</td><td>$3.75</td></tr>
+            <tr><td>5,001 – 10,000</td><td>$3.50</td></tr>
+            <tr><td>10,000+<span class="tier-best">Best rate</span></td><td>$3.25</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <div class="pricing-total-row">
       <div class="pricing-total-label">Due today</div>
-      <div class="pricing-total-value">$5,000</div>
+      <div class="pricing-total-value">$10,000</div>
     </div>
   </div>
 
   <div class="info-box">
-    <p><strong>How per-user billing works:</strong> After your account is set up, we'll send you a separate Stripe invoice for your salespeople at $49/month per user. This keeps your team billing flexible — add or remove users anytime.</p>
+    <p><strong>How per-agreement billing works:</strong> After your account is set up, we track agreements generated each month across your team. You're billed at the rate matching your volume — higher volume automatically drops your per-agreement cost. Usage invoices are sent via Stripe at the start of each month.</p>
   </div>
 
   <button class="btn-primary" id="checkout-btn" onclick="startCheckout()">
-    <span class="btn-text">Pay $5,000 · Get Started</span>
+    <span class="btn-text">Pay $10,000 · Get Started</span>
     <div class="spinner"></div>
   </button>
   <button class="btn-ghost" onclick="window.location='/sales'">← Back to Water Sales</button>
@@ -139,27 +149,17 @@ a{text-decoration:none;color:inherit;}
     </div>
     <div class="trust-item">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
-      Flexible user billing
+      Pay only for what you close
+    </div>
+    <div class="trust-item">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
+      Unlimited users included
     </div>
   </div>
 </div>
 
 <script>
-function adjustUsers(delta) {
-  const input = document.getElementById('user-count');
-  const val = Math.max(1, Math.min(50, parseInt(input.value || 1) + delta));
-  input.value = val;
-  updatePricing();
-}
-
-function updatePricing() {
-  const users = parseInt(document.getElementById('user-count').value) || 1;
-  const btn = document.getElementById('checkout-btn');
-  btn.querySelector('.btn-text').textContent = `Pay $5,000 · Get Started`;
-}
-
 async function startCheckout() {
-  const userCount = parseInt(document.getElementById('user-count').value) || 1;
   const btn = document.getElementById('checkout-btn');
   btn.classList.add('loading');
   btn.disabled = true;
@@ -168,7 +168,7 @@ async function startCheckout() {
     const res = await fetch('/api/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ service: 'sales', userCount }),
+      body: JSON.stringify({ service: 'sales' }),
     });
     const { url, error } = await res.json();
     if (error) throw new Error(error);
