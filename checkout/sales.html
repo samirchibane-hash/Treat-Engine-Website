@@ -69,14 +69,6 @@ a{text-decoration:none;color:inherit;}
 .estimate-cost{font-family:'Playfair Display',serif;font-size:30px;font-weight:600;color:var(--navy);line-height:1;}
 .estimate-cost-label{font-size:11.5px;color:var(--ink-muted);margin-top:3px;}
 
-.tier-rows{margin-top:24px;display:flex;flex-direction:column;gap:0;}
-.tier-row{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:6px;transition:background .2s;}
-.tier-row.active{background:var(--blue-light);}
-.tier-row-vol{font-size:13px;color:var(--ink-muted);}
-.tier-row-rate{font-size:13px;font-weight:600;color:var(--ink);}
-.tier-row.active .tier-row-vol{color:var(--blue);font-weight:500;}
-.tier-row.active .tier-row-rate{color:var(--blue);}
-.tier-badge{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--blue);color:#fff;border-radius:4px;padding:2px 6px;margin-left:8px;vertical-align:middle;}
 
 .info-box{background:var(--blue-light);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:16px 20px;margin-bottom:32px;}
 .info-box p{font-size:13.5px;color:var(--blue);line-height:1.7;}
@@ -169,32 +161,6 @@ a{text-decoration:none;color:inherit;}
       </div>
     </div>
 
-    <div class="tier-rows" style="margin-top:20px;">
-      <div class="tier-row active" id="tier-0">
-        <span class="tier-row-vol">1 – 100 agreements</span>
-        <span class="tier-row-rate">$7.00 / agreement</span>
-      </div>
-      <div class="tier-row" id="tier-1">
-        <span class="tier-row-vol">101 – 500 agreements</span>
-        <span class="tier-row-rate">$5.50 / agreement</span>
-      </div>
-      <div class="tier-row" id="tier-2">
-        <span class="tier-row-vol">501 – 2,000 agreements</span>
-        <span class="tier-row-rate">$4.25 / agreement</span>
-      </div>
-      <div class="tier-row" id="tier-3">
-        <span class="tier-row-vol">2,001 – 5,000 agreements</span>
-        <span class="tier-row-rate">$3.75 / agreement</span>
-      </div>
-      <div class="tier-row" id="tier-4">
-        <span class="tier-row-vol">5,001 – 10,000 agreements</span>
-        <span class="tier-row-rate">$3.50 / agreement</span>
-      </div>
-      <div class="tier-row" id="tier-5">
-        <span class="tier-row-vol">10,000+ agreements<span class="tier-badge">Best rate</span></span>
-        <span class="tier-row-rate">$3.25 / agreement</span>
-      </div>
-    </div>
   </div>
 
   <div class="info-box">
@@ -263,11 +229,6 @@ function updateEstimator() {
   const pct = pos + '%';
   slider.style.background = `linear-gradient(to right, var(--blue) ${pct}, var(--cream-mid) ${pct})`;
 
-  // Highlight active tier row
-  tiers.forEach(t => {
-    const row = document.getElementById(t.id);
-    row.classList.toggle('active', t.id === tier.id);
-  });
 }
 
 // Init
