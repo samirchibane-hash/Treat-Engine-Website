@@ -161,11 +161,11 @@ a{text-decoration:none;color:inherit;}
     <div class="estimate-result">
       <div class="estimate-left">
         <div class="estimate-volume" id="est-volume">20 agreements / month</div>
-        <div class="estimate-tier" id="est-tier">Tier: 1 – 100 · $7.00 per agreement</div>
+        <div class="estimate-tier" id="est-tier">Tier: 1 – 100</div>
       </div>
       <div class="estimate-right">
-        <div class="estimate-cost" id="est-cost">$140</div>
-        <div class="estimate-cost-label">est. / month</div>
+        <div class="estimate-cost" id="est-cost">$7.00</div>
+        <div class="estimate-cost-label">per agreement</div>
       </div>
     </div>
 
@@ -252,12 +252,11 @@ function updateEstimator() {
   const pos = parseInt(document.getElementById('vol-slider').value);
   const vol = sliderToVolume(pos);
   const tier = getTier(vol);
-  const cost = Math.round(vol * tier.rate);
   const displayVol = vol >= 10000 ? '10,000+' : vol.toLocaleString();
 
   document.getElementById('est-volume').textContent = displayVol + ' agreements / month';
-  document.getElementById('est-tier').textContent = 'Tier: ' + tier.label + ' · $' + tier.rate.toFixed(2) + ' per agreement';
-  document.getElementById('est-cost').textContent = '$' + cost.toLocaleString();
+  document.getElementById('est-tier').textContent = 'Tier: ' + tier.label;
+  document.getElementById('est-cost').textContent = '$' + tier.rate.toFixed(2);
 
   // Update slider fill
   const slider = document.getElementById('vol-slider');
