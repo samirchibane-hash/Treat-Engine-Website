@@ -155,7 +155,7 @@ body.drawer-locked{overflow:hidden;}
 
   /* Body & CTAs minimum sizes for touch */
   .btn-blue,.btn-dark,.btn-cream,.btn-outline,.btn-ghost,.btn-text,
-  .nav-cta,.hero-actions a,.hero-actions button{
+  .hero-actions a,.hero-actions button{
     min-height:52px !important;
     padding:14px 22px !important;
     font-size:15px !important;
@@ -163,6 +163,8 @@ body.drawer-locked{overflow:hidden;}
     align-items:center !important;
     justify-content:center !important;
   }
+  /* Nav CTA is always hidden on mobile — never a touch target */
+  .nav-cta{display:none !important;}
   .hero-actions{
     flex-direction:column !important;
     align-items:stretch !important;
