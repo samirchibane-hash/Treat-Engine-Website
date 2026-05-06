@@ -386,6 +386,7 @@ function Nav({tweaks}) {
           <a href="/ads">Water Leads</a>
           <a href="/sales" className="active">Water Sales</a>
         </div>
+        <a href="#book" className="nav-cta">{ctaLabel} →</a>
       </div>
     </nav>
   );
@@ -594,7 +595,7 @@ function Problem() {
               ))}
             </ul>
             <div style={{marginTop:36}}>
-              <button className="btn-dark">See the solution →</button>
+              <a href="#book" className="btn-dark">See the solution →</a>
             </div>
           </div>
         </div>
@@ -927,6 +928,11 @@ function Features() {
             </div>
           ))}
         </div>
+        <div className="reveal" style={{textAlign:'center',marginTop:72,paddingTop:64,borderTop:'1px solid var(--border)'}}>
+          <p style={{fontSize:16,color:'var(--ink-muted)',marginBottom:10,lineHeight:1.7}}>Your techs already know how to diagnose the problem.<br/>Give them the tool that closes the deal.</p>
+          <a href="#book" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px',marginTop:14}}>Book a Demo →</a>
+          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>Smart tablet included · Live in 3–5 business days · No contracts</div>
+        </div>
       </div>
     </section>
   );
@@ -960,6 +966,10 @@ function DealFlow() {
               <div className="flow-step-desc">{s.desc}</div>
             </div>
           ))}
+        </div>
+        <div className="reveal" style={{marginTop:56,paddingTop:48,borderTop:'1px solid rgba(255,255,255,0.08)',textAlign:'center'}}>
+          <a href="#book" className="btn-cream" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:15,padding:'16px 34px'}}>See ClearDeals in Action →</a>
+          <div style={{marginTop:12,fontSize:13,color:'rgba(255,255,255,0.35)'}}>30-minute demo · No commitment · Live on your device</div>
         </div>
       </div>
     </section>
@@ -1013,6 +1023,12 @@ function Comparison({tweaks}) {
             ))}
           </div>
         </div>
+        <div className="reveal" style={{textAlign:'center',marginTop:64,paddingTop:56,borderTop:'1px solid var(--border)'}}>
+          <h3 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(22px,3vw,32px)',fontWeight:600,color:'var(--ink)',marginBottom:12,letterSpacing:'-.02em'}}>Ready to run appointments like this?</h3>
+          <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28}}>Book a 30-minute demo and see exactly how it works with your catalog and pricing.</p>
+          <a href="#book" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Book a Demo →</a>
+          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>30-day results guarantee · No contracts</div>
+        </div>
       </div>
     </section>
   );
@@ -1047,6 +1063,13 @@ function FAQ() {
               <div className="faq-a">{f.a}</div>
             </div>
           ))}
+        </div>
+        <div className="reveal" style={{textAlign:'center',marginTop:64,padding:'48px 32px',background:'var(--white)',borderRadius:10,border:'1px solid var(--border)'}}>
+          <div style={{fontSize:11,fontWeight:700,letterSpacing:'.12em',textTransform:'uppercase',color:'var(--blue)',marginBottom:16}}>Still have questions?</div>
+          <h3 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(22px,3vw,30px)',fontWeight:600,color:'var(--ink)',marginBottom:12,letterSpacing:'-.02em'}}>Talk to us live on a 30-minute demo.</h3>
+          <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28,maxWidth:440,margin:'0 auto 28px'}}>We'll answer every question and show you exactly how ClearDeals works with your team and your catalog.</p>
+          <a href="#book" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Book Your Demo →</a>
+          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>No commitment · Smart tablet included · Live in 3–5 days</div>
         </div>
       </div>
     </section>
