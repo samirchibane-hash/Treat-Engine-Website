@@ -49,12 +49,12 @@ a{text-decoration:none;color:inherit;}
 @media(max-width:900px){.nav-links,.nav-cta{display:none !important;}}
 
 /* HERO */
-.hero-section{padding:140px 32px 0;max-width:1180px;margin:0 auto;}
+.hero-section{padding:0 32px;max-width:1180px;margin:0 auto;}
 .hero-eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:28px;}
 .hero-eyebrow-line{width:20px;height:1.5px;background:var(--blue);}
 .hero-headline{font-size:clamp(52px,7vw,90px);font-weight:600;color:var(--ink);letter-spacing:-.03em;line-height:1.02;margin-bottom:36px;}
 .hero-headline em{font-style:italic;color:var(--navy);}
-.hero-body{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;padding-bottom:80px;border-bottom:1px solid var(--border);}
+.hero-body{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;padding:100px 0 80px;border-bottom:1px solid var(--border);}
 .hero-left{}
 .hero-sub{font-size:18px;color:var(--ink-muted);max-width:520px;line-height:1.8;margin-bottom:40px;}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
@@ -74,8 +74,8 @@ a{text-decoration:none;color:inherit;}
 .hero-service-row:hover .hero-service-arrow{transform:translateX(3px);color:var(--blue);}
 
 @media(max-width:960px){
-  .hero-body{grid-template-columns:1fr!important;gap:48px;}
-  .hero-section{padding:100px 20px 0!important;}
+  .hero-body{grid-template-columns:1fr!important;gap:48px;padding:80px 0 60px;}
+  .hero-section{padding:0 20px;}
   .hero-right{width:100%;}
 }
 
@@ -389,8 +389,7 @@ a{text-decoration:none;color:inherit;}
 .reveal.visible{opacity:1;transform:none;}
 
 @media(max-width:960px){
-  .hero-body{grid-template-columns:1fr!important;gap:40px;}
-  .hero-section{padding:100px 20px 0!important;}
+  .hero-body{grid-template-columns:1fr!important;gap:40px;padding:80px 0 60px;}
   .stats-inner{grid-template-columns:1fr 1fr;}
   .stat-cell:nth-child(2){border-right:none;}
   .stat-cell:nth-child(3){border-top:1px solid rgba(255,255,255,0.08);}
@@ -403,7 +402,7 @@ a{text-decoration:none;color:inherit;}
   .testi-video-grid{grid-template-columns:repeat(2,1fr);gap:24px;max-width:520px;}
   .footer-top{grid-template-columns:1fr 1fr;}
   .nav-links{display:none;}
-  .hero-section{padding:100px 20px 0;}
+  .hero-section{padding:0 20px;}
   .hero-headline{font-size:clamp(40px,8vw,64px);}
   .system-section,.about-section,.testi-section,.cta-section{padding:72px 20px;}
   .stats-section{padding:60px 20px;}
@@ -521,15 +520,15 @@ function Hero() {
   return (
     <div>
       <section className="hero-section">
-        <div className="hero-eyebrow reveal">
-          <span className="hero-eyebrow-line"/>
-          Water treatment's only end-to-end growth agency
-        </div>
-        <h1 className="hero-headline reveal">
-          More installs.<br/><em>Less guesswork.</em>
-        </h1>
         <div className="hero-body reveal">
           <div className="hero-left">
+            <div className="hero-eyebrow">
+              <span className="hero-eyebrow-line"/>
+              Water treatment's only end-to-end growth agency
+            </div>
+            <h1 className="hero-headline">
+              More installs.<br/><em>Less guesswork.</em>
+            </h1>
             <p className="hero-sub">Treat Engine is a boutique agency built exclusively for residential water treatment dealerships. We fill your calendar, build your online presence, and arm your technicians to close — all under one roof.</p>
             <div className="hero-actions">
               <a href="#services" className="btn-blue">Explore our services →</a>
