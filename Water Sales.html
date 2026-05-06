@@ -1125,7 +1125,7 @@ function BookingSection() {
 
 function CTABanner({tweaks}) {
   return (
-    <section className="cta-banner" id="contact">
+    <section className="cta-banner" id="book">
       <div className="cta-inner">
         <div className="cta-left">
           <div className="cta-tag">ClearDeals</div>
@@ -1263,7 +1263,6 @@ function App() {
       <Comparison tweaks={tweaks}/>
       <FAQ/>
       <CTABanner tweaks={tweaks}/>
-      <BookingSection/>
       <Footer/>
       <TweaksPanel tweaks={tweaks} setTweaks={setTweaks} visible={tweaksVisible}/>
     </>
