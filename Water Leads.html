@@ -405,6 +405,7 @@ function Nav({tweaks}) {
           <a href="/ads" className="active">Water Leads</a>
           <a href="/sales">Water Sales</a>
         </div>
+        <a href="/booking" className="nav-cta">{ctaLabel} →</a>
       </div>
     </nav>
   );
@@ -454,12 +455,12 @@ function Hero({tweaks}) {
             <p className="hero-sub">{tweaks.subheadline}</p>
             <div className="hero-actions">
               <a href="/booking" className="btn-dark">{tweaks.ctaText} →</a>
-              <button className="btn-text">
+              <a href="#how" className="btn-text">
                 See how it works
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-              </button>
+              </a>
             </div>
             <div className="hero-micro-stats">
               <div className="hero-micro-stat">
@@ -650,6 +651,11 @@ function HowItWorks() {
             </div>
           ))}
         </div>
+        <div className="reveal" style={{textAlign:'center',marginTop:72,paddingTop:64,borderTop:'1px solid var(--border)'}}>
+          <p style={{fontSize:16,color:'var(--ink-muted)',marginBottom:10,lineHeight:1.7}}>We run the whole system. You just show up to close.</p>
+          <a href="/booking" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px',marginTop:14}}>Check Territory Availability →</a>
+          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>Exclusive per market · Month-to-month · 30-day guarantee</div>
+        </div>
       </div>
     </section>
   );
@@ -730,6 +736,10 @@ function AdsShowcase() {
             </div>
           </div>
         </div>
+        <div className="reveal" style={{marginTop:56,paddingTop:48,borderTop:'1px solid rgba(255,255,255,0.08)',textAlign:'center'}}>
+          <a href="/booking" className="btn-cream" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:15,padding:'16px 34px'}}>Get Ads Like These Running in Your Market →</a>
+          <div style={{marginTop:12,fontSize:13,color:'rgba(255,255,255,0.35)'}}>Done-for-you creative · No stock footage · Built for your market</div>
+        </div>
       </div>
     </section>
   );
@@ -760,6 +770,11 @@ function WhyItWorks() {
               <div className="why-desc">{c.desc}</div>
             </div>
           ))}
+        </div>
+        <div className="reveal" style={{textAlign:'center',marginTop:72,paddingTop:64,borderTop:'1px solid var(--border)'}}>
+          <p style={{fontSize:16,color:'var(--ink-muted)',marginBottom:10,lineHeight:1.7}}>One industry. One agency. Your market could still be open.</p>
+          <a href="/booking" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px',marginTop:14}}>Check Territory Availability →</a>
+          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>Exclusive per market · Month-to-month · No contracts</div>
         </div>
       </div>
     </section>
@@ -832,6 +847,12 @@ function Testimonials() {
             </div>
           ))}
         </div>
+        <div className="reveal" style={{textAlign:'center',marginTop:72,paddingTop:64,borderTop:'1px solid var(--border)'}}>
+          <h3 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(22px,3vw,32px)',fontWeight:600,color:'var(--ink)',marginBottom:12,letterSpacing:'-.02em'}}>Join the dealers closing more installs every month.</h3>
+          <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28}}>Check if your territory is still available before a competitor does.</p>
+          <a href="/booking" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Check Territory Availability →</a>
+          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>30-day guarantee · Month-to-month · Exclusive per market</div>
+        </div>
       </div>
     </section>
   );
@@ -866,6 +887,13 @@ function FAQ() {
               <div className="faq-a">{f.a}</div>
             </div>
           ))}
+        </div>
+        <div className="reveal" style={{textAlign:'center',marginTop:64,padding:'48px 32px',background:'var(--white)',borderRadius:10,border:'1px solid var(--border)'}}>
+          <div style={{fontSize:11,fontWeight:700,letterSpacing:'.12em',textTransform:'uppercase',color:'var(--blue)',marginBottom:16}}>Still have questions?</div>
+          <h3 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(22px,3vw,30px)',fontWeight:600,color:'var(--ink)',marginBottom:12,letterSpacing:'-.02em'}}>Let's talk through your market on a call.</h3>
+          <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28,maxWidth:440,margin:'0 auto 28px'}}>We'll show you exactly what we'd run for your territory and give you a realistic install projection.</p>
+          <a href="/booking" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Book a Strategy Call →</a>
+          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>No commitment · 30-minute call · 30-day guarantee</div>
         </div>
       </div>
     </section>
