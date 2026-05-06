@@ -4,6 +4,9 @@
    Loaded after every page's own <style> block so it wins.
    ============================================================ */
 
+/* Hidden on desktop — only activated inside the mobile media query */
+.mobile-sticky-cta{display:none;}
+
 /* === Mobile drawer / hamburger (works on all React + plain pages) === */
 .mobile-toggle{
   display:none;
