@@ -316,6 +316,11 @@ function toggleConditional(id, show) {
 }
 
 async function verifyAndLoad() {
+  // LOCAL PREVIEW: skip verification on localhost
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    showOverlay(null);
+    return;
+  }
   if (!sessionId) {
     showOverlay('error');
     return;
