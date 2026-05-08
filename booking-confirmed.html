@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're Booked — Treat Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#faf7f2;
+  --cream-mid:#f0ebe0;
+  --cream-dark:#e5ddd0;
+  --ink:#1c1814;
+  --ink-mid:#3d3530;
+  --ink-muted:#7a6f65;
+  --navy:#1a2744;
+  --blue:#3b82f6;
+  --blue-light:#eff6ff;
+  --blue-dark:#1d4ed8;
+  --white:#fffefb;
+  --border:rgba(28,24,20,0.10);
+  --border-mid:rgba(28,24,20,0.06);
+  --green:#16a34a;
+  --green-light:#f0fdf4;
+  --green-border:#bbf7d0;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column;}
+a{text-decoration:none;color:inherit;}
+
+/* ── TOP BAR ── */
+.topbar{background:var(--navy);padding:10px 32px;text-align:center;}
+.topbar-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;}
+.topbar-item{display:flex;align-items:center;gap:7px;font-size:12.5px;color:rgba(255,255,255,0.75);font-weight:500;}
+.topbar-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;}
+.topbar-divider{width:1px;height:14px;background:rgba(255,255,255,0.15);}
+
+/* ── NAV ── */
+.nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 32px;}
+.nav-inner{max-width:900px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:center;}
+
+/* ── MAIN ── */
+.page{flex:1;max-width:620px;margin:0 auto;padding:72px 32px 80px;text-align:center;}
+
+/* ── CHECK ICON ── */
+.check-wrap{width:72px;height:72px;border-radius:50%;background:var(--green-light);border:1.5px solid var(--green-border);display:flex;align-items:center;justify-content:center;margin:0 auto 32px;}
+.check-wrap svg{display:block;}
+
+/* ── EYEBROW ── */
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:18px;}
+.eyebrow::before{content:'';display:block;width:18px;height:1.5px;background:var(--green);}
+.eyebrow::after{content:'';display:block;width:18px;height:1.5px;background:var(--green);}
+
+/* ── HEADING ── */
+h1{font-family:'Playfair Display',serif;font-size:clamp(30px,4.5vw,46px);font-weight:700;color:var(--ink);line-height:1.1;letter-spacing:-.025em;margin-bottom:18px;}
+h1 em{font-style:italic;color:var(--navy);}
+
+.sub{font-size:16.5px;color:var(--ink-muted);line-height:1.8;max-width:480px;margin:0 auto 48px;}
+
+/* ── NEXT STEPS ── */
+.steps{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;text-align:left;margin-bottom:40px;}
+.steps-header{padding:16px 24px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-muted);}
+.step-item{display:flex;align-items:flex-start;gap:16px;padding:18px 24px;border-bottom:1px solid var(--border-mid);}
+.step-item:last-child{border-bottom:none;}
+.step-num{width:26px;height:26px;border-radius:50%;background:var(--blue-light);border:1.5px solid rgba(59,130,246,0.25);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--blue);flex-shrink:0;margin-top:1px;}
+.step-text strong{display:block;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px;}
+.step-text span{font-size:13px;color:var(--ink-muted);line-height:1.6;}
+
+/* ── FOOTER NOTE ── */
+.footer-note{font-size:13px;color:var(--ink-muted);line-height:1.7;}
+.footer-note a{color:var(--blue);font-weight:500;}
+.footer-note a:hover{text-decoration:underline;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .topbar-item:not(:first-child){display:none;}
+  .page{padding:52px 20px 60px;}
+  h1{font-size:28px;}
+}
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="topbar-item">
+      <span class="topbar-dot"></span>
+      Exclusive territories — limited availability
+    </span>
+    <span class="topbar-divider"></span>
+    <span class="topbar-item">
+      <span class="topbar-dot"></span>
+      No contracts · Month-to-month
+    </span>
+    <span class="topbar-divider"></span>
+    <span class="topbar-item">
+      <span class="topbar-dot"></span>
+      30-day satisfaction guarantee
+    </span>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/home"><img src="uploads/Treat Engine Logo .png" alt="Treat Engine" style="height:28px;"/></a>
+  </div>
+</nav>
+
+<!-- Main -->
+<div class="page">
+
+  <div class="check-wrap">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <path d="M7 16.5L13 22.5L25 10" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <div class="eyebrow">Demo Booked</div>
+
+  <h1>You're all set.<br><em>See you soon.</em></h1>
+
+  <p class="sub">Your demo is confirmed. Check your inbox for a calendar invite and everything you need to prepare — it only takes a minute.</p>
+
+  <div class="steps">
+    <div class="steps-header">What happens next</div>
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <strong>Check your inbox</strong>
+        <span>A confirmation email with your call details and calendar invite is on its way. Check spam if you don't see it within a few minutes.</span>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <strong>Add it to your calendar</strong>
+        <span>Use the link in your confirmation email to save the time — we'll send a reminder 24 hours before your call.</span>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <strong>Show up ready to grow</strong>
+        <span>We'll walk through your market, your goals, and exactly how Treat Engine fits your business. No pressure, just clarity.</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="footer-note">Questions? Email us at <a href="mailto:hello@treatengine.com">hello@treatengine.com</a></p>
+
+</div>
+
+</body>
+</html>
