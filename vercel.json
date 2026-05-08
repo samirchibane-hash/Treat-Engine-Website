@@ -6,6 +6,7 @@
     { "src": "checkout/*.html",   "use": "@vercel/static" },
     { "src": "onboarding/*.html", "use": "@vercel/static" },
     { "src": "admin/*.html",      "use": "@vercel/static" },
+    { "src": "booking-confirmed.html", "use": "@vercel/static" },
     { "src": "images/**",         "use": "@vercel/static" },
     { "src": "logos/**",          "use": "@vercel/static" },
     { "src": "uploads/**",        "use": "@vercel/static" },
@@ -35,6 +36,7 @@
     { "src": "/websites/onboarding",   "dest": "/onboarding/websites.html" },
     { "src": "/admin",                 "dest": "/admin/index.html" },
     { "src": "/admin/login",           "dest": "/admin/login.html" },
+    { "src": "/booking-confirmed",     "dest": "/booking-confirmed.html" },
     { "src": "/v1",                    "dest": "/index%20v1.html" },
     { "src": "/(.*)",                  "dest": "/$1" }
   ]
