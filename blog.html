@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Treat Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#faf7f2;
+  --cream-mid:#f0ebe0;
+  --cream-dark:#e5ddd0;
+  --ink:#1c1814;
+  --ink-mid:#3d3530;
+  --ink-muted:#7a6f65;
+  --navy:#1a2744;
+  --blue:#3b82f6;
+  --blue-light:#eff6ff;
+  --white:#fffefb;
+  --border:rgba(28,24,20,0.10);
+  --border-mid:rgba(28,24,20,0.06);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+
+/* ── NAV ── */
+.nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 32px;}
+.nav-inner{max-width:1100px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo img{height:28px;width:auto;}
+.nav-cta{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--white);background:var(--navy);padding:9px 18px;border-radius:7px;}
+
+/* ── PAGE ── */
+.page{max-width:1100px;margin:0 auto;padding:0 32px 80px;}
+
+/* ── HERO ── */
+.hero{padding:56px 0 48px;border-bottom:1px solid var(--border);margin-bottom:56px;}
+.hero-eyebrow{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:18px;}
+.hero-eyebrow::before{content:'';display:block;width:18px;height:1.5px;background:var(--blue);}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,4.5vw,52px);font-weight:700;color:var(--ink);line-height:1.07;letter-spacing:-.025em;margin-bottom:14px;}
+.hero h1 em{font-style:italic;color:var(--navy);}
+.hero-sub{font-size:16px;color:var(--ink-muted);line-height:1.8;max-width:540px;}
+
+/* ── GRID ── */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+
+/* ── CARD ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(28,24,20,0.08);}
+.card-thumb{aspect-ratio:16/9;overflow:hidden;position:relative;background:var(--cream-mid);}
+.card-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;}
+.card:hover .card-thumb img{transform:scale(1.03);}
+.card-body{padding:22px 22px 24px;flex:1;display:flex;flex-direction:column;}
+.card-date{font-size:11.5px;font-weight:500;color:var(--ink-muted);margin-bottom:10px;}
+.card-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:10px;}
+.card-summary{font-size:13.5px;color:var(--ink-muted);line-height:1.7;flex:1;margin-bottom:20px;}
+.card-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--blue);}
+.card-link svg{transition:transform .2s;}
+.card:hover .card-link svg{transform:translateX(3px);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){
+  .grid{grid-template-columns:1fr;}
+  .nav{padding:0 20px;}
+  .page{padding:0 20px 60px;}
+  .hero{padding:40px 0 36px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/home"><img src="uploads/Treat Engine Logo .png" alt="Treat Engine"/></a>
+    <a href="/booking" class="nav-cta">Book a Demo</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-eyebrow">Resources</div>
+    <h1>Water Treatment<br><em>Marketing Blog</em></h1>
+    <p class="hero-sub">Strategies, insights, and real campaign data to help water treatment dealers generate more leads and close more installs.</p>
+  </div>
+
+  <div class="grid">
+
+    <a href="/blog/strategies-for-profitable-water-softener-facebook-ads-in-2026" class="card">
+      <div class="card-thumb">
+        <img src="https://cdn.prod.website-files.com/66722b1a59b0fda97059a6f4/694b293ad9b1b3260f6c14f9_2026%20Water%20Softener%20Facebook%20Ad%20Strategies2026%20Water%20Softener%20Facebook%20Ad%20Strategies.png" alt="Strategies for Profitable Water Softener Facebook Ads in 2026" loading="lazy"/>
+      </div>
+      <div class="card-body">
+        <div class="card-date">Dec 23, 2025</div>
+        <div class="card-title">Strategies for Profitable Water Softener Facebook Ads in 2026</div>
+        <div class="card-summary">Get specific strategies we are using to improve client results going into 2026 and the key changes to keep Facebook ad campaigns profitable.</div>
+        <span class="card-link">Read more <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+    </a>
+
+    <a href="/blog/high-roi-water-softener-facebook-ad-campaigns" class="card">
+      <div class="card-thumb">
+        <img src="https://cdn.prod.website-files.com/66722b1a59b0fda97059a6f4/69164ecfd6477764c90b720a_High%20ROI%20Water%20Softener%20Facebook%20Ads.png" alt="High ROI Water Softener Facebook Ad Campaigns" loading="lazy"/>
+      </div>
+      <div class="card-body">
+        <div class="card-date">Nov 13, 2025</div>
+        <div class="card-title">High ROI Water Softener Facebook Ad Campaigns</div>
+        <div class="card-summary">If you're still depending on mailers, referrals, or "jack of all trades" agencies to grow your water treatment business — this post might change everything.</div>
+        <span class="card-link">Read more <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+    </a>
+
+    <a href="/blog/5-secrets-to-water-treatment-system-sales-with-social-media-ads" class="card">
+      <div class="card-thumb">
+        <img src="https://cdn.prod.website-files.com/66722b1a59b0fda97059a6f4/6902dac256319f0a21a73763_maxresdefault%20(1).webp" alt="5 Secrets to Water Treatment System Sales with Social Media Ads" loading="lazy"/>
+      </div>
+      <div class="card-body">
+        <div class="card-date">Oct 30, 2025</div>
+        <div class="card-title">5 Secrets to Water Treatment System Sales with Social Media Ads</div>
+        <div class="card-summary">Discover 5 secrets to profitable advertising campaigns for water treatment dealers with actionable insights you can leverage immediately.</div>
+        <span class="card-link">Read more <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+    </a>
+
+    <a href="/blog/7-lessons-from-water-softener-lead-gen-ads-on-facebook" class="card">
+      <div class="card-thumb">
+        <img src="https://cdn.prod.website-files.com/66722b1a59b0fda97059a6f4/6902d5e4ea99facfbf8fd310_maxresdefault.jpg" alt="7 Lessons from Water Softener Lead Gen Ads on Facebook" loading="lazy"/>
+      </div>
+      <div class="card-body">
+        <div class="card-date">Oct 30, 2025</div>
+        <div class="card-title">7 Lessons from Water Softener Lead Gen Ads on Facebook</div>
+        <div class="card-summary">Learn what actually works to generate consistent water softener leads on Facebook and the common mistakes that waste ad spend.</div>
+        <span class="card-link">Read more <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+    </a>
+
+    <a href="/blog/fix-unprofitable-water-softener-advertising-campaigns" class="card">
+      <div class="card-thumb">
+        <img src="https://cdn.prod.website-files.com/66722b1a59b0fda97059a6f4/6902d8a9e52941bac293a862_maxresdefault.webp" alt="Fix Unprofitable Water Softener Advertising Campaigns" loading="lazy"/>
+      </div>
+      <div class="card-body">
+        <div class="card-date">Oct 30, 2025</div>
+        <div class="card-title">Fix Unprofitable Water Softener Advertising Campaigns</div>
+        <div class="card-summary">Most water softener ad campaigns struggle to attract quality leads for one main reason. Here's how to fill the gaps and make your campaigns profitable.</div>
+        <span class="card-link">Read more <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+    </a>
+
+    <a href="/blog/automate-your-water-treatment-marketing-in-2025" class="card">
+      <div class="card-thumb">
+        <img src="https://cdn.prod.website-files.com/66722b1a59b0fda97059a6f4/6902d8552e4180ce8fc6fec1_maxresdefault%20(1).jpg" alt="Automate Your Water Treatment Marketing in 2025" loading="lazy"/>
+      </div>
+      <div class="card-body">
+        <div class="card-date">Oct 30, 2025</div>
+        <div class="card-title">Automate Your Water Treatment Marketing in 2025</div>
+        <div class="card-summary">Marketing your water treatment business in 2025 is more crucial than ever with increasing competition. Here are the main tools and tactics to implement.</div>
+        <span class="card-link">Read more <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+</body>
+</html>

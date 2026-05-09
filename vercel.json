@@ -7,6 +7,8 @@
     { "src": "onboarding/*.html", "use": "@vercel/static" },
     { "src": "admin/*.html",      "use": "@vercel/static" },
     { "src": "booking-confirmed.html", "use": "@vercel/static" },
+    { "src": "blog.html",             "use": "@vercel/static" },
+    { "src": "blog/*.html",           "use": "@vercel/static" },
     { "src": "images/**",         "use": "@vercel/static" },
     { "src": "logos/**",          "use": "@vercel/static" },
     { "src": "uploads/**",        "use": "@vercel/static" },
@@ -37,6 +39,13 @@
     { "src": "/admin",                 "dest": "/admin/index.html" },
     { "src": "/admin/login",           "dest": "/admin/login.html" },
     { "src": "/booking-confirmed",     "dest": "/booking-confirmed.html" },
+    { "src": "/blog",                  "dest": "/blog.html" },
+    { "src": "/blog/strategies-for-profitable-water-softener-facebook-ads-in-2026", "dest": "/blog/strategies-for-profitable-water-softener-facebook-ads-in-2026.html" },
+    { "src": "/blog/high-roi-water-softener-facebook-ad-campaigns", "dest": "/blog/high-roi-water-softener-facebook-ad-campaigns.html" },
+    { "src": "/blog/5-secrets-to-water-treatment-system-sales-with-social-media-ads", "dest": "/blog/5-secrets-to-water-treatment-system-sales-with-social-media-ads.html" },
+    { "src": "/blog/7-lessons-from-water-softener-lead-gen-ads-on-facebook", "dest": "/blog/7-lessons-from-water-softener-lead-gen-ads-on-facebook.html" },
+    { "src": "/blog/fix-unprofitable-water-softener-advertising-campaigns", "dest": "/blog/fix-unprofitable-water-softener-advertising-campaigns.html" },
+    { "src": "/blog/automate-your-water-treatment-marketing-in-2025", "dest": "/blog/automate-your-water-treatment-marketing-in-2025.html" },
     { "src": "/v1",                    "dest": "/index%20v1.html" },
     { "src": "/(.*)",                  "dest": "/$1" }
   ]
