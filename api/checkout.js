@@ -25,16 +25,13 @@ module.exports = async (req, res) => {
       };
 
     } else if (service === 'websites') {
-      const isInstallment = plan === 'installment';
       sessionParams = {
-        mode: isInstallment ? 'subscription' : 'payment',
-        line_items: [{
-          price: isInstallment
-            ? process.env.STRIPE_PRICE_WEBSITES_INSTALLMENT
-            : process.env.STRIPE_PRICE_WEBSITES_ONETIME,
-          quantity: 1,
-        }],
-        metadata: { service: 'websites', plan: isInstallment ? 'installment' : 'one-time' },
+        mode: 'subscription',
+        line_items: [
+          { price: process.env.STRIPE_PRICE_WEBSITES_ONETIME,  quantity: 1 },
+          { price: process.env.STRIPE_PRICE_WEBSITES_MONTHLY,  quantity: 1 },
+        ],
+        metadata: { service: 'websites', plan: 'websites-crm' },
         success_url: `${origin}/websites/onboarding?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/websites/checkout`,
       };
@@ -42,8 +39,11 @@ module.exports = async (req, res) => {
     } else if (service === 'sales') {
       sessionParams = {
         mode: 'subscription',
-        line_items: [{ price: process.env.STRIPE_PRICE_SALES_LICENSE, quantity: 1 }],
-        metadata: { service: 'sales', plan: 'license' },
+        line_items: [
+          { price: process.env.STRIPE_PRICE_SALES_SETUP,   quantity: 1 },
+          { price: process.env.STRIPE_PRICE_SALES_MONTHLY, quantity: 1 },
+        ],
+        metadata: { service: 'sales', plan: 'crm' },
         success_url: `${origin}/sales/onboarding?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/sales/checkout`,
       };
