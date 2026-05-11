@@ -26,10 +26,11 @@ module.exports = async (req, res) => {
 
     } else if (service === 'websites') {
       sessionParams = {
-        mode: 'subscription',
+        mode: 'payment',
+        customer_creation: 'always',
+        payment_intent_data: { setup_future_usage: 'off_session' },
         line_items: [
-          { price: process.env.STRIPE_PRICE_WEBSITES_ONETIME,  quantity: 1 },
-          { price: process.env.STRIPE_PRICE_WEBSITES_MONTHLY,  quantity: 1 },
+          { price: process.env.STRIPE_PRICE_WEBSITES_ONETIME, quantity: 1 },
         ],
         metadata: { service: 'websites', plan: 'websites-crm' },
         success_url: `${origin}/websites/onboarding?session_id={CHECKOUT_SESSION_ID}`,
@@ -60,10 +61,6 @@ module.exports = async (req, res) => {
 
   } catch (err) {
     console.error('Checkout error:', err.message);
-    console.error('Price IDs in use:', {
-      websites_onetime: process.env.STRIPE_PRICE_WEBSITES_ONETIME,
-      websites_monthly: process.env.STRIPE_PRICE_WEBSITES_MONTHLY,
-    });
     res.status(500).json({ error: err.message });
   }
 };

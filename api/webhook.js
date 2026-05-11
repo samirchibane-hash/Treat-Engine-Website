@@ -53,6 +53,19 @@ module.exports = async (req, res) => {
 
     if (error) console.error('Supabase upsert error:', error.message);
 
+    // For Water Websites CRM: auto-start $199/mo subscription with 30-day trial
+    if (service === 'websites' && plan === 'websites-crm' && session.customer) {
+      try {
+        await stripe.subscriptions.create({
+          customer: session.customer,
+          items: [{ price: process.env.STRIPE_PRICE_WEBSITES_MONTHLY }],
+          trial_period_days: 30,
+        });
+      } catch (err) {
+        console.error('Subscription creation error:', err.message);
+      }
+    }
+
     // For Water Websites installment: auto-cancel subscription after 2 billing cycles
     if (service === 'websites' && plan === 'installment' && session.subscription) {
       try {
