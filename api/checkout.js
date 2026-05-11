@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
 
       const lineItems = [
         { price: process.env.STRIPE_PRICE_LEADS_META_ADS, quantity: 1 },
-        { price: process.env.STRIPE_PRICE_LEADS_CRM,      quantity: 1 },
+        { price: process.env.STRIPE_PRICE_WEBSITES_MONTHLY, quantity: 1 },
       ];
 
       const ADDON_PRICE_MAP = {
