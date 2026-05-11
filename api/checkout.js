@@ -28,13 +28,9 @@ module.exports = async (req, res) => {
       sessionParams = {
         mode: 'subscription',
         line_items: [
-          { price: process.env.STRIPE_PRICE_WEBSITES_MONTHLY, quantity: 1 },
+          { price: process.env.STRIPE_PRICE_WEBSITES_ONETIME,  quantity: 1 },
+          { price: process.env.STRIPE_PRICE_WEBSITES_MONTHLY,  quantity: 1 },
         ],
-        subscription_data: {
-          add_invoice_items: [
-            { price: process.env.STRIPE_PRICE_WEBSITES_ONETIME, quantity: 1 },
-          ],
-        },
         metadata: { service: 'websites', plan: 'websites-crm' },
         success_url: `${origin}/websites/onboarding?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/websites/checkout`,
