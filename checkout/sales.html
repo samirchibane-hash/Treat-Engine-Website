@@ -113,22 +113,22 @@ a{text-decoration:none;color:inherit;}
 
   <div class="page-tag">Water Sales — ClearDeals</div>
   <h1 class="page-title">Create your <em>dealership account</em></h1>
-  <p class="page-sub">$997 gets your account built and configured — then $199/month keeps your whole dealership running on ClearDeals.</p>
+  <p class="page-sub">Your $299/month subscription covers your whole dealership. Usage fees are tracked automatically and billed at the end of each month — nothing extra due today.</p>
 
   <div class="pricing-card">
     <div class="pricing-row">
       <div>
-        <div class="pricing-label">One-Time Setup</div>
-        <div style="font-size:12px;color:var(--ink-muted);margin-top:2px;">Account setup, configuration & onboarding</div>
+        <div class="pricing-label">Monthly Subscription</div>
+        <div style="font-size:12px;color:var(--ink-muted);margin-top:2px;">Billed monthly · unlimited users · all platform features</div>
       </div>
-      <div class="pricing-value">$997</div>
+      <div class="pricing-value">$299 / mo</div>
     </div>
     <div class="pricing-row">
       <div>
-        <div class="pricing-label">ClearDeals CRM</div>
-        <div style="font-size:12px;color:var(--ink-muted);margin-top:2px;">Unlimited users · all platform features · billed monthly</div>
+        <div class="pricing-label">Per-agreement usage</div>
+        <div style="font-size:12px;color:var(--ink-muted);margin-top:2px;">Tracked automatically · billed end of each month</div>
       </div>
-      <div class="pricing-value">$199 / mo</div>
+      <div class="pricing-value" style="color:var(--ink-muted);font-weight:500;">See estimator ↓</div>
     </div>
     <div class="includes-grid">
       <div class="includes-item"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5l3 3 6-6" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Unlimited Products</div>
@@ -142,16 +142,43 @@ a{text-decoration:none;color:inherit;}
     </div>
     <div class="pricing-total-row">
       <div class="pricing-total-label">Due today</div>
-      <div class="pricing-total-value">$997</div>
+      <div class="pricing-total-value">$299</div>
     </div>
   </div>
 
+  <!-- Usage estimator -->
+  <div class="estimator-card">
+    <div class="estimator-label">Usage estimator</div>
+    <div class="estimator-title">What's your monthly agreement volume?</div>
+    <div class="estimator-sub">Move the slider to your expected volume. Higher volume earns a lower per-agreement rate — billed automatically at month's end.</div>
+
+    <input type="range" class="slider" id="vol-slider" min="0" max="3" step="1" value="0" oninput="updateEstimator()">
+    <div class="slider-labels">
+      <span>100</span>
+      <span>500</span>
+      <span>2,000</span>
+      <span>5,000</span>
+    </div>
+
+    <div class="estimate-result">
+      <div class="estimate-left">
+        <div class="estimate-volume" id="est-volume">100 agreements / month</div>
+        <div class="estimate-tier" id="est-tier">Up to 100 agreements</div>
+      </div>
+      <div class="estimate-right">
+        <div class="estimate-cost" id="est-cost">$7.00</div>
+        <div class="estimate-cost-label">per agreement</div>
+      </div>
+    </div>
+
+  </div>
+
   <div class="info-box">
-    <p><strong>No surprises.</strong> You pay $997 today to get set up. Your $199/month CRM billing starts immediately after — cancel anytime.</p>
+    <p><strong>No surprises.</strong> Your $299/month subscription is the only thing you pay today. We track agreements generated across your dealership each month and send a usage invoice at month's end — automatically, via Stripe.</p>
   </div>
 
   <button class="btn-primary" id="checkout-btn" onclick="startCheckout()">
-    <span class="btn-text">Get Started · $997</span>
+    <span class="btn-text">Create Account · $299/mo</span>
     <div class="spinner"></div>
   </button>
   <button class="btn-ghost" onclick="window.location='/sales'">← Back to Water Sales</button>
@@ -167,12 +194,34 @@ a{text-decoration:none;color:inherit;}
     </div>
     <div class="trust-item">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
-      Cancel anytime
+      Usage billed end of month
     </div>
   </div>
 </div>
 
 <script>
+const tiers = [
+  { vol: '100',   label: 'Up to 100 agreements',   rate: 7.00 },
+  { vol: '500',   label: 'Up to 500 agreements',   rate: 5.50 },
+  { vol: '2,000', label: 'Up to 2,000 agreements', rate: 4.25 },
+  { vol: '5,000', label: 'Up to 5,000 agreements', rate: 3.75 },
+];
+
+function updateEstimator() {
+  const pos = parseInt(document.getElementById('vol-slider').value);
+  const tier = tiers[pos];
+
+  document.getElementById('est-volume').textContent = tier.vol + ' agreements / month';
+  document.getElementById('est-tier').textContent = tier.label;
+  document.getElementById('est-cost').textContent = '$' + tier.rate.toFixed(2);
+
+  const pct = (pos / (tiers.length - 1) * 100) + '%';
+  document.getElementById('vol-slider').style.background =
+    `linear-gradient(to right, var(--blue) ${pct}, var(--cream-mid) ${pct})`;
+}
+
+updateEstimator();
+
 async function startCheckout() {
   const btn = document.getElementById('checkout-btn');
   btn.classList.add('loading');
