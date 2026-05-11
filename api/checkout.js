@@ -46,7 +46,7 @@ module.exports = async (req, res) => {
         line_items: lineItems,
         metadata: { service: 'leads', plan: 'ala-carte', addons: addons.join(',') || 'none' },
         success_url: `${origin}/ads/onboarding?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${origin}/checkout/leads`,
+        cancel_url: `${origin}/ads/checkout`,
       };
 
     } else if (service === 'websites') {
