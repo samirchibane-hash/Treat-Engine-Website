@@ -29,50 +29,110 @@ a{text-decoration:none;color:inherit;}
 .nav-links a.active{color:var(--blue);font-weight:600;background:var(--blue-light);}
 @media(max-width:900px){.nav-links{display:none;}}
 
-.page{padding:130px 32px 80px;max-width:680px;margin:0 auto;}
+/* Page wrapper */
+.page{padding:110px 32px 80px;max-width:1080px;margin:0 auto;}
 .breadcrumb{font-size:12px;color:var(--ink-muted);margin-bottom:28px;display:flex;align-items:center;gap:8px;}
 .breadcrumb a{color:var(--blue);}
 .page-tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
-.page-title{font-size:clamp(32px,5vw,52px);font-weight:600;color:var(--ink);margin-bottom:16px;letter-spacing:-.02em;}
+.page-title{font-size:clamp(28px,4vw,44px);font-weight:600;color:var(--ink);margin-bottom:12px;letter-spacing:-.02em;}
 .page-title em{font-style:italic;color:var(--navy);}
-.page-sub{font-size:16px;color:var(--ink-muted);line-height:1.8;margin-bottom:40px;}
+.page-sub{font-size:15.5px;color:var(--ink-muted);line-height:1.8;margin-bottom:40px;max-width:580px;}
 
-/* Pricing card */
-.pricing-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px;}
-.pricing-header{background:var(--navy);color:#fff;padding:32px 32px 28px;}
-.pricing-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.6;margin-bottom:14px;}
-.pricing-amount{display:flex;align-items:flex-end;gap:4px;margin-bottom:6px;}
-.pricing-amount-num{font-family:'Playfair Display',serif;font-size:64px;font-weight:600;line-height:1;}
-.pricing-amount-sup{font-size:24px;font-weight:600;margin-bottom:10px;}
-.pricing-amount-per{font-size:16px;opacity:.65;margin-bottom:10px;margin-left:2px;}
-.pricing-tagline{font-size:14px;opacity:.7;line-height:1.6;}
+/* Two-column layout */
+.checkout-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start;}
+@media(max-width:860px){
+  .checkout-layout{grid-template-columns:1fr;}
+  .summary-col{order:-1;}
+}
 
-.pricing-body{padding:28px 32px;}
-.includes-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:16px;}
-.includes-list{list-style:none;display:flex;flex-direction:column;gap:11px;}
-.includes-list li{display:flex;align-items:flex-start;gap:11px;font-size:14.5px;color:var(--ink-mid);line-height:1.5;}
-.check-icon{width:18px;height:18px;border-radius:50%;background:var(--green-light);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;}
-.check-icon svg{width:10px;height:10px;stroke:var(--green);fill:none;stroke-width:2.5;}
+/* ── Service cards ── */
+.section-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:12px;margin-top:4px;}
 
-.divider{height:1px;background:var(--border);margin:24px 0;}
+.service-card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;transition:border-color .2s,box-shadow .2s;}
+.service-card.is-active{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,.08);}
+.service-card.is-locked.is-active{border-color:var(--green);box-shadow:0 0 0 3px rgba(22,163,74,.07);}
 
-.note-row{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--ink-muted);line-height:1.6;}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;padding:20px 22px 18px;gap:14px;}
+.card-header.is-clickable{cursor:pointer;}
+.card-header-left{flex:1;}
+
+.card-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;margin-bottom:8px;}
+.card-badge.included{background:var(--green-light);color:var(--green);}
+.card-badge.addon{background:var(--blue-light);color:var(--blue);}
+
+.card-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:3px;line-height:1.2;}
+.card-price-line{font-size:13px;color:var(--ink-muted);}
+.card-price-line strong{color:var(--ink);font-weight:600;}
+
+.card-right{display:flex;align-items:center;flex-shrink:0;margin-top:3px;}
+
+/* Lock icon for required cards */
+.lock-icon{width:34px;height:34px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;}
+
+/* Toggle for optional cards */
+.toggle-track{width:42px;height:23px;border-radius:12px;background:var(--cream-dark);position:relative;transition:background .2s;flex-shrink:0;}
+.toggle-track.on{background:var(--blue);}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.18);}
+.toggle-track.on .toggle-thumb{transform:translateX(19px);}
+
+/* Card body */
+.card-body{padding:0 22px 20px;border-top:1px solid var(--border-mid);}
+.card-features{list-style:none;display:flex;flex-direction:column;gap:9px;padding-top:16px;}
+.card-features li{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--ink-mid);line-height:1.5;}
+.check-icon{width:17px;height:17px;border-radius:50%;background:var(--green-light);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.check-icon svg{width:9px;height:9px;stroke:var(--green);fill:none;stroke-width:2.5;}
+
+/* Tier picker (Appointment Setters) */
+.tier-picker{display:none;gap:10px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border-mid);}
+.service-card.is-active .tier-picker{display:flex;}
+
+.tier-option{flex:1;border:1.5px solid var(--border);border-radius:10px;padding:13px 15px;cursor:pointer;transition:border-color .15s,background .15s;display:flex;align-items:flex-start;gap:10px;}
+.tier-option.selected{border-color:var(--blue);background:var(--blue-light);}
+.tier-option input[type="radio"]{accent-color:var(--blue);width:14px;height:14px;flex-shrink:0;margin-top:2px;cursor:pointer;}
+.tier-label{font-size:13px;font-weight:600;color:var(--ink);line-height:1.3;}
+.tier-price{font-size:12px;color:var(--ink-muted);margin-top:2px;}
+
+/* ── Summary panel ── */
+.summary-panel{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:22px;position:sticky;top:88px;}
+
+.summary-heading{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;color:var(--ink);margin-bottom:18px;}
+
+.summary-rows{margin-bottom:14px;}
+.summary-row{display:flex;justify-content:space-between;align-items:flex-start;font-size:13px;color:var(--ink-mid);padding:9px 0;gap:10px;border-bottom:1px solid var(--border-mid);}
+.summary-row:last-child{border-bottom:none;}
+.row-name{flex:1;line-height:1.4;}
+.row-amt{font-weight:600;white-space:nowrap;color:var(--ink);}
+
+.summary-divider{height:1px;background:var(--border);margin:4px 0 14px;}
+
+.summary-total-row{display:flex;justify-content:space-between;align-items:flex-end;gap:8px;}
+.summary-total-label{font-size:13px;font-weight:600;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.06em;}
+.summary-total-right{text-align:right;}
+.summary-total-amt{font-family:'Playfair Display',serif;font-size:36px;font-weight:600;color:var(--navy);line-height:1;}
+.summary-period{font-size:12px;color:var(--ink-muted);margin-top:2px;}
+
+.summary-note{font-size:12px;color:var(--ink-muted);line-height:1.65;margin-top:14px;padding-top:14px;border-top:1px solid var(--border-mid);display:flex;gap:8px;align-items:flex-start;}
 .note-icon{flex-shrink:0;margin-top:1px;}
 
 /* CTA */
-.btn-primary{width:100%;background:var(--blue);color:#fff;border:none;padding:18px 28px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;}
+.btn-primary{width:100%;background:var(--blue);color:#fff;border:none;padding:17px 24px;border-radius:8px;font-size:15.5px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:20px;}
 .btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px);}
 .btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none;}
-.btn-ghost{background:transparent;color:var(--ink-muted);border:none;padding:14px;font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:10px;width:100%;}
+.btn-ghost{background:transparent;color:var(--ink-muted);border:none;padding:12px;font-size:13.5px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;width:100%;}
 .btn-ghost:hover{color:var(--ink);}
 
-.trust-row{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:28px;flex-wrap:wrap;}
-.trust-item{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-muted);}
+.trust-row{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:20px;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-muted);}
 
-.spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+.spinner{width:17px;height:17px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .loading .spinner{display:block;}
 .loading .btn-text{display:none;}
+
+@media(max-width:560px){
+  .page{padding:100px 20px 60px;}
+  .tier-picker{flex-direction:column;}
+}
 </style>
 </head>
 <body>
@@ -97,104 +157,266 @@ a{text-decoration:none;color:inherit;}
   </div>
 
   <div class="page-tag">Water Leads</div>
-  <h1 class="page-title">Start getting <em>exclusive appointments.</em></h1>
-  <p class="page-sub">Month-to-month. No contracts. Cancel anytime. Your territory is locked — no competing dealers once you're in.</p>
+  <h1 class="page-title">Build your <em>lead generation plan.</em></h1>
+  <p class="page-sub">Required services are always included. Add appointment setters or Google Ads to go further. Month-to-month — cancel anytime.</p>
 
-  <div class="pricing-card">
-    <div class="pricing-header">
-      <div class="pricing-eyebrow">Water Leads — Monthly Plan</div>
-      <div class="pricing-amount">
-        <span class="pricing-amount-sup">$</span>
-        <span class="pricing-amount-num">1,500</span>
-        <span class="pricing-amount-per">/ month</span>
+  <div class="checkout-layout">
+
+    <!-- Left: service cards -->
+    <div class="cards-col">
+
+      <div class="section-label">Included in every plan</div>
+
+      <!-- Card 1: Meta Ads Management (locked) -->
+      <div class="service-card is-locked is-active">
+        <div class="card-header">
+          <div class="card-header-left">
+            <div class="card-badge included">
+              <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg>
+              Included
+            </div>
+            <div class="card-title">Meta Ads Management</div>
+            <div class="card-price-line"><strong>$599</strong> / month</div>
+          </div>
+          <div class="card-right">
+            <div class="lock-icon">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="var(--green)" stroke-width="1.8"><rect x="2" y="5.5" width="9" height="7" rx="1.2"/><path d="M4.5 5.5V4a2 2 0 014 0v1.5"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <ul class="card-features">
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>2 New Video Ads Per Month</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>3 New Image Ads Per Month</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Unlimited Campaign Optimizations</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Territory exclusivity — your market, only you</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Weekly performance reporting</li>
+          </ul>
+        </div>
       </div>
-      <div class="pricing-tagline">Full-service lead generation & appointment booking for your dealership.</div>
-    </div>
-    <div class="pricing-body">
-      <div class="includes-label">What's included</div>
-      <ul class="includes-list">
-        <li>
-          <div class="check-icon"><svg viewBox="0 0 10 10"><polyline points="2,5 4,7.5 8,2.5"/></svg></div>
-          Done-for-you Meta (Facebook &amp; Instagram) ad campaigns
-        </li>
-        <li>
-          <div class="check-icon"><svg viewBox="0 0 10 10"><polyline points="2,5 4,7.5 8,2.5"/></svg></div>
-          Google Search ads (optional add-on)
-        </li>
-        <li>
-          <div class="check-icon"><svg viewBox="0 0 10 10"><polyline points="2,5 4,7.5 8,2.5"/></svg></div>
-          Pre-qualified appointments booked directly to your calendar
-        </li>
-        <li>
-          <div class="check-icon"><svg viewBox="0 0 10 10"><polyline points="2,5 4,7.5 8,2.5"/></svg></div>
-          Custom ad creative — images, video, copy — updated regularly
-        </li>
-        <li>
-          <div class="check-icon"><svg viewBox="0 0 10 10"><polyline points="2,5 4,7.5 8,2.5"/></svg></div>
-          Territory exclusivity — your market, only you
-        </li>
-        <li>
-          <div class="check-icon"><svg viewBox="0 0 10 10"><polyline points="2,5 4,7.5 8,2.5"/></svg></div>
-          Weekly performance reporting
-        </li>
-        <li>
-          <div class="check-icon"><svg viewBox="0 0 10 10"><polyline points="2,5 4,7.5 8,2.5"/></svg></div>
-          Dedicated account manager
-        </li>
-      </ul>
 
-      <div class="divider"></div>
-
-      <div class="note-row">
-        <svg class="note-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="var(--ink-muted)" stroke-width="1.5"><circle cx="7.5" cy="7.5" r="6.5"/><path d="M7.5 5v3.5"/><circle cx="7.5" cy="10.5" r=".5" fill="var(--ink-muted)"/></svg>
-        Media spend (your ad budget on Facebook/Google) is separate and paid directly to the platforms. We recommend $500–$2,000/month to start.
+      <!-- Card 2: Treat Engine CRM (locked) -->
+      <div class="service-card is-locked is-active">
+        <div class="card-header">
+          <div class="card-header-left">
+            <div class="card-badge included">
+              <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg>
+              Included
+            </div>
+            <div class="card-title">Treat Engine CRM</div>
+            <div class="card-price-line"><strong>$199</strong> / month</div>
+          </div>
+          <div class="card-right">
+            <div class="lock-icon">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="var(--green)" stroke-width="1.8"><rect x="2" y="5.5" width="9" height="7" rx="1.2"/><path d="M4.5 5.5V4a2 2 0 014 0v1.5"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <ul class="card-features">
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Email &amp; SMS Automation Flows</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Calendar &amp; Phone System</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>AI Voice Agent — answers &amp; qualifies leads 24/7</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Tracking &amp; Reporting Dashboard</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Unlimited Users</li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <button class="btn-primary" id="checkout-btn" onclick="startCheckout()">
-    <span class="btn-text">Start my subscription — $1,500/mo</span>
-    <div class="spinner"></div>
-  </button>
-  <button class="btn-ghost" onclick="window.location='/ads'">← Back to Water Leads</button>
+      <div class="section-label" style="margin-top:24px;">Optional add-ons</div>
 
-  <div class="trust-row">
-    <div class="trust-item">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 1l1.5 4H13l-3.5 2.5 1.5 4L7 9 3 11.5l1.5-4L1 5h4.5z"/></svg>
-      60-day satisfaction guarantee
-    </div>
-    <div class="trust-item">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="10" height="8" rx="1"/><path d="M5 5V4a2 2 0 014 0v1"/></svg>
-      Secured by Stripe
-    </div>
-    <div class="trust-item">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
-      Cancel anytime
-    </div>
-  </div>
+      <!-- Card 3: Appointment Setters (toggleable) -->
+      <div class="service-card" id="card-appt">
+        <div class="card-header is-clickable" onclick="toggleCard('appt')">
+          <div class="card-header-left">
+            <div class="card-badge addon">Add-On</div>
+            <div class="card-title">Appointment Setters</div>
+            <div class="card-price-line" id="appt-price-line"><strong>$699</strong> / month · Part-Time</div>
+          </div>
+          <div class="card-right">
+            <div class="toggle-track" id="toggle-appt">
+              <div class="toggle-thumb"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <ul class="card-features">
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Trained callers who follow up with new leads instantly and persistently</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Pre-qualified water test appointments booked directly to your calendar</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Dedicated account manager oversight</li>
+          </ul>
+          <div class="tier-picker" id="tier-appt">
+            <label class="tier-option selected" id="tier-pt-label" onclick="selectTier('pt')">
+              <input type="radio" name="appt-tier" value="pt" checked>
+              <div>
+                <div class="tier-label">Part-Time</div>
+                <div class="tier-price">$699 / month</div>
+              </div>
+            </label>
+            <label class="tier-option" id="tier-ft-label" onclick="selectTier('ft')">
+              <input type="radio" name="appt-tier" value="ft">
+              <div>
+                <div class="tier-label">Full-Time</div>
+                <div class="tier-price">$1,300 / month</div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Google Ads (toggleable) -->
+      <div class="service-card" id="card-google">
+        <div class="card-header is-clickable" onclick="toggleCard('google')">
+          <div class="card-header-left">
+            <div class="card-badge addon">Add-On</div>
+            <div class="card-title">Google Ads Management</div>
+            <div class="card-price-line"><strong>$799</strong> / month</div>
+          </div>
+          <div class="card-right">
+            <div class="toggle-track" id="toggle-google">
+              <div class="toggle-thumb"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <ul class="card-features">
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Done-for-you Google Search ad campaigns</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Keyword research &amp; ongoing bid optimization</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Capture high-intent buyers actively searching for water systems</li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- /cards-col -->
+
+    <!-- Right: sticky order summary -->
+    <div class="summary-col">
+      <div class="summary-panel">
+        <div class="summary-heading">Your Plan</div>
+
+        <div class="summary-rows" id="summary-rows">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-total-row">
+          <div class="summary-total-label">Total</div>
+          <div class="summary-total-right">
+            <div class="summary-total-amt" id="summary-total">$798</div>
+            <div class="summary-period">/ month</div>
+          </div>
+        </div>
+
+        <div class="summary-note">
+          <svg class="note-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="var(--ink-muted)" stroke-width="1.5"><circle cx="7" cy="7" r="6"/><path d="M7 5v3"/><circle cx="7" cy="9.5" r=".5" fill="var(--ink-muted)"/></svg>
+          Media spend (your ad budget on Facebook/Google) is separate and paid directly to the platforms.
+        </div>
+
+        <button class="btn-primary" id="checkout-btn" onclick="startCheckout()">
+          <span class="btn-text">Start my subscription — $798/mo</span>
+          <div class="spinner"></div>
+        </button>
+        <button class="btn-ghost" onclick="window.location='/ads'">← Back to Water Leads</button>
+
+        <div class="trust-row">
+          <div class="trust-item">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 1l1.5 4H13l-3.5 2.5 1.5 4L7 9 3 11.5l1.5-4L1 5h4.5z"/></svg>
+            60-day guarantee
+          </div>
+          <div class="trust-item">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="10" height="8" rx="1"/><path d="M5 5V4a2 2 0 014 0v1"/></svg>
+            Secured by Stripe
+          </div>
+          <div class="trust-item">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
+            Cancel anytime
+          </div>
+        </div>
+      </div>
+    </div><!-- /summary-col -->
+
+  </div><!-- /checkout-layout -->
 </div>
 
 <script>
+const STATE = { appt: false, apptTier: 'pt', google: false };
+const PRICES = { meta: 599, crm: 199, appt_pt: 699, appt_ft: 1300, google: 799 };
+
+function toggleCard(id) {
+  STATE[id] = !STATE[id];
+  const card = document.getElementById('card-' + id);
+  const track = document.getElementById('toggle-' + id);
+  card.classList.toggle('is-active', STATE[id]);
+  track.classList.toggle('on', STATE[id]);
+  renderSummary();
+}
+
+function selectTier(tier) {
+  STATE.apptTier = tier;
+  document.getElementById('tier-pt-label').classList.toggle('selected', tier === 'pt');
+  document.getElementById('tier-ft-label').classList.toggle('selected', tier === 'ft');
+  document.querySelector('input[name="appt-tier"][value="' + tier + '"]').checked = true;
+  const priceLine = document.getElementById('appt-price-line');
+  if (tier === 'pt') {
+    priceLine.innerHTML = '<strong>$699</strong> / month · Part-Time';
+  } else {
+    priceLine.innerHTML = '<strong>$1,300</strong> / month · Full-Time';
+  }
+  renderSummary();
+}
+
+function renderSummary() {
+  const rows = [
+    { name: 'Meta Ads Management', amt: PRICES.meta },
+    { name: 'Treat Engine CRM', amt: PRICES.crm },
+  ];
+  if (STATE.appt) {
+    const price = STATE.apptTier === 'pt' ? PRICES.appt_pt : PRICES.appt_ft;
+    const label = STATE.apptTier === 'pt' ? 'Part-Time' : 'Full-Time';
+    rows.push({ name: 'Appointment Setters (' + label + ')', amt: price });
+  }
+  if (STATE.google) {
+    rows.push({ name: 'Google Ads Management', amt: PRICES.google });
+  }
+
+  const total = rows.reduce(function(s, r) { return s + r.amt; }, 0);
+
+  document.getElementById('summary-rows').innerHTML = rows.map(function(r) {
+    return '<div class="summary-row"><span class="row-name">' + r.name + '</span><span class="row-amt">$' + r.amt.toLocaleString() + '</span></div>';
+  }).join('');
+
+  document.getElementById('summary-total').textContent = '$' + total.toLocaleString();
+  document.querySelector('#checkout-btn .btn-text').textContent = 'Start my subscription — $' + total.toLocaleString() + '/mo';
+}
+
 async function startCheckout() {
   const btn = document.getElementById('checkout-btn');
   btn.classList.add('loading');
   btn.disabled = true;
 
+  const addons = [];
+  if (STATE.google) addons.push('google_ads');
+  if (STATE.appt) addons.push(STATE.apptTier === 'pt' ? 'appointment_setters_pt' : 'appointment_setters_ft');
+
   try {
     const res = await fetch('/api/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ service: 'leads' }),
+      body: JSON.stringify({ service: 'leads', addons: addons }),
     });
-    const { url, error } = await res.json();
-    if (error) throw new Error(error);
-    window.location.href = url;
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    window.location.href = data.url;
   } catch (err) {
     alert('Something went wrong. Please try again or contact us at Info@TreatEngine.com');
     btn.classList.remove('loading');
     btn.disabled = false;
   }
 }
+
+// Initialize summary on load
+renderSummary();
 </script>
 </body>
 </html>

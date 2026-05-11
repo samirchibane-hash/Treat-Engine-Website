@@ -16,12 +16,37 @@ module.exports = async (req, res) => {
     let sessionParams;
 
     if (service === 'leads') {
+      const VALID_ADDONS = new Set(['google_ads', 'appointment_setters_pt', 'appointment_setters_ft']);
+      const rawAddons = Array.isArray(req.body.addons) ? req.body.addons : [];
+      const addons = rawAddons.filter(a => VALID_ADDONS.has(a));
+
+      if (addons.includes('appointment_setters_pt') && addons.includes('appointment_setters_ft')) {
+        return res.status(400).json({ error: 'Cannot select both appointment setter tiers' });
+      }
+
+      const lineItems = [
+        { price: process.env.STRIPE_PRICE_LEADS_META_ADS, quantity: 1 },
+        { price: process.env.STRIPE_PRICE_LEADS_CRM,      quantity: 1 },
+      ];
+
+      const ADDON_PRICE_MAP = {
+        google_ads:             process.env.STRIPE_PRICE_LEADS_GOOGLE_ADS,
+        appointment_setters_pt: process.env.STRIPE_PRICE_LEADS_APPT_SETTERS_PT,
+        appointment_setters_ft: process.env.STRIPE_PRICE_LEADS_APPT_SETTERS_FT,
+      };
+
+      for (const addon of addons) {
+        const priceId = ADDON_PRICE_MAP[addon];
+        if (!priceId) return res.status(500).json({ error: `Missing price ID for addon: ${addon}` });
+        lineItems.push({ price: priceId, quantity: 1 });
+      }
+
       sessionParams = {
         mode: 'subscription',
-        line_items: [{ price: process.env.STRIPE_PRICE_LEADS_MONTHLY, quantity: 1 }],
-        metadata: { service: 'leads', plan: 'monthly' },
+        line_items: lineItems,
+        metadata: { service: 'leads', plan: 'ala-carte', addons: addons.join(',') || 'none' },
         success_url: `${origin}/ads/onboarding?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${origin}/ads`,
+        cancel_url: `${origin}/checkout/leads`,
       };
 
     } else if (service === 'websites') {

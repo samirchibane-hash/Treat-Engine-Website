@@ -22,20 +22,75 @@ async function main() {
 
   console.log('Creating Stripe products and prices…\n');
 
-  // ── Water Leads — $1,500/month ────────────────────────────────────────────
-  const leadsProduct = await stripe.products.create({
-    name: 'Water Leads',
-    description: 'Exclusive lead generation & appointment booking for water treatment dealers.',
+  // ── Water Leads — Meta Ads Management ($599/month) ───────────────────────
+  const leadsMetaProduct = await stripe.products.create({
+    name: 'Water Leads — Meta Ads Management',
+    description: '2 new video ads + 3 new image ads per month, unlimited optimizations, territory exclusivity.',
   });
-  const leadsPrice = await stripe.prices.create({
-    product: leadsProduct.id,
-    unit_amount: 150000,
+  const leadsMetaPrice = await stripe.prices.create({
+    product: leadsMetaProduct.id,
+    unit_amount: 59900,
     currency: 'usd',
     recurring: { interval: 'month' },
-    nickname: 'Water Leads Monthly',
+    nickname: 'Water Leads Meta Ads $599/mo',
   });
-  results.STRIPE_PRICE_LEADS_MONTHLY = leadsPrice.id;
-  console.log(`✅  Water Leads $1,500/mo  →  ${leadsPrice.id}`);
+  results.STRIPE_PRICE_LEADS_META_ADS = leadsMetaPrice.id;
+  console.log(`✅  Water Leads Meta Ads $599/mo  →  ${leadsMetaPrice.id}`);
+
+  // ── Water Leads — Treat Engine CRM ($199/month) ───────────────────────────
+  const leadsCrmProduct = await stripe.products.create({
+    name: 'Water Leads — Treat Engine CRM',
+    description: 'Email & SMS flows, calendar & phone system, AI voice agent, tracking & reporting, unlimited users.',
+  });
+  const leadsCrmPrice = await stripe.prices.create({
+    product: leadsCrmProduct.id,
+    unit_amount: 19900,
+    currency: 'usd',
+    recurring: { interval: 'month' },
+    nickname: 'Water Leads CRM $199/mo',
+  });
+  results.STRIPE_PRICE_LEADS_CRM = leadsCrmPrice.id;
+  console.log(`✅  Water Leads CRM $199/mo  →  ${leadsCrmPrice.id}`);
+
+  // ── Water Leads — Appointment Setters ($699 PT / $1,300 FT per month) ─────
+  const leadsApptProduct = await stripe.products.create({
+    name: 'Water Leads — Appointment Setters',
+    description: 'Trained callers who follow up with new leads instantly and book pre-qualified water test appointments.',
+  });
+  const leadsApptPtPrice = await stripe.prices.create({
+    product: leadsApptProduct.id,
+    unit_amount: 69900,
+    currency: 'usd',
+    recurring: { interval: 'month' },
+    nickname: 'Water Leads Appt Setters Part-Time $699/mo',
+  });
+  results.STRIPE_PRICE_LEADS_APPT_SETTERS_PT = leadsApptPtPrice.id;
+  console.log(`✅  Water Leads Appt Setters PT $699/mo  →  ${leadsApptPtPrice.id}`);
+
+  const leadsApptFtPrice = await stripe.prices.create({
+    product: leadsApptProduct.id,
+    unit_amount: 130000,
+    currency: 'usd',
+    recurring: { interval: 'month' },
+    nickname: 'Water Leads Appt Setters Full-Time $1,300/mo',
+  });
+  results.STRIPE_PRICE_LEADS_APPT_SETTERS_FT = leadsApptFtPrice.id;
+  console.log(`✅  Water Leads Appt Setters FT $1,300/mo  →  ${leadsApptFtPrice.id}`);
+
+  // ── Water Leads — Google Ads Management ($799/month) ─────────────────────
+  const leadsGoogleProduct = await stripe.products.create({
+    name: 'Water Leads — Google Ads Management',
+    description: 'Done-for-you Google Search campaigns targeting homeowners actively searching for water filtration systems.',
+  });
+  const leadsGooglePrice = await stripe.prices.create({
+    product: leadsGoogleProduct.id,
+    unit_amount: 79900,
+    currency: 'usd',
+    recurring: { interval: 'month' },
+    nickname: 'Water Leads Google Ads $799/mo',
+  });
+  results.STRIPE_PRICE_LEADS_GOOGLE_ADS = leadsGooglePrice.id;
+  console.log(`✅  Water Leads Google Ads $799/mo  →  ${leadsGooglePrice.id}`);
 
   // ── Water Websites — $1,799 one-time ─────────────────────────────────────
   const websitesProduct = await stripe.products.create({
