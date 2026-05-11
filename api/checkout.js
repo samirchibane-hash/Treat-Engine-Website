@@ -66,10 +66,9 @@ module.exports = async (req, res) => {
       sessionParams = {
         mode: 'subscription',
         line_items: [
-          { price: process.env.STRIPE_PRICE_SALES_SETUP,   quantity: 1 },
           { price: process.env.STRIPE_PRICE_SALES_MONTHLY, quantity: 1 },
         ],
-        metadata: { service: 'sales', plan: 'crm' },
+        metadata: { service: 'sales', plan: 'monthly' },
         success_url: `${origin}/sales/onboarding?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/sales/checkout`,
       };
