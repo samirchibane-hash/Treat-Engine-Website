@@ -316,8 +316,8 @@ function toggleConditional(id, show) {
 }
 
 async function verifyAndLoad() {
-  // LOCAL PREVIEW: skip verification on localhost
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+  // LOCAL/PREVIEW: skip verification on localhost or with ?preview=1
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || params.get('preview') === '1') {
     showOverlay(null);
     return;
   }
