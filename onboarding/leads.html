@@ -167,18 +167,14 @@ a{text-decoration:none;color:inherit;}
 
   <form id="onboarding-form">
 
-    <!-- Contact Info -->
+    <!-- Account Owner -->
     <div class="form-section">
       <div class="section-eyebrow">Step 01</div>
-      <div class="section-title">Contact information</div>
+      <div class="section-title">Your information</div>
       <div class="form-grid">
         <div class="field">
           <label>Full name <span class="req">*</span></label>
           <input type="text" name="fullName" required placeholder="John Smith">
-        </div>
-        <div class="field">
-          <label>Business name <span class="req">*</span></label>
-          <input type="text" name="businessName" required placeholder="Smith Water Treatment">
         </div>
         <div class="field">
           <label>Email address <span class="req">*</span></label>
@@ -191,11 +187,15 @@ a{text-decoration:none;color:inherit;}
       </div>
     </div>
 
-    <!-- Business Details -->
+    <!-- Your Business -->
     <div class="form-section">
       <div class="section-eyebrow">Step 02</div>
       <div class="section-title">Your business</div>
       <div class="form-grid">
+        <div class="field">
+          <label>Business name <span class="req">*</span></label>
+          <input type="text" name="businessName" required placeholder="Smith Water Treatment">
+        </div>
         <div class="field">
           <label>Primary city / service area <span class="req">*</span></label>
           <input type="text" name="city" required placeholder="Boston">
@@ -224,6 +224,11 @@ a{text-decoration:none;color:inherit;}
           <input type="text" name="serviceArea" placeholder="e.g. Cambridge, Somerville, Waltham — or leave blank if just one city">
         </div>
         <div class="field form-full">
+          <label>Business website</label>
+          <input type="url" name="websiteUrl" placeholder="https://yourwebsite.com">
+          <div class="field-hint">Leave blank if you don't have one — we can build one for you.</div>
+        </div>
+        <div class="field form-full">
           <label>Brands you carry <span class="req">*</span></label>
           <div class="check-group">
             <label class="check-pill"><input type="checkbox" name="brands" value="Kinetico"><span>Kinetico</span></label>
@@ -239,10 +244,10 @@ a{text-decoration:none;color:inherit;}
       </div>
     </div>
 
-    <!-- Digital Presence -->
+    <!-- Campaign Details -->
     <div class="form-section">
       <div class="section-eyebrow">Step 03</div>
-      <div class="section-title">Your digital presence</div>
+      <div class="section-title">Campaign details</div>
       <div class="form-grid">
         <div class="field form-full">
           <label>Do you have an active Facebook Business Page?</label>
@@ -256,35 +261,6 @@ a{text-decoration:none;color:inherit;}
           <input type="url" name="facebookUrl" placeholder="https://facebook.com/yourpage">
         </div>
         <div class="field form-full">
-          <label>Do you have an existing website?</label>
-          <div class="radio-group">
-            <label class="radio-pill"><input type="radio" name="hasWebsite" value="yes" onchange="toggleConditional('website-url', true)"><span>Yes</span></label>
-            <label class="radio-pill"><input type="radio" name="hasWebsite" value="no" onchange="toggleConditional('website-url', false)"><span>No</span></label>
-          </div>
-        </div>
-        <div class="field form-full conditional" id="website-url">
-          <label>Website URL</label>
-          <input type="url" name="websiteUrl" placeholder="https://yourwebsite.com">
-        </div>
-      </div>
-    </div>
-
-    <!-- Campaign Goals -->
-    <div class="form-section">
-      <div class="section-eyebrow">Step 04</div>
-      <div class="section-title">Campaign goals</div>
-      <div class="form-grid">
-        <div class="field">
-          <label>Monthly appointments goal <span class="req">*</span></label>
-          <select name="appointmentGoal" required>
-            <option value="">Select range…</option>
-            <option>5–10 per month</option>
-            <option>10–20 per month</option>
-            <option>20–30 per month</option>
-            <option>30+ per month</option>
-          </select>
-        </div>
-        <div class="field">
           <label>Monthly ad budget (media spend) <span class="req">*</span></label>
           <select name="adBudget" required>
             <option value="">Select range…</option>
@@ -293,18 +269,23 @@ a{text-decoration:none;color:inherit;}
             <option>$2,000 – $3,500</option>
             <option>$3,500+</option>
           </select>
-          <div class="field-hint">This is separate from your Treat Engine management fee and goes directly to Facebook/Google.</div>
+          <div class="field-hint">Separate from your Treat Engine management fee — goes directly to Facebook/Google.</div>
         </div>
         <div class="field form-full">
-          <label>What platforms do you want to advertise on?</label>
+          <label>Choose 3 offers to A/B test <span class="req">*</span></label>
+          <p style="font-size:13.5px;color:var(--ink-muted);margin:4px 0 12px;line-height:1.7;">We'll run your top picks against each other to find what resonates most with buyers in your market.</p>
+          <div class="offer-counter" id="offer-counter">0 of 3 selected</div>
           <div class="check-group">
-            <label class="check-pill"><input type="checkbox" name="platforms" value="Facebook / Instagram"><span>Facebook / Instagram</span></label>
-            <label class="check-pill"><input type="checkbox" name="platforms" value="Google Search"><span>Google Search</span></label>
-            <label class="check-pill"><input type="checkbox" name="platforms" value="Not sure — recommend for me"><span>Not sure — recommend for me</span></label>
+            <label class="check-pill"><input type="checkbox" name="offers" value="FREE Installation For Whole Home Systems"><span>FREE Installation For Whole Home Systems</span></label>
+            <label class="check-pill"><input type="checkbox" name="offers" value="Get a FREE Under Sink RO With Whole-Home Systems"><span>Get a FREE Under Sink RO With Whole-Home Systems</span></label>
+            <label class="check-pill"><input type="checkbox" name="offers" value="Zero Payments for 90 Days"><span>Zero Payments for 90 Days</span></label>
+            <label class="check-pill"><input type="checkbox" name="offers" value="$9.95/Month for First 3 Months – Whole Home System"><span>$9.95/Month for First 3 Months – Whole Home System</span></label>
+            <label class="check-pill"><input type="checkbox" name="offers" value="Free 30-Day Trial for RO System"><span>Free 30-Day Trial for RO System</span></label>
+            <label class="check-pill"><input type="checkbox" name="offers" value="5-Day Risk-Free Trial for Whole Home Systems"><span>5-Day Risk-Free Trial for Whole Home Systems</span></label>
           </div>
         </div>
         <div class="field form-full">
-          <label>Anything else we should know to build your campaign?</label>
+          <label>Anything else we should know?</label>
           <textarea name="additionalNotes" placeholder="Competitors in your area, seasonal focus, specific water problems you solve, past ad experience, etc."></textarea>
         </div>
       </div>
@@ -312,31 +293,15 @@ a{text-decoration:none;color:inherit;}
 
     <!-- Business Hours -->
     <div class="form-section">
-      <div class="section-eyebrow">Step 05</div>
+      <div class="section-eyebrow">Step 04</div>
       <div class="section-title">Water test calendar hours</div>
       <p style="font-size:14px;color:var(--ink-muted);margin:-4px 0 24px;line-height:1.7;">Confirm the days and hours customers can book a free water test. We'll use these to configure your booking calendar.</p>
       <div class="hours-table" id="hours-table"></div>
     </div>
 
-    <!-- Campaign Offers -->
-    <div class="form-section">
-      <div class="section-eyebrow">Step 06</div>
-      <div class="section-title">Choose 3 offers to A/B test</div>
-      <p style="font-size:14px;color:var(--ink-muted);margin:-4px 0 16px;line-height:1.7;">We'll run your chosen offers against each other to find what converts best in your market. Select exactly 3.</p>
-      <div class="offer-counter" id="offer-counter">0 of 3 selected</div>
-      <div class="check-group">
-        <label class="check-pill"><input type="checkbox" name="offers" value="FREE Installation For Whole Home Systems"><span>FREE Installation For Whole Home Systems</span></label>
-        <label class="check-pill"><input type="checkbox" name="offers" value="Get a FREE Under Sink RO With Whole-Home Systems"><span>Get a FREE Under Sink RO With Whole-Home Systems</span></label>
-        <label class="check-pill"><input type="checkbox" name="offers" value="Zero Payments for 90 Days"><span>Zero Payments for 90 Days</span></label>
-        <label class="check-pill"><input type="checkbox" name="offers" value="$9.95/Month for First 3 Months – Whole Home System"><span>$9.95/Month for First 3 Months – Whole Home System</span></label>
-        <label class="check-pill"><input type="checkbox" name="offers" value="Free 30-Day Trial for RO System"><span>Free 30-Day Trial for RO System</span></label>
-        <label class="check-pill"><input type="checkbox" name="offers" value="5-Day Risk-Free Trial for Whole Home Systems"><span>5-Day Risk-Free Trial for Whole Home Systems</span></label>
-      </div>
-    </div>
-
     <!-- Business Registration -->
     <div class="form-section">
-      <div class="section-eyebrow">Step 07</div>
+      <div class="section-eyebrow">Step 05</div>
       <div class="section-title">Business registration details</div>
       <p style="font-size:14px;color:var(--ink-muted);margin:-4px 0 28px;line-height:1.7;">Required to register and verify a local phone number for your campaign. Information is submitted to telecom carriers — please enter it exactly as your business is registered.</p>
 
