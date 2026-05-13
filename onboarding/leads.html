@@ -116,6 +116,21 @@ a{text-decoration:none;color:inherit;}
 /* Sub-section label */
 .sub-section-label{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);padding-bottom:14px;border-bottom:1px solid var(--border-mid);margin-bottom:20px;}
 
+/* Review page */
+.review-section{padding:22px 0;border-bottom:1px solid var(--border);}
+.review-section:last-child{border-bottom:none;}
+.review-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.review-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);}
+.btn-edit{font-size:13px;font-weight:600;color:var(--blue);background:none;border:none;cursor:pointer;padding:0;font-family:'DM Sans',sans-serif;text-decoration:underline;text-underline-offset:3px;}
+.btn-edit:hover{color:var(--blue-dark);}
+.review-row{display:grid;grid-template-columns:148px 1fr;gap:10px;font-size:14px;line-height:1.6;margin-bottom:6px;}
+.review-row:last-child{margin-bottom:0;}
+.rl{color:var(--ink-muted);}
+.rv{color:var(--ink);font-weight:500;}
+.rv ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px;}
+.rv ul li::before{content:'·';margin-right:6px;color:var(--blue);}
+@media(max-width:500px){.review-row{grid-template-columns:1fr;gap:2px;}.rl{font-size:12px;}}
+
 /* Step navigation */
 .form-nav{display:flex;align-items:center;justify-content:space-between;padding-top:32px;border-top:1px solid var(--border);margin-top:4px;gap:12px;}
 .btn-back{background:transparent;color:var(--ink-muted);border:1.5px solid var(--border);padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
@@ -194,6 +209,8 @@ a{text-decoration:none;color:inherit;}
     <div class="step-item" data-si="4"><div class="step-num">4</div><div class="step-label">Hours</div></div>
     <div class="step-connector"></div>
     <div class="step-item" data-si="5"><div class="step-num">5</div><div class="step-label">Registration</div></div>
+    <div class="step-connector"></div>
+    <div class="step-item" data-si="6"><div class="step-num">6</div><div class="step-label">Review</div></div>
   </div>
 
   <form id="onboarding-form">
@@ -391,6 +408,14 @@ a{text-decoration:none;color:inherit;}
       </div>
     </div>
 
+    <!-- Review & Submit -->
+    <div class="form-section" data-step="6">
+      <div class="section-eyebrow">Final Step</div>
+      <div class="section-title">Review &amp; confirm</div>
+      <p style="font-size:14px;color:var(--ink-muted);margin:-4px 0 28px;line-height:1.7;">Everything look good? Hit submit and we'll get to work. Need to change something? Hit Edit next to any section.</p>
+      <div id="review-content"></div>
+    </div>
+
     <div class="form-nav">
       <button type="button" class="btn-back" id="btn-back">← Back</button>
       <span class="step-counter" id="step-counter">Step 1 of 5</span>
@@ -412,8 +437,51 @@ function toggleConditional(id, show) {
   document.getElementById(id).style.display = show ? 'flex' : 'none';
 }
 
+// ── Auto-save / restore ───────────────────────────────────────────
+const SAVE_KEY = `te_ob_${sessionId || 'preview'}`;
+
+function saveProgress() {
+  const fd = new FormData(document.getElementById('onboarding-form'));
+  const data = {};
+  for (const [k, v] of fd.entries()) {
+    data[k] = data[k] ? [].concat(data[k], v) : v;
+  }
+  localStorage.setItem(SAVE_KEY, JSON.stringify({ step: currentStep, data }));
+}
+
+function restoreProgress() {
+  const raw = localStorage.getItem(SAVE_KEY);
+  if (!raw) return;
+  try {
+    const { data } = JSON.parse(raw);
+    Object.entries(data).forEach(([key, value]) => {
+      const els = [...document.querySelectorAll(`[name="${key}"]`)];
+      if (!els.length) return;
+      if (els[0].type === 'checkbox' || els[0].type === 'radio') {
+        const vals = [].concat(value);
+        els.forEach(el => { el.checked = vals.includes(el.value); });
+      } else {
+        els[0].value = value || '';
+      }
+    });
+    // Re-trigger conditional visibility
+    const fb = document.querySelector('input[name="hasFacebook"]:checked');
+    if (fb) toggleConditional('facebook-url', fb.value === 'yes');
+    // Re-trigger hours open/closed visibility
+    ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].forEach(day => {
+      const r = document.querySelector(`input[name="hours_${day}_status"]:checked`);
+      if (r) {
+        const timesDiv = r.closest('.hours-row')?.querySelector('.hours-times');
+        if (timesDiv) timesDiv.style.display = r.value === 'open' ? 'flex' : 'none';
+      }
+    });
+    // Refresh offer counter
+    document.querySelector('input[name="offers"]')?.dispatchEvent(new Event('change'));
+  } catch {}
+}
+
 // ── Multi-step wizard ──────────────────────────────────────────────
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 6;
 let currentStep = 1;
 
 function goToStep(n) {
@@ -478,13 +546,71 @@ function validateStep(n) {
   return true;
 }
 
+function buildReview() {
+  const fd = new FormData(document.getElementById('onboarding-form'));
+  const d = {};
+  for (const [k, v] of fd.entries()) { d[k] = d[k] ? [].concat(d[k], v) : v; }
+
+  const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+  function row(label, value) {
+    if (!value || value === '' || (Array.isArray(value) && !value.length)) return '';
+    const val = Array.isArray(value)
+      ? `<ul>${value.map(v => `<li>${v}</li>`).join('')}</ul>`
+      : value;
+    return `<div class="review-row"><span class="rl">${label}</span><span class="rv">${val}</span></div>`;
+  }
+
+  function section(step, title, rows) {
+    if (!rows.trim()) return '';
+    return `<div class="review-section">
+      <div class="review-header">
+        <div class="review-title">${title}</div>
+        <button class="btn-edit" onclick="goToStep(${step})">Edit</button>
+      </div>${rows}</div>`;
+  }
+
+  const hoursRows = DAYS.map(day => {
+    const status = d[`hours_${day}_status`] || 'open';
+    return status === 'closed'
+      ? row(day, 'Closed')
+      : row(day, `${d[`hours_${day}_open`] || '8:00 AM'} – ${d[`hours_${day}_close`] || '6:00 PM'}`);
+  }).join('');
+
+  document.getElementById('review-content').innerHTML = [
+    section(1, 'Your Information', [
+      row('Full name', d.fullName), row('Email', d.email), row('Phone', d.phone),
+    ].join('')),
+    section(2, 'Your Business', [
+      row('Business name', d.businessName), row('City / area', d.city), row('State', d.state),
+      row('Service area', d.serviceArea), row('Website', d.websiteUrl),
+      row('Brands', [].concat(d.brands || [])),
+    ].join('')),
+    section(3, 'Campaign Details', [
+      row('Facebook page', d.hasFacebook === 'yes' ? (d.facebookUrl || 'Yes — URL not provided') : 'No'),
+      row('Monthly ad budget', d.adBudget),
+      row('Offers to A/B test', [].concat(d.offers || [])),
+      row('Additional notes', d.additionalNotes),
+    ].join('')),
+    section(4, 'Calendar Hours', hoursRows),
+    section(5, 'Business Registration', [
+      row('Owner name', d.ownerName), row('Owner email', d.ownerEmail), row('Owner cell', d.ownerCell),
+      row('Legal business name', d.legalBusinessName), row('Business email', d.businessEmail),
+      row('Business phone', d.businessPhone), row('Business type', d.businessType), row('EIN', d.ein),
+    ].join('')),
+  ].join('');
+}
+
 function nextStep() {
   if (!validateStep(currentStep)) return;
+  saveProgress();
   if (currentStep === TOTAL_STEPS) {
     submitForm();
     return;
   }
-  goToStep(currentStep + 1);
+  const next = currentStep + 1;
+  if (next === TOTAL_STEPS) buildReview();
+  goToStep(next);
 }
 
 function prevStep() {
@@ -512,6 +638,7 @@ async function submitForm() {
       body: JSON.stringify({ session_id: sessionId, service: 'leads', data }),
     });
     if (!res.ok) throw new Error('Failed');
+    localStorage.removeItem(SAVE_KEY);
     showOverlay('success');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch {
@@ -561,6 +688,7 @@ function showOverlay(type) {
     document.getElementById('overlay-success').style.display = 'flex';
   } else {
     document.getElementById('form-page').style.display = 'block';
+    restoreProgress();
     goToStep(1);
   }
 }
