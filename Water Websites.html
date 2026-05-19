@@ -386,6 +386,21 @@ a{text-decoration:none;color:inherit;}
   .topbar-item:not(:first-child){display:none;}
   .topbar-divider{display:none;}
 }
+
+/* ── CLIENT LOGOS ── */
+.trust{padding:56px 32px;background:var(--white);border-bottom:1px solid var(--border);}
+.trust-inner{max-width:1180px;margin:0 auto;}
+.trust-label{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:28px;}
+.trust-logos{display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:nowrap;width:100%;}
+.trust-logo{display:flex;align-items:center;justify-content:center;height:32px;flex:0 1 auto;min-width:0;filter:grayscale(100%);opacity:0.45;transition:opacity .25s,filter .25s;}
+.trust-logo img{max-height:100%;max-width:100%;width:auto;height:auto;display:block;object-fit:contain;}
+.trust-logo:hover{opacity:1;filter:grayscale(0%);}
+.trust-logo.is-circle{height:42px;}
+@media(max-width:768px){
+  .trust-logos{flex-wrap:wrap;justify-content:center;gap:24px 32px;}
+  .trust-logo{height:28px;}
+  .trust-logo.is-circle{height:36px;}
+}
 </style>
 <link rel="stylesheet" href="hero.css"/>
 <link rel="stylesheet" href="mobile.css"/>
@@ -589,6 +604,34 @@ function Hero({tweaks}) {
               <span className="hero-ticker-dot"/>
               {item}
             </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Trust() {
+  const logos = [
+    {name:'Watersurgeon',        src:'/uploads/watersurgeon.webp',       circle:false},
+    {name:'Miami Alkaline Water',src:'/uploads/miami-alkaline.webp',     circle:false},
+    {name:'Lux Pure Alkaline',   src:'/uploads/lux.webp',                circle:true},
+    {name:'Alka Magnum',         src:'/uploads/alka-magnum.webp',        circle:false},
+    {name:'D’Orange Services', src:'/uploads/dorange.webp',         circle:false},
+    {name:'One Green Filter',    src:'/uploads/one-green-filter.webp',   circle:false},
+    {name:'Select Source Water', src:'/uploads/select-source.png',       circle:true},
+    {name:'Tarheel Pure Water',  src:'/uploads/tarheel.png',             circle:true},
+    {name:'Kevin’s Soft Water', src:'/uploads/kevins-soft-water.png', circle:false},
+  ];
+  return (
+    <div className="trust">
+      <div className="trust-inner reveal">
+        <div className="trust-label">Clients we've worked with</div>
+        <div className="trust-logos">
+          {logos.map(l => (
+            <div className={`trust-logo${l.circle ? ' is-circle' : ''}`} key={l.name} title={l.name}>
+              <img src={l.src} alt={l.name} loading="lazy"/>
+            </div>
           ))}
         </div>
       </div>
@@ -841,6 +884,7 @@ function App() {
     <>
       <Nav tweaks={tweaks}/>
       <Hero tweaks={tweaks}/>
+      <Trust/>
       <Problem/>
       <Features/>
       <Process/>
