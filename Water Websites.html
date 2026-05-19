@@ -613,25 +613,26 @@ function Hero({tweaks}) {
 
 function Trust() {
   const logos = [
-    {name:’Kinetico of SW Idaho’, src:’/uploads/kinetico-sw-idaho.png’,   circle:false},
-    {name:’Watersurgeon’,        src:’/uploads/watersurgeon.webp’,       circle:false},
-    {name:’Miami Alkaline Water’,src:’/uploads/miami-alkaline.webp’,     circle:false},
-    {name:’Lux Pure Alkaline’,   src:’/uploads/lux.webp’,                circle:true},
-    {name:’Culligan’,            src:’/uploads/culligan.webp’,           circle:false},
-    {name:’Alka Magnum’,         src:’/uploads/alka-magnum.webp’,        circle:false},
-    {name:’One Green Filter’,    src:’/uploads/one-green-filter.webp’,   circle:false},
-    {name:’Select Source Water’, src:’/uploads/select-source.png’,       circle:true},
-    {name:’Tarheel Pure Water’,  src:’/uploads/tarheel.png’,             circle:true},
-    {name:"Kevin’s Soft Water", src:’/uploads/kevins-soft-water.png’, circle:false},
+    {name:’Kinetico of SW Idaho’, src:’/uploads/kinetico-sw-idaho.png’},
+    {name:’Watersurgeon’, src:’/uploads/watersurgeon.webp’},
+    {name:’Miami Alkaline Water’, src:’/uploads/miami-alkaline.webp’},
+    {name:’Lux Pure Alkaline’, src:’/uploads/lux.webp’},
+    {name:’Culligan’, src:’/uploads/culligan.webp’},
+    {name:’Alka Magnum’, src:’/uploads/alka-magnum.webp’},
+    {name:’One Green Filter’, src:’/uploads/one-green-filter.webp’},
+    {name:’Select Source Water’, src:’/uploads/select-source.png’},
+    {name:’Tarheel Pure Water’, src:’/uploads/tarheel.png’},
+    {name:"Kevin’s Soft Water", src:’/uploads/kevins-soft-water.png’},
   ];
+  const circleNames = [‘Select Source Water’,’Tarheel Pure Water’,’Lux Pure Alkaline’];
   return (
     <div className="trust">
       <div className="trust-inner reveal">
-        <div className="trust-label">Clients we've worked with</div>
+        <div className="trust-label">Clients we work with</div>
         <div className="trust-logos">
           {logos.map(l => (
-            <div className={`trust-logo${l.circle ? ' is-circle' : ''}`} key={l.name} title={l.name}>
-              <img src={l.src} alt={l.name} loading="lazy"/>
+            <div className={`trust-logo${circleNames.includes(l.name) ? ‘ is-circle’ : ‘’}`} key={l.name} title={l.name}>
+              <img src={l.src} alt={l.name} />
             </div>
           ))}
         </div>
