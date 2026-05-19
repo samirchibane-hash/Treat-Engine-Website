@@ -612,6 +612,36 @@ function Hero({tweaks}) {
 }
 
 
+function Trust() {
+  const logos = [
+    {name:"Kinetico of SW Idaho", src:"/uploads/kinetico-sw-idaho.png"},
+    {name:"Watersurgeon", src:"/uploads/watersurgeon.webp"},
+    {name:"Miami Alkaline Water", src:"/uploads/miami-alkaline.webp"},
+    {name:"Lux Pure Alkaline", src:"/uploads/lux.webp"},
+    {name:"Culligan", src:"/uploads/culligan.webp"},
+    {name:"Alka Magnum", src:"/uploads/alka-magnum.webp"},
+    {name:"One Green Filter", src:"/uploads/one-green-filter.webp"},
+    {name:"Select Source Water", src:"/uploads/select-source.png"},
+    {name:"Tarheel Pure Water", src:"/uploads/tarheel.png"},
+    {name:"Kevin's Soft Water", src:"/uploads/kevins-soft-water.png"},
+  ];
+  const circleNames = ["Select Source Water","Tarheel Pure Water","Lux Pure Alkaline"];
+  return (
+    <div className="trust">
+      <div className="trust-inner reveal">
+        <div className="trust-label">Clients we work with</div>
+        <div className="trust-logos">
+          {logos.map(l => (
+            <div className={"trust-logo" + (circleNames.includes(l.name) ? " is-circle" : "")} key={l.name} title={l.name}>
+              <img src={l.src} alt={l.name} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Problem() {
   const cards = [
     {title:'Built to look pretty, not to sell', desc:'Most dealer sites are digital brochures. No clear calls to action, no lead capture, no urgency. A visitor lands, glances, and leaves.'},
@@ -857,6 +887,7 @@ function App() {
     <>
       <Nav tweaks={tweaks}/>
       <Hero tweaks={tweaks}/>
+      <Trust/>
       <Problem/>
       <Features/>
       <Process/>
