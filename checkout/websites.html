@@ -20,6 +20,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
 h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.12;}
 a{text-decoration:none;color:inherit;}
 
+/* ── NAV ── */
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,247,242,0.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
 .nav-inner{max-width:1180px;margin:0 auto;padding:0 32px;height:70px;display:flex;align-items:center;justify-content:space-between;}
 .nav-logo img{height:34px;width:auto;}
@@ -29,33 +30,40 @@ a{text-decoration:none;color:inherit;}
 .nav-links a.active{color:var(--blue);font-weight:600;background:var(--blue-light);}
 @media(max-width:900px){.nav-links{display:none;}}
 
-.page{padding:130px 32px 80px;max-width:680px;margin:0 auto;}
-.breadcrumb{font-size:12px;color:var(--ink-muted);margin-bottom:28px;display:flex;align-items:center;gap:8px;}
+/* ── PAGE SHELL ── */
+.page{padding:100px 32px 80px;max-width:1180px;margin:0 auto;}
+
+/* ── PAGE HEADER ── */
+.page-header{margin-bottom:40px;}
+.breadcrumb{font-size:12px;color:var(--ink-muted);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
 .breadcrumb a{color:var(--blue);}
 .breadcrumb-sep{opacity:.4;}
-.page-tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
-.page-title{font-size:clamp(32px,5vw,52px);font-weight:600;color:var(--ink);margin-bottom:16px;letter-spacing:-.02em;}
+.page-tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+.page-title{font-size:clamp(28px,4vw,42px);font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.02em;}
 .page-title em{font-style:italic;color:var(--navy);}
-.page-sub{font-size:16px;color:var(--ink-muted);line-height:1.8;margin-bottom:40px;}
+.page-sub{font-size:15px;color:var(--ink-muted);line-height:1.75;max-width:560px;}
 
-/* Single offer card */
-.offer-card{background:var(--white);border:2px solid var(--blue);border-radius:16px;overflow:hidden;margin-bottom:28px;}
+/* ── TWO-COLUMN LAYOUT ── */
+.checkout-layout{display:grid;grid-template-columns:1fr 360px;gap:40px;align-items:start;}
+.checkout-right{position:sticky;top:90px;}
 
+/* ── OFFER CARD (left) ── */
+.offer-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;}
 .offer-phase{padding:28px 32px;}
 .offer-phase + .offer-phase{border-top:1px solid var(--border);}
 .offer-phase.phase-2{background:var(--blue-light);}
 
-.phase-label{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:16px;}
+.phase-label{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:14px;}
 .phase-label .dot{width:7px;height:7px;border-radius:50%;background:var(--ink-muted);}
 .offer-phase.phase-2 .phase-label{color:var(--blue);}
 .offer-phase.phase-2 .phase-label .dot{background:var(--blue);}
 
-.phase-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:20px;}
+.phase-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:18px;}
 .phase-name{font-size:17px;font-weight:600;color:var(--ink);margin-bottom:4px;}
 .phase-desc{font-size:13.5px;color:var(--ink-muted);line-height:1.6;}
 .phase-price{text-align:right;flex-shrink:0;}
-.phase-price .amount{font-family:'Playfair Display',serif;font-size:36px;font-weight:600;color:var(--ink);line-height:1;}
-.phase-price .amount sup{font-size:18px;vertical-align:top;margin-top:5px;}
+.phase-price .amount{font-family:'Playfair Display',serif;font-size:34px;font-weight:600;color:var(--ink);line-height:1;}
+.phase-price .amount sup{font-size:17px;vertical-align:top;margin-top:4px;}
 .phase-price .period{font-size:12px;color:var(--ink-muted);margin-top:4px;}
 
 .feature-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
@@ -64,33 +72,59 @@ a{text-decoration:none;color:inherit;}
 .offer-phase.phase-2 .feature-list .check{background:rgba(59,130,246,.2);}
 .feature-list .check svg{width:10px;height:10px;stroke:var(--blue);fill:none;stroke-width:2.5;}
 
-/* Order summary */
-.order-summary{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px 28px;margin-bottom:24px;}
-.order-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--ink-mid);padding:9px 0;}
+/* ── CHECKOUT PANEL (right, sticky) ── */
+.checkout-panel{background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;}
+
+.panel-header{padding:20px 24px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.08);}
+.panel-header-label{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:6px;}
+.panel-header-title{font-size:15px;font-weight:600;color:#fff;}
+
+.panel-body{padding:20px 24px;}
+
+.order-row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--ink-mid);padding:9px 0;}
 .order-row:not(:last-child){border-bottom:1px solid var(--border-mid);}
-.order-row.total{font-size:15px;font-weight:600;color:var(--ink);}
+.order-row.total{font-size:15px;font-weight:600;color:var(--ink);padding-top:14px;margin-top:4px;border-top:1.5px solid var(--border);}
 .order-row .label{display:flex;flex-direction:column;gap:2px;}
 .order-row .label span{font-size:11.5px;color:var(--ink-muted);font-weight:400;}
 .order-row .amount{font-weight:600;white-space:nowrap;}
-.order-row.total .amount{color:var(--blue);}
+.order-row.total .amount{color:var(--blue);font-size:18px;}
 
-.savings-note{background:var(--green-light);border:1px solid rgba(22,163,74,.2);border-radius:8px;padding:14px 18px;font-size:13.5px;color:var(--green);font-weight:500;margin-bottom:28px;display:flex;align-items:center;gap:10px;}
-.savings-note svg{flex-shrink:0;}
+.savings-note{background:var(--green-light);border:1px solid rgba(22,163,74,.2);border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--green);font-weight:500;margin:16px 0;display:flex;align-items:flex-start;gap:8px;line-height:1.5;}
+.savings-note svg{flex-shrink:0;margin-top:1px;}
 
-.btn-primary{width:100%;background:var(--blue);color:#fff;border:none;padding:17px 28px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;}
-.btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px);}
+.btn-primary{width:100%;background:var(--blue);color:#fff;border:none;padding:16px 24px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;}
+.btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 4px 16px rgba(59,130,246,0.35);}
 .btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none;}
-.btn-ghost{background:transparent;color:var(--ink-muted);border:none;padding:14px;font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:12px;width:100%;}
+
+.btn-ghost{background:transparent;color:var(--ink-muted);border:none;padding:12px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;width:100%;text-align:center;display:block;transition:color .2s;}
 .btn-ghost:hover{color:var(--ink);}
 
-.trust-row{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:28px;flex-wrap:wrap;}
-.trust-item{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-muted);}
+.trust-row{display:flex;flex-direction:column;gap:8px;padding:16px 24px;border-top:1px solid var(--border);}
+.trust-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-muted);}
 .trust-item svg{flex-shrink:0;color:var(--blue);}
 
 .spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .loading .spinner{display:block;}
 .loading .btn-text{display:none;}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .page{padding:88px 20px 60px;}
+  .checkout-layout{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+  /* Checkout panel floats to the top on mobile */
+  .checkout-right{position:static;order:-1;margin-bottom:24px;}
+  .panel-header{display:none;}
+  .checkout-panel{border-radius:12px;}
+  .page-sub{font-size:14px;}
+}
+@media(max-width:480px){
+  .phase-top{flex-direction:column;gap:8px;}
+  .phase-price{text-align:left;}
+}
 </style>
 </head>
 <body>
@@ -108,111 +142,130 @@ a{text-decoration:none;color:inherit;}
 </nav>
 
 <div class="page">
-  <div class="breadcrumb">
-    <a href="/websites">Water Websites</a>
-    <span class="breadcrumb-sep">›</span>
-    <span>Get started</span>
+
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a href="/websites">Water Websites</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Get started</span>
+    </div>
+    <div class="page-tag">Water Websites + Traffic, Leads & Bookings Engine</div>
+    <h1 class="page-title">Your website. <em>Your growth engine.</em></h1>
+    <p class="page-sub">$997 gets your site designed, written, and live. Your first month of the Traffic, Leads & Bookings Engine is on us — $199/month from day 31.</p>
   </div>
 
-  <div class="page-tag">Water Websites + Traffic, Leads & Bookings Engine</div>
-  <h1 class="page-title">Your website. <em>Your growth engine.</em></h1>
-  <p class="page-sub">One package. Two phases. $997 gets your site built and live — then your first month of the Traffic, Leads & Bookings Engine is on us. $199/month starts day 31.</p>
+  <div class="checkout-layout">
 
-  <div class="offer-card">
+    <!-- Left: product detail -->
+    <div class="checkout-left">
+      <div class="offer-card">
 
-    <!-- Phase 1 -->
-    <div class="offer-phase phase-1">
-      <div class="phase-label"><span class="dot"></span>Step 1 · Due today</div>
-      <div class="phase-top">
-        <div>
-          <div class="phase-name">Water Treatment Website</div>
-          <div class="phase-desc">Your site designed, written, and launched — built to rank and convert.</div>
+        <div class="offer-phase phase-1">
+          <div class="phase-label"><span class="dot"></span>Step 1 · Due today</div>
+          <div class="phase-top">
+            <div>
+              <div class="phase-name">Water Treatment Website</div>
+              <div class="phase-desc">Your site designed, written, and launched — built to rank and convert.</div>
+            </div>
+            <div class="phase-price">
+              <div class="amount"><sup>$</sup>997</div>
+              <div class="period">One-time</div>
+            </div>
+          </div>
+          <ul class="feature-list">
+            <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Custom design built for water treatment dealers</li>
+            <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Professional copy written for you</li>
+            <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>On-page SEO setup from day one</li>
+            <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Water test booking integration</li>
+            <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Fully launched and live</li>
+          </ul>
         </div>
-        <div class="phase-price">
-          <div class="amount"><sup>$</sup>997</div>
-          <div class="period">One-time</div>
+
+        <div class="offer-phase phase-2">
+          <div class="phase-label"><span class="dot"></span>Step 2 · First month free — starts day 31</div>
+          <div class="phase-top">
+            <div>
+              <div class="phase-name">Traffic, Leads & Bookings Engine</div>
+              <div class="phase-desc">Keeps your site growing, your leads warm, and your calendar full. First month free — $199/month from day 31.</div>
+            </div>
+            <div class="phase-price">
+              <div class="amount"><sup>$</sup>199</div>
+              <div class="period">Per month</div>
+            </div>
+          </div>
+          <ul class="feature-list">
+            <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Lead & booking dashboard — every water test appointment in one place</li>
+            <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Unlimited team members — no per-seat pricing, ever</li>
+            <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Weekly SEO blog posts published automatically to rank higher and drive free traffic</li>
+            <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Email & SMS automations that follow up with leads and convert them into booked water tests</li>
+            <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>AI voice agent that calls your leads and books water tests around the clock</li>
+            <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>24/7 priority support</li>
+          </ul>
         </div>
+
       </div>
-      <ul class="feature-list">
-        <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Custom design built for water treatment dealers</li>
-        <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Professional copy written for you</li>
-        <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>On-page SEO setup from day one</li>
-        <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Water test booking integration</li>
-        <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Fully launched and live</li>
-      </ul>
     </div>
 
-    <!-- Phase 2 -->
-    <div class="offer-phase phase-2">
-      <div class="phase-label"><span class="dot"></span>Step 2 · First month free — starts day 31</div>
-      <div class="phase-top">
-        <div>
-          <div class="phase-name">Traffic, Leads & Bookings Engine</div>
-          <div class="phase-desc">Your first month is free. Keeps your site growing, your leads warm, and your calendar full — $199/month from day 31.</div>
+    <!-- Right: sticky checkout panel -->
+    <div class="checkout-right">
+      <div class="checkout-panel">
+
+        <div class="panel-header">
+          <div class="panel-header-label">Order summary</div>
+          <div class="panel-header-title">Water Websites Package</div>
         </div>
-        <div class="phase-price">
-          <div class="amount"><sup>$</sup>199</div>
-          <div class="period">Per month</div>
+
+        <div class="panel-body">
+          <div class="order-row">
+            <div class="label">
+              Water Treatment Website
+              <span>One-time build & launch</span>
+            </div>
+            <div class="amount">$997</div>
+          </div>
+          <div class="order-row">
+            <div class="label">
+              Traffic, Leads & Bookings Engine
+              <span>First month free — then $199/mo</span>
+            </div>
+            <div class="amount">$0 today</div>
+          </div>
+          <div class="order-row total">
+            <div class="label">Due today</div>
+            <div class="amount">$997</div>
+          </div>
+
+          <div class="savings-note">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="7"/><path d="M8 5v3.5l2 2"/></svg>
+            First month of the Traffic Engine is free. $199/month kicks in day 31 — cancel anytime before then.
+          </div>
+
+          <button class="btn-primary" id="checkout-btn" onclick="startCheckout()">
+            <span class="btn-text">Get started for $997</span>
+            <div class="spinner"></div>
+            <svg id="arrow-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </button>
+          <a href="/websites" class="btn-ghost">← Back to Water Websites</a>
         </div>
+
+        <div class="trust-row">
+          <div class="trust-item">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 1l1.5 4H13l-3.5 2.5 1.5 4L7 9 3 11.5l1.5-4L1 5h4.5z"/></svg>
+            60-day satisfaction guarantee
+          </div>
+          <div class="trust-item">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="10" height="8" rx="1"/><path d="M5 5V4a2 2 0 014 0v1"/></svg>
+            Secured by Stripe
+          </div>
+          <div class="trust-item">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
+            Cancel the Engine anytime
+          </div>
+        </div>
+
       </div>
-      <ul class="feature-list">
-        <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Lead & booking dashboard — every water test appointment in one place</li>
-        <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Unlimited team members — no per-seat pricing, ever</li>
-        <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Weekly SEO blog posts published automatically to rank higher and drive free traffic</li>
-        <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>Email & SMS automations that follow up with leads and convert them into booked water tests</li>
-        <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>AI voice agent that calls your leads and books water tests around the clock</li>
-        <li><span class="check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,8 8,2"/></svg></span>24/7 priority support</li>
-      </ul>
     </div>
 
-  </div>
-
-  <div class="order-summary">
-    <div class="order-row">
-      <div class="label">
-        Water Treatment Website
-        <span>One-time build & launch</span>
-      </div>
-      <div class="amount">$997</div>
-    </div>
-    <div class="order-row">
-      <div class="label">
-        Traffic, Leads & Bookings Engine
-        <span>First month free — then $199/mo from day 31</span>
-      </div>
-      <div class="amount">$199/mo</div>
-    </div>
-    <div class="order-row total">
-      <div class="label">Due today</div>
-      <div class="amount">$997</div>
-    </div>
-  </div>
-
-  <div class="savings-note">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="7"/><path d="M8 5v3.5l2 2"/></svg>
-    Your first month of the Traffic, Leads & Bookings Engine is free. $199/month kicks in on day 31 — cancel anytime before then and you pay nothing more.
-  </div>
-
-  <button class="btn-primary" id="checkout-btn" onclick="startCheckout()">
-    <span class="btn-text">Get started for $997</span>
-    <div class="spinner"></div>
-    <svg id="arrow-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-  </button>
-  <button class="btn-ghost" onclick="window.location='/websites'">← Back to Water Websites</button>
-
-  <div class="trust-row">
-    <div class="trust-item">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 1l1.5 4H13l-3.5 2.5 1.5 4L7 9 3 11.5l1.5-4L1 5h4.5z"/></svg>
-      60-day satisfaction guarantee
-    </div>
-    <div class="trust-item">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="10" height="8" rx="1"/><path d="M5 5V4a2 2 0 014 0v1"/></svg>
-      Secured by Stripe
-    </div>
-    <div class="trust-item">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
-      Cancel the Engine anytime
-    </div>
   </div>
 </div>
 
