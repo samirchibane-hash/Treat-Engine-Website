@@ -53,6 +53,30 @@ module.exports = async (req, res) => {
 
     if (error) console.error('Supabase upsert error:', error.message);
 
+    // Sync purchase to Client Management so new customers appear even before onboarding
+    try {
+      const clientMgmt = createClient(
+        process.env.CLIENT_MGMT_SUPABASE_URL,
+        process.env.CLIENT_MGMT_SUPABASE_KEY
+      );
+      const onboardingPath = service === 'websites' ? 'websites' : service === 'sales' ? 'sales' : 'ads';
+      const { error: cmError } = await clientMgmt.from('clients').upsert({
+        session_id: session.id,
+        service,
+        plan,
+        full_name: session.customer_details?.name,
+        email: session.customer_details?.email,
+        phone: session.customer_details?.phone,
+        amount_paid: session.amount_total,
+        currency: session.currency,
+        status: 'pending',
+        onboarding_link: `https://treatengine.com/${onboardingPath}/onboarding?session_id=${session.id}`,
+      }, { onConflict: 'session_id' });
+      if (cmError) console.error('Client Management sync error:', cmError.message);
+    } catch (err) {
+      console.error('Client Management sync error:', err.message);
+    }
+
     // For Water Websites CRM: auto-start $199/mo subscription with 30-day trial
     if (service === 'websites' && plan === 'websites-crm' && session.customer) {
       try {
