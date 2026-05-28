@@ -286,6 +286,37 @@ a{text-decoration:none;color:inherit;}
 .btn-ghost{background:transparent;color:rgba(255,255,255,0.7);border:1.5px solid rgba(255,255,255,0.2);padding:14px 28px;border-radius:6px;font-size:15px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
 .btn-ghost:hover{border-color:rgba(255,255,255,0.5);color:#fff;}
 
+/* CRM INTEGRATIONS */
+.crm-section{background:var(--white);padding:110px 32px;border-top:1px solid var(--border);}
+.crm-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-bottom:72px;padding-bottom:56px;border-bottom:1px solid var(--border);}
+.crm-chips{display:flex;flex-wrap:wrap;gap:10px;}
+.crm-chip{display:flex;align-items:center;gap:9px;padding:9px 15px;border:1.5px solid var(--border);border-radius:8px;background:var(--cream);transition:border-color .2s;}
+.crm-chip:hover{border-color:var(--blue);}
+.crm-chip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.crm-chip-name{font-size:13.5px;font-weight:600;color:var(--ink);font-family:'DM Sans',sans-serif;}
+.crm-more{display:flex;align-items:center;gap:8px;padding:9px 15px;border:1.5px dashed var(--border);border-radius:8px;}
+.crm-more span{font-size:13px;color:var(--ink-muted);font-family:'DM Sans',sans-serif;}
+.crm-preview{margin-top:32px;background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:20px 24px;}
+.crm-preview-source{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.crm-preview-source-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blue);}
+.crm-preview-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.crm-preview-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;color:var(--ink);}
+.crm-preview-time{font-size:11px;font-weight:700;background:#d1fae5;color:#065f46;padding:3px 10px;border-radius:4px;}
+.crm-preview-addr{font-size:13px;color:var(--ink-muted);margin-bottom:8px;}
+.crm-preview-note{font-size:12px;color:var(--ink-muted);line-height:1.6;padding:10px 0;border-top:1px solid var(--border);}
+.crm-benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);}
+.crm-benefit{padding:36px 40px;border-right:1px solid var(--border);}
+.crm-benefit:last-child{border-right:none;}
+.crm-benefit-icon{width:42px;height:42px;border-radius:10px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
+.crm-benefit-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:var(--ink);margin-bottom:10px;line-height:1.3;}
+.crm-benefit-desc{font-size:14px;color:var(--ink-muted);line-height:1.8;}
+@media(max-width:960px){
+  .crm-header{grid-template-columns:1fr;gap:40px;}
+  .crm-benefits{grid-template-columns:1fr;}
+  .crm-benefit{border-right:none;border-bottom:1px solid var(--border);}
+  .crm-benefit:last-child{border-bottom:none;}
+}
+
 /* BOOKING SECTION */
 .booking-section{padding:100px 32px;background:var(--cream);border-top:1px solid var(--border);}
 .booking-inner{max-width:960px;margin:0 auto;}
@@ -981,6 +1012,102 @@ function DealFlow() {
   );
 }
 
+function CRMIntegrations() {
+  const crms = [
+    {name:'ServiceTitan', color:'#F37F2F'},
+    {name:'GoHighLevel', color:'#00C2CB'},
+    {name:'HouseCall Pro', color:'#0082FC'},
+    {name:'Jobber', color:'#00AA72'},
+    {name:'FieldEdge', color:'#1E4899'},
+    {name:'Service Fusion', color:'#5C4FE5'},
+  ];
+  const benefits = [
+    {
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect x="2" y="4" width="16" height="14" rx="2" stroke="#3b82f6" strokeWidth="1.5"/>
+          <path d="M2 8h16" stroke="#3b82f6" strokeWidth="1.5"/>
+          <path d="M6 2v4M14 2v4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round"/>
+          <circle cx="7" cy="13" r="1" fill="#3b82f6"/>
+          <circle cx="10" cy="13" r="1" fill="#3b82f6"/>
+        </svg>
+      ),
+      title:'Appointment pre-loaded on arrival',
+      desc:"The moment a tech opens ClearDeals, the scheduled water test is already there — customer name, address, appointment notes, and prior service history pulled directly from your CRM. They walk in prepared.",
+    },
+    {
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M3.5 10a6.5 6.5 0 0 1 6.5-6.5 6.5 6.5 0 0 1 4.6 1.9L16 7" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round"/>
+          <path d="M16 3.5V7h-3.5" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M16.5 10a6.5 6.5 0 0 1-6.5 6.5 6.5 6.5 0 0 1-4.6-1.9L4 13" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round"/>
+          <path d="M4 16.5V13h3.5" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      ),
+      title:'Zero manual data entry',
+      desc:"No re-keying between systems. Everything in your dispatch CRM flows into the proposal automatically — so nothing gets missed between the office and the homeowner's door.",
+    },
+    {
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="7.5" stroke="#3b82f6" strokeWidth="1.5"/>
+          <path d="M6.5 10l2.5 2.5 4.5-4.5" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      ),
+      title:'Closed deals sync back automatically',
+      desc:"Signed proposals, collected deposits, and selected equipment flow back into your CRM once the deal closes. Your records stay current — no follow-up data entry required.",
+    },
+  ];
+  return (
+    <section className="crm-section" id="integrations">
+      <div className="section-inner">
+        <div className="crm-header reveal">
+          <div>
+            <div className="eyebrow">Works with your CRM</div>
+            <h2 className="section-title">Customer info waiting<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>before they knock.</em></h2>
+            <p className="section-sub">ClearDeals connects to the field service CRMs your dispatch team already runs. When a sales rep arrives at a scheduled water test, their appointment is preloaded on the tablet — no manual entry, no missed details. Just open the app and close the deal.</p>
+          </div>
+          <div style={{paddingTop:4}}>
+            <div style={{fontSize:11,fontWeight:700,letterSpacing:'.1em',textTransform:'uppercase',color:'var(--ink-muted)',marginBottom:20}}>Integrates with</div>
+            <div className="crm-chips">
+              {crms.map(c => (
+                <div className="crm-chip" key={c.name}>
+                  <span className="crm-chip-dot" style={{background:c.color,boxShadow:`0 0 0 2px ${c.color}28`}}/>
+                  <span className="crm-chip-name">{c.name}</span>
+                </div>
+              ))}
+              <div className="crm-more"><span>+ more on request</span></div>
+            </div>
+            <div className="crm-preview">
+              <div className="crm-preview-source">
+                <span className="crm-preview-source-dot"/>
+                Synced from ServiceTitan
+              </div>
+              <div className="crm-preview-row">
+                <div className="crm-preview-name">Sarah &amp; Tom Martinez</div>
+                <span className="crm-preview-time">Today 2:00 PM</span>
+              </div>
+              <div className="crm-preview-addr">47 Willow Creek Dr, Scottsdale, AZ 85254</div>
+              <div className="crm-preview-note">
+                <span style={{fontWeight:600,color:'var(--ink-mid)'}}>Dispatch note:</span> Complaining of hard water — spots on dishes, dry skin. Has existing softener from 2017, likely needs upgrade. Test for hardness + TDS.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="crm-benefits reveal">
+          {benefits.map((b,i) => (
+            <div className="crm-benefit" key={i}>
+              <div className="crm-benefit-icon">{b.icon}</div>
+              <div className="crm-benefit-title">{b.title}</div>
+              <div className="crm-benefit-desc">{b.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Comparison({tweaks}) {
   if(!tweaks.showComparison) return null;
   const rows = [
@@ -1265,6 +1392,7 @@ function App() {
       <Problem/>
       <Features/>
       <DealFlow/>
+      <CRMIntegrations/>
       <Comparison tweaks={tweaks}/>
       <FAQ/>
       <CTABanner tweaks={tweaks}/>
