@@ -63,17 +63,33 @@ module.exports = async (req, res) => {
       };
 
     } else if (service === 'sales') {
-      if (!process.env.STRIPE_PRICE_SALES_SETUP) {
-        return res.status(500).json({ error: 'Missing STRIPE_PRICE_SALES_SETUP price ID' });
+      // Testimonial promo waives the one-time setup fee. The server is the source
+      // of truth — the page field is only a live-preview convenience.
+      const SETUP_PROMO_CODE = (process.env.SALES_SETUP_PROMO_CODE || 'TESTIMONIAL').toUpperCase();
+      const promo = String((req.body && req.body.promo) || '').trim().toUpperCase();
+      const waiveSetup = promo === SETUP_PROMO_CODE;
+
+      const lineItems = [
+        { price: process.env.STRIPE_PRICE_SALES_LICENSE, quantity: 1 },
+      ];
+
+      if (!waiveSetup) {
+        if (!process.env.STRIPE_PRICE_SALES_SETUP) {
+          return res.status(500).json({ error: 'Missing STRIPE_PRICE_SALES_SETUP price ID' });
+        }
+        // One-time $1,000 setup fee — billed on the first invoice alongside the subscription.
+        lineItems.unshift({ price: process.env.STRIPE_PRICE_SALES_SETUP, quantity: 1 });
       }
+
       sessionParams = {
         mode: 'subscription',
-        line_items: [
-          // One-time $1,000 setup fee — billed on the first invoice alongside the subscription.
-          { price: process.env.STRIPE_PRICE_SALES_SETUP, quantity: 1 },
-          { price: process.env.STRIPE_PRICE_SALES_LICENSE, quantity: 1 },
-        ],
-        metadata: { service: 'sales', plan: 'monthly', setup_fee: '1000' },
+        line_items: lineItems,
+        metadata: {
+          service: 'sales',
+          plan: 'monthly',
+          setup_fee: waiveSetup ? 'waived' : '1000',
+          promo: waiveSetup ? SETUP_PROMO_CODE : 'none',
+        },
         success_url: `${origin}/sales/onboarding?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/sales/checkout`,
       };

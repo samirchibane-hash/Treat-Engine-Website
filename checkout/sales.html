@@ -118,6 +118,23 @@ a{text-decoration:none;color:inherit;}
 .summary-note{font-size:12px;color:var(--ink-muted);line-height:1.65;margin-top:14px;padding-top:14px;border-top:1px solid var(--border-mid);display:flex;gap:8px;align-items:flex-start;}
 .note-icon{flex-shrink:0;margin-top:1px;}
 
+/* Promo code */
+.promo-box{margin-top:14px;padding-top:14px;border-top:1px solid var(--border-mid);}
+.promo-toggle{background:none;border:none;color:var(--blue);font-size:12.5px;font-weight:500;cursor:pointer;padding:0;font-family:'DM Sans',sans-serif;}
+.promo-toggle:hover{text-decoration:underline;}
+.promo-field{display:none;gap:8px;margin-top:10px;}
+.promo-field.open{display:flex;}
+.promo-input{flex:1;min-width:0;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;text-transform:uppercase;color:var(--ink);}
+.promo-input::placeholder{text-transform:none;color:var(--ink-muted);}
+.promo-input:focus{border-color:var(--blue);}
+.promo-apply{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:0 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0;}
+.promo-apply:hover{background:var(--ink);}
+.promo-msg{font-size:12px;margin-top:8px;line-height:1.4;display:none;}
+.promo-msg.show{display:block;}
+.promo-msg.ok{color:var(--green);}
+.promo-msg.err{color:#c0392b;}
+.row-amt s{color:var(--ink-muted);font-weight:500;margin-right:6px;}
+
 /* CTA */
 .btn-primary{width:100%;background:var(--blue);color:#fff;border:none;padding:17px 24px;border-radius:8px;font-size:15.5px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:20px;}
 .btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px);}
@@ -259,9 +276,9 @@ a{text-decoration:none;color:inherit;}
         <div class="summary-heading">Your Plan</div>
 
         <div class="summary-rows">
-          <div class="summary-row">
-            <span class="row-name">Dealership Setup &amp; Customization<span class="row-sub">One-time · due today</span></span>
-            <span class="row-amt">$1,000</span>
+          <div class="summary-row" id="setup-row">
+            <span class="row-name">Dealership Setup &amp; Customization<span class="row-sub" id="setup-sub">One-time · due today</span></span>
+            <span class="row-amt" id="setup-amt">$1,000</span>
           </div>
           <div class="summary-row">
             <span class="row-name">ClearDeals Platform<span class="row-sub">First month · then $299/mo</span></span>
@@ -274,7 +291,7 @@ a{text-decoration:none;color:inherit;}
         <div class="summary-total-row">
           <div class="summary-total-label">Due today</div>
           <div class="summary-total-right">
-            <div class="summary-total-amt">$1,299</div>
+            <div class="summary-total-amt" id="due-today">$1,299</div>
             <div class="summary-period">then $299/month</div>
           </div>
         </div>
@@ -282,6 +299,15 @@ a{text-decoration:none;color:inherit;}
         <div class="summary-note">
           <svg class="note-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="var(--ink-muted)" stroke-width="1.5"><circle cx="7" cy="7" r="6"/><path d="M7 5v3"/><circle cx="7" cy="9.5" r=".5" fill="var(--ink-muted)"/></svg>
           Per-agreement usage is tracked across your dealership and invoiced automatically at month-end via Stripe — nothing extra due today.
+        </div>
+
+        <div class="promo-box">
+          <button type="button" class="promo-toggle" id="promo-toggle" onclick="togglePromo()">Have a promo code?</button>
+          <div class="promo-field" id="promo-field">
+            <input type="text" id="promo-input" class="promo-input" placeholder="Enter code" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();applyPromo();}">
+            <button type="button" class="promo-apply" onclick="applyPromo()">Apply</button>
+          </div>
+          <div class="promo-msg" id="promo-msg"></div>
         </div>
 
         <button class="btn-primary" id="checkout-btn" onclick="startCheckout()">
@@ -333,16 +359,63 @@ function updateEstimator() {
 
 updateEstimator();
 
+// ── Promo code (waives the one-time setup fee) ──
+const PROMO_CODE = 'TESTIMONIAL';
+let promoApplied = false;
+
+function togglePromo() {
+  document.getElementById('promo-field').classList.toggle('open');
+  document.getElementById('promo-input').focus();
+}
+
+function applyPromo() {
+  const code = document.getElementById('promo-input').value.trim().toUpperCase();
+  const msg = document.getElementById('promo-msg');
+  if (!code) return;
+
+  if (code === PROMO_CODE) {
+    promoApplied = true;
+    msg.textContent = '✓ Code applied — setup fee waived.';
+    msg.className = 'promo-msg show ok';
+  } else {
+    promoApplied = false;
+    msg.textContent = 'That code isn’t valid. Double-check and try again.';
+    msg.className = 'promo-msg show err';
+  }
+  renderSummary();
+}
+
+function renderSummary() {
+  const setupAmt = document.getElementById('setup-amt');
+  const setupSub = document.getElementById('setup-sub');
+  const dueToday = document.getElementById('due-today');
+  const btnText = document.querySelector('#checkout-btn .btn-text');
+
+  if (promoApplied) {
+    setupAmt.innerHTML = '<s>$1,000</s>Free';
+    setupSub.textContent = 'One-time · waived';
+    dueToday.textContent = '$299';
+    btnText.textContent = 'Create Account — $299 today';
+  } else {
+    setupAmt.textContent = '$1,000';
+    setupSub.textContent = 'One-time · due today';
+    dueToday.textContent = '$1,299';
+    btnText.textContent = 'Create Account — $1,299 today';
+  }
+}
+
 async function startCheckout() {
   const btn = document.getElementById('checkout-btn');
   btn.classList.add('loading');
   btn.disabled = true;
 
+  const promo = document.getElementById('promo-input').value.trim();
+
   try {
     const res = await fetch('/api/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ service: 'sales' }),
+      body: JSON.stringify({ service: 'sales', promo: promo }),
     });
     const { url, error } = await res.json();
     if (error) throw new Error(error);
