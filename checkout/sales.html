@@ -250,9 +250,9 @@ a{text-decoration:none;color:inherit;}
         <input type="range" class="slider" id="vol-slider" min="0" max="3" step="1" value="0" oninput="updateEstimator()">
         <div class="slider-labels">
           <span>100</span>
-          <span>500</span>
-          <span>2,000</span>
-          <span>5,000</span>
+          <span>250</span>
+          <span>750</span>
+          <span>1,500+</span>
         </div>
 
         <div class="estimate-result">
@@ -337,10 +337,10 @@ a{text-decoration:none;color:inherit;}
 
 <script>
 const tiers = [
-  { vol: '100',   label: 'Up to 100 documents',   rate: 3.50 },
-  { vol: '500',   label: 'Up to 500 documents',   rate: 2.75 },
-  { vol: '2,000', label: 'Up to 2,000 documents', rate: 2.13 },
-  { vol: '5,000', label: 'Up to 5,000 documents', rate: 1.88 },
+  { vol: '100',    label: 'Up to 100 documents',  rate: 3.50 },
+  { vol: '250',    label: 'Up to 250 documents',  rate: 2.75 },
+  { vol: '750',    label: 'Up to 750 documents',  rate: 2.13 },
+  { vol: '1,500+', label: '1,500+ documents',     rate: 1.88 },
 ];
 
 function updateEstimator() {
