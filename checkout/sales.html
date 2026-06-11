@@ -178,7 +178,7 @@ a{text-decoration:none;color:inherit;}
 
   <div class="page-tag">Water Sales — ClearDeals</div>
   <h1 class="page-title">Create your <em>dealership account</em></h1>
-  <p class="page-sub">A one-time setup fee customizes ClearDeals to your dealership, then $299/month covers your whole team. Per-agreement usage is tracked automatically and billed at month-end.</p>
+  <p class="page-sub">A one-time setup fee customizes ClearDeals to your dealership, then $299/month covers your whole team. Usage — each presentation and contract you generate — is tracked automatically and billed at month-end.</p>
 
   <div class="checkout-layout">
 
@@ -206,6 +206,7 @@ a{text-decoration:none;color:inherit;}
             <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Custom sales agreement &amp; contract built to your dealership</li>
             <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Branded in-field presentation tailored to how you sell</li>
             <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Full product catalog configured with your pricing</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>CRM integration configured &amp; connected to your tools</li>
             <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Live team training &amp; onboarding for your reps</li>
           </ul>
         </div>
@@ -233,7 +234,6 @@ a{text-decoration:none;color:inherit;}
             <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Unlimited Products</li>
             <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Financing Integrations</li>
             <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Unlimited Users</li>
-            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>CRM Integrations</li>
             <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Unlimited Presentations</li>
             <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Stripe Integration</li>
             <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Unlimited Revisions</li>
@@ -245,8 +245,8 @@ a{text-decoration:none;color:inherit;}
       <!-- Usage estimator -->
       <div class="estimator-card">
         <div class="estimator-label">Usage estimator</div>
-        <div class="estimator-title">What's your monthly agreement volume?</div>
-        <div class="estimator-sub">Move the slider to your expected volume. Higher volume earns a lower per-agreement rate — billed automatically at month's end, never today.</div>
+        <div class="estimator-title">What's your monthly document volume?</div>
+        <div class="estimator-sub">Each presentation and each contract you generate is billed per item. Move the slider to your expected volume — higher volume earns a lower per-document rate, billed automatically at month's end, never today.</div>
 
         <input type="range" class="slider" id="vol-slider" min="0" max="3" step="1" value="0" oninput="updateEstimator()">
         <div class="slider-labels">
@@ -258,12 +258,12 @@ a{text-decoration:none;color:inherit;}
 
         <div class="estimate-result">
           <div class="estimate-left">
-            <div class="estimate-volume" id="est-volume">100 agreements / month</div>
-            <div class="estimate-tier" id="est-tier">Up to 100 agreements</div>
+            <div class="estimate-volume" id="est-volume">100 documents / month</div>
+            <div class="estimate-tier" id="est-tier">Up to 100 documents</div>
           </div>
           <div class="estimate-right">
-            <div class="estimate-cost" id="est-cost">$7.00</div>
-            <div class="estimate-cost-label">per agreement</div>
+            <div class="estimate-cost" id="est-cost">$3.50</div>
+            <div class="estimate-cost-label">per presentation &amp; contract</div>
           </div>
         </div>
       </div>
@@ -298,7 +298,7 @@ a{text-decoration:none;color:inherit;}
 
         <div class="summary-note">
           <svg class="note-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="var(--ink-muted)" stroke-width="1.5"><circle cx="7" cy="7" r="6"/><path d="M7 5v3"/><circle cx="7" cy="9.5" r=".5" fill="var(--ink-muted)"/></svg>
-          Per-agreement usage is tracked across your dealership and invoiced automatically at month-end via Stripe — nothing extra due today.
+          Usage — each presentation and contract generated across your dealership — is tracked and invoiced automatically at month-end via Stripe. Nothing extra due today.
         </div>
 
         <div class="promo-box">
@@ -338,17 +338,17 @@ a{text-decoration:none;color:inherit;}
 
 <script>
 const tiers = [
-  { vol: '100',   label: 'Up to 100 agreements',   rate: 7.00 },
-  { vol: '500',   label: 'Up to 500 agreements',   rate: 5.50 },
-  { vol: '2,000', label: 'Up to 2,000 agreements', rate: 4.25 },
-  { vol: '5,000', label: 'Up to 5,000 agreements', rate: 3.75 },
+  { vol: '100',   label: 'Up to 100 documents',   rate: 3.50 },
+  { vol: '500',   label: 'Up to 500 documents',   rate: 2.75 },
+  { vol: '2,000', label: 'Up to 2,000 documents', rate: 2.13 },
+  { vol: '5,000', label: 'Up to 5,000 documents', rate: 1.88 },
 ];
 
 function updateEstimator() {
   const pos = parseInt(document.getElementById('vol-slider').value);
   const tier = tiers[pos];
 
-  document.getElementById('est-volume').textContent = tier.vol + ' agreements / month';
+  document.getElementById('est-volume').textContent = tier.vol + ' documents / month';
   document.getElementById('est-tier').textContent = tier.label;
   document.getElementById('est-cost').textContent = '$' + tier.rate.toFixed(2);
 
