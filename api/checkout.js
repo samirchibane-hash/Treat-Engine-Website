@@ -63,12 +63,17 @@ module.exports = async (req, res) => {
       };
 
     } else if (service === 'sales') {
+      if (!process.env.STRIPE_PRICE_SALES_SETUP) {
+        return res.status(500).json({ error: 'Missing STRIPE_PRICE_SALES_SETUP price ID' });
+      }
       sessionParams = {
         mode: 'subscription',
         line_items: [
+          // One-time $1,000 setup fee — billed on the first invoice alongside the subscription.
+          { price: process.env.STRIPE_PRICE_SALES_SETUP, quantity: 1 },
           { price: process.env.STRIPE_PRICE_SALES_LICENSE, quantity: 1 },
         ],
-        metadata: { service: 'sales', plan: 'monthly' },
+        metadata: { service: 'sales', plan: 'monthly', setup_fee: '1000' },
         success_url: `${origin}/sales/onboarding?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/sales/checkout`,
       };

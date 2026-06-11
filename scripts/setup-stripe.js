@@ -6,6 +6,22 @@
  */
 
 const Stripe = require('stripe');
+const fs = require('fs');
+const path = require('path');
+
+// Load .env from project root if STRIPE_SECRET_KEY isn't already set
+if (!process.env.STRIPE_SECRET_KEY) {
+  const envPath = path.join(__dirname, '..', '.env');
+  if (fs.existsSync(envPath)) {
+    fs.readFileSync(envPath, 'utf8').split('\n').forEach(line => {
+      const [key, ...rest] = line.split('=');
+      if (key && rest.length) {
+        const val = rest.join('=').split('#')[0].trim().replace(/^["']|["']$/g, '');
+        process.env[key.trim()] = val;
+      }
+    });
+  }
+}
 
 async function main() {
   const key = process.env.STRIPE_SECRET_KEY;
@@ -117,26 +133,34 @@ async function main() {
   results.STRIPE_PRICE_WEBSITES_INSTALLMENT = websitesInstallmentPrice.id;
   console.log(`✅  Water Websites $997×2 installment  →  ${websitesInstallmentPrice.id}`);
 
-  // ── Water Sales — $10,000 annual license ─────────────────────────────────
-  // Per-agreement usage fees (invoiced separately, monthly):
-  //   1–100:        $7.00/agreement
-  //   101–500:      $5.50/agreement
-  //   501–2,000:    $4.25/agreement
-  //   2,001–5,000:  $3.75/agreement
-  //   5,001–10,000: $3.50/agreement
-  //   10,000+:      $3.25/agreement
+  // ── Water Sales — ClearDeals $299/month ──────────────────────────────────
+  // Per-agreement usage fees are metered and invoiced separately at month-end.
   const salesProduct = await stripe.products.create({
     name: 'Water Sales — ClearDeals',
-    description: 'Annual license for the ClearDeals in-field proposal and closing platform. Unlimited users. Per-agreement usage billed monthly.',
+    description: 'ClearDeals in-field proposal and closing platform. Unlimited users. Per-agreement usage billed at month-end.',
   });
-  const salesLicensePrice = await stripe.prices.create({
+  const salesMonthlyPrice = await stripe.prices.create({
     product: salesProduct.id,
-    unit_amount: 1000000,
+    unit_amount: 29900,
     currency: 'usd',
-    nickname: 'Water Sales Annual License',
+    recurring: { interval: 'month' },
+    nickname: 'Water Sales ClearDeals $299/mo',
   });
-  results.STRIPE_PRICE_SALES_LICENSE = salesLicensePrice.id;
-  console.log(`✅  Water Sales $10,000 license  →  ${salesLicensePrice.id}`);
+  results.STRIPE_PRICE_SALES_MONTHLY = salesMonthlyPrice.id;
+  console.log(`✅  Water Sales ClearDeals $299/mo  →  ${salesMonthlyPrice.id}`);
+  // Note: price_1TVwD9EOMGuonbJbBStlFxqt is the existing live price — only run this if creating fresh
+
+  // ── Water Sales — One-time setup & customization ($1,000) ────────────────
+  // Customizes ClearDeals to the dealership: contract, presentation, product
+  // catalog, and team training. Billed once on the first subscription invoice.
+  const salesSetupPrice = await stripe.prices.create({
+    product: salesProduct.id,
+    unit_amount: 100000,
+    currency: 'usd',
+    nickname: 'Water Sales ClearDeals Setup $1,000 one-time',
+  });
+  results.STRIPE_PRICE_SALES_SETUP = salesSetupPrice.id;
+  console.log(`✅  Water Sales Setup $1,000 one-time  →  ${salesSetupPrice.id}`);
 
   console.log('\n──────────────────────────────────────────────────────────────');
   console.log('Add these to your Vercel environment variables:\n');
