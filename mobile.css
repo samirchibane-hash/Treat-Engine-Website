@@ -442,8 +442,8 @@ body.drawer-locked{overflow:hidden;}
     max-width:none !important;
   }
 
-  /* --- Bullets (Water Sales) --- */
-  .hero-bullets{order:4;margin:0 !important;}
+  /* --- Bullets (Water Sales) — hidden on mobile to keep the hero tight --- */
+  .hero-bullets{display:none !important;}
 
   /* --- VISUAL PROOF (above the CTAs) --- */
   .hero-right-col,            /* Water Leads — Wistia video */
