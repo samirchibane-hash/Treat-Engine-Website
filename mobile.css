@@ -411,10 +411,11 @@ body.drawer-locked{overflow:hidden;}
 
   /* Flatten wrapper columns so children participate in the hero-top flex.
      Water Leads uses .hero-left-col / .hero-right-col.
-     Water Sales uses .hero-left + .hero-visual.
+     Water Sales uses .hero-left + .hero-visual + .hero-below.
      Water Websites uses an unnamed <div> wrapper + .hero-aside. */
   .hero-left-col,
   .hero-left,
+  .hero-below,
   .hero-top > div:not([class]):first-child{
     display:contents;
   }
