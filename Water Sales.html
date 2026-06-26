@@ -376,6 +376,43 @@ a{text-decoration:none;color:inherit;}
 </style>
 <link rel="stylesheet" href="hero.css"/>
 <link rel="stylesheet" href="mobile.css"/>
+<style>
+/* Sales hero — single-column override (wins over shared hero.css) */
+@media(min-width:769px){
+  .hero-top.hero-single{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    text-align:center !important;
+    gap:0 !important;
+  }
+  .hero-top.hero-single .hero-left{
+    max-width:760px !important;
+    margin:0 auto !important;
+  }
+  .hero-top.hero-single .hero-sub{
+    max-width:560px !important;
+    margin:0 auto 36px !important;
+  }
+  .hero-top.hero-single .hero-bullets{
+    flex-direction:row !important;
+    flex-wrap:wrap !important;
+    justify-content:center !important;
+    gap:14px 28px !important;
+    margin:0 auto 40px !important;
+  }
+  .hero-top.hero-single .hero-actions{
+    justify-content:center !important;
+  }
+  .hero-top.hero-single .hero-visual{
+    width:100% !important;
+    max-width:960px !important;
+    margin:12px auto 0 !important;
+    justify-self:center !important;
+    min-height:auto !important;
+  }
+}
+</style>
 </head>
 <body>
 <div id="root"></div>
@@ -509,7 +546,7 @@ function Hero({tweaks}) {
   return (
     <div>
       <div className="hero">
-        <div className="hero-top reveal">
+        <div className="hero-top hero-single reveal">
           <div className="hero-left">
             <div className="service-badge">
               <span className="service-badge-dot"/>
