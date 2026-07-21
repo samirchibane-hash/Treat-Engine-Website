@@ -293,15 +293,12 @@ a{text-decoration:none;color:inherit;}
 .hero-stage-svg .connector{stroke:#3b82f6;stroke-width:1.25;stroke-dasharray:4 3;fill:none;opacity:0;stroke-dashoffset:60;animation:drawConnector .9s cubic-bezier(.22,1,.36,1) forwards;}
 .hero-stage-svg .connector.c1{animation-delay:.4s;}
 .hero-stage-svg .connector.c2{animation-delay:.8s;}
-.hero-stage-svg .connector.c3{animation-delay:1.2s;}
 .hero-stage-svg .nub{fill:#3b82f6;opacity:0;animation:nubPop .4s cubic-bezier(.22,1,.36,1) forwards;transform-origin:center;transform-box:fill-box;}
 .hero-stage-svg .nub.n1{animation-delay:1.0s;}
 .hero-stage-svg .nub.n2{animation-delay:1.4s;}
-.hero-stage-svg .nub.n3{animation-delay:1.8s;}
 .hero-stage-svg .nub-ring{fill:none;stroke:#3b82f6;stroke-width:1.5;opacity:.4;transform-origin:center;transform-box:fill-box;animation:nubPulse 2.4s ease-out infinite;}
 .hero-stage-svg .nub-ring.r1{animation-delay:1.0s;}
 .hero-stage-svg .nub-ring.r2{animation-delay:1.4s;}
-.hero-stage-svg .nub-ring.r3{animation-delay:1.8s;}
 @keyframes drawConnector{0%{opacity:0;stroke-dashoffset:60;}20%{opacity:1;}100%{opacity:.85;stroke-dashoffset:0;}}
 @keyframes nubPop{0%{opacity:0;transform:scale(0);}60%{opacity:1;transform:scale(1.4);}100%{opacity:1;transform:scale(1);}}
 @keyframes nubPulse{0%{opacity:.5;transform:scale(.8);}70%{opacity:0;transform:scale(2.6);}100%{opacity:0;transform:scale(2.6);}}
@@ -309,7 +306,6 @@ a{text-decoration:none;color:inherit;}
 .hero-callout:hover{box-shadow:0 1px 0 rgba(255,255,255,0.6) inset,0 20px 40px -16px rgba(28,24,20,0.22),0 4px 12px rgba(28,24,20,0.08);transform:translateY(-2px) scale(1) !important;}
 .hero-callout.k1{top:6%;left:-4%;animation-delay:1.05s;}
 .hero-callout.k2{top:38%;right:-6%;animation-delay:1.45s;}
-.hero-callout.k3{bottom:8%;left:-2%;animation-delay:1.85s;}
 @keyframes calloutIn{to{opacity:1;transform:none;}}
 .hero-callout-icon{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Playfair Display',serif;font-weight:600;font-size:12px;letter-spacing:.02em;}
 .hero-callout-icon.ic-blue{background:#eff6ff;color:#1a2744;}
@@ -361,7 +357,6 @@ function Nav({tweaks}) {
         <a href="Home.html"><img src="uploads/Treat Engine Logo .png" alt="Treat Engine" style={{height:34}}/></a>
         <div className="nav-links">
           <a href="Home.html">Home</a>
-          <a href="Water Websites.html">Water Websites</a>
           <a href="index.html" className="active">Water Leads</a>
           <a href="Water Sales.html">Water Sales</a>
         </div>
@@ -444,38 +439,25 @@ function Hero({tweaks}) {
               <svg className="hero-stage-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
                 <path className="connector c1" d="M 14,12 C 22,18 30,24 38,28" />
                 <path className="connector c2" d="M 88,42 C 78,42 68,46 58,50" />
-                <path className="connector c3" d="M 16,90 C 28,82 38,74 46,70" />
                 <circle className="nub-ring r1" cx="38" cy="28" r="2.2" />
                 <circle className="nub-ring r2" cx="58" cy="50" r="2.2" />
-                <circle className="nub-ring r3" cx="46" cy="70" r="2.2" />
                 <circle className="nub n1" cx="38" cy="28" r="1.4" />
                 <circle className="nub n2" cx="58" cy="50" r="1.4" />
-                <circle className="nub n3" cx="46" cy="70" r="1.4" />
               </svg>
-              <a href="Water Websites.html" className="hero-callout k1">
-                <div className="hero-callout-icon ic-blue">WW</div>
-                <div className="hero-callout-text">
-                  <div className="hero-callout-eyebrow">01 · Presence</div>
-                  <div className="hero-callout-name">Water Websites</div>
-                  <div className="hero-callout-metric">
-                    <span className="live-dot"></span><strong>2.4×</strong>&nbsp;more booked tests
-                  </div>
-                </div>
-              </a>
-              <a href="Water Leads.html" className="hero-callout k2">
+              <a href="Water Leads.html" className="hero-callout k1">
                 <div className="hero-callout-icon ic-green">WL</div>
                 <div className="hero-callout-text">
-                  <div className="hero-callout-eyebrow">02 · Demand</div>
+                  <div className="hero-callout-eyebrow">01 · Demand</div>
                   <div className="hero-callout-name">Water Leads</div>
                   <div className="hero-callout-metric">
                     <span className="live-dot"></span><strong>+3</strong>&nbsp;appts booked today
                   </div>
                 </div>
               </a>
-              <a href="Water Sales.html" className="hero-callout k3">
+              <a href="Water Sales.html" className="hero-callout k2">
                 <div className="hero-callout-icon ic-amber">WS</div>
                 <div className="hero-callout-text">
-                  <div className="hero-callout-eyebrow">03 · Close</div>
+                  <div className="hero-callout-eyebrow">02 · Close</div>
                   <div className="hero-callout-name">ClearDeals</div>
                   <div className="hero-callout-metric">
                     <span className="live-dot"></span><strong>$8,420</strong>&nbsp;signed at the door
