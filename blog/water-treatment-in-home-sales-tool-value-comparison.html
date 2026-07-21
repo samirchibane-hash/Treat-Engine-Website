@@ -41,12 +41,14 @@ a{text-decoration:none;color:inherit;}
 .post-body strong{color:var(--ink);font-weight:600;}
 .post-body a{color:var(--blue);text-decoration:underline;}
 .post-body a:hover{color:var(--navy);}
-.cta-box{background:var(--navy);border-radius:12px;padding:36px 40px;text-align:center;margin-top:52px;}
+.cta-box{background:var(--navy);border-radius:12px;overflow:hidden;margin-top:52px;}
+.cta-img{display:block;width:100%;height:auto;border-bottom:1px solid rgba(255,255,255,0.08);}
+.cta-copy{padding:36px 40px;text-align:center;}
 .cta-box h3{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:10px;}
 .cta-box p{font-size:14.5px;color:rgba(255,255,255,0.7);margin-bottom:24px;line-height:1.7;}
 .cta-btn{display:inline-block;background:var(--blue);color:#fff;font-size:14px;font-weight:600;padding:13px 28px;border-radius:8px;}
 .cta-btn:hover{background:#2563eb;}
-@media(max-width:600px){.nav{padding:0 20px;}.page{padding:0 20px 60px;}.post-header{padding:36px 0 32px;}.cta-box{padding:28px 24px;}}
+@media(max-width:600px){.nav{padding:0 20px;}.page{padding:0 20px 60px;}.post-header{padding:36px 0 32px;}.cta-copy{padding:28px 24px;}}
 </style>
 </head>
 <body>
@@ -120,9 +122,12 @@ a{text-decoration:none;color:inherit;}
     <p>The Value Comparison step is how ClearDeals solves that — turning your strongest argument into a picture the homeowner can't unsee. For the rep, more signatures tonight. For the owner, a repeatable close across the team.</p>
   </div>
   <div class="cta-box">
-    <h3>Ready to see it at the table?</h3>
-    <p>Book a walkthrough of the ClearDeals New Proposal wizard and watch the Value Comparison step turn your next in-home appointment into a signed agreement.</p>
-    <a href="/booking" class="cta-btn">Request a Demo</a>
+    <img class="cta-img" src="/uploads/cleardeals-in-use.png" alt="A water treatment rep walking a homeowner through the ClearDeals New Proposal wizard on a tablet at the kitchen table" loading="lazy"/>
+    <div class="cta-copy">
+      <h3>Learn more about ClearDeals</h3>
+      <p>The Value Comparison step is one moment in a wizard built to make your whole in-home pitch tighter, faster, and more repeatable. See how ClearDeals guides every rep from water test to signed agreement — the same proven flow, on every appointment.</p>
+      <a href="/sales" class="cta-btn">Learn More About ClearDeals</a>
+    </div>
   </div>
 </div>
 </body>
