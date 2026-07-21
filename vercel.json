@@ -40,6 +40,7 @@
     { "src": "/admin/login",           "dest": "/admin/login.html" },
     { "src": "/booking-confirmed",     "dest": "/booking-confirmed.html" },
     { "src": "/blog",                  "dest": "/blog.html" },
+    { "src": "/blog/water-treatment-in-home-sales-tool-value-comparison", "dest": "/blog/water-treatment-in-home-sales-tool-value-comparison.html" },
     { "src": "/blog/strategies-for-profitable-water-softener-facebook-ads-in-2026", "dest": "/blog/strategies-for-profitable-water-softener-facebook-ads-in-2026.html" },
     { "src": "/blog/high-roi-water-softener-facebook-ad-campaigns", "dest": "/blog/high-roi-water-softener-facebook-ad-campaigns.html" },
     { "src": "/blog/5-secrets-to-water-treatment-system-sales-with-social-media-ads", "dest": "/blog/5-secrets-to-water-treatment-system-sales-with-social-media-ads.html" },
