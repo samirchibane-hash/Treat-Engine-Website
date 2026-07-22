@@ -8,6 +8,7 @@
     { href: '/home',     label: 'Home',           match: /home\.html$|^\/home\b/i },
     { href: '/ads',      label: 'Water Leads',    match: /water leads\.html$|^\/ads\b/i },
     { href: '/sales',    label: 'Water Sales',    match: /water sales\.html$|^\/sales\b/i },
+    { href: '/blog',     label: 'Blog',           match: /^\/blog(\.html)?\b|^\/blog\//i },
   ];
 
   function activeIndex(){
