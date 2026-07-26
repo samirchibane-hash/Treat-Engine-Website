@@ -183,9 +183,22 @@ a{text-decoration:none;color:inherit;}
 .feat-card:nth-child(3n){border-right:none;}
 .feat-card:nth-last-child(-n+3){border-bottom:none;}
 .feat-body{padding:28px 36px 36px;}
-.feat-graphic{height:180px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border-mid);background:linear-gradient(180deg, transparent 0%, rgba(28,24,20,0.012) 100%);overflow:hidden;}
+.feat-graphic{height:196px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border-mid);background:linear-gradient(180deg, transparent 0%, rgba(28,24,20,0.012) 100%);overflow:hidden;}
 .feat-graphic svg{display:block;height:100%;width:auto;max-width:100%;}
 .feat-card:hover .feat-graphic{background:linear-gradient(180deg, rgba(59,130,246,0.025) 0%, rgba(59,130,246,0.01) 100%);}
+
+/* product-screenshot cards — alternate with the drawn graphics in a checkerboard */
+.feat-graphic.is-shot{background:#fff;padding:0;}
+.feat-card:hover .feat-graphic.is-shot{background:#fff;}
+.feat-graphic.is-shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top;transform:scale(1.005);transition:transform .5s cubic-bezier(.22,.61,.36,1);}
+.feat-card:hover .feat-graphic.is-shot img{transform:scale(1.035);}
+@media (prefers-reduced-motion: reduce){
+  .feat-graphic.is-shot img,.feat-card:hover .feat-graphic.is-shot img{transition:none;transform:none;}
+}
+/* single-column: let the shots keep their 2:1 ratio instead of cropping the UI off the sides */
+@media (max-width:768px){
+  .feat-graphic.is-shot{height:auto;aspect-ratio:2/1;}
+}
 
 /* shared graphic animations */
 @keyframes fg-draw{from{stroke-dashoffset:var(--len,200);}to{stroke-dashoffset:0;}}
@@ -996,15 +1009,15 @@ function FeatureGraphic({kind}) {
 
 function Features() {
   const features = [
-    {title:'Professional proposals in seconds', desc:'Build a branded, itemized proposal on the spot — product, installation, warranty, and financing all included. Looks polished, builds trust instantly.', tag:'Proposals', kind:'proposal'},
+    {title:'Products and upsells in one tap', desc:'Every system, filter, and add-on in a swipeable catalog — photos, benefits, and monthly pricing on each. Techs build the package in front of the homeowner and the total updates live.', tag:'Products & Upsells', shot:'uploads/cleardeals-products-upsells.webp', alt:'ClearDeals system buildout screen with a water softener selected and a running monthly total'},
     {title:'Dynamic product presentations', desc:'Walk the homeowner through a visual product demo right on the tablet. High-quality images, specs, comparisons — built for the water treatment product catalog.', tag:'Presentations', kind:'presentation'},
-    {title:'E-signatures on the spot', desc:'Get the deal signed before you leave the driveway. ClearDeals captures a legally binding digital signature with one tap — no paperwork, no follow-up needed.', tag:'Signatures', kind:'signature'},
-    {title:'Integrated financing options', desc:'Offer monthly payment options in real time. When sticker shock hits, being able to say "that\'s $89/month" changes the conversation — and the close rate.', tag:'Financing', kind:'financing'},
-    {title:'Dealer-controlled pricing', desc:'You set the floor. Techs can discount within your defined range — no more rogue quotes, no more margin leakage, no more surprises on the back end.', tag:'Pricing Controls', kind:'pricing'},
-    {title:'Full product catalog, offline', desc:'Every system, every configuration, every SKU — accessible even without cell service. Your tech is always equipped, whether they\'re in a suburb or a rural property.', tag:'Catalog', kind:'catalog'},
+    {title:'Recurring maintenance plans', desc:'Attach a salt delivery or service plan to the sale and show exactly what it covers. Monthly or annual, priced per system — the install becomes recurring revenue.', tag:'Maintenance', shot:'uploads/cleardeals-maintenance-plan.webp', alt:'ClearDeals maintenance step showing a salt bag delivery plan with covered and not-covered equipment'},
     {title:'Remote water testing results', desc:'Pull in water test data directly into the proposal. Real numbers from the homeowner\'s own tap make the case better than any sales script.', tag:'Water Testing', kind:'water'},
+    {title:'Stripe payments and deposits', desc:'Generate the invoice and take the deposit before you leave — Apple Pay, Link, or card, on the tablet or sent straight to the homeowner\'s phone. Money moves the day the deal closes.', tag:'Payments', shot:'uploads/cleardeals-payments-stripe.webp', alt:'ClearDeals generating a Stripe invoice on a tablet next to a phone checkout with Apple Pay and card entry'},
+    {title:'Integrated financing options', desc:'Offer monthly payment options in real time. When sticker shock hits, being able to say "that\'s $89/month" changes the conversation — and the close rate.', tag:'Financing', kind:'financing'},
+    {title:'E-signatures on the spot', desc:'Get the deal signed before you leave the driveway. ClearDeals captures a legally binding digital signature with one tap — no paperwork, no follow-up needed.', tag:'Signatures', shot:'uploads/cleardeals-esignature.webp', alt:'ClearDeals agreement screen with a handwritten signature drawn on a tablet'},
     {title:'Real-time sales analytics', desc:'Track close rates, average deal value, and financing adoption by technician. Know who\'s performing, who needs coaching, and where deals are falling through.', tag:'Analytics', kind:'analytics'},
-    {title:'Works on any smart tablet', desc:'ClearDeals ships with a pre-configured tablet — or runs on any iPad or Android device your team already has. Setup takes minutes, not days.', tag:'Hardware', kind:'hardware'},
+    {title:'AI pitch analysis', desc:'Record the appointment and get it scored automatically — what the tech did well, what to fix, and the exact next steps to close. Ride-along coaching on every visit.', tag:'Coaching', shot:'uploads/cleardeals-pitch-analysis.webp', alt:'ClearDeals pitch analysis panel scoring a recorded sales call with areas to improve and next steps'},
   ];
   return (
     <section className="features-section" id="features">
@@ -1021,7 +1034,11 @@ function Features() {
         <div className="features-grid reveal">
           {features.map((f,i) => (
             <div className="feat-card" key={i}>
-              <div className="feat-graphic"><FeatureGraphic kind={f.kind}/></div>
+              {f.shot
+                ? <div className="feat-graphic is-shot">
+                    <img src={f.shot} alt={f.alt} width="1200" height="600" loading="lazy" decoding="async"/>
+                  </div>
+                : <div className="feat-graphic"><FeatureGraphic kind={f.kind}/></div>}
               <div className="feat-body">
                 <div className="feat-num">0{i+1}</div>
                 <div className="feat-title">{f.title}</div>
