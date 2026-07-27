@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lead Gen ROI Calculator — Treat Engine</title>
+<meta name="description" content="Free ROI calculator for water treatment dealers. Enter your ad budget, system price, and funnel numbers to project leads, booked appointments, sales, ROAS, and profit from a 30-day campaign.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#faf7f2;
+  --cream-mid:#f0ebe0;
+  --cream-dark:#e5ddd0;
+  --ink:#1c1814;
+  --ink-mid:#3d3530;
+  --ink-muted:#7a6f65;
+  --navy:#1a2744;
+  --blue:#3b82f6;
+  --blue-deep:#2563eb;
+  --blue-light:#eff6ff;
+  --white:#fffefb;
+  --green:#0f9d6e;
+  --amber:#c98a2b;
+  --red:#c0453b;
+  --border:rgba(28,24,20,0.10);
+  --border-mid:rgba(28,24,20,0.06);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+/* ── NAV ── */
+.nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 32px;}
+.nav-inner{max-width:1000px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo img{height:28px;width:auto;display:block;}
+.nav-right{display:flex;align-items:center;gap:24px;}
+.nav-back{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--ink-muted);transition:color .2s;}
+.nav-back:hover{color:var(--ink);}
+.nav-cta{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--white);background:var(--navy);padding:9px 18px;border-radius:7px;transition:background .2s;}
+.nav-cta:hover{background:#22355c;}
+
+/* ── PAGE ── */
+.page{max-width:1000px;margin:0 auto;padding:0 32px 88px;}
+
+/* ── HERO ── */
+.hero{padding:52px 0 40px;text-align:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:18px;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:18px;height:1.5px;background:var(--blue);}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,4.6vw,52px);font-weight:700;line-height:1.07;letter-spacing:-.025em;margin-bottom:16px;}
+.hero h1 em{font-style:italic;color:var(--navy);}
+.hero-sub{font-size:16px;color:var(--ink-muted);line-height:1.8;max-width:620px;margin:0 auto;}
+
+/* ── CALCULATOR CARD ── */
+.calc{background:var(--white);border:1px solid var(--border);border-radius:16px;box-shadow:0 4px 32px rgba(28,24,20,0.05);overflow:hidden;}
+.calc-section{padding:32px 36px;}
+.calc-section + .calc-section{border-top:1px solid var(--border-mid);}
+.section-title{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:22px;}
+.section-title svg{color:var(--blue);flex-shrink:0;}
+
+/* inputs */
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.field{display:flex;flex-direction:column;}
+.field-label{font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.field-hint{font-size:12px;color:var(--ink-muted);margin-bottom:10px;line-height:1.5;}
+select{font-family:inherit;font-size:16px;font-weight:600;color:var(--ink);background-color:var(--cream);border:1px solid var(--border);border-radius:9px;padding:13px 44px 13px 16px;width:100%;cursor:pointer;transition:border-color .2s,box-shadow .2s,background-color .2s;-webkit-appearance:none;-moz-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%237a6f65' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;}
+select:hover{background-color:var(--cream-mid);}
+select:focus-visible{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,0.15);}
+
+/* sliders */
+.slider-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 40px;}
+.slider-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px;}
+.slider-label{font-size:13.5px;font-weight:600;color:var(--ink);}
+.slider-value{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--blue);line-height:1;}
+input[type="range"]{width:100%;height:6px;border-radius:99px;background:var(--cream-dark);outline:none;-webkit-appearance:none;appearance:none;display:block;cursor:pointer;}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:var(--blue);border:3px solid var(--white);cursor:pointer;box-shadow:0 2px 6px rgba(26,39,68,0.28);transition:transform .15s;}
+input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.12);}
+input[type="range"]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--blue);border:3px solid var(--white);cursor:pointer;box-shadow:0 2px 6px rgba(26,39,68,0.28);}
+input[type="range"]:focus-visible{box-shadow:0 0 0 3px rgba(59,130,246,0.2);}
+.slider-range{display:flex;justify-content:space-between;font-size:11.5px;font-weight:500;color:var(--ink-muted);margin-top:9px;}
+
+/* ── RESULTS ── */
+.calc-results{background:var(--cream);border-top:1px solid var(--border);}
+.funnel{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px;}
+.step{position:relative;background:var(--white);border:1px solid var(--border);border-radius:11px;padding:18px 14px 16px;text-align:center;}
+.step::before{content:'';position:absolute;top:0;left:14px;right:14px;height:2px;border-radius:0 0 2px 2px;background:var(--blue);opacity:var(--step-strength,1);}
+.step:nth-child(1){--step-strength:.3;}
+.step:nth-child(2){--step-strength:.5;}
+.step:nth-child(3){--step-strength:.75;}
+.step:nth-child(4){--step-strength:1;}
+.step::after{content:'';position:absolute;top:50%;right:-14px;width:14px;display:flex;align-items:center;justify-content:center;transform:translateY(-50%);height:14px;background:no-repeat center/8px 8px url("data:image/svg+xml,%3Csvg width='8' height='8' viewBox='0 0 8 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 1l3 3-3 3' stroke='%23b5aca2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");}
+.step:last-child::after{display:none;}
+.step-label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:6px;}
+.step-value{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--ink);line-height:1;}
+.step-sub{font-size:11.5px;color:var(--ink-muted);margin-top:6px;}
+.step.is-final{background:var(--navy);border-color:var(--navy);}
+.step.is-final::before{background:var(--blue);opacity:1;}
+.step.is-final .step-label{color:rgba(255,255,255,0.5);}
+.step.is-final .step-value{color:#fff;}
+.step.is-final .step-sub{color:rgba(255,255,255,0.45);}
+
+/* revenue card */
+.revenue{background:linear-gradient(135deg,#1a2744 0%,#25375e 100%);border-radius:14px;padding:30px 32px;color:#fff;}
+.revenue-main{text-align:center;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.1);}
+.revenue-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:10px;}
+.revenue-value{font-family:'Playfair Display',serif;font-size:clamp(38px,6vw,54px);font-weight:700;line-height:1;letter-spacing:-.02em;}
+.badge{display:inline-flex;align-items:center;gap:7px;padding:7px 15px;border-radius:99px;font-size:12.5px;font-weight:600;margin-top:16px;background:rgba(255,255,255,0.1);}
+.badge svg{flex-shrink:0;}
+.badge.excellent{background:rgba(15,157,110,0.18);color:#5fd6ab;}
+.badge.good{background:rgba(201,138,43,0.18);color:#e8b262;}
+.badge.poor{background:rgba(192,69,59,0.18);color:#ef8f86;}
+.revenue-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.1);border-radius:10px;overflow:hidden;margin-top:24px;}
+.stat{background:#1e2c4c;padding:18px 14px;text-align:center;}
+.stat-label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:7px;}
+.stat-value{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;line-height:1;}
+.stat-value.is-negative{color:#ef8f86;}
+.revenue-note{text-align:center;font-size:12.5px;color:rgba(255,255,255,0.45);margin-top:18px;line-height:1.6;}
+.revenue-note strong{color:rgba(255,255,255,0.8);font-weight:600;}
+
+/* ── EXPLAINER ── */
+.explain{margin-top:52px;}
+.explain h2{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;line-height:1.2;margin-bottom:12px;}
+.explain > p{font-size:15px;color:var(--ink-muted);line-height:1.8;max-width:660px;margin-bottom:28px;}
+.explain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.explain-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:24px 26px;}
+.explain-card h3{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:9px;}
+.explain-card p{font-size:14px;color:var(--ink-muted);line-height:1.75;}
+.explain-card p + p{margin-top:10px;}
+.explain-card strong{color:var(--ink-mid);font-weight:600;}
+.formula{display:inline-block;font-size:13px;font-weight:500;color:var(--ink-mid);background:var(--cream-mid);border-radius:6px;padding:3px 8px;margin-top:4px;}
+.disclaimer{font-size:12.5px;color:var(--ink-muted);line-height:1.7;margin-top:22px;font-style:italic;}
+
+/* ── CTA ── */
+.cta-box{background:var(--navy);border-radius:14px;padding:44px 40px;text-align:center;margin-top:52px;}
+.cta-box h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3.2vw,32px);font-weight:700;color:#fff;line-height:1.2;margin-bottom:12px;}
+.cta-box h2 em{font-style:italic;color:#8fb5f7;}
+.cta-box p{font-size:15px;color:rgba(255,255,255,0.65);line-height:1.75;max-width:520px;margin:0 auto 26px;}
+.cta-btn{display:inline-block;background:var(--blue);color:#fff;font-size:14.5px;font-weight:600;padding:14px 30px;border-radius:8px;transition:background .2s,transform .2s;}
+.cta-btn:hover{background:var(--blue-deep);transform:translateY(-1px);}
+.cta-meta{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:20px;margin-top:22px;}
+.cta-meta span{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:rgba(255,255,255,0.4);}
+.cta-meta span::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--blue);}
+
+/* ── FOOTER ── */
+.footer{background:var(--ink);padding:64px 32px 36px;}
+.footer-inner{max-width:1000px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr .9fr 1.2fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.footer-brand img{height:30px;}
+.footer-brand p{font-size:13.5px;color:rgba(255,255,255,0.4);margin-top:20px;line-height:1.75;max-width:260px;}
+.footer-col h4{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.3);margin-bottom:18px;}
+.footer-col a{display:block;font-size:14px;color:rgba(255,255,255,0.55);margin-bottom:11px;transition:color .2s;}
+.footer-col a:hover{color:#fff;}
+.footer-bottom{padding-top:28px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.footer-copy{font-size:13px;color:rgba(255,255,255,0.25);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  .explain-grid{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:36px;}
+}
+@media(max-width:700px){
+  .nav{padding:0 20px;}
+  .nav-right{gap:16px;}
+  .page{padding:0 20px 64px;}
+  .hero{padding:38px 0 30px;}
+  .calc-section{padding:26px 22px;}
+  .input-grid,.slider-grid{grid-template-columns:1fr;}
+  .slider-grid{gap:24px;}
+  .funnel{grid-template-columns:1fr 1fr;gap:12px;}
+  .step::after{display:none;}
+  .step-value{font-size:28px;}
+  .revenue{padding:26px 20px;}
+  .revenue-stats{grid-template-columns:1fr;}
+  .cta-box{padding:34px 24px;}
+  .footer{padding:52px 20px 32px;}
+  .footer-top{grid-template-columns:1fr;gap:32px;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:8px;}
+}
+@media(max-width:400px){
+  .nav-back{display:none;}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important;}
+  html{scroll-behavior:auto;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/home" class="nav-logo"><img src="/uploads/Treat Engine Logo .png" alt="Treat Engine"/></a>
+    <div class="nav-right">
+      <a href="/blog" class="nav-back">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Resources
+      </a>
+      <a href="/booking" class="nav-cta">Book a Demo</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <header class="hero">
+    <div class="hero-eyebrow">Free Tool</div>
+    <h1>Lead Gen<br><em>ROI Calculator</em></h1>
+    <p class="hero-sub">Plug in your ad budget, system price, and funnel numbers to see what a 30-day water treatment lead campaign should return — leads, booked appointments, installs, ROAS, and profit.</p>
+  </header>
+
+  <main class="calc">
+
+    <!-- ── INPUTS ── -->
+    <section class="calc-section">
+      <h2 class="section-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h2M8 14h2M8 18h2M14 10h2v8h-2z"/></svg>
+        Your Numbers
+      </h2>
+      <div class="input-grid">
+        <div class="field">
+          <label class="field-label" for="adSpend">Ad Spend Budget</label>
+          <span class="field-hint" id="adSpendHint">What you'll put into paid ads over 30 days.</span>
+          <select id="adSpend" aria-describedby="adSpendHint">
+            <option value="500">$500</option>
+            <option value="1000">$1,000</option>
+            <option value="1500">$1,500</option>
+            <option value="2000">$2,000</option>
+            <option value="2500" selected>$2,500</option>
+            <option value="3000">$3,000</option>
+            <option value="4000">$4,000</option>
+            <option value="5000">$5,000</option>
+            <option value="7500">$7,500</option>
+            <option value="10000">$10,000</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="systemPrice">System Retail Price</label>
+          <span class="field-hint" id="systemPriceHint">Your average ticket on an installed system.</span>
+          <select id="systemPrice" aria-describedby="systemPriceHint">
+            <option value="4000">$4,000</option>
+            <option value="4500">$4,500</option>
+            <option value="5000">$5,000</option>
+            <option value="5500">$5,500</option>
+            <option value="6000" selected>$6,000</option>
+            <option value="6500">$6,500</option>
+            <option value="7000">$7,000</option>
+            <option value="7500">$7,500</option>
+            <option value="8000">$8,000</option>
+            <option value="8500">$8,500</option>
+            <option value="9000">$9,000</option>
+            <option value="9500">$9,500</option>
+            <option value="10000">$10,000</option>
+            <option value="10500">$10,500</option>
+            <option value="11000">$11,000</option>
+            <option value="11500">$11,500</option>
+            <option value="12000">$12,000</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SLIDERS ── -->
+    <section class="calc-section">
+      <h2 class="section-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
+        Funnel Performance
+      </h2>
+      <div class="slider-grid">
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <label class="slider-label" for="cpl">Cost Per Lead</label>
+            <span class="slider-value" id="cplValue">$35</span>
+          </div>
+          <input type="range" id="cpl" min="25" max="45" step="5" value="35" aria-describedby="cplValue">
+          <div class="slider-range"><span>$25</span><span>$45</span></div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <label class="slider-label" for="ltb">Lead to Booking Rate</label>
+            <span class="slider-value" id="ltbValue">25%</span>
+          </div>
+          <input type="range" id="ltb" min="10" max="40" step="5" value="25" aria-describedby="ltbValue">
+          <div class="slider-range"><span>10%</span><span>40%</span></div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <label class="slider-label" for="showUpRate">Show-Up Rate</label>
+            <span class="slider-value" id="showUpRateValue">45%</span>
+          </div>
+          <input type="range" id="showUpRate" min="30" max="60" step="5" value="45" aria-describedby="showUpRateValue">
+          <div class="slider-range"><span>30%</span><span>60%</span></div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <label class="slider-label" for="closeRate">Close Rate</label>
+            <span class="slider-value" id="closeRateValue">25%</span>
+          </div>
+          <input type="range" id="closeRate" min="10" max="40" step="5" value="25" aria-describedby="closeRateValue">
+          <div class="slider-range"><span>10%</span><span>40%</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── RESULTS ── -->
+    <section class="calc-section calc-results" aria-live="polite">
+      <h2 class="section-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+        Your 30-Day Projection
+      </h2>
+
+      <div class="funnel">
+        <div class="step">
+          <div class="step-label">Leads</div>
+          <div class="step-value" id="numLeads">71</div>
+          <div class="step-sub">from ad spend</div>
+        </div>
+        <div class="step">
+          <div class="step-label">Bookings</div>
+          <div class="step-value" id="numBookings">17</div>
+          <div class="step-sub">appointments set</div>
+        </div>
+        <div class="step">
+          <div class="step-label">Showed</div>
+          <div class="step-value" id="numShowedCalls">7</div>
+          <div class="step-sub">sat with a rep</div>
+        </div>
+        <div class="step is-final">
+          <div class="step-label">Sales</div>
+          <div class="step-value" id="numSales">1</div>
+          <div class="step-sub">systems installed</div>
+        </div>
+      </div>
+
+      <div class="revenue">
+        <div class="revenue-main">
+          <div class="revenue-label">Revenue Generated</div>
+          <div class="revenue-value" id="revenueGenerated">$6,000</div>
+          <div class="badge poor" id="performanceBadge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" id="badgeIcon"><path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+            <span id="performanceText">Needs Optimization</span>
+          </div>
+        </div>
+        <div class="revenue-stats">
+          <div class="stat">
+            <div class="stat-label">ROAS</div>
+            <div class="stat-value" id="roas">2.40x</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Net Profit</div>
+            <div class="stat-value" id="netProfit">$3,500</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Cost Per Sale</div>
+            <div class="stat-value" id="perSaleCost">$2,500</div>
+          </div>
+        </div>
+        <p class="revenue-note" id="annualNote">Hold this pace for a year and it's <strong>$72,000</strong> in revenue on <strong>$30,000</strong> of ad spend.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── EXPLAINER ── -->
+  <section class="explain">
+    <h2>How the math works</h2>
+    <p>Every number above comes from the same four-step funnel a water treatment campaign actually runs through. Nothing is padded — each stage rounds down to whole leads, appointments, and installs, so the projection stays conservative.</p>
+    <div class="explain-grid">
+      <div class="explain-card">
+        <h3>Cost per lead</h3>
+        <p>Your ad budget divided by what it costs to generate one lead. On Facebook and Instagram, water treatment dealers typically land between <strong>$25 and $45</strong> per lead depending on market size, offer, and creative quality.</p>
+        <span class="formula">Leads = Ad Spend ÷ Cost Per Lead</span>
+      </div>
+      <div class="explain-card">
+        <h3>Lead to booking rate</h3>
+        <p>The share of leads that turn into a scheduled water test or in-home appointment. This is the stage most dealers underestimate — <strong>speed to lead</strong> and consistent follow-up move this number more than anything else.</p>
+        <span class="formula">Bookings = Leads × Booking Rate</span>
+      </div>
+      <div class="explain-card">
+        <h3>Show-up rate</h3>
+        <p>How many booked appointments actually sit down with a rep. Confirmation texts, reminder calls, and shorter gaps between booking and appointment are what push a <strong>30% show rate toward 60%</strong>.</p>
+        <span class="formula">Showed = Bookings × Show-Up Rate</span>
+      </div>
+      <div class="explain-card">
+        <h3>Close rate</h3>
+        <p>The share of in-home appointments that end in a signed agreement. A structured presentation with side-by-side pricing and a savings projection is the difference between a <strong>10% and a 40% close rate</strong>.</p>
+        <span class="formula">Sales = Showed × Close Rate</span>
+      </div>
+    </div>
+    <p class="disclaimer">This calculator is a planning tool, not a guarantee. Results vary by market, offer, season, and how quickly your team works its leads. Revenue and profit shown here are gross of equipment, install, and labor cost — net profit is revenue minus ad spend only.</p>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section class="cta-box">
+    <h2>Want these numbers <em>running for you?</em></h2>
+    <p>Water Leads is the done-for-you ad system behind these projections — campaigns, creative, and lead follow-up built specifically for residential water treatment dealers.</p>
+    <a href="/ads" class="cta-btn">See how Water Leads works →</a>
+    <div class="cta-meta">
+      <span>No pitch deck, no pressure</span>
+      <span>30 minutes, straight answers</span>
+      <span>Month-to-month, always</span>
+    </div>
+  </section>
+
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="/treat-engine-logo-white.png" alt="Treat Engine"/>
+        <p>Sales &amp; marketing growth engine for residential water treatment dealers.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a href="/ads">Water Leads</a>
+        <a href="/sales">Water Sales</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="/blog">Blog</a>
+        <a href="/roi-calculator">Lead Gen ROI Calculator</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="mailto:Info@TreatLeads.com">Info@TreatLeads.com</a>
+        <a href="tel:+16173156471">+1 (617) 315-6471</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Treat Engine. All rights reserved.</span>
+      <span class="footer-copy">Privacy · Terms</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+
+  function currency(value){
+    return new Intl.NumberFormat('en-US',{
+      style:'currency', currency:'USD',
+      minimumFractionDigits:0, maximumFractionDigits:0
+    }).format(value);
+  }
+
+  function paintTrack(slider){
+    var pct = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+    slider.style.background = 'linear-gradient(to right, #3b82f6 0%, #3b82f6 ' + pct + '%, #e5ddd0 ' + pct + '%, #e5ddd0 100%)';
+  }
+
+  var CHECK = '<path d="M5 13l4 4L19 7"/>';
+  var ALERT = '<path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/>';
+
+  function calculate(){
+    var adSpend     = parseFloat($('adSpend').value);
+    var systemPrice = parseFloat($('systemPrice').value);
+    var cpl         = parseFloat($('cpl').value);
+    var ltb         = parseFloat($('ltb').value);
+    var showUpRate  = parseFloat($('showUpRate').value);
+    var closeRate   = parseFloat($('closeRate').value);
+
+    var numLeads       = Math.floor(adSpend / cpl);
+    var numBookings    = Math.floor(numLeads * (ltb / 100));
+    var numShowedCalls = Math.floor(numBookings * (showUpRate / 100));
+    var numSales       = Math.floor(numShowedCalls * (closeRate / 100));
+
+    var revenue     = numSales * systemPrice;
+    var roas        = adSpend > 0 ? revenue / adSpend : 0;
+    var profit      = revenue - adSpend;
+    var perSaleCost = numSales > 0 ? adSpend / numSales : 0;
+
+    // Input read-outs
+    $('cplValue').textContent          = currency(cpl);
+    $('ltbValue').textContent          = ltb + '%';
+    $('showUpRateValue').textContent   = showUpRate + '%';
+    $('closeRateValue').textContent    = closeRate + '%';
+
+    // Funnel
+    $('numLeads').textContent          = numLeads;
+    $('numBookings').textContent       = numBookings;
+    $('numShowedCalls').textContent    = numShowedCalls;
+    $('numSales').textContent          = numSales;
+
+    // Money
+    $('revenueGenerated').textContent  = currency(revenue);
+    $('roas').textContent              = roas.toFixed(2) + 'x';
+    $('netProfit').textContent         = currency(profit);
+    $('perSaleCost').textContent       = numSales > 0 ? currency(perSaleCost) : '—';
+    $('netProfit').classList.toggle('is-negative', profit < 0);
+
+    // Annualized footnote
+    $('annualNote').innerHTML = numSales > 0
+      ? 'Hold this pace for a year and it\'s <strong>' + currency(revenue * 12) + '</strong> in revenue on <strong>' + currency(adSpend * 12) + '</strong> of ad spend.'
+      : 'At these rates the funnel doesn\'t produce a sale in 30 days. Raise the budget or tighten a stage below to see where it breaks.';
+
+    // Performance badge
+    var badge = $('performanceBadge');
+    var text  = $('performanceText');
+    var icon  = $('badgeIcon');
+    var tier  = roas >= 5 ? 'excellent' : (roas >= 3 ? 'good' : 'poor');
+
+    badge.className = 'badge ' + tier;
+    text.textContent = tier === 'excellent' ? 'Excellent Performance'
+                     : tier === 'good'      ? 'Good Performance'
+                     :                        'Needs Optimization';
+    icon.innerHTML = tier === 'poor' ? ALERT : CHECK;
+  }
+
+  var sliders = document.querySelectorAll('input[type="range"]');
+  Array.prototype.forEach.call(sliders, function(slider){
+    paintTrack(slider);
+    slider.addEventListener('input', function(){
+      paintTrack(this);
+      calculate();
+    });
+  });
+
+  $('adSpend').addEventListener('change', calculate);
+  $('systemPrice').addEventListener('change', calculate);
+
+  calculate();
+})();
+</script>
+
+</body>
+</html>

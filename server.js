@@ -24,6 +24,7 @@ const pages = {
   '/ads':                 'Water Leads Ads.html',
   '/booking':             'Water Leads Booking.html',
   '/sales':               'Water Sales.html',
+  '/roi-calculator':      'roi-calculator.html',
   '/websites':            'Water Websites.html',
   '/v1':                  'index v1.html',
   '/websites/checkout':   'checkout/websites.html',
