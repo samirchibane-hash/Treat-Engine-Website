@@ -400,15 +400,23 @@ a{text-decoration:none;color:inherit;}
     gap:0 !important;
   }
   .hero-top.hero-single .hero-left{
-    max-width:940px !important;
+    max-width:1100px !important;
     margin:0 auto !important;
   }
   .hero-top.hero-single .hero-left h1{
-    font-size:clamp(40px,4.6vw,58px) !important;
+    font-size:clamp(36px,3.9vw,50px) !important;
     margin:0 0 24px !important;
   }
+  /* Headline lines wrap evenly instead of being forced onto one line —
+     a long line 1 stays centred and never overflows the column. */
   .hero-top.hero-single .hero-left h1 span{
-    white-space:nowrap !important;
+    white-space:normal !important;
+    text-wrap:balance;
+    max-width:100% !important;
+  }
+  /* Line 2 is set in caps; drop the negative tracking that suits lowercase. */
+  .hero-top.hero-single .hero-left h1 span:nth-child(2){
+    letter-spacing:0 !important;
   }
   .hero-top.hero-single .hero-sub{
     max-width:580px !important;
@@ -441,6 +449,25 @@ a{text-decoration:none;color:inherit;}
     justify-content:center !important;
   }
 }
+
+/* Sales hero — phone/tablet headline sizing (wins over shared mobile.css) */
+@media(max-width:768px){
+  .hero-top.hero-single .hero-left h1,
+  .hero-top.hero-single h1{
+    font-size:clamp(27px,7.4vw,38px) !important;
+    line-height:1.12 !important;
+    text-align:center !important;
+  }
+  .hero-top.hero-single .hero-left h1 span,
+  .hero-top.hero-single h1 span{
+    white-space:normal !important;
+    text-wrap:balance;
+  }
+  .hero-top.hero-single .hero-left h1 span:nth-child(2),
+  .hero-top.hero-single h1 span:nth-child(2){
+    letter-spacing:0 !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -454,7 +481,7 @@ a{text-decoration:none;color:inherit;}
 const {useState, useEffect} = React;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "heroHeadline": "Close 30% More Water Deals on the First Visit\nOR YOU DON'T PAY",
+  "heroHeadline": "Close 30% More Water Deals on the First Visit\nOR YOU DON’T PAY",
   "heroSub": "Professional presentation. In-home financing. Digital signature. Everything a customer needs to say yes on the spot.",
   "ctaText": "Book a Demo",
   "showComparison": true
