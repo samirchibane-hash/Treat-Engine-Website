@@ -62,7 +62,46 @@ module.exports = async (req, res) => {
         cancel_url: `${origin}/websites/checkout`,
       };
 
+    } else if (service === 'sales' && (plan === 'starter' || plan === 'pro')) {
+      // ── /sales/checkout-v2 ──
+      // Two ClearDeals tiers, each billable monthly or annually, no setup fee.
+      // The server picks the price ID — the page only sends tier and interval.
+      // Requests without an explicit tier fall through to the legacy branch
+      // below, which still serves the original /sales/checkout page.
+      const SALES_PRICE_MAP = {
+        'starter:month': process.env.STRIPE_PRICE_SALES_STARTER_MONTHLY,
+        'starter:year':  process.env.STRIPE_PRICE_SALES_STARTER_ANNUAL,
+        'pro:month':     process.env.STRIPE_PRICE_SALES_PRO_MONTHLY,
+        'pro:year':      process.env.STRIPE_PRICE_SALES_PRO_ANNUAL,
+      };
+
+      const interval = String((req.body && req.body.interval) || 'month').toLowerCase();
+      const priceKey = `${plan}:${interval}`;
+
+      if (!(priceKey in SALES_PRICE_MAP)) {
+        return res.status(400).json({ error: 'Invalid ClearDeals billing interval' });
+      }
+
+      const priceId = SALES_PRICE_MAP[priceKey];
+      if (!priceId) {
+        return res.status(500).json({ error: `Missing price ID for ClearDeals ${priceKey}` });
+      }
+
+      sessionParams = {
+        mode: 'subscription',
+        line_items: [{ price: priceId, quantity: 1 }],
+        metadata: {
+          service: 'sales',
+          plan: `${plan}-${interval === 'year' ? 'annual' : 'monthly'}`,
+          tier: plan,
+          interval,
+        },
+        success_url: `${origin}/sales/onboarding?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${origin}/sales/checkout-v2`,
+      };
+
     } else if (service === 'sales') {
+      // ── /sales/checkout (legacy) ──
       // Testimonial promo waives the one-time setup fee. The server is the source
       // of truth — the page field is only a live-preview convenience.
       const SETUP_PROMO_CODE = (process.env.SALES_SETUP_PROMO_CODE || 'TESTIMONIAL').toUpperCase();

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Started — Water Sales · Treat Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#faf7f2;--cream-mid:#f0ebe0;--cream-dark:#e5ddd0;
+  --ink:#1c1814;--ink-mid:#3d3530;--ink-muted:#7a6f65;
+  --navy:#1a2744;--blue:#3b82f6;--blue-light:#eff6ff;--blue-dark:#1d4ed8;
+  --white:#fffefb;--border:rgba(28,24,20,0.10);--border-mid:rgba(28,24,20,0.06);
+  --green:#16a34a;--green-light:#f0fdf4;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
+h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.12;}
+a{text-decoration:none;color:inherit;}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,247,242,0.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+.nav-inner{max-width:1180px;margin:0 auto;padding:0 32px;height:70px;display:flex;align-items:center;justify-content:space-between;}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-links a{font-size:13.5px;font-weight:500;color:var(--ink-muted);padding:7px 14px;border-radius:6px;transition:all .2s;}
+.nav-links a:hover{color:var(--ink);background:var(--cream-mid);}
+.nav-links a.active{color:var(--blue);font-weight:600;background:var(--blue-light);}
+@media(max-width:900px){.nav-links{display:none;}}
+
+/* Page wrapper */
+.page{padding:110px 32px 90px;max-width:1080px;margin:0 auto;}
+.breadcrumb{font-size:12px;color:var(--ink-muted);margin-bottom:34px;display:flex;align-items:center;gap:8px;}
+.breadcrumb a{color:var(--blue);}
+
+/* ── Hero ── */
+.hero{text-align:center;max-width:660px;margin:0 auto 34px;}
+.page-tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
+.page-title{font-size:clamp(30px,4.4vw,46px);font-weight:600;color:var(--ink);margin-bottom:14px;letter-spacing:-.02em;}
+.page-title em{font-style:italic;color:var(--navy);}
+.page-sub{font-size:16px;color:var(--ink-muted);line-height:1.75;}
+.page-sub strong{color:var(--ink);font-weight:600;}
+
+.reassure-row{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:22px;}
+.reassure-pill{display:inline-flex;align-items:center;gap:7px;background:var(--green-light);border:1px solid rgba(22,163,74,.16);color:#15803d;font-size:12.5px;font-weight:500;padding:7px 14px;border-radius:20px;}
+.reassure-pill svg{flex-shrink:0;}
+
+/* ── Billing interval toggle ── */
+.toggle-wrap{display:flex;justify-content:center;margin-bottom:30px;}
+.billing-toggle{display:inline-flex;background:var(--cream-mid);border:1px solid var(--border-mid);border-radius:11px;padding:4px;gap:4px;}
+.billing-opt{border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:600;color:var(--ink-muted);padding:9px 18px;border-radius:8px;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:8px;white-space:nowrap;}
+.billing-opt:hover{color:var(--ink);}
+.billing-opt[aria-pressed="true"]{background:var(--white);color:var(--ink);box-shadow:0 1px 5px rgba(28,24,20,.1);}
+.save-badge{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:rgba(22,163,74,.13);color:var(--green);padding:2.5px 8px;border-radius:20px;}
+.billing-opt[aria-pressed="true"] .save-badge{background:var(--green);color:#fff;}
+
+/* ── Plan cards ── */
+/* start-aligned so neither card carries dead space when its list is shorter */
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;max-width:900px;margin:0 auto;}
+@media(max-width:760px){.plan-grid{grid-template-columns:1fr;gap:16px;}}
+
+.plan-card{position:relative;display:flex;flex-direction:column;background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:28px 26px 26px;transition:border-color .2s,box-shadow .2s,transform .2s;}
+.plan-card:hover{transform:translateY(-3px);box-shadow:0 12px 34px rgba(28,24,20,.07);}
+.plan-card.featured{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,.09);}
+.plan-card.featured:hover{box-shadow:0 0 0 3px rgba(59,130,246,.09),0 12px 34px rgba(28,24,20,.09);}
+
+.plan-ribbon{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;font-size:10px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;padding:5px 14px;border-radius:20px;white-space:nowrap;}
+
+.plan-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--ink);line-height:1.2;margin-bottom:5px;}
+.plan-for{font-size:13px;color:var(--ink-muted);line-height:1.55;min-height:40px;}
+
+.plan-price{display:flex;align-items:baseline;gap:7px;margin-top:20px;}
+/* line-height 1 clips the top of Playfair's '$' glyph */
+.plan-amt{font-family:'Playfair Display',serif;font-size:46px;font-weight:600;color:var(--navy);line-height:1.08;letter-spacing:-.025em;}
+.plan-per{font-size:14.5px;color:var(--ink-muted);font-weight:500;}
+.plan-note{font-size:12.5px;color:var(--ink-muted);margin-top:8px;min-height:18px;}
+.plan-note .plan-save{color:var(--green);font-weight:600;}
+
+.plan-btn{width:100%;margin-top:22px;border-radius:9px;padding:15px 20px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.plan-btn.solid{background:var(--blue);color:#fff;border:1.5px solid var(--blue);}
+.plan-btn.solid:hover{background:var(--blue-dark);border-color:var(--blue-dark);}
+.plan-btn.outline{background:transparent;color:var(--navy);border:1.5px solid var(--cream-dark);}
+.plan-btn.outline:hover{border-color:var(--navy);background:var(--white);}
+.plan-btn:disabled{opacity:.55;cursor:not-allowed;}
+.plan-billed{font-size:11.5px;color:var(--ink-muted);text-align:center;margin-top:9px;}
+
+.plan-divider{height:1px;background:var(--border-mid);margin-top:24px;}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:10px;padding-top:20px;flex:1;}
+.plan-features li{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--ink-mid);line-height:1.5;}
+.plan-features .feat-lead{font-weight:600;color:var(--ink);}
+.feat-head{font-size:11px!important;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted)!important;margin-bottom:-2px;}
+.feat-head.divided{margin-top:8px;padding-top:16px;border-top:1px solid var(--border-mid);}
+.check-icon{width:17px;height:17px;border-radius:50%;background:var(--green-light);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.check-icon svg{width:9px;height:9px;stroke:var(--green);fill:none;stroke-width:2.5;}
+.plus-icon{width:17px;height:17px;border-radius:50%;background:var(--blue-light);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.plus-icon svg{width:9px;height:9px;stroke:var(--blue);fill:none;stroke-width:2.5;}
+.limit-icon{width:17px;height:17px;border-radius:50%;background:var(--cream-mid);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.limit-icon svg{width:9px;height:9px;stroke:var(--ink-muted);fill:none;stroke-width:2.5;}
+
+/* Trust row under the cards */
+.trust-row{display:flex;align-items:center;justify-content:center;gap:22px;margin-top:26px;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-muted);}
+
+/* ── Comparison table ── */
+.compare{max-width:900px;margin:70px auto 0;}
+.compare-head{text-align:center;margin-bottom:26px;}
+.compare-title{font-size:clamp(22px,2.6vw,28px);font-weight:600;color:var(--ink);margin-bottom:8px;}
+.compare-title em{font-style:italic;color:var(--navy);}
+.compare-sub{font-size:14px;color:var(--ink-muted);line-height:1.7;}
+
+.compare-scroll{overflow-x:auto;background:var(--white);border:1.5px solid var(--border);border-radius:16px;}
+table.compare-table{width:100%;border-collapse:collapse;min-width:520px;}
+.compare-table th,.compare-table td{padding:14px 20px;text-align:left;font-size:13.5px;}
+.compare-table thead th{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;color:var(--ink);border-bottom:1px solid var(--border);padding-top:20px;padding-bottom:16px;}
+.compare-table thead th:first-child{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-muted);}
+.compare-table td:first-child{color:var(--ink-mid);}
+.compare-table td:not(:first-child),.compare-table th:not(:first-child){text-align:center;width:23%;}
+.compare-table tbody tr+tr td{border-top:1px solid var(--border-mid);}
+.compare-table tbody tr:hover td{background:rgba(240,235,224,.32);}
+.col-pro{background:rgba(59,130,246,.045);}
+.compare-table thead .col-pro{position:relative;}
+.pro-flag{display:block;font-family:'DM Sans',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-top:3px;}
+.cell-val{font-weight:600;color:var(--ink);}
+.cell-yes{display:inline-flex;width:19px;height:19px;border-radius:50%;background:var(--green-light);align-items:center;justify-content:center;}
+.cell-yes svg{width:10px;height:10px;stroke:var(--green);fill:none;stroke-width:2.5;}
+.cell-no{color:var(--cream-dark);font-size:17px;line-height:1;}
+.compare-cta td{padding-top:20px;padding-bottom:22px;border-top:1px solid var(--border)!important;}
+.compare-btn{width:100%;border-radius:8px;padding:12px 14px;font-size:13.5px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;}
+.compare-btn.solid{background:var(--blue);color:#fff;border:1.5px solid var(--blue);}
+.compare-btn.solid:hover{background:var(--blue-dark);border-color:var(--blue-dark);}
+.compare-btn.outline{background:transparent;color:var(--navy);border:1.5px solid var(--cream-dark);}
+.compare-btn.outline:hover{border-color:var(--navy);}
+.btn-price{display:block;font-weight:500;font-size:.9em;opacity:.8;margin-top:3px;}
+.compare-btn:disabled{opacity:.55;cursor:not-allowed;}
+
+/* ── Usage estimator ── */
+.estimator-card{max-width:900px;margin:26px auto 0;background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:28px 26px;}
+.estimator-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:7px;}
+.estimator-title{font-size:19px;font-weight:600;color:var(--ink);margin-bottom:6px;font-family:'Playfair Display',serif;}
+.estimator-sub{font-size:13.5px;color:var(--ink-muted);line-height:1.7;margin-bottom:26px;max-width:620px;}
+
+.slider{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:var(--cream-mid);outline:none;cursor:pointer;margin-bottom:12px;}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--blue);cursor:pointer;box-shadow:0 2px 8px rgba(59,130,246,.35);transition:transform .15s;}
+.slider::-webkit-slider-thumb:hover{transform:scale(1.15);}
+.slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--blue);cursor:pointer;border:none;box-shadow:0 2px 8px rgba(59,130,246,.35);}
+.slider-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-muted);margin-bottom:24px;}
+
+.estimate-result{background:var(--blue-light);border:1px solid rgba(59,130,246,.15);border-radius:10px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.estimate-volume{font-size:13px;color:var(--blue);font-weight:500;margin-bottom:2px;}
+.estimate-tier{font-size:12px;color:var(--ink-muted);}
+.estimate-right{text-align:right;}
+.estimate-cost{font-family:'Playfair Display',serif;font-size:28px;font-weight:600;color:var(--navy);line-height:1;}
+.estimate-cost-label{font-size:11.5px;color:var(--ink-muted);margin-top:3px;}
+
+/* ── Footer note ── */
+.foot{max-width:900px;margin:26px auto 0;display:flex;gap:9px;align-items:flex-start;font-size:12.5px;color:var(--ink-muted);line-height:1.7;}
+.foot svg{flex-shrink:0;margin-top:3px;}
+.back-link{display:block;text-align:center;margin-top:34px;font-size:13.5px;color:var(--ink-muted);}
+.back-link:hover{color:var(--ink);}
+
+.spinner{width:16px;height:16px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+.plan-btn.outline .spinner{border-color:rgba(26,39,68,.25);border-top-color:var(--navy);}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading .spinner{display:block;}
+.loading .btn-text{display:none;}
+
+@media(max-width:560px){
+  .page{padding:100px 20px 64px;}
+  .billing-toggle{width:100%;}
+  .billing-opt{flex:1;justify-content:center;padding:10px 12px;}
+  .plan-for{min-height:0;}
+  .compare{margin-top:52px;}
+  /* Both columns must stay visible — the comparison is the whole point of the
+     table, so it fits the phone instead of scrolling Pro off-screen. */
+  table.compare-table{min-width:0;}
+  .compare-table th,.compare-table td{padding:12px 9px;font-size:12.5px;}
+  .compare-table thead th{font-size:15px;}
+  .compare-table td:not(:first-child),.compare-table th:not(:first-child){width:26%;}
+  .compare-btn{font-size:12px;padding:11px 7px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/home"><img src="/uploads/Treat Engine Logo .png" alt="Treat Engine" style="height:34px"></a>
+    <div class="nav-links">
+      <a href="/home">Home</a>
+      <a href="/ads">Water Leads</a>
+      <a href="/sales" class="active">Water Sales</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="breadcrumb">
+    <a href="/sales">Water Sales</a>
+    <span style="opacity:.4">›</span>
+    <span>Checkout</span>
+  </div>
+
+  <!-- ── Hero ── -->
+  <div class="hero">
+    <div class="page-tag">Water Sales — ClearDeals</div>
+    <h1 class="page-title">Create your <em>dealership account</em></h1>
+    <p class="page-sub">Pick the plan that matches how you sell. <strong>No setup fee, no contract</strong> — every plan covers your entire team with unlimited users.</p>
+
+    <div class="reassure-row">
+      <span class="reassure-pill">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,7.5 6,10.5 11,4"/></svg>
+        Setup &amp; customization included free
+      </span>
+      <span class="reassure-pill">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,7.5 6,10.5 11,4"/></svg>
+        Unlimited users
+      </span>
+      <span class="reassure-pill">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,7.5 6,10.5 11,4"/></svg>
+        Cancel anytime
+      </span>
+    </div>
+  </div>
+
+  <!-- ── Billing interval ── -->
+  <div class="toggle-wrap">
+    <div class="billing-toggle" role="group" aria-label="Billing interval">
+      <button type="button" class="billing-opt" id="opt-month" aria-pressed="true" onclick="setBilling('month')">Monthly</button>
+      <button type="button" class="billing-opt" id="opt-year" aria-pressed="false" onclick="setBilling('year')">
+        Annual <span class="save-badge">Save 16%</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Plans ── -->
+  <div class="plan-grid">
+
+    <!-- Starter -->
+    <div class="plan-card" id="card-starter">
+      <div class="plan-name">Starter</div>
+      <div class="plan-for">For residential dealers selling out of a single location.</div>
+
+      <div class="plan-price">
+        <span class="plan-amt" id="starter-amt">$97</span>
+        <span class="plan-per" id="starter-per">/ month</span>
+      </div>
+      <div class="plan-note" id="starter-note">Billed monthly · cancel anytime</div>
+
+      <button class="plan-btn outline" id="btn-starter" onclick="startCheckout('starter')">
+        <span class="btn-text">Start with Starter</span>
+        <div class="spinner"></div>
+      </button>
+      <div class="plan-billed" id="starter-billed">$97 due today, then $97/month</div>
+
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li class="feat-head">What's included</li>
+        <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div><span><span class="feat-lead">Residential</span> system deals</span></li>
+        <li><div class="limit-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div><span><span class="feat-lead">1</span> location</span></li>
+        <li><div class="limit-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div><span>Up to <span class="feat-lead">5</span> offices</span></li>
+        <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Unlimited users &amp; products</li>
+        <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Financing &amp; Stripe integrations</li>
+        <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Unlimited pitch recordings &amp; AI coaching</li>
+        <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Dedicated account manager</li>
+      </ul>
+    </div>
+
+    <!-- Pro -->
+    <div class="plan-card featured" id="card-pro">
+      <span class="plan-ribbon">Most popular</span>
+      <div class="plan-name">Pro</div>
+      <div class="plan-for">For dealers selling commercial coolers, rentals, or across multiple locations.</div>
+
+      <div class="plan-price">
+        <span class="plan-amt" id="pro-amt">$297</span>
+        <span class="plan-per" id="pro-per">/ month</span>
+      </div>
+      <div class="plan-note" id="pro-note">Billed monthly · cancel anytime</div>
+
+      <button class="plan-btn solid" id="btn-pro" onclick="startCheckout('pro')">
+        <span class="btn-text">Start with Pro</span>
+        <div class="spinner"></div>
+      </button>
+      <div class="plan-billed" id="pro-billed">$297 due today, then $297/month</div>
+
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li class="feat-head">Everything in Starter, plus</li>
+        <li><div class="plus-icon"><svg viewBox="0 0 9 9"><path d="M4.5 1.5v6M1.5 4.5h6"/></svg></div><span><span class="feat-lead">Commercial cooler</span> deals</span></li>
+        <li><div class="plus-icon"><svg viewBox="0 0 9 9"><path d="M4.5 1.5v6M1.5 4.5h6"/></svg></div><span><span class="feat-lead">Rentals</span> pricing</span></li>
+        <li><div class="plus-icon"><svg viewBox="0 0 9 9"><path d="M4.5 1.5v6M1.5 4.5h6"/></svg></div><span><span class="feat-lead">Unlimited</span> locations</span></li>
+        <li><div class="plus-icon"><svg viewBox="0 0 9 9"><path d="M4.5 1.5v6M1.5 4.5h6"/></svg></div><span><span class="feat-lead">Unlimited</span> offices</span></li>
+
+        <li class="feat-head divided">Also included</li>
+        <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Residential system deals</li>
+        <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Unlimited users &amp; products</li>
+        <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Financing &amp; Stripe integrations</li>
+        <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Unlimited pitch recordings &amp; AI coaching</li>
+        <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Dedicated account manager</li>
+      </ul>
+    </div>
+
+  </div><!-- /plan-grid -->
+
+  <div class="trust-row">
+    <div class="trust-item">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="10" height="8" rx="1"/><path d="M5 5V4a2 2 0 014 0v1"/></svg>
+      Secured by Stripe
+    </div>
+    <div class="trust-item">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
+      No setup fee
+    </div>
+    <div class="trust-item">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
+      Live in 3–5 business days
+    </div>
+  </div>
+
+  <!-- ── Comparison ── -->
+  <div class="compare">
+    <div class="compare-head">
+      <h2 class="compare-title">What's the <em>difference</em>?</h2>
+      <p class="compare-sub">Both plans run the same ClearDeals platform. Pro unlocks commercial, rentals, and unlimited scope.</p>
+    </div>
+
+    <div class="compare-scroll">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th scope="col">Feature</th>
+            <th scope="col">Starter</th>
+            <th scope="col" class="col-pro">Pro<span class="pro-flag">Most popular</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Residential system deals</td>
+            <td><span class="cell-yes"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></span></td>
+            <td class="col-pro"><span class="cell-yes"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></span></td>
+          </tr>
+          <tr>
+            <td>Commercial cooler deals</td>
+            <td><span class="cell-no">—</span></td>
+            <td class="col-pro"><span class="cell-yes"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></span></td>
+          </tr>
+          <tr>
+            <td>Rentals pricing</td>
+            <td><span class="cell-no">—</span></td>
+            <td class="col-pro"><span class="cell-yes"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></span></td>
+          </tr>
+          <tr>
+            <td>Locations</td>
+            <td><span class="cell-val">1</span></td>
+            <td class="col-pro"><span class="cell-val">Unlimited</span></td>
+          </tr>
+          <tr>
+            <td>Offices</td>
+            <td><span class="cell-val">5</span></td>
+            <td class="col-pro"><span class="cell-val">Unlimited</span></td>
+          </tr>
+          <tr>
+            <td>Users</td>
+            <td><span class="cell-val">Unlimited</span></td>
+            <td class="col-pro"><span class="cell-val">Unlimited</span></td>
+          </tr>
+          <tr>
+            <td>Products in catalog</td>
+            <td><span class="cell-val">Unlimited</span></td>
+            <td class="col-pro"><span class="cell-val">Unlimited</span></td>
+          </tr>
+          <tr>
+            <td>Financing &amp; Stripe integrations</td>
+            <td><span class="cell-yes"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></span></td>
+            <td class="col-pro"><span class="cell-yes"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></span></td>
+          </tr>
+          <tr>
+            <td>Pitch recordings &amp; AI coaching</td>
+            <td><span class="cell-yes"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></span></td>
+            <td class="col-pro"><span class="cell-yes"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></span></td>
+          </tr>
+          <tr>
+            <td>Dedicated account manager</td>
+            <td><span class="cell-yes"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></span></td>
+            <td class="col-pro"><span class="cell-yes"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></span></td>
+          </tr>
+          <tr>
+            <td>Setup, customization &amp; training</td>
+            <td><span class="cell-val">Included</span></td>
+            <td class="col-pro"><span class="cell-val">Included</span></td>
+          </tr>
+          <tr>
+            <td>Per-document usage rates</td>
+            <td><span class="cell-val">Same</span></td>
+            <td class="col-pro"><span class="cell-val">Same</span></td>
+          </tr>
+          <tr class="compare-cta">
+            <td></td>
+            <td>
+              <button class="compare-btn outline" id="btn2-starter" onclick="startCheckout('starter')">
+                <span class="btn-text" id="btn2-starter-text">Get Starter<span class="btn-price">$97/mo</span></span>
+              </button>
+            </td>
+            <td class="col-pro">
+              <button class="compare-btn solid" id="btn2-pro" onclick="startCheckout('pro')">
+                <span class="btn-text" id="btn2-pro-text">Get Pro<span class="btn-price">$297/mo</span></span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── Usage estimator ── -->
+  <div class="estimator-card">
+    <div class="estimator-label">Usage estimator</div>
+    <div class="estimator-title">What's your monthly document volume?</div>
+    <div class="estimator-sub">Each presentation and each contract you generate is billed per item, at the same rates on both plans. Move the slider to your expected volume — higher volume earns a lower per-document rate, billed automatically at month's end, never today.</div>
+
+    <input type="range" class="slider" id="vol-slider" min="0" max="3" step="1" value="0" oninput="updateEstimator()">
+    <div class="slider-labels">
+      <span>100</span>
+      <span>250</span>
+      <span>750</span>
+      <span>1,500+</span>
+    </div>
+
+    <div class="estimate-result">
+      <div class="estimate-left">
+        <div class="estimate-volume" id="est-volume">100 documents / month</div>
+        <div class="estimate-tier" id="est-tier">Up to 100 documents</div>
+      </div>
+      <div class="estimate-right">
+        <div class="estimate-cost" id="est-cost">$3.50</div>
+        <div class="estimate-cost-label">per presentation &amp; contract</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="var(--ink-muted)" stroke-width="1.5"><circle cx="7" cy="7" r="6"/><path d="M7 5v3"/><circle cx="7" cy="9.5" r=".5" fill="var(--ink-muted)"/></svg>
+    <span>Usage — each presentation and contract generated across your dealership — is tracked and invoiced automatically at month-end via Stripe. Nothing beyond your plan is due today, and you can upgrade, downgrade, or cancel at any time.</span>
+  </div>
+
+  <a class="back-link" href="/sales">← Back to Water Sales</a>
+</div>
+
+<script>
+// ── Usage estimator (same per-document rates on both plans) ──
+const tiers = [
+  { vol: '100',    label: 'Up to 100 documents',  rate: 3.50 },
+  { vol: '250',    label: 'Up to 250 documents',  rate: 2.75 },
+  { vol: '750',    label: 'Up to 750 documents',  rate: 2.13 },
+  { vol: '1,500+', label: '1,500+ documents',     rate: 1.88 },
+];
+
+function updateEstimator() {
+  const pos = parseInt(document.getElementById('vol-slider').value);
+  const tier = tiers[pos];
+
+  document.getElementById('est-volume').textContent = tier.vol + ' documents / month';
+  document.getElementById('est-tier').textContent = tier.label;
+  document.getElementById('est-cost').textContent = '$' + tier.rate.toFixed(2);
+
+  const pct = (pos / (tiers.length - 1) * 100) + '%';
+  document.getElementById('vol-slider').style.background =
+    `linear-gradient(to right, var(--blue) ${pct}, var(--cream-mid) ${pct})`;
+}
+
+updateEstimator();
+
+// ── Plans ──
+// Amounts here are display only — /api/checkout resolves the real Stripe price
+// from the plan and interval it is sent.
+const PLANS = {
+  starter: { month: 97,  year: 997  },
+  pro:     { month: 297, year: 2997 },
+};
+
+let billing = 'month';
+
+const money = (n) => '$' + n.toLocaleString('en-US');
+
+function setBilling(interval) {
+  billing = interval;
+  render();
+}
+
+function render() {
+  const isYear = billing === 'year';
+
+  document.getElementById('opt-month').setAttribute('aria-pressed', String(!isYear));
+  document.getElementById('opt-year').setAttribute('aria-pressed', String(isYear));
+
+  for (const key of Object.keys(PLANS)) {
+    const plan = PLANS[key];
+    const amount = isYear ? plan.year : plan.month;
+
+    document.getElementById(key + '-amt').textContent = money(amount);
+    document.getElementById(key + '-per').textContent = isYear ? '/ year' : '/ month';
+
+    const note = document.getElementById(key + '-note');
+    if (isYear) {
+      const perMonth = Math.round(plan.year / 12);
+      const saved = plan.month * 12 - plan.year;
+      note.innerHTML = `${money(perMonth)}/mo billed annually · <span class="plan-save">save ${money(saved)}</span>`;
+    } else {
+      note.textContent = 'Billed monthly · cancel anytime';
+    }
+
+    document.getElementById(key + '-billed').textContent =
+      `${money(amount)} due today, then ${money(amount)}/${isYear ? 'year' : 'month'}`;
+
+    document.getElementById('btn2-' + key + '-text').innerHTML =
+      `Get ${key === 'pro' ? 'Pro' : 'Starter'}` +
+      `<span class="btn-price">${money(amount)}/${isYear ? 'yr' : 'mo'}</span>`;
+  }
+}
+
+render();
+
+// ── Checkout ──
+let checkingOut = false;
+
+async function startCheckout(plan) {
+  if (checkingOut) return;
+  checkingOut = true;
+
+  const buttons = [
+    document.getElementById('btn-starter'),
+    document.getElementById('btn-pro'),
+    document.getElementById('btn2-starter'),
+    document.getElementById('btn2-pro'),
+  ];
+  buttons.forEach(b => { b.disabled = true; });
+
+  // Only the clicked plan's card button shows the spinner.
+  const active = document.getElementById('btn-' + plan);
+  active.classList.add('loading');
+
+  try {
+    const res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ service: 'sales', plan: plan, interval: billing }),
+    });
+    const { url, error } = await res.json();
+    if (error) throw new Error(error);
+    window.location.href = url;
+  } catch (err) {
+    alert('Something went wrong. Please try again or contact us at Info@TreatEngine.com');
+    active.classList.remove('loading');
+    buttons.forEach(b => { b.disabled = false; });
+    checkingOut = false;
+  }
+}
+</script>
+</body>
+</html>
