@@ -42,10 +42,10 @@ async function main() {
   const stripe = Stripe(key);
   const results = {};
 
-  // ── ClearDeals Starter — residential, 1 location, 5 offices ──────────────
+  // ── ClearDeals Starter — residential, 1 office, 5 users ──────────────────
   const starterProduct = await stripe.products.create({
     name: 'ClearDeals — Starter',
-    description: 'In-field proposal and closing platform for residential water treatment deals. Unlimited users, 1 location, up to 5 offices. Per-document usage billed at month-end.',
+    description: 'In-field proposal and closing platform for residential water treatment deals. 1 office, up to 5 users. Per-document usage billed at month-end.',
   });
 
   const starterMonthly = await stripe.prices.create({
@@ -68,10 +68,10 @@ async function main() {
   results.STRIPE_PRICE_SALES_STARTER_ANNUAL = starterAnnual.id;
   console.log(`✅  ClearDeals Starter $997/yr  →  ${starterAnnual.id}`);
 
-  // ── ClearDeals Pro — adds commercial coolers, rentals, unlimited scope ────
+  // ── ClearDeals Pro — adds unlimited scope, commercial, and rentals ───────
   const proProduct = await stripe.products.create({
     name: 'ClearDeals — Pro',
-    description: 'Everything in Starter plus commercial cooler deals, rentals pricing, unlimited locations, and unlimited offices. Per-document usage billed at month-end.',
+    description: 'Everything in Starter plus unlimited users, unlimited offices, commercial sales flow, and rentals catalog. Per-document usage billed at month-end.',
   });
 
   const proMonthly = await stripe.prices.create({
