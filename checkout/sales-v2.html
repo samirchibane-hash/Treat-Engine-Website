@@ -385,7 +385,7 @@ table.compare-table{width:100%;border-collapse:collapse;min-width:520px;}
             <td class="col-pro"><span class="cell-val">Included</span></td>
           </tr>
           <tr>
-            <td>Per-document usage rates</td>
+            <td>Per-asset usage rates</td>
             <td><span class="cell-val">Same</span></td>
             <td class="col-pro"><span class="cell-val">Same</span></td>
           </tr>
@@ -410,10 +410,10 @@ table.compare-table{width:100%;border-collapse:collapse;min-width:520px;}
   <!-- ── Usage estimator ── -->
   <div class="estimator-card">
     <div class="estimator-label">Usage estimator</div>
-    <div class="estimator-title">What's your monthly document volume?</div>
-    <div class="estimator-sub">Each presentation and each contract you generate is billed per item, at the same rates on both plans. Move the slider to your expected volume — higher volume earns a lower per-document rate, billed automatically at month's end, never today.</div>
+    <div class="estimator-title">What's your monthly proposal volume?</div>
+    <div class="estimator-sub">Every proposal you generate — each presentation and each contract — is billed per asset, at the same rates on both plans. Move the slider to your expected volume — higher volume earns a lower per-asset rate, billed automatically at month's end, never today.</div>
 
-    <input type="range" class="slider" id="vol-slider" min="0" max="3" step="1" value="0" oninput="updateEstimator()">
+    <input type="range" class="slider" id="vol-slider" min="0" max="3" step="1" value="1" oninput="updateEstimator()">
     <div class="slider-labels">
       <span>100</span>
       <span>250</span>
@@ -423,38 +423,38 @@ table.compare-table{width:100%;border-collapse:collapse;min-width:520px;}
 
     <div class="estimate-result">
       <div class="estimate-left">
-        <div class="estimate-volume" id="est-volume">100 documents / month</div>
-        <div class="estimate-tier" id="est-tier">Up to 100 documents</div>
+        <div class="estimate-volume" id="est-volume">250 proposals / month</div>
+        <div class="estimate-tier" id="est-tier">Up to 250 proposals</div>
       </div>
       <div class="estimate-right">
-        <div class="estimate-cost" id="est-cost">$3.50</div>
-        <div class="estimate-cost-label">per presentation &amp; contract</div>
+        <div class="estimate-cost" id="est-cost">$2.75</div>
+        <div class="estimate-cost-label">per asset generated</div>
       </div>
     </div>
   </div>
 
   <div class="foot">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="var(--ink-muted)" stroke-width="1.5"><circle cx="7" cy="7" r="6"/><path d="M7 5v3"/><circle cx="7" cy="9.5" r=".5" fill="var(--ink-muted)"/></svg>
-    <span>Usage — each presentation and contract generated across your dealership — is tracked and invoiced automatically at month-end via Stripe. Nothing beyond your plan is due today, and you can upgrade, downgrade, or cancel at any time.</span>
+    <span>Usage — every asset generated across your dealership — is tracked and invoiced automatically at month-end via Stripe. Nothing beyond your plan is due today, and you can upgrade, downgrade, or cancel at any time.</span>
   </div>
 
   <a class="back-link" href="/sales">← Back to Water Sales</a>
 </div>
 
 <script>
-// ── Usage estimator (same per-document rates on both plans) ──
+// ── Usage estimator (same per-asset rates on both plans) ──
 const tiers = [
-  { vol: '100',    label: 'Up to 100 documents',  rate: 3.50 },
-  { vol: '250',    label: 'Up to 250 documents',  rate: 2.75 },
-  { vol: '750',    label: 'Up to 750 documents',  rate: 2.13 },
-  { vol: '1,500+', label: '1,500+ documents',     rate: 1.88 },
+  { vol: '100',    label: 'Up to 100 proposals', rate: 3.50 },
+  { vol: '250',    label: 'Up to 250 proposals', rate: 2.75 },
+  { vol: '750',    label: 'Up to 750 proposals', rate: 2.13 },
+  { vol: '1,500+', label: '1,500+ proposals',    rate: 1.88 },
 ];
 
 function updateEstimator() {
   const pos = parseInt(document.getElementById('vol-slider').value);
   const tier = tiers[pos];
 
-  document.getElementById('est-volume').textContent = tier.vol + ' documents / month';
+  document.getElementById('est-volume').textContent = tier.vol + ' proposals / month';
   document.getElementById('est-tier').textContent = tier.label;
   document.getElementById('est-cost').textContent = '$' + tier.rate.toFixed(2);
 
