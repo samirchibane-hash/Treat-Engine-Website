@@ -1392,17 +1392,17 @@ function Comparison({tweaks}) {
   );
 }
 
-// Plan pricing and per-document rates mirror /sales/checkout-v2 — keep the two
+// Plan pricing and per-asset rates mirror /sales/checkout-v2 — keep the two
 // in sync when either changes.
 const PRICING_PLANS = {
   starter: {month:97,  year:997},
   pro:     {month:297, year:2997},
 };
 const USAGE_TIERS = [
-  {vol:'100',    label:'Up to 100 documents', rate:3.50},
-  {vol:'250',    label:'Up to 250 documents', rate:2.75},
-  {vol:'750',    label:'Up to 750 documents', rate:2.13},
-  {vol:'1,500+', label:'1,500+ documents',    rate:1.88},
+  {vol:'100',    label:'Up to 100 proposals', rate:3.50},
+  {vol:'250',    label:'Up to 250 proposals', rate:2.75},
+  {vol:'750',    label:'Up to 750 proposals', rate:2.13},
+  {vol:'1,500+', label:'1,500+ proposals',    rate:1.88},
 ];
 
 function PrIco({kind}) {
@@ -1417,7 +1417,7 @@ function PrIco({kind}) {
 
 function Pricing() {
   const [billing, setBilling] = useState('month');
-  const [volIdx, setVolIdx] = useState(0);
+  const [volIdx, setVolIdx] = useState(1);
 
   const isYear = billing === 'year';
   const money = n => '$' + n.toLocaleString('en-US');
@@ -1538,8 +1538,8 @@ function Pricing() {
 
         <div className="pr-est reveal">
           <div className="pr-est-label">Usage estimator</div>
-          <div className="pr-est-title">What's your monthly document volume?</div>
-          <div className="pr-est-sub">Each presentation and each contract you generate is billed per item, at the same rates on both plans. Move the slider to your expected volume — higher volume earns a lower per-document rate, billed automatically at month's end.</div>
+          <div className="pr-est-title">What's your monthly proposal volume?</div>
+          <div className="pr-est-sub">Every proposal you generate — each presentation and each contract — is billed per asset, at the same rates on both plans. Move the slider to your expected volume — higher volume earns a lower per-asset rate, billed automatically at month's end.</div>
 
           <input
             type="range"
@@ -1547,7 +1547,7 @@ function Pricing() {
             min="0" max={USAGE_TIERS.length - 1} step="1"
             value={volIdx}
             onChange={e => setVolIdx(parseInt(e.target.value, 10))}
-            aria-label="Monthly document volume"
+            aria-label="Monthly proposal volume"
             style={{background:`linear-gradient(to right, var(--blue) ${pct}%, var(--cream-mid) ${pct}%)`}}
           />
           <div className="pr-slider-labels">
@@ -1556,19 +1556,19 @@ function Pricing() {
 
           <div className="pr-est-result">
             <div>
-              <div className="pr-est-vol">{tier.vol} documents / month</div>
+              <div className="pr-est-vol">{tier.vol} proposals / month</div>
               <div className="pr-est-tier">{tier.label}</div>
             </div>
             <div className="pr-est-right">
               <div className="pr-est-cost">${tier.rate.toFixed(2)}</div>
-              <div className="pr-est-cost-label">per presentation &amp; contract</div>
+              <div className="pr-est-cost-label">per asset generated</div>
             </div>
           </div>
         </div>
 
         <div className="pr-foot reveal">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5"><circle cx="7" cy="7" r="6"/><path d="M7 5v3"/><circle cx="7" cy="9.5" r=".5" fill="var(--ink-muted)"/></svg>
-          <span>Usage — each presentation and contract generated across your dealership — is tracked and invoiced automatically at month-end. You can upgrade, downgrade, or cancel at any time.</span>
+          <span>Usage — every asset generated across your dealership — is tracked and invoiced automatically at month-end. You can upgrade, downgrade, or cancel at any time.</span>
         </div>
       </div>
     </section>
