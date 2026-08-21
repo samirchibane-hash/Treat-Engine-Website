@@ -244,13 +244,13 @@ table.compare-table{width:100%;border-collapse:collapse;min-width:520px;}
         <span class="plan-amt" id="starter-amt">$97</span>
         <span class="plan-per" id="starter-per">/ month</span>
       </div>
-      <div class="plan-note" id="starter-note">Billed monthly · cancel anytime</div>
+      <div class="plan-note" id="starter-note"><span class="plan-save">First 30 days free</span> · then billed monthly</div>
 
       <button class="plan-btn outline" id="btn-starter" onclick="startCheckout('starter')">
-        <span class="btn-text">Start with Starter</span>
+        <span class="btn-text" id="starter-btn-text">Start 30-day free trial</span>
         <div class="spinner"></div>
       </button>
-      <div class="plan-billed" id="starter-billed">$97 due today, then $97/month</div>
+      <div class="plan-billed" id="starter-billed">$0 due today — free for 30 days, then $97/month</div>
 
       <div class="plan-divider"></div>
       <ul class="plan-features">
@@ -275,13 +275,13 @@ table.compare-table{width:100%;border-collapse:collapse;min-width:520px;}
         <span class="plan-amt" id="pro-amt">$297</span>
         <span class="plan-per" id="pro-per">/ month</span>
       </div>
-      <div class="plan-note" id="pro-note">Billed monthly · cancel anytime</div>
+      <div class="plan-note" id="pro-note"><span class="plan-save">First 30 days free</span> · then billed monthly</div>
 
       <button class="plan-btn solid" id="btn-pro" onclick="startCheckout('pro')">
-        <span class="btn-text">Start with Pro</span>
+        <span class="btn-text" id="pro-btn-text">Start 30-day free trial</span>
         <div class="spinner"></div>
       </button>
-      <div class="plan-billed" id="pro-billed">$297 due today, then $297/month</div>
+      <div class="plan-billed" id="pro-billed">$0 due today — free for 30 days, then $297/month</div>
 
       <div class="plan-divider"></div>
       <ul class="plan-features">
@@ -393,12 +393,12 @@ table.compare-table{width:100%;border-collapse:collapse;min-width:520px;}
             <td></td>
             <td>
               <button class="compare-btn outline" id="btn2-starter" onclick="startCheckout('starter')">
-                <span class="btn-text" id="btn2-starter-text">Get Starter<span class="btn-price">$97/mo</span></span>
+                <span class="btn-text" id="btn2-starter-text">Start free trial<span class="btn-price">then $97/mo</span></span>
               </button>
             </td>
             <td class="col-pro">
               <button class="compare-btn solid" id="btn2-pro" onclick="startCheckout('pro')">
-                <span class="btn-text" id="btn2-pro-text">Get Pro<span class="btn-price">$297/mo</span></span>
+                <span class="btn-text" id="btn2-pro-text">Start free trial<span class="btn-price">then $297/mo</span></span>
               </button>
             </td>
           </tr>
@@ -495,21 +495,30 @@ function render() {
     document.getElementById(key + '-amt').textContent = money(amount);
     document.getElementById(key + '-per').textContent = isYear ? '/ year' : '/ month';
 
+    const label = key === 'pro' ? 'Pro' : 'Starter';
+
+    // The 30-day trial is monthly-only, so nothing below may promise a trial
+    // while the annual toggle is active — /api/checkout would bill immediately.
     const note = document.getElementById(key + '-note');
     if (isYear) {
       const perMonth = Math.round(plan.year / 12);
       const saved = plan.month * 12 - plan.year;
       note.innerHTML = `${money(perMonth)}/mo billed annually · <span class="plan-save">save ${money(saved)}</span>`;
     } else {
-      note.textContent = 'Billed monthly · cancel anytime';
+      note.innerHTML = '<span class="plan-save">First 30 days free</span> · then billed monthly';
     }
 
-    document.getElementById(key + '-billed').textContent =
-      `${money(amount)} due today, then ${money(amount)}/${isYear ? 'year' : 'month'}`;
+    document.getElementById(key + '-billed').textContent = isYear
+      ? `${money(amount)} due today, then ${money(amount)}/year`
+      : `$0 due today — free for 30 days, then ${money(amount)}/month`;
 
-    document.getElementById('btn2-' + key + '-text').innerHTML =
-      `Get ${key === 'pro' ? 'Pro' : 'Starter'}` +
-      `<span class="btn-price">${money(amount)}/${isYear ? 'yr' : 'mo'}</span>`;
+    document.getElementById(key + '-btn-text').textContent = isYear
+      ? `Start with ${label}`
+      : 'Start 30-day free trial';
+
+    document.getElementById('btn2-' + key + '-text').innerHTML = isYear
+      ? `Get ${label}<span class="btn-price">${money(amount)}/yr</span>`
+      : `Start free trial<span class="btn-price">then ${money(amount)}/mo</span>`;
   }
 }
 

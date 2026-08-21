@@ -12,7 +12,15 @@ module.exports = async (req, res) => {
   try {
     const session = await stripe.checkout.sessions.retrieve(session_id);
 
-    if (session.payment_status !== 'paid' && session.status !== 'complete') {
+    // A trialing subscription completes with payment_status 'no_payment_required'
+    // and amount_total 0 — the session is still complete and the subscription is
+    // live, so onboarding must let it through.
+    const settled =
+      session.status === 'complete' ||
+      session.payment_status === 'paid' ||
+      session.payment_status === 'no_payment_required';
+
+    if (!settled) {
       return res.status(402).json({ error: 'Payment not completed' });
     }
 

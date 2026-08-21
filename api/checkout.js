@@ -87,6 +87,12 @@ module.exports = async (req, res) => {
         return res.status(500).json({ error: `Missing price ID for ClearDeals ${priceKey}` });
       }
 
+      // 30-day free trial on the month-to-month plans only. Annual keeps billing
+      // up front: a first-ever $997/$2,997 charge landing on day 31, with no
+      // prior successful payment to prove the card, is the highest decline risk
+      // in this funnel.
+      const trialDays = interval === 'month' ? 30 : 0;
+
       sessionParams = {
         mode: 'subscription',
         line_items: [{ price: priceId, quantity: 1 }],
@@ -95,10 +101,26 @@ module.exports = async (req, res) => {
           plan: `${plan}-${interval === 'year' ? 'annual' : 'monthly'}`,
           tier: plan,
           interval,
+          trial_days: String(trialDays),
         },
         success_url: `${origin}/sales/onboarding?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/sales/checkout-v2`,
       };
+
+      if (trialDays) {
+        // The trial lives on the session, not on the Price — the same four price
+        // IDs stay reusable for non-trial subscriptions (sales-assisted signups,
+        // migrations off the legacy /sales/checkout page).
+        //
+        // payment_method_collection stays at its 'always' default on purpose: the
+        // usage subscription the dealer starts inside ClearDeals charges the card
+        // saved here, so a trial that skipped card collection would leave that
+        // in-app signup with nothing to bill.
+        sessionParams.subscription_data = {
+          trial_period_days: trialDays,
+          trial_settings: { end_behavior: { missing_payment_method: 'cancel' } },
+        };
+      }
 
     } else if (service === 'sales') {
       // ── /sales/checkout (legacy) ──
