@@ -103,7 +103,7 @@ module.exports = async (req, res) => {
           interval,
           trial_days: String(trialDays),
         },
-        success_url: `${origin}/sales/onboarding?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `${origin}/sales/welcome?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/sales/checkout-v2`,
       };
 

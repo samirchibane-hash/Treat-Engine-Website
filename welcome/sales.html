@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Welcome to ClearDeals · Treat Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#faf7f2;--cream-mid:#f0ebe0;
+  --ink:#1c1814;--ink-muted:#7a6f65;
+  --navy:#1a2744;--blue:#3b82f6;--blue-light:#eff6ff;--blue-dark:#1d4ed8;
+  --white:#fffefb;--border:rgba(28,24,20,0.10);
+  --green:#16a34a;--green-light:#f0fdf4;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);}
+h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.12;}
+a{text-decoration:none;color:inherit;}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,247,242,0.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+.nav-inner{max-width:1180px;margin:0 auto;padding:0 32px;height:70px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo img{height:34px;width:auto;}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-links a{font-size:13.5px;font-weight:500;color:var(--ink-muted);padding:7px 14px;border-radius:6px;transition:all .2s;}
+.nav-links a:hover{color:var(--ink);background:var(--cream-mid);}
+@media(max-width:900px){.nav-links{display:none;}}
+
+.overlay{position:fixed;inset:0;background:var(--cream);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:0 24px;}
+.overlay-icon{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.overlay-icon.loading{background:var(--blue-light);}
+.overlay-icon.error{background:#fef2f2;}
+.overlay h2{font-size:24px;text-align:center;}
+.overlay p{font-size:15px;color:var(--ink-muted);text-align:center;max-width:440px;line-height:1.7;}
+.spinner-lg{width:28px;height:28px;border:3px solid rgba(59,130,246,.2);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.page{padding:110px 32px 80px;max-width:720px;margin:0 auto;display:none;}
+.page-header{margin-bottom:40px;}
+.success-badge{display:inline-flex;align-items:center;gap:8px;background:var(--green-light);color:var(--green);border:1px solid rgba(22,163,74,.2);padding:7px 16px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:20px;}
+.page-tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;}
+.page-title{font-size:clamp(30px,4.5vw,48px);font-weight:600;color:var(--ink);margin-bottom:14px;letter-spacing:-.02em;}
+.page-title em{font-style:italic;color:var(--navy);}
+.page-sub{font-size:15.5px;color:var(--ink-muted);line-height:1.8;}
+
+/* ── Invite card — the one action this page is asking for ── */
+.invite{display:flex;gap:20px;background:var(--white);border:1.5px solid var(--blue);border-radius:12px;padding:28px;box-shadow:0 4px 20px rgba(59,130,246,.07);}
+.invite-icon{flex-shrink:0;width:46px;height:46px;border-radius:10px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;}
+.invite h2{font-size:21px;font-weight:600;margin-bottom:8px;}
+.invite p{font-size:14.5px;color:var(--ink-muted);line-height:1.7;}
+.invite-email{display:inline-block;margin:12px 0 10px;padding:9px 16px;background:var(--cream-mid);border-radius:7px;font-size:15px;font-weight:600;color:var(--navy);word-break:break-all;}
+.invite-note{font-size:13px;}
+@media(max-width:580px){.invite{flex-direction:column;gap:14px;padding:24px;}}
+
+.section{padding:40px 0;border-bottom:1px solid var(--border);}
+.section:last-of-type{border-bottom:none;}
+.section-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:22px;}
+
+.steps{list-style:none;display:flex;flex-direction:column;gap:26px;}
+.steps li{display:flex;gap:18px;}
+.step-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;}
+.steps h3{font-size:16.5px;font-weight:600;margin-bottom:5px;font-family:'DM Sans',sans-serif;}
+.steps p{font-size:14px;color:var(--ink-muted);line-height:1.7;}
+
+.summary{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--white);}
+.summary-row{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:15px 20px;border-bottom:1px solid var(--border);}
+.summary-row:last-child{border-bottom:none;}
+.summary-row dt{font-size:13.5px;color:var(--ink-muted);}
+.summary-row dd{font-size:14.5px;font-weight:600;color:var(--ink);text-align:right;}
+.summary-row.accent{background:var(--green-light);}
+.summary-row.accent dd{color:var(--green);}
+
+.help{margin-top:44px;padding-top:28px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:14px;}
+.help p{font-size:13.5px;color:var(--ink-muted);line-height:1.75;}
+.help a{color:var(--blue);font-weight:500;}
+.back-link{margin-top:6px;font-size:14px;font-weight:600;color:var(--blue);}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/home"><img src="/uploads/Treat Engine Logo .png" alt="Treat Engine" style="height:34px"></a>
+    <div class="nav-links">
+      <a href="/home">Home</a>
+      <a href="/ads">Water Leads</a>
+      <a href="/sales">Water Sales</a>
+    </div>
+  </div>
+</nav>
+
+<div class="overlay" id="overlay-loading">
+  <div class="overlay-icon loading"><div class="spinner-lg"></div></div>
+  <h2>Confirming your subscription…</h2>
+  <p>One moment while we check with Stripe.</p>
+</div>
+
+<div class="overlay" id="overlay-error" style="display:none;">
+  <div class="overlay-icon error">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+  </div>
+  <h2>We couldn't confirm your checkout</h2>
+  <p>If you were charged or saw a confirmation from Stripe, your subscription is safe — email <a href="mailto:Info@TreatEngine.com" style="color:var(--blue)">Info@TreatEngine.com</a> and we'll get your ClearDeals invite out right away.</p>
+</div>
+
+<div class="page" id="page">
+
+  <div class="page-header">
+    <div class="success-badge">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg>
+      <span id="badge-text">Subscription confirmed</span>
+    </div>
+    <div class="page-tag">Water Sales — ClearDeals</div>
+    <h1 class="page-title">You're in<em id="title-name"></em>.</h1>
+    <p class="page-sub" id="intro"></p>
+  </div>
+
+  <div class="invite">
+    <div class="invite-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+    </div>
+    <div>
+      <h2>Check your inbox</h2>
+      <p>Your invitation to create your ClearDeals account is on its way to:</p>
+      <div class="invite-email" id="invite-email">your email</div>
+      <p class="invite-note">It usually arrives within a minute. If you don't see it, check your spam folder.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-eyebrow">What happens next</div>
+    <ol class="steps">
+      <li>
+        <span class="step-num">1</span>
+        <div>
+          <h3>Open the invitation</h3>
+          <p>The link is unique to your dealership and sets up the owner account. Whoever opens it becomes the account owner, so pass it along if it should belong to someone else.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <div>
+          <h3>Create your login</h3>
+          <p>Set a password and you're into ClearDeals. Your subscription is already attached — there's nothing to pay or re-enter.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <div>
+          <h3>Finish setup inside ClearDeals</h3>
+          <p>You'll add your team, your equipment and pricing, and your branding. Most dealerships are building their first proposal the same day.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Your plan</div>
+    <dl class="summary" id="summary"></dl>
+  </section>
+
+  <div class="help">
+    <p><strong style="color:var(--ink);font-weight:600;">Not the right person?</strong> If the owner's account should be created under a different email address, email us at <a href="mailto:Info@TreatEngine.com?subject=Send%20my%20ClearDeals%20invite%20to%20a%20different%20email">Info@TreatEngine.com</a> and we'll reissue the invitation.</p>
+    <!-- TODO: replace the mailto above with a POST to the ClearDeals invite-reissue
+         endpoint once that repo exposes one, so the owner can redirect it themselves. -->
+    <p>Questions about billing or setup? We're at <a href="mailto:Info@TreatEngine.com">Info@TreatEngine.com</a>.</p>
+    <a class="back-link" href="/sales">← Back to Water Sales</a>
+  </div>
+
+</div>
+
+<script>
+const params    = new URLSearchParams(window.location.search);
+const sessionId = params.get('session_id');
+
+const money = (cents) =>
+  '$' + (cents / 100).toLocaleString('en-US', { maximumFractionDigits: 0 });
+
+const longDate = (unix) =>
+  new Date(unix * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+function showOverlay(type) {
+  document.getElementById('overlay-loading').style.display = 'none';
+  document.getElementById('overlay-error').style.display   = 'none';
+  if (type === 'error') document.getElementById('overlay-error').style.display = 'flex';
+  else                  document.getElementById('page').style.display = 'block';
+}
+
+function row(label, value, accent) {
+  return '<div class="summary-row' + (accent ? ' accent' : '') + '">'
+       + '<dt>' + label + '</dt><dd>' + value + '</dd></div>';
+}
+
+function render(s) {
+  // Greeting — first name only, and only if Stripe actually captured one.
+  const first = (s.customerName || '').trim().split(/\s+/)[0];
+  if (first) document.getElementById('title-name').textContent = ', ' + first;
+
+  document.getElementById('invite-email').textContent = s.customerEmail || 'the email you used at checkout';
+
+  const tierLabel = s.tier === 'pro' ? 'ClearDeals Pro'
+                  : s.tier === 'starter' ? 'ClearDeals Starter'
+                  : 'ClearDeals';
+  const onTrial = Number(s.trialDays) > 0 && s.trialEnd;
+
+  document.getElementById('badge-text').textContent = onTrial ? 'Trial started' : 'Subscription active';
+
+  document.getElementById('intro').textContent = onTrial
+    ? 'Thanks for starting your ' + tierLabel + ' trial. Your subscription is live and your first '
+      + s.trialDays + ' days are free — we won’t charge your card until ' + longDate(s.trialEnd) + '.'
+    : 'Thanks for subscribing to ' + tierLabel + '. Your payment went through and your subscription is live.';
+
+  // Billing figures come from the Stripe subscription itself, never hardcoded here,
+  // so a price change in Stripe can't leave this page quoting a stale number.
+  const per = s.recurringInterval === 'year' ? '/year' : '/month';
+  let html = row('Plan', tierLabel);
+
+  if (s.recurringAmount != null) {
+    html += row('Billing', money(s.recurringAmount) + per);
+  } else if (s.interval) {
+    html += row('Billing', s.interval === 'year' ? 'Annual' : 'Monthly');
+  }
+
+  html += row('Paid today', s.amountTotal ? money(s.amountTotal) : '$0', true);
+
+  if (onTrial) {
+    html += row('Free through', longDate(s.trialEnd));
+    if (s.recurringAmount != null) {
+      html += row('First charge', money(s.recurringAmount) + ' on ' + longDate(s.trialEnd));
+    }
+  } else if (s.renewsAt) {
+    html += row('Renews', longDate(s.renewsAt));
+  }
+
+  document.getElementById('summary').innerHTML = html;
+}
+
+async function verifyAndRender() {
+  if (!sessionId) { showOverlay('error'); return; }
+  try {
+    const res = await fetch('/api/verify-session?session_id=' + encodeURIComponent(sessionId));
+    if (!res.ok) { showOverlay('error'); return; }
+    const session = await res.json();
+    if (session.service !== 'sales') { showOverlay('error'); return; }
+    render(session);
+    showOverlay(null);
+  } catch {
+    showOverlay('error');
+  }
+}
+
+verifyAndRender();
+</script>
+</body>
+</html>
