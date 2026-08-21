@@ -96,6 +96,14 @@ module.exports = async (req, res) => {
       sessionParams = {
         mode: 'subscription',
         line_items: [{ price: priceId, quantity: 1 }],
+        // ── Cross-repo contract — read by ClearDeals, not just by this repo ──
+        // ClearDeals (separate repo, same Stripe account) provisions dealership
+        // accounts off checkout.session.completed, filtering on
+        // `service === 'sales' && tier`. Renaming or dropping either key
+        // silently stops account provisioning there, with no error on this side.
+        //
+        // `dealership_id` is RESERVED by ClearDeals to mark its in-app
+        // usage-billing checkouts — never set it on a session created here.
         metadata: {
           service: 'sales',
           plan: `${plan}-${interval === 'year' ? 'annual' : 'monthly'}`,
@@ -145,6 +153,9 @@ module.exports = async (req, res) => {
       sessionParams = {
         mode: 'subscription',
         line_items: lineItems,
+        // The ABSENCE of `tier` here is load-bearing: it is how ClearDeals tells
+        // these manually-onboarded customers apart from checkout-v2 buyers and
+        // excludes them from auto-provisioning. Never add a `tier` key here.
         metadata: {
           service: 'sales',
           plan: 'monthly',
