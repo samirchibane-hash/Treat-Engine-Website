@@ -274,6 +274,19 @@ a{text-decoration:none;color:inherit;}
 .pr-save{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:rgba(22,163,74,.13);color:#16a34a;padding:2.5px 8px;border-radius:20px;}
 .pr-opt[aria-pressed="true"] .pr-save{background:#16a34a;color:#fff;}
 
+/* Free-trial promo bar — between the interval toggle and the plan grid.
+   'reveal' has to stay on the static outer wrapper: the IntersectionObserver
+   adds .visible straight to the node, and React wipes it on any re-render that
+   rewrites className — so the toggle-dependent class goes on the inner div. */
+.pr-promo-wrap{margin:-4px 0 26px;}
+.pr-promo{display:flex;align-items:center;justify-content:center;gap:11px;max-width:660px;margin:0 auto;padding:13px 20px;border-radius:11px;font-size:13.5px;line-height:1.55;background:rgba(22,163,74,.09);border:1px solid rgba(22,163,74,.26);color:var(--ink-mid);}
+.pr-promo strong{color:#15803d;font-weight:700;}
+.pr-promo svg{flex:none;color:#16a34a;}
+.pr-promo.muted{background:var(--white);border-color:var(--border-mid);}
+.pr-promo.muted svg{color:var(--ink-muted);}
+.pr-promo.muted strong{color:var(--ink);}
+@media(max-width:768px){.pr-promo{font-size:12.5px;padding:12px 15px;align-items:flex-start;}}
+
 /* Plan cards — equal height so the featured card never reads as the smaller one */
 .pr-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch;}
 .pr-card{position:relative;display:flex;flex-direction:column;background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:30px 28px 28px;transition:border-color .2s,box-shadow .2s,transform .2s;}
@@ -1500,6 +1513,15 @@ function Pricing() {
             <button type="button" className="pr-opt" aria-pressed={isYear} onClick={() => setBilling('year')}>
               Annual <span className="pr-save">Save 16%</span>
             </button>
+          </div>
+        </div>
+
+        <div className="pr-promo-wrap reveal">
+          <div className={isYear ? 'pr-promo muted' : 'pr-promo'}>
+            <svg width="15" height="15" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
+            {isYear
+              ? <span>The <strong>30-day free trial</strong> runs on monthly billing — switch to Monthly to start free, then move to annual whenever you like.</span>
+              : <span><strong>30-day free trial on both plans.</strong> Run Starter or Pro free for 30 days — cancel before day 30 and you’re never charged.</span>}
           </div>
         </div>
 
