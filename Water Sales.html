@@ -1424,7 +1424,11 @@ function Pricing() {
   const amountFor = key => isYear ? PRICING_PLANS[key].year : PRICING_PLANS[key].month;
 
   const noteFor = key => {
-    if(!isYear) return 'Billed monthly · cancel anytime';
+    // The 30-day trial is monthly-only, matching /sales/checkout-v2 — annual
+    // bills up front, so nothing here may promise a trial while isYear.
+    if(!isYear) return (
+      <><span className="pr-note-save">First 30 days free</span> · then billed monthly</>
+    );
     const perMonth = Math.round(PRICING_PLANS[key].year / 12);
     const saved = PRICING_PLANS[key].month * 12 - PRICING_PLANS[key].year;
     return (
@@ -1487,7 +1491,7 @@ function Pricing() {
         <div className="pricing-head reveal">
           <div className="eyebrow">Pricing</div>
           <h2 className="section-title">Dealer pricing,<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>with nothing hidden.</em></h2>
-          <p className="pricing-sub">Setup, catalog build, customization and team training are <strong>included free</strong> on both plans. No contracts — cancel anytime.</p>
+          <p className="pricing-sub">Setup, catalog build, customization and team training are <strong>included free</strong> on both plans. Monthly plans start with a <strong>30-day free trial</strong> — no contracts, cancel anytime.</p>
         </div>
 
         <div className="pr-toggle-wrap reveal">
@@ -1522,6 +1526,12 @@ function Pricing() {
         </div>
 
         <div className="pr-trust reveal">
+          {!isYear && (
+            <div className="pr-trust-item">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
+              30-day free trial
+            </div>
+          )}
           <div className="pr-trust-item">
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
             No setup fee
