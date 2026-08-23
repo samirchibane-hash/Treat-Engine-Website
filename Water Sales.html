@@ -29,7 +29,7 @@
   --border:rgba(28,24,20,0.10);
   --border-mid:rgba(28,24,20,0.06);
 }
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;scroll-padding-top:88px;}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;}
 h1,h2,h3,h4{font-family:'Playfair Display',serif;line-height:1.12;}
 p{line-height:1.75;}
@@ -46,7 +46,10 @@ a{text-decoration:none;color:inherit;}
 .nav-links a.active{color:var(--blue);font-weight:600;background:var(--blue-light);}
 .nav-cta{background:var(--blue);color:#fff;border:none;padding:11px 22px;border-radius:6px;font-size:13.5px;font-weight:600;cursor:pointer;letter-spacing:.02em;transition:background .2s,transform .15s;font-family:'DM Sans',sans-serif;}
 .nav-cta:hover{background:var(--blue-dark);transform:translateY(-1px);}
-@media(max-width:900px){.nav-links,.nav-cta{display:none !important;}}
+.nav-actions{display:flex;align-items:center;gap:10px;}
+.nav-cta-ghost{color:var(--ink-mid);font-size:13.5px;font-weight:600;padding:11px 14px;border-radius:6px;transition:all .2s;white-space:nowrap;}
+.nav-cta-ghost:hover{color:var(--ink);background:var(--cream-mid);}
+@media(max-width:900px){.nav-links,.nav-cta,.nav-actions{display:none !important;}}
 
 /* HERO */
 .hero{padding:120px 32px 0;max-width:1280px;margin:0 auto;}
@@ -90,6 +93,12 @@ a{text-decoration:none;color:inherit;}
 }
 .btn-dark{background:var(--blue);color:#fff;border:none;padding:15px 28px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:all .2s;font-family:'DM Sans',sans-serif;}
 .btn-dark:hover{background:var(--blue-dark);transform:translateY(-2px);}
+/* Secondary CTA — pairs with .btn-dark everywhere the page asks for the sale.
+   Blue always means "start now"; the demo is deliberately the quieter option. */
+.btn-secondary{background:transparent;color:var(--navy);border:1.5px solid var(--cream-dark);padding:13.5px 26px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;}
+.btn-secondary:hover{border-color:var(--navy);background:var(--white);transform:translateY(-2px);}
+.cta-pair{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:center;}
+.cta-pair.left{justify-content:flex-start;}
 .btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--border);padding:14px 24px;border-radius:6px;font-size:15px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
 .btn-outline:hover{border-color:var(--ink-muted);}
 .hero-aside{padding-bottom:8px;}
@@ -308,6 +317,17 @@ a{text-decoration:none;color:inherit;}
 .pr-btn.outline{background:transparent;color:var(--navy);border:1.5px solid var(--cream-dark);}
 .pr-btn.outline:hover{border-color:var(--navy);background:var(--cream);transform:translateY(-2px);}
 .pr-btn-note{font-size:11.5px;color:var(--ink-muted);text-align:center;margin-top:9px;}
+.pr-btn:disabled{cursor:default;}
+.pr-btn:disabled:not(.loading){opacity:.5;}
+.pr-btn:disabled:hover{transform:none;}
+.pr-btn-spinner{display:none;width:16px;height:16px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;animation:pr-spin .7s linear infinite;}
+.pr-btn.outline .pr-btn-spinner{border-color:rgba(26,39,68,.25);border-top-color:var(--navy);}
+.pr-btn.loading .pr-btn-spinner{display:block;}
+.pr-btn.loading .pr-btn-text{display:none;}
+@keyframes pr-spin{to{transform:rotate(360deg);}}
+.pr-alt{text-align:center;font-size:14px;color:var(--ink-muted);margin-top:26px;line-height:1.7;}
+.pr-alt a{color:var(--blue);font-weight:600;border-bottom:1px solid rgba(59,130,246,.3);}
+.pr-alt a:hover{border-bottom-color:var(--blue);}
 .pr-divider{height:1px;background:var(--border-mid);margin-top:24px;}
 .pr-features{list-style:none;display:flex;flex-direction:column;gap:10px;padding-top:20px;flex:1;}
 .pr-features li{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--ink-mid);line-height:1.5;}
@@ -586,12 +606,35 @@ a{text-decoration:none;color:inherit;}
     vertical-align:baseline;
   }
 }
+
+/* ── Dual-CTA rows on phones — stack full width, primary on top ── */
+@media(max-width:768px){
+  .cta-pair,.cta-pair.left{
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:10px !important;
+    width:100% !important;
+  }
+  .cta-pair a,.cta-pair button{
+    width:100% !important;
+    min-height:52px !important;
+    padding:15px 22px !important;
+    font-size:15px !important;
+    text-align:center !important;
+    justify-content:center !important;
+  }
+  .cta-pair span{text-align:center !important;}
+  .pr-btn{min-height:52px !important;}
+  /* Sticky bar duplicates the hero pair on mobile — keep only one of them. */
+  .mobile-sticky-cta .scta-secondary{flex:0 0 44%;}
+}
 </style>
 </head>
 <body>
 <div id="root"></div>
 <div class="mobile-sticky-cta">
-  <a href="#book" class="scta-primary">Book a Demo →</a>
+  <a href="#pricing" class="scta-primary">Start Now →</a>
+  <a href="#book" class="scta-secondary">Request a Demo</a>
 </div>
 <script>document.body.classList.add('has-sticky-cta');</script>
 <script src="mobile-nav.js" defer></script>
@@ -601,7 +644,7 @@ const {useState, useEffect} = React;
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "heroHeadline": "Close Up To 30% More Water Deals on\nthe First Visit - OR YOU DON’T PAY",
   "heroSub": "Professional presentation. In-home financing. Digital signature. Everything a customer needs to say yes on the spot.",
-  "ctaText": "Book a Demo",
+  "ctaText": "Start Now",
   "showComparison": true
 }/*EDITMODE-END*/;
 
@@ -622,7 +665,7 @@ function Nav({tweaks}) {
     window.addEventListener('scroll', h);
     return () => window.removeEventListener('scroll', h);
   }, []);
-  const ctaLabel = (tweaks && tweaks.ctaText) ? tweaks.ctaText : 'Book a Demo';
+  const ctaLabel = (tweaks && tweaks.ctaText) ? tweaks.ctaText : 'Start Now';
   return (
     <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
       <div className="nav-inner">
@@ -634,7 +677,10 @@ function Nav({tweaks}) {
           <a href="#pricing">Pricing</a>
           <a href="/blog">Blog</a>
         </div>
-        <a href="#book" className="nav-cta">{ctaLabel} →</a>
+        <div className="nav-actions">
+          <a href="#book" className="nav-cta-ghost">Request a Demo</a>
+          <a href="#pricing" className="nav-cta">{ctaLabel} →</a>
+        </div>
       </div>
     </nav>
   );
@@ -772,8 +818,10 @@ function Hero({tweaks}) {
               ))}
             </ul>
             <div className="hero-actions">
-              <a href="#book" className="btn-dark">{tweaks.ctaText} →</a>
+              <a href="#pricing" className="btn-dark">{tweaks.ctaText} →</a>
+              <a href="#book" className="btn-secondary">Request a Demo</a>
             </div>
+            <div className="hero-actions-meta">Start free for 30 days · No setup fee · Cancel anytime</div>
             <div className="hero-badge-asterisk">*Pre-configured smart tablet included with every dealer plan.</div>
           </div>
         </div>
@@ -865,8 +913,9 @@ function Problem() {
                 <li key={i}><span className="problem-dash">—</span>{item}</li>
               ))}
             </ul>
-            <div style={{marginTop:36}}>
-              <a href="#book" className="btn-dark">See ClearDeals in Action →</a>
+            <div className="cta-pair left" style={{marginTop:36}}>
+              <a href="#pricing" className="btn-dark">Start Now →</a>
+              <a href="#book" className="btn-secondary">Request a Demo</a>
             </div>
           </div>
         </div>
@@ -1205,8 +1254,11 @@ function Features() {
         </div>
         <div className="reveal" style={{textAlign:'center',marginTop:72,paddingTop:64,borderTop:'1px solid var(--border)'}}>
           <p style={{fontSize:16,color:'var(--ink-muted)',marginBottom:10,lineHeight:1.7}}>Your techs already know how to diagnose the problem.<br/>Give them the tool that closes the deal.</p>
-          <a href="#book" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px',marginTop:14}}>Book a Demo →</a>
-          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>Smart tablet included · Live in 3–5 business days · No contracts</div>
+          <div className="cta-pair" style={{marginTop:14}}>
+            <a href="#pricing" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Start Now →</a>
+            <a href="#book" className="btn-secondary" style={{fontSize:16,padding:'17px 32px'}}>Request a Demo</a>
+          </div>
+          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>30-day free trial · Smart tablet included · Live in 3–5 business days</div>
         </div>
       </div>
     </section>
@@ -1243,8 +1295,11 @@ function DealFlow() {
           ))}
         </div>
         <div className="reveal" style={{marginTop:56,paddingTop:48,borderTop:'1px solid rgba(255,255,255,0.08)',textAlign:'center'}}>
-          <a href="#book" className="btn-cream" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:15,padding:'16px 34px'}}>See ClearDeals in Action →</a>
-          <div style={{marginTop:12,fontSize:13,color:'rgba(255,255,255,0.35)'}}>30-minute demo · No commitment · Live on your device</div>
+          <div className="cta-pair">
+            <a href="#pricing" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:15,padding:'16px 34px'}}>Start Now →</a>
+            <a href="#book" className="btn-ghost" style={{fontSize:15,padding:'16px 30px'}}>Request a Demo</a>
+          </div>
+          <div style={{marginTop:12,fontSize:13,color:'rgba(255,255,255,0.35)'}}>Free for 30 days · No commitment · Live on your device</div>
         </div>
       </div>
     </section>
@@ -1396,8 +1451,11 @@ function Comparison({tweaks}) {
         </div>
         <div className="reveal" style={{textAlign:'center',marginTop:64,paddingTop:56,borderTop:'1px solid var(--border)'}}>
           <h3 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(22px,3vw,32px)',fontWeight:600,color:'var(--ink)',marginBottom:12,letterSpacing:'-.02em'}}>Ready to run appointments like this?</h3>
-          <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28}}>Book a 30-minute demo and see exactly how it works with your catalog and pricing.</p>
-          <a href="#book" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Book a Demo →</a>
+          <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28}}>Pick a plan and run it free for 30 days — or have us walk you through it live with your catalog and pricing.</p>
+          <div className="cta-pair">
+            <a href="#pricing" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Start Now →</a>
+            <a href="#book" className="btn-secondary" style={{fontSize:16,padding:'17px 32px'}}>Request a Demo</a>
+          </div>
           <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>30-day results guarantee · No contracts</div>
         </div>
       </div>
@@ -1431,10 +1489,42 @@ function PrIco({kind}) {
 function Pricing() {
   const [billing, setBilling] = useState('month');
   const [volIdx, setVolIdx] = useState(1);
+  const [pending, setPending] = useState(null);
 
   const isYear = billing === 'year';
   const money = n => '$' + n.toLocaleString('en-US');
   const amountFor = key => isYear ? PRICING_PLANS[key].year : PRICING_PLANS[key].month;
+
+  // Same call /sales/checkout-v2 makes. The page only sends tier and interval —
+  // /api/checkout resolves the real Stripe price and attaches the trial, so the
+  // buy box here can never drift out of sync with that page's pricing.
+  const startCheckout = async key => {
+    if (pending) return;
+    setPending(key);
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({service: 'sales', plan: key, interval: billing}),
+      });
+      const {url, error} = await res.json();
+      if (error || !url) throw new Error(error || 'No checkout URL returned');
+      window.location.href = url;
+    } catch (err) {
+      alert('Something went wrong starting checkout. Please try again, or contact us at Info@TreatEngine.com');
+      setPending(null);
+    }
+  };
+
+  // Trial language is monthly-only — annual bills up front, so the button and
+  // the line under it must never promise a free trial while isYear.
+  const ctaFor = name => isYear ? ('Get ' + name + ' →') : 'Start 30-day free trial →';
+  const billedFor = key => {
+    const amt = money(amountFor(key));
+    return isYear
+      ? amt + ' due today, then ' + amt + '/year'
+      : '$0 due today — free for 30 days, then ' + amt + '/month';
+  };
 
   const noteFor = key => {
     // The 30-day trial is monthly-only, matching /sales/checkout-v2 — annual
@@ -1538,13 +1628,25 @@ function Pricing() {
               </div>
               <div className="pr-note">{noteFor(p.key)}</div>
 
-              <a href="#book" className={`pr-btn ${p.featured ? 'solid' : 'outline'}`}>Get Started →</a>
-              <div className="pr-btn-note">Book a 30-minute demo — no card required</div>
+              <button
+                type="button"
+                className={`pr-btn ${p.featured ? 'solid' : 'outline'}${pending === p.key ? ' loading' : ''}`}
+                disabled={pending !== null}
+                onClick={() => startCheckout(p.key)}
+              >
+                <span className="pr-btn-text">{ctaFor(p.name)}</span>
+                <span className="pr-btn-spinner" aria-hidden="true"></span>
+              </button>
+              <div className="pr-btn-note">{billedFor(p.key)}</div>
 
               <div className="pr-divider"></div>
               {renderFeatures(p.features)}
             </div>
           ))}
+        </div>
+
+        <div className="pr-alt reveal">
+          Want to see it run first? <a href="#book">Request a 30-minute demo</a> — we'll walk through ClearDeals live with your catalog and your pricing.
         </div>
 
         <div className="pr-trust reveal">
@@ -1639,9 +1741,12 @@ function FAQ() {
         </div>
         <div className="reveal" style={{textAlign:'center',marginTop:64,padding:'48px 32px',background:'var(--white)',borderRadius:10,border:'1px solid var(--border)'}}>
           <div style={{fontSize:11,fontWeight:700,letterSpacing:'.12em',textTransform:'uppercase',color:'var(--blue)',marginBottom:16}}>Still have questions?</div>
-          <h3 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(22px,3vw,30px)',fontWeight:600,color:'var(--ink)',marginBottom:12,letterSpacing:'-.02em'}}>Talk to us live on a 30-minute demo.</h3>
-          <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28,maxWidth:440,margin:'0 auto 28px'}}>We'll answer every question and show you exactly how ClearDeals works with your team and your catalog.</p>
-          <a href="#book" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Book Your Demo →</a>
+          <h3 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(22px,3vw,30px)',fontWeight:600,color:'var(--ink)',marginBottom:12,letterSpacing:'-.02em'}}>Start free, or talk it through first.</h3>
+          <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28,maxWidth:440,margin:'0 auto 28px'}}>Run ClearDeals free for 30 days — or get on a 30-minute demo and we'll show you exactly how it works with your team and your catalog.</p>
+          <div className="cta-pair">
+            <a href="#pricing" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Start Now →</a>
+            <a href="#book" className="btn-secondary" style={{fontSize:16,padding:'17px 32px'}}>Request a Demo</a>
+          </div>
           <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>No commitment · Smart tablet included · Live in 3–5 days</div>
         </div>
       </div>
@@ -1722,6 +1827,10 @@ function CTABanner({tweaks}) {
               30-day results guarantee
             </li>
           </ul>
+          <div className="cta-pair left" style={{marginTop:34}}>
+            <a href="#pricing" className="btn-dark">Start Now →</a>
+            <span style={{fontSize:13.5,color:'rgba(255,255,255,0.5)',lineHeight:1.5}}>or pick a demo time with the calendar</span>
+          </div>
         </div>
         <div className="cta-right">
           <div className="cta-panel">
@@ -1808,7 +1917,7 @@ function TweaksPanel({tweaks, setTweaks, visible}) {
         <textarea value={tweaks.heroHeadline} onChange={e=>update('heroHeadline',e.target.value)} rows={2} style={fs}/>
       </div>
       <div style={{marginBottom:14}}>
-        <label style={ls}>CTA Text</label>
+        <label style={ls}>Primary CTA text</label>
         <input value={tweaks.ctaText} onChange={e=>update('ctaText',e.target.value)} style={fs}/>
       </div>
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',paddingTop:14,borderTop:'1px solid var(--border)'}}>
