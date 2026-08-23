@@ -694,7 +694,6 @@ function TabletMockup() {
   ];
   return (
     <div className="tablet-wrap">
-      <div className="tablet-badge">Smart tablet included</div>
       <div className="tablet">
         <div className="tablet-screen">
           <div className="tablet-chrome">
@@ -751,7 +750,7 @@ function Hero({tweaks}) {
   const lines = tweaks.heroHeadline.split('\n');
   const tickerItems = [
     'Professional proposals in seconds','E-signatures on the spot','Integrated financing options',
-    'Dealer pricing controls','Product catalog built in','Works offline','Real-time analytics','Smart tablet included',
+    'Dealer pricing controls','Product catalog built in','Works offline','Real-time analytics',
   ];
   const bullets = [
     'Branded proposals built in 5 minutes, on-site',
@@ -822,7 +821,6 @@ function Hero({tweaks}) {
               <a href="#book" className="btn-secondary">Request a Demo</a>
             </div>
             <div className="hero-actions-meta">Start free for 30 days · No setup fee · Cancel anytime</div>
-            <div className="hero-badge-asterisk">*Pre-configured smart tablet included with every dealer plan.</div>
           </div>
         </div>
         <div className="hero-stats-strip reveal">
@@ -1258,7 +1256,7 @@ function Features() {
             <a href="#pricing" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Start Now →</a>
             <a href="#book" className="btn-secondary" style={{fontSize:16,padding:'17px 32px'}}>Request a Demo</a>
           </div>
-          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>30-day free trial · Smart tablet included · Live in 3–5 business days</div>
+          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>30-day free trial · No setup fee · Live in 3–5 business days</div>
         </div>
       </div>
     </section>
@@ -1712,7 +1710,7 @@ function Pricing() {
 function FAQ() {
   const [open, setOpen] = useState(null);
   const faqs = [
-    {q:'Does ClearDeals work on my existing tablets?', a:'Yes — ClearDeals runs on any modern iPad or Android tablet. We also offer a pre-configured tablet bundle so your team can start on day one without any setup.'},
+    {q:'Does ClearDeals work on my existing tablets?', a:'Yes — ClearDeals runs on any modern iPad or Android tablet. There is nothing to install and no special hardware to buy — your team signs in and starts running appointments.'},
     {q:'How is our product catalog loaded?', a:'We onboard your entire product lineup during setup — systems, configurations, SKUs, and pricing. Updates take minutes, and dealers can manage pricing floors and margins directly from the admin panel.'},
     {q:'What financing options does ClearDeals support?', a:'ClearDeals integrates with major home service financing providers. Homeowners can see monthly payment estimates in real time during the proposal — no separate application or redirect needed.'},
     {q:'Does it work without internet?', a:'Yes. ClearDeals is built to work offline for proposals, presentations, and signatures. Data syncs automatically once the tech reconnects.'},
@@ -1747,7 +1745,7 @@ function FAQ() {
             <a href="#pricing" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Start Now →</a>
             <a href="#book" className="btn-secondary" style={{fontSize:16,padding:'17px 32px'}}>Request a Demo</a>
           </div>
-          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>No commitment · Smart tablet included · Live in 3–5 days</div>
+          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>No commitment · No setup fee · Live in 3–5 days</div>
         </div>
       </div>
     </section>
