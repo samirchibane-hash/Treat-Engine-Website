@@ -78,6 +78,22 @@ a{text-decoration:none;color:inherit;}
 .help a{color:var(--blue);font-weight:500;}
 .back-link{margin-top:6px;font-size:14px;font-weight:600;color:var(--blue);}
 </style>
+<!-- Meta Pixel — Treat Engine (1134033977806212) -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1134033977806212');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt=""/></noscript>
+<!-- End Meta Pixel -->
 </head>
 <body>
 
@@ -182,6 +198,11 @@ const money = (cents) =>
 const longDate = (unix) =>
   new Date(unix * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
+const tierLabelFor = (tier) =>
+  tier === 'pro'     ? 'ClearDeals Pro'
+: tier === 'starter' ? 'ClearDeals Starter'
+:                      'ClearDeals';
+
 function showOverlay(type) {
   document.getElementById('overlay-loading').style.display = 'none';
   document.getElementById('overlay-error').style.display   = 'none';
@@ -201,9 +222,7 @@ function render(s) {
 
   document.getElementById('invite-email').textContent = s.customerEmail || 'the email you used at checkout';
 
-  const tierLabel = s.tier === 'pro' ? 'ClearDeals Pro'
-                  : s.tier === 'starter' ? 'ClearDeals Starter'
-                  : 'ClearDeals';
+  const tierLabel = tierLabelFor(s.tier);
   const onTrial = Number(s.trialDays) > 0 && s.trialEnd;
 
   document.getElementById('badge-text').textContent = onTrial ? 'Trial started' : 'Subscription active';
@@ -238,6 +257,38 @@ function render(s) {
   document.getElementById('summary').innerHTML = html;
 }
 
+// ── Meta Pixel — Purchase ──
+// Fires only after /api/verify-session has confirmed the session against Stripe,
+// so a made-up session_id in the URL can't mint a conversion.
+//
+// Value is the recurring plan amount rather than amount_total: the monthly tiers
+// open on a 30-day trial and settle at $0 today, and a $0 Purchase gives Meta
+// nothing to optimize bids against. Annual bills up front, where the two agree.
+//
+// eventID is the Stripe Checkout session id — stable for one signup, so a
+// refresh or a second tab dedupes against the first send, and a Conversions API
+// event sent later from api/webhook.js can dedupe against this one by reusing it.
+function trackPurchase(s) {
+  if (typeof fbq !== 'function') return;
+
+  const guardKey = 'te_fb_purchase_' + sessionId;
+  try {
+    if (localStorage.getItem(guardKey)) return;
+    localStorage.setItem(guardKey, '1');
+  } catch { /* private mode — the eventID below still dedupes server-side */ }
+
+  const cents = s.recurringAmount != null ? s.recurringAmount : (s.amountTotal || 0);
+
+  fbq('track', 'Purchase', {
+    value: cents / 100,
+    currency: 'USD',
+    content_name: tierLabelFor(s.tier),
+    content_type: 'product',
+    content_ids: [s.plan || s.tier || 'cleardeals'],
+    num_items: 1,
+  }, { eventID: sessionId });
+}
+
 async function verifyAndRender() {
   if (!sessionId) { showOverlay('error'); return; }
   try {
@@ -247,6 +298,7 @@ async function verifyAndRender() {
     if (session.service !== 'sales') { showOverlay('error'); return; }
     render(session);
     showOverlay(null);
+    trackPurchase(session);
   } catch {
     showOverlay('error');
   }
