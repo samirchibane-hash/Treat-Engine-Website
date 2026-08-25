@@ -78,7 +78,7 @@ a{text-decoration:none;color:inherit;}
 .hero-badge-asterisk{font-size:11px;color:var(--ink-muted);margin-top:14px;padding-left:4px;font-style:italic;}
 
 /* Stat strip */
-.hero-stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-top:0;}
+.hero-stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-top:0;}
 .hero-stats-strip .stat-cell{padding:28px 28px;border-right:1px solid var(--border);}
 .hero-stats-strip .stat-cell:last-child{border-right:none;}
 .hero-stats-strip .stat-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:600;color:var(--navy);line-height:1;letter-spacing:-.02em;}
@@ -89,6 +89,7 @@ a{text-decoration:none;color:inherit;}
   .hero-tablet-badge{width:120px;height:120px;font-size:15px;padding:14px;left:0;top:-6%;}
   .hero-stats-strip{grid-template-columns:1fr 1fr;}
   .hero-stats-strip .stat-cell:nth-child(2){border-right:none;}
+  .hero-stats-strip .stat-cell:nth-child(3){grid-column:1/-1;}
   .hero-stats-strip .stat-cell:nth-child(1),.hero-stats-strip .stat-cell:nth-child(2){border-bottom:1px solid var(--border);}
 }
 .btn-dark{background:var(--blue);color:#fff;border:none;padding:15px 28px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:all .2s;font-family:'DM Sans',sans-serif;}
@@ -746,7 +747,6 @@ function Hero({tweaks}) {
     {num:'30%+', label:'average lift in first-visit close rate'},
     {num:'$800+', label:'increase in average deal value'},
     {num:'5 min', label:'to build a full proposal on-site'},
-    {num:'3–5 days', label:'from signup to first closed deal'},
   ];
   return (
     <div>
@@ -1271,7 +1271,7 @@ function Features() {
             <a href="#pricing" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Start Now →</a>
             <a href="#book" className="btn-secondary" style={{fontSize:16,padding:'17px 32px'}}>Request a Demo</a>
           </div>
-          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>30-day free trial · No setup fee · Live in 3–5 business days</div>
+          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>30-day free trial · No setup fee · Cancel anytime</div>
         </div>
       </div>
     </section>
@@ -1581,10 +1581,6 @@ function Pricing() {
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
             No contracts
           </div>
-          <div className="pr-trust-item">
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
-            Live in 3–5 business days
-          </div>
         </div>
 
         <div className="pr-est reveal">
@@ -1634,7 +1630,7 @@ function FAQ() {
     {q:'What financing options does ClearDeals support?', a:'ClearDeals integrates with major home service financing providers. Homeowners can see monthly payment estimates in real time during the proposal — no separate application or redirect needed.'},
     {q:'Does it work without internet?', a:'Yes. ClearDeals is built to work offline for proposals, presentations, and signatures. Data syncs automatically once the tech reconnects.'},
     {q:'Can I control what my techs can discount?', a:'Absolutely. You set minimum prices per product. Techs can offer within your defined range, but can\'t go below the floor — protecting your margins without micromanaging the field.'},
-    {q:'How long does setup take?', a:'Most dealers are fully live within 3–5 business days. We handle the catalog import, configure your pricing, and run a short training session with your team before the first appointment.'},
+    {q:'What does onboarding include?', a:'We handle the catalog import, configure your pricing and dealer margins, and run a short training session with your team before the first appointment — all included, at no extra cost.'},
   ];
   return (
     <section className="faq-section" id="faq">
@@ -1664,7 +1660,7 @@ function FAQ() {
             <a href="#pricing" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Start Now →</a>
             <a href="#book" className="btn-secondary" style={{fontSize:16,padding:'17px 32px'}}>Request a Demo</a>
           </div>
-          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>No commitment · No setup fee · Live in 3–5 days</div>
+          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>No commitment · No setup fee · Cancel anytime</div>
         </div>
       </div>
     </section>
