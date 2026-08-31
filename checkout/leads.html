@@ -114,6 +114,24 @@ a{text-decoration:none;color:inherit;}
 .summary-note{font-size:12px;color:var(--ink-muted);line-height:1.65;margin-top:14px;padding-top:14px;border-top:1px solid var(--border-mid);display:flex;gap:8px;align-items:flex-start;}
 .note-icon{flex-shrink:0;margin-top:1px;}
 
+/* Promo code */
+.summary-row.discount .row-name{color:var(--green);font-weight:600;}
+.summary-row.discount .row-amt{color:var(--green);}
+.promo-box{margin-top:14px;padding-top:14px;border-top:1px solid var(--border-mid);}
+.promo-toggle{background:none;border:none;color:var(--blue);font-size:12.5px;font-weight:500;cursor:pointer;padding:0;font-family:'DM Sans',sans-serif;}
+.promo-toggle:hover{text-decoration:underline;}
+.promo-field{display:none;gap:8px;margin-top:10px;}
+.promo-field.open{display:flex;}
+.promo-input{flex:1;min-width:0;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;text-transform:uppercase;color:var(--ink);}
+.promo-input::placeholder{text-transform:none;color:var(--ink-muted);}
+.promo-input:focus{border-color:var(--blue);}
+.promo-apply{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:0 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0;}
+.promo-apply:hover{background:var(--ink);}
+.promo-msg{font-size:12px;margin-top:8px;line-height:1.4;display:none;}
+.promo-msg.show{display:block;}
+.promo-msg.ok{color:var(--green);}
+.promo-msg.err{color:#c0392b;}
+
 /* CTA */
 .btn-primary{width:100%;background:var(--blue);color:#fff;border:none;padding:17px 24px;border-radius:8px;font-size:15.5px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:20px;}
 .btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px);}
@@ -325,16 +343,25 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
         <div class="summary-divider"></div>
 
         <div class="summary-total-row">
-          <div class="summary-total-label">Total</div>
+          <div class="summary-total-label" id="summary-total-label">Total</div>
           <div class="summary-total-right">
             <div class="summary-total-amt" id="summary-total">$798</div>
-            <div class="summary-period">/ month</div>
+            <div class="summary-period" id="summary-period">/ month</div>
           </div>
         </div>
 
         <div class="summary-note">
           <svg class="note-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="var(--ink-muted)" stroke-width="1.5"><circle cx="7" cy="7" r="6"/><path d="M7 5v3"/><circle cx="7" cy="9.5" r=".5" fill="var(--ink-muted)"/></svg>
           Media spend (your ad budget on Facebook/Google) is separate and paid directly to the platforms.
+        </div>
+
+        <div class="promo-box">
+          <button type="button" class="promo-toggle" id="promo-toggle" onclick="togglePromo()">Have a promo code?</button>
+          <div class="promo-field" id="promo-field">
+            <input type="text" id="promo-input" class="promo-input" placeholder="Enter code" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();applyPromo();}">
+            <button type="button" class="promo-apply" onclick="applyPromo()">Apply</button>
+          </div>
+          <div class="promo-msg" id="promo-msg"></div>
         </div>
 
         <button class="btn-primary" id="checkout-btn" onclick="startCheckout()">
@@ -390,6 +417,34 @@ function selectTier(tier) {
   renderSummary();
 }
 
+// ── Promo code (50% off the first month) ──
+// Preview only — /api/checkout re-validates the code against Stripe and Stripe
+// computes the real invoice, so a tampered page cannot buy itself a discount.
+const PROMO = { code: 'TRUEH20', off: 0.5, label: 'TRUEH20 — 50% off first month' };
+let promoApplied = false;
+
+function togglePromo() {
+  document.getElementById('promo-field').classList.toggle('open');
+  document.getElementById('promo-input').focus();
+}
+
+function applyPromo() {
+  const code = document.getElementById('promo-input').value.trim().toUpperCase();
+  const msg = document.getElementById('promo-msg');
+  if (!code) return;
+
+  if (code === PROMO.code) {
+    promoApplied = true;
+    msg.textContent = '✓ Code applied — 50% off your first month.';
+    msg.className = 'promo-msg show ok';
+  } else {
+    promoApplied = false;
+    msg.textContent = 'That code isn’t valid. Double-check and try again.';
+    msg.className = 'promo-msg show err';
+  }
+  renderSummary();
+}
+
 function renderSummary() {
   const rows = [
     { name: 'Meta Ads Management', amt: PRICES.meta },
@@ -404,14 +459,33 @@ function renderSummary() {
     rows.push({ name: 'Google Ads Management', amt: PRICES.google });
   }
 
-  const total = rows.reduce(function(s, r) { return s + r.amt; }, 0);
+  // Odd monthly totals halve to cents (e.g. $1,497 → $748.50), so amounts are
+  // formatted with cents only when they have them.
+  const money = function(n) {
+    return n.toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
+  };
 
-  document.getElementById('summary-rows').innerHTML = rows.map(function(r) {
-    return '<div class="summary-row"><span class="row-name">' + r.name + '</span><span class="row-amt">$' + r.amt.toLocaleString() + '</span></div>';
+  const monthly = rows.reduce(function(s, r) { return s + r.amt; }, 0);
+  // Stripe rounds the discount on the invoice total, in cents.
+  const discount = promoApplied ? Math.round(monthly * PROMO.off * 100) / 100 : 0;
+  const dueToday = monthly - discount;
+
+  const display = rows.slice();
+  if (promoApplied) {
+    display.push({ name: PROMO.label, amt: -discount, discount: true });
+  }
+
+  document.getElementById('summary-rows').innerHTML = display.map(function(r) {
+    const amt = (r.amt < 0 ? '−$' : '$') + money(Math.abs(r.amt));
+    return '<div class="summary-row' + (r.discount ? ' discount' : '') + '"><span class="row-name">' + r.name + '</span><span class="row-amt">' + amt + '</span></div>';
   }).join('');
 
-  document.getElementById('summary-total').textContent = '$' + total.toLocaleString();
-  document.querySelector('#checkout-btn .btn-text').textContent = 'Start my subscription — $' + total.toLocaleString() + '/mo';
+  document.getElementById('summary-total-label').textContent = promoApplied ? 'Due today' : 'Total';
+  document.getElementById('summary-total').textContent = '$' + money(dueToday);
+  document.getElementById('summary-period').textContent =
+    promoApplied ? 'then $' + money(monthly) + '/month' : '/ month';
+  document.querySelector('#checkout-btn .btn-text').textContent =
+    'Start my subscription — $' + money(dueToday) + (promoApplied ? ' today' : '/mo');
 }
 
 async function startCheckout() {
@@ -427,13 +501,24 @@ async function startCheckout() {
     const res = await fetch('/api/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ service: 'leads', addons: addons }),
+      body: JSON.stringify({ service: 'leads', addons: addons, promo: promoApplied ? PROMO.code : '' }),
     });
     const data = await res.json();
     if (data.error) throw new Error(data.error);
     window.location.href = data.url;
   } catch (err) {
-    alert('Something went wrong. Please try again or contact us at Info@TreatEngine.com');
+    // A rejected promo code is the one failure the buyer can fix themselves —
+    // it happens if the code was archived in Stripe after this page loaded.
+    if (promoApplied && /promo code/i.test(err.message)) {
+      promoApplied = false;
+      const msg = document.getElementById('promo-msg');
+      msg.textContent = err.message;
+      msg.className = 'promo-msg show err';
+      document.getElementById('promo-field').classList.add('open');
+      renderSummary();
+    } else {
+      alert('Something went wrong. Please try again or contact us at Info@TreatEngine.com');
+    }
     btn.classList.remove('loading');
     btn.disabled = false;
   }

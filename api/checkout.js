@@ -41,13 +41,44 @@ module.exports = async (req, res) => {
         lineItems.push({ price: priceId, quantity: 1 });
       }
 
+      // Promo code — looked up live in Stripe, so the discount, its expiry and
+      // any redemption limits are all managed from the Stripe Dashboard rather
+      // than from this file. TRUEH20 (50% off, duration 'once') halves the first
+      // invoice only; renewals bill full price. The page shows a preview of the
+      // math, but this lookup is the source of truth.
+      //
+      // Codes are global to the Stripe account, but this is the only branch that
+      // reads `promo` into a Stripe discount and no session here sets
+      // allow_promotion_codes — so a leads code cannot be redeemed on the sales
+      // or websites checkouts.
+      const promo = String(req.body.promo || '').trim().toUpperCase();
+      let promotionCodeId = null;
+
+      if (promo) {
+        const matches = await stripe.promotionCodes.list({ code: promo, active: true, limit: 1 });
+        const match = matches.data[0];
+        if (!match || !match.coupon || !match.coupon.valid) {
+          return res.status(400).json({ error: 'That promo code isn\u2019t valid.' });
+        }
+        promotionCodeId = match.id;
+      }
+
       sessionParams = {
         mode: 'subscription',
         line_items: lineItems,
-        metadata: { service: 'leads', plan: 'ala-carte', addons: addons.join(',') || 'none' },
+        metadata: {
+          service: 'leads',
+          plan: 'ala-carte',
+          addons: addons.join(',') || 'none',
+          promo: promo || 'none',
+        },
         success_url: `${origin}/ads/onboarding?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/ads/checkout`,
       };
+
+      if (promotionCodeId) {
+        sessionParams.discounts = [{ promotion_code: promotionCodeId }];
+      }
 
     } else if (service === 'websites') {
       sessionParams = {
