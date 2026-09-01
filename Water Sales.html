@@ -63,7 +63,7 @@ a{text-decoration:none;color:inherit;}
 .hero-bullets{list-style:none;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:14px 28px;margin-bottom:40px;}
 .hero-bullets li{display:flex;align-items:center;gap:12px;font-size:15px;color:var(--ink-mid);font-weight:500;}
 .hero-bullets .hb-check{width:22px;height:22px;border-radius:50%;background:var(--blue-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;justify-content:center;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:stretch;justify-content:center;}
 .hero-actions-meta{font-size:13px;color:var(--ink-muted);display:flex;align-items:center;gap:8px;margin-left:4px;}
 .hero-actions-meta::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--blue);}
 
@@ -94,20 +94,19 @@ a{text-decoration:none;color:inherit;}
 }
 .btn-dark{background:var(--blue);color:#fff;border:none;padding:15px 28px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:all .2s;font-family:'DM Sans',sans-serif;}
 .btn-dark:hover{background:var(--blue-dark);transform:translateY(-2px);}
+/* Every "start now" button carries the trial as a second line inside itself —
+   the 30-day trial is the objection-killer, so it travels with the ask rather
+   than sitting in fine print underneath the section. */
+.btn-dark.btn-stacked{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.25;padding:11px 28px;text-align:center;}
+.btn-stacked .btn-sub{font-size:11.5px;font-weight:500;letter-spacing:.02em;opacity:.72;}
 /* Secondary CTA — pairs with .btn-dark everywhere the page asks for the sale.
    Blue always means "start now"; the demo is deliberately the quieter option. */
 .btn-secondary{background:transparent;color:var(--navy);border:1.5px solid var(--cream-dark);padding:13.5px 26px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;}
 .btn-secondary:hover{border-color:var(--navy);background:var(--white);transform:translateY(-2px);}
-.cta-pair{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start;justify-content:center;}
+.cta-pair{display:flex;gap:12px;flex-wrap:wrap;align-items:stretch;justify-content:center;}
 .cta-pair.left{justify-content:flex-start;}
-/* Every "start now" CTA carries the trial on the button itself — the 30-day
-   free trial is the objection-killer, so it rides with the ask instead of
-   living only in the fine print underneath the section. */
-.cta-stack{display:inline-flex;flex-direction:column;align-items:center;gap:7px;}
-.cta-pair.left .cta-stack{align-items:flex-start;}
-.cta-sub{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;letter-spacing:.01em;color:var(--blue);white-space:nowrap;}
-.cta-sub::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0;}
-.cta-sub.on-dark{color:rgba(255,255,255,0.55);}
+.cta-pair>a,.hero-actions>a{display:inline-flex;align-items:center;justify-content:center;}
+.cta-pair>span{align-self:center;}
 .btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--border);padding:14px 24px;border-radius:6px;font-size:15px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
 .btn-outline:hover{border-color:var(--ink-muted);}
 .hero-aside{padding-bottom:8px;}
@@ -475,7 +474,6 @@ a{text-decoration:none;color:inherit;}
   .hero-top h1,.hero h1{font-size:clamp(34px,9vw,52px);}
   .hero-actions{flex-direction:column;align-items:stretch;}
   .hero-actions .btn-dark,.hero-actions .btn-outline,.hero-actions a{width:100%;text-align:center;justify-content:center;}
-  .hero-actions .cta-stack{width:100%;align-items:center;}
   .features-grid{grid-template-columns:1fr;}
   .footer-top{grid-template-columns:1fr;}
   .cta-left h2{font-size:clamp(28px,7vw,40px);}
@@ -597,7 +595,8 @@ a{text-decoration:none;color:inherit;}
     justify-content:center !important;
   }
   .cta-pair span{text-align:center !important;}
-  .cta-pair .cta-stack{width:100% !important;align-items:center !important;}
+  /* Two-line buttons need less vertical padding to keep the phone tap target tidy */
+  .cta-pair a.btn-stacked{padding:10px 22px !important;}
   .pr-btn{min-height:52px !important;}
   /* Sticky bar duplicates the hero pair on mobile — keep only one of them. */
   .mobile-sticky-cta .scta-secondary{flex:0 0 44%;}
@@ -818,10 +817,10 @@ function Hero({tweaks}) {
               ))}
             </ul>
             <div className="hero-actions">
-              <div className="cta-stack">
-                <a href="#pricing" className="btn-dark">{tweaks.ctaText} →</a>
-                <div className="cta-sub">30-day free trial · $0 due today</div>
-              </div>
+              <a href="#pricing" className="btn-dark btn-stacked">
+                <span>{tweaks.ctaText} →</span>
+                <span className="btn-sub">30-day free trial</span>
+              </a>
               <a href="#book" className="btn-secondary">Request a Demo</a>
             </div>
             <div className="hero-actions-meta">No setup fee · Cancel anytime</div>
@@ -916,10 +915,10 @@ function Problem() {
               ))}
             </ul>
             <div className="cta-pair left" style={{marginTop:36}}>
-              <div className="cta-stack">
-                <a href="#pricing" className="btn-dark">Start Now →</a>
-                <div className="cta-sub">30-day free trial · $0 due today</div>
-              </div>
+              <a href="#pricing" className="btn-dark btn-stacked">
+                <span>Start Now →</span>
+                <span className="btn-sub">30-day free trial</span>
+              </a>
               <a href="#book" className="btn-secondary">Request a Demo</a>
             </div>
           </div>
@@ -1290,10 +1289,10 @@ function Features() {
         <div className="reveal" style={{textAlign:'center',marginTop:72,paddingTop:64,borderTop:'1px solid var(--border)'}}>
           <p style={{fontSize:16,color:'var(--ink-muted)',marginBottom:10,lineHeight:1.7}}>Your techs already know how to diagnose the problem.<br/>Give them the tool that closes the deal.</p>
           <div className="cta-pair" style={{marginTop:14}}>
-            <div className="cta-stack">
-              <a href="#pricing" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Start Now →</a>
-              <div className="cta-sub">30-day free trial · $0 due today</div>
-            </div>
+            <a href="#pricing" className="btn-dark btn-stacked" style={{fontSize:16,padding:'13px 36px'}}>
+              <span>Start Now →</span>
+              <span className="btn-sub">30-day free trial</span>
+            </a>
             <a href="#book" className="btn-secondary" style={{fontSize:16,padding:'17px 32px'}}>Request a Demo</a>
           </div>
           <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>No setup fee · Cancel anytime</div>
@@ -1331,10 +1330,10 @@ function DealFlow() {
         </div>
         <div className="reveal" style={{marginTop:56,paddingTop:48,borderTop:'1px solid rgba(255,255,255,0.08)',textAlign:'center'}}>
           <div className="cta-pair">
-            <div className="cta-stack">
-              <a href="#pricing" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:15,padding:'16px 34px'}}>Start Now →</a>
-              <div className="cta-sub on-dark">30-day free trial · $0 due today</div>
-            </div>
+            <a href="#pricing" className="btn-dark btn-stacked" style={{fontSize:15,padding:'12px 34px'}}>
+              <span>Start Now →</span>
+              <span className="btn-sub">30-day free trial</span>
+            </a>
             <a href="#book" className="btn-ghost" style={{fontSize:15,padding:'16px 30px'}}>Request a Demo</a>
           </div>
           <div style={{marginTop:12,fontSize:13,color:'rgba(255,255,255,0.35)'}}>No commitment · Live on your device</div>
@@ -1395,10 +1394,10 @@ function Comparison({tweaks}) {
           <h3 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(22px,3vw,32px)',fontWeight:600,color:'var(--ink)',marginBottom:12,letterSpacing:'-.02em'}}>Ready to run appointments like this?</h3>
           <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28}}>Pick a plan and run it free for 30 days — or have us walk you through it live with your catalog and pricing.</p>
           <div className="cta-pair">
-            <div className="cta-stack">
-              <a href="#pricing" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Start Now →</a>
-              <div className="cta-sub">30-day free trial · $0 due today</div>
-            </div>
+            <a href="#pricing" className="btn-dark btn-stacked" style={{fontSize:16,padding:'13px 36px'}}>
+              <span>Start Now →</span>
+              <span className="btn-sub">30-day free trial</span>
+            </a>
             <a href="#book" className="btn-secondary" style={{fontSize:16,padding:'17px 32px'}}>Request a Demo</a>
           </div>
           <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>30-day results guarantee · No contracts</div>
@@ -1685,10 +1684,10 @@ function FAQ() {
           <h3 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(22px,3vw,30px)',fontWeight:600,color:'var(--ink)',marginBottom:12,letterSpacing:'-.02em'}}>Start free, or talk it through first.</h3>
           <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28,maxWidth:440,margin:'0 auto 28px'}}>Run ClearDeals free for 30 days — or get on a 30-minute demo and we'll show you exactly how it works with your team and your catalog.</p>
           <div className="cta-pair">
-            <div className="cta-stack">
-              <a href="#pricing" className="btn-dark" style={{display:'inline-flex',alignItems:'center',gap:8,fontSize:16,padding:'17px 36px'}}>Start Now →</a>
-              <div className="cta-sub">30-day free trial · $0 due today</div>
-            </div>
+            <a href="#pricing" className="btn-dark btn-stacked" style={{fontSize:16,padding:'13px 36px'}}>
+              <span>Start Now →</span>
+              <span className="btn-sub">30-day free trial</span>
+            </a>
             <a href="#book" className="btn-secondary" style={{fontSize:16,padding:'17px 32px'}}>Request a Demo</a>
           </div>
           <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>No commitment · No setup fee · Cancel anytime</div>
@@ -1772,11 +1771,11 @@ function CTABanner({tweaks}) {
             </li>
           </ul>
           <div className="cta-pair left" style={{marginTop:34}}>
-            <div className="cta-stack">
-              <a href="#pricing" className="btn-dark">Start Now →</a>
-              <div className="cta-sub on-dark">30-day free trial · $0 due today</div>
-            </div>
-            <span style={{fontSize:13.5,color:'rgba(255,255,255,0.5)',lineHeight:1.5,alignSelf:'center'}}>or pick a demo time with the calendar</span>
+            <a href="#pricing" className="btn-dark btn-stacked">
+              <span>Start Now →</span>
+              <span className="btn-sub">30-day free trial</span>
+            </a>
+            <span style={{fontSize:13.5,color:'rgba(255,255,255,0.5)',lineHeight:1.5}}>or pick a demo time with the calendar</span>
           </div>
         </div>
         <div className="cta-right">
