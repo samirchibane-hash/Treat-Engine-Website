@@ -32,6 +32,7 @@
     { "src": "/ads/onboarding",        "dest": "/onboarding/leads.html" },
     { "src": "/booking",               "dest": "/Water%20Leads%20Booking.html" },
     { "src": "/sales",                 "dest": "/Water%20Sales.html" },
+    { "src": "/sales-v2",              "dest": "/sales-v2.html" },
     { "src": "/sales/checkout",        "dest": "/checkout/sales.html" },
     { "src": "/sales/checkout-v2",     "dest": "/checkout/sales-v2.html" },
     { "src": "/sales/welcome",         "dest": "/welcome/sales.html" },
