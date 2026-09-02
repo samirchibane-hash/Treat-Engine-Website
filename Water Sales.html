@@ -193,7 +193,6 @@ a{text-decoration:none;color:inherit;}
 .way-media-caption .pc-dot{width:7px;height:7px;border-radius:50%;background:var(--blue);flex-shrink:0;box-shadow:0 0 0 3px rgba(59,130,246,0.18);}
 .way-body{padding:38px 40px 40px;display:flex;flex-direction:column;flex:1;}
 .way-ico{width:46px;height:46px;border-radius:11px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;margin-bottom:22px;}
-.way-step{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:10px;}
 .way-title{font-family:'Playfair Display',serif;font-size:25px;font-weight:600;color:var(--ink);margin-bottom:14px;letter-spacing:-.015em;line-height:1.2;}
 .way-desc{font-size:15px;color:var(--ink-muted);line-height:1.8;}
 .way-points{list-style:none;margin-top:26px;display:flex;flex-direction:column;flex:1;}
@@ -922,7 +921,6 @@ function Ways() {
   const ways = [
     {
       kind:'home',
-      step:'Motion one',
       title:'In the home',
       tag:'At the kitchen table',
       img:'uploads/cleardeals-in-use.png',
@@ -936,17 +934,16 @@ function Ways() {
     },
     {
       kind:'remote',
-      step:'Motion two',
       title:'Remote',
       tag:'Sent, opened, signed',
       img:'uploads/cleardeals-remote-proposal.webp',
       caption:'Same proposal — opened on their own couch',
       render:true,
-      desc:'Build the proposal from your office and send the link. The homeowner walks the same sequence your rep would have walked them through, at their own pace, and signs at the bottom of it.',
+      desc:'Build the proposal from your office and send the link. Nobody is at the sink to run a test — so pull the local water quality report for the address instead and let published utility data make the case. The homeowner walks the same sequence, at their own pace, and signs at the bottom of it.',
       points:[
+        'Pull and share the local water quality report for their address — a public source, not a sales claim',
         'Quote referrals and out-of-area homes without the windshield time',
         'The "let me think about it" visit gets the full walkthrough again, not three attachments',
-        'The spouse who was at work sees exactly what your rep presented',
       ],
     },
   ];
@@ -980,7 +977,6 @@ function Ways() {
               </div>
               <div className="way-body">
                 <div className="way-ico"><WayIcon kind={w.kind}/></div>
-                <div className="way-step">{w.step}</div>
                 <div className="way-title">{w.title}</div>
                 <div className="way-desc">{w.desc}</div>
                 <ul className="way-points">
