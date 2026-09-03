@@ -1317,15 +1317,15 @@ function FeatureGraphic({kind}) {
 
 function Features() {
   const features = [
-    {title:'Products and upsells in one tap', desc:'Every system, filter, and add-on in a swipeable catalog — photos, benefits, and monthly pricing on each. Techs build the package in front of the homeowner and the total updates live.', tag:'Products & Upsells', shot:'uploads/cleardeals-products-upsells.webp', alt:'ClearDeals system buildout screen with a water softener selected and a running monthly total'},
-    {title:'Dynamic product presentations', desc:'Walk the homeowner through a visual product demo right on the tablet. High-quality images, specs, comparisons — built for the water treatment product catalog.', tag:'Presentations', kind:'presentation'},
-    {title:'Recurring maintenance plans', desc:'Attach a salt delivery or service plan to the sale and show exactly what it covers. Monthly or annual, priced per system — the install becomes recurring revenue.', tag:'Maintenance', shot:'uploads/cleardeals-maintenance-plan.webp', alt:'ClearDeals maintenance step showing a salt bag delivery plan with covered and not-covered equipment'},
-    {title:'Remote water testing results', desc:'Pull in water test data directly into the proposal. Real numbers from the homeowner\'s own tap make the case better than any sales script.', tag:'Water Testing', kind:'water'},
-    {title:'Stripe payments and deposits', desc:'Generate the invoice and take the deposit before you leave — Apple Pay, Link, or card, on the tablet or sent straight to the homeowner\'s phone. Money moves the day the deal closes.', tag:'Payments', shot:'uploads/cleardeals-payments-stripe.webp', alt:'ClearDeals generating a Stripe invoice on a tablet next to a phone checkout with Apple Pay and card entry'},
-    {title:'Integrated financing options', desc:'Offer monthly payment options in real time. When sticker shock hits, being able to say "that\'s $89/month" changes the conversation — and the close rate.', tag:'Financing', kind:'financing'},
-    {title:'E-signatures on the spot', desc:'Get the deal signed before you leave the driveway. ClearDeals captures a legally binding digital signature with one tap — no paperwork, no follow-up needed.', tag:'Signatures', shot:'uploads/cleardeals-esignature.webp', alt:'ClearDeals agreement screen with a handwritten signature drawn on a tablet'},
-    {title:'CRM integrations', desc:'Connects to ServiceTitan, GoHighLevel, Housecall Pro, Jobber, and more. The appointment is preloaded when your tech walks in, and the closed deal syncs back when they leave.', tag:'Integrations', kind:'crm'},
-    {title:'AI pitch analysis', desc:'Record the appointment and get it scored automatically — what the tech did well, what to fix, and the exact next steps to close. Ride-along coaching on every visit.', tag:'Coaching', shot:'uploads/cleardeals-pitch-analysis.webp', alt:'ClearDeals pitch analysis panel scoring a recorded sales call with areas to improve and next steps'},
+    {title:'Products and upsells in one tap', desc:'Every system, filter and add-on in a swipeable catalog — photos, benefits and monthly pricing on each. Build the package in front of the homeowner, or from your desk before you send the link. The total updates live either way.', tag:'Products & Upsells', shot:'uploads/cleardeals-products-upsells.webp', alt:'ClearDeals system buildout screen with a water softener selected and a running monthly total'},
+    {title:'Dynamic product presentations', desc:'The visual walkthrough your rep gives on the tablet is the same one that plays inside the link. High-quality images, specs and comparisons — so the homeowner who opens it Thursday gets the pitch, not just a price.', tag:'Presentations', kind:'presentation'},
+    {title:'Recurring maintenance plans', desc:'Attach a salt delivery or service plan and show exactly what it covers — and what it does not. Monthly or annual, priced per system, presented the same whether a rep is walking through it or the customer is reading it alone.', tag:'Maintenance', shot:'uploads/cleardeals-maintenance-plan.webp', alt:'ClearDeals maintenance step showing a salt bag delivery plan with covered and not-covered equipment'},
+    {title:'Water data, tested or published', desc:'Pull your tech\'s on-site test straight into the proposal. When nobody is at the sink to run one, pull the published water quality report for their address instead — a public utility source, not a sales claim. Real numbers argue better than any script.', tag:'Water Testing', kind:'water'},
+    {title:'Stripe payments and deposits', desc:'Generate the invoice and take the deposit on the tablet before you leave the driveway — or let them pay at the bottom of the link at 11pm. Apple Pay, Link or card. Money moves the day the deal closes, not the week after.', tag:'Payments', shot:'uploads/cleardeals-payments-stripe.webp', alt:'ClearDeals generating a Stripe invoice on a tablet next to a phone checkout with Apple Pay and card entry'},
+    {title:'Integrated financing options', desc:'Monthly payment options calculate in real time, in the room and inside the link. Sticker shock lands differently when the next line already says $89/month — and it says it whether or not a rep is there to say it.', tag:'Financing', kind:'financing'},
+    {title:'E-signature, wherever they are', desc:'One tap for a legally binding signature — in the driveway, or on the couch three days later once the spouse has seen it. No paperwork left behind, no separate agreement to chase down by email.', tag:'Signatures', shot:'uploads/cleardeals-esignature.webp', alt:'ClearDeals agreement screen with a handwritten signature drawn on a tablet'},
+    {title:'CRM integrations', desc:'Connects to ServiceTitan, GoHighLevel, Housecall Pro, Jobber and more. The job is preloaded before your rep walks in or builds the link, and the signed deal syncs back the moment it closes — from the driveway or from an inbox.', tag:'Integrations', kind:'crm'},
+    {title:'AI pitch analysis', desc:'Record the appointment and get it scored automatically — what the rep did well, what to fix, and the exact next step to close. Ride-along coaching on every visit, without the ride-along.', tag:'Coaching', shot:'uploads/cleardeals-pitch-analysis.webp', alt:'ClearDeals pitch analysis panel scoring a recorded sales call with areas to improve and next steps'},
   ];
   return (
     <section className="features-section" id="features">
@@ -1333,10 +1333,10 @@ function Features() {
         <div className="features-header reveal">
           <div>
             <div className="eyebrow">What's inside</div>
-            <h2 className="section-title">Everything your tech<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>needs to close.</em></h2>
+            <h2 className="section-title">Everything your rep needs.<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>Even when they aren't there.</em></h2>
           </div>
           <div>
-            <p className="section-sub">ClearDeals puts a complete sales toolkit in your technician's hands — without requiring them to become a salesperson.</p>
+            <p className="section-sub">Every tool below works in both directions — a rep driving the tablet at the kitchen table, or a homeowner scrolling the link alone on a Tuesday night. Nobody on your team has to become a salesperson for it to work.</p>
           </div>
         </div>
         <div className="features-grid reveal">
@@ -1357,7 +1357,7 @@ function Features() {
           ))}
         </div>
         <div className="reveal" style={{textAlign:'center',marginTop:72,paddingTop:64,borderTop:'1px solid var(--border)'}}>
-          <p style={{fontSize:16,color:'var(--ink-muted)',marginBottom:10,lineHeight:1.7}}>Your techs already know how to diagnose the problem.<br/>Give them the tool that closes the deal.</p>
+          <p style={{fontSize:16,color:'var(--ink-muted)',marginBottom:10,lineHeight:1.7}}>Your techs already know how to diagnose the problem.<br/>Give them a proposal that finishes the job — at the table, or three counties away.</p>
           <div className="cta-pair" style={{marginTop:14}}>
             <a href="#pricing" className="btn-dark btn-stacked" style={{fontSize:16,padding:'13px 36px'}}>
               <span>Start Now →</span>
@@ -1377,11 +1377,11 @@ function DealFlow() {
       <div className="flow-inner">
         <div className="flow-header reveal">
           <div>
-            <div className="flow-eyebrow">The appointment</div>
-            <h2 className="flow-title">From the door<br/><em>to the signature.</em></h2>
+            <div className="flow-eyebrow">The walkthrough</div>
+            <h2 className="flow-title">From the first screen<br/><em>to the signature.</em></h2>
           </div>
           <div>
-            <p className="flow-sub">ClearDeals structures the entire in-home visit — so every tech runs the same proven process, every time.</p>
+            <p className="flow-sub">One guided sequence: water data, presentation, recommended system, savings math, financing, invoice, signature. Your rep walks the homeowner through it at the table — or the homeowner walks it alone. Same order, same argument, every time.</p>
           </div>
         </div>
         <div className="reveal">
@@ -1395,7 +1395,7 @@ function DealFlow() {
               allowFullScreen
             />
           </div>
-          <div className="flow-caption">Full walkthrough — a real appointment, start to signature.</div>
+          <div className="flow-caption">Full walkthrough — a real proposal, start to signature.</div>
         </div>
         <div className="reveal" style={{marginTop:56,paddingTop:48,borderTop:'1px solid rgba(255,255,255,0.08)',textAlign:'center'}}>
           <div className="cta-pair">
@@ -1414,12 +1414,12 @@ function DealFlow() {
 function Comparison({tweaks}) {
   if(!tweaks.showComparison) return null;
   const rows = [
-    {old:'Verbal quote from memory', next:'Branded proposal built in 5 minutes on-site'},
-    {old:'Homeowner "thinks about it"', next:'E-signature captured before you leave'},
-    {old:'No financing conversation', next:'Monthly payment options presented automatically'},
-    {old:'Tech discounts at will', next:'Pricing within dealer-controlled floor'},
-    {old:'No visibility into what\'s being quoted', next:'Real-time deal tracking across all techs'},
-    {old:'Paperwork left behind', next:'Digital contract delivered to homeowner\'s inbox'},
+    {old:'Verbal quote at the table, PDF quote by email', next:'One branded proposal, built in 5 minutes either way'},
+    {old:'Presentation, invoice and agreement sent as three attachments', next:'One link holds the whole proposal, in the order it should be read'},
+    {old:'Homeowner "thinks about it" and goes quiet', next:'E-signature at the table — or at 11pm from the couch'},
+    {old:'Financing never comes up unless the rep raises it', next:'Monthly payments quoted automatically, in person or in the link'},
+    {old:'Referrals outside your radius never get quoted at all', next:'Any address gets a full proposal, without the windshield time'},
+    {old:'No visibility into what is being quoted, or whether it was opened', next:'Every proposal tracked by rep — sent, opened, signed'},
   ];
   return (
     <section className="compare-section">
@@ -1433,7 +1433,7 @@ function Comparison({tweaks}) {
             <div className="compare-col-header old">
               <div>
                 <div className="compare-label">Without ClearDeals</div>
-                <div className="compare-sub">The typical in-home appointment</div>
+                <div className="compare-sub">How most dealers quote today</div>
               </div>
             </div>
             {rows.map((r,i) => (
@@ -1447,7 +1447,7 @@ function Comparison({tweaks}) {
             <div className="compare-col-header new">
               <div>
                 <div className="compare-label">With ClearDeals</div>
-                <div className="compare-sub">The ClearDeals appointment</div>
+                <div className="compare-sub">One proposal engine, two ways to close</div>
               </div>
             </div>
             {rows.map((r,i) => (
@@ -1459,8 +1459,8 @@ function Comparison({tweaks}) {
           </div>
         </div>
         <div className="reveal" style={{textAlign:'center',marginTop:64,paddingTop:56,borderTop:'1px solid var(--border)'}}>
-          <h3 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(22px,3vw,32px)',fontWeight:600,color:'var(--ink)',marginBottom:12,letterSpacing:'-.02em'}}>Ready to run appointments like this?</h3>
-          <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28}}>Pick a plan and run it free for 30 days. Load your catalog and your pricing, and run the next appointment on it.</p>
+          <h3 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(22px,3vw,32px)',fontWeight:600,color:'var(--ink)',marginBottom:12,letterSpacing:'-.02em'}}>Ready to sell it both ways?</h3>
+          <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28}}>Pick a plan and run it free for 30 days. Load your catalog and your pricing, run your next appointment on it — then send the referral you were never going to drive to.</p>
           <div className="cta-pair">
             <a href="#pricing" className="btn-dark btn-stacked" style={{fontSize:16,padding:'13px 36px'}}>
               <span>Start Now →</span>
@@ -1657,7 +1657,7 @@ function Pricing() {
         </div>
 
         <div className="pr-alt reveal">
-          Want to see it run first? <a href="#book">Request a 30-minute demo</a> — we'll walk through ClearDeals live with your catalog and your pricing.
+          Want to see it run first? <a href="#book">Request a 30-minute demo</a> — we'll build a proposal with your catalog and your pricing, then send you the link so you can read it the way your customers will.
         </div>
 
         <div className="pr-trust reveal">
@@ -1719,12 +1719,12 @@ function Pricing() {
 function FAQ() {
   const [open, setOpen] = useState(null);
   const faqs = [
-    {q:'Does ClearDeals work on my existing tablets?', a:'Yes — ClearDeals runs on any modern iPad or Android tablet. There is nothing to install and no special hardware to buy — your team signs in and starts running appointments.'},
-    {q:'How is our product catalog loaded?', a:'We onboard your entire product lineup during setup — systems, configurations, SKUs, and pricing. Updates take minutes, and dealers can manage pricing floors and margins directly from the admin panel.'},
-    {q:'What financing options does ClearDeals support?', a:'ClearDeals integrates with major home service financing providers. Homeowners can see monthly payment estimates in real time during the proposal — no separate application or redirect needed.'},
-    {q:'Does it work without internet?', a:'Yes. ClearDeals is built to work offline for proposals, presentations, and signatures. Data syncs automatically once the tech reconnects.'},
-    {q:'Can I control what my techs can discount?', a:'Absolutely. You set minimum prices per product. Techs can offer within your defined range, but can\'t go below the floor — protecting your margins without micromanaging the field.'},
-    {q:'What does onboarding include?', a:'We handle the catalog import, configure your pricing and dealer margins, and run a short training session with your team before the first appointment — all included, at no extra cost.'},
+    {q:'Does ClearDeals work on my existing tablets?', a:'Yes — ClearDeals runs on any modern iPad or Android tablet, with nothing to install and no hardware to buy. Your customer needs even less: the proposal you send opens in any phone or desktop browser, with no app to download and no account to create.'},
+    {q:'How is our product catalog loaded?', a:'We onboard your entire product lineup during setup — systems, configurations, SKUs and pricing. Updates take minutes, and you manage pricing floors and margins yourself from the admin panel. The same catalog drives the in-home flow and the proposals you send remotely, so there is only ever one version to keep current.'},
+    {q:'What financing options does ClearDeals support?', a:'ClearDeals integrates with major home service financing providers. Monthly payment estimates calculate in real time — inside the appointment and inside the link you send — with no separate application or redirect.'},
+    {q:'Does it work without internet?', a:'For in-home work, yes — proposals, presentations and signatures all run offline in basements, well houses and dead zones, and sync the moment the tech reconnects. A proposal you send remotely is a live link, so that one needs a connection on the customer\'s end, which they have, because they are sitting at home.'},
+    {q:'Can I control what my techs can discount?', a:'Absolutely. You set minimum prices per product. Techs can move within your defined range but cannot go below the floor — and the same floor applies to proposals sent from the office, so nobody discounts their way out of your margin from a desk either.'},
+    {q:'What does onboarding include?', a:'We handle the catalog import, configure your pricing and dealer margins, and run a short training session covering both motions — running the appointment in the home, and building a proposal to send — before your first live deal. All included, at no extra cost.'},
   ];
   return (
     <section className="faq-section" id="faq">
@@ -1749,7 +1749,7 @@ function FAQ() {
         <div className="reveal" style={{textAlign:'center',marginTop:64,padding:'48px 32px',background:'var(--white)',borderRadius:10,border:'1px solid var(--border)'}}>
           <div style={{fontSize:11,fontWeight:700,letterSpacing:'.12em',textTransform:'uppercase',color:'var(--blue)',marginBottom:16}}>Still have questions?</div>
           <h3 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(22px,3vw,30px)',fontWeight:600,color:'var(--ink)',marginBottom:12,letterSpacing:'-.02em'}}>Start free this week.</h3>
-          <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28,maxWidth:440,margin:'0 auto 28px'}}>Run ClearDeals free for 30 days. Load your catalog, hand it to a rep, and see what it does on a real appointment before you decide anything.</p>
+          <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28,maxWidth:440,margin:'0 auto 28px'}}>Run ClearDeals free for 30 days. Load your catalog, hand it to a rep for the next appointment, and send the next remote quote as a link instead of three attachments. You'll know inside a week.</p>
           <div className="cta-pair">
             <a href="#pricing" className="btn-dark btn-stacked" style={{fontSize:16,padding:'13px 36px'}}>
               <span>Start Now →</span>
@@ -1816,20 +1816,20 @@ function CTABanner({tweaks}) {
       <div className="cta-inner">
         <div className="cta-left">
           <div className="cta-tag">ClearDeals</div>
-          <h2>Turn appointments<br/><em>into installs.</em></h2>
-          <p>Your technicians are already in the home. Give them the tool that closes deals on the first visit — proposals, financing, and e-signatures in under 5 minutes.</p>
+          <h2>Turn every proposal<br/><em>into an install.</em></h2>
+          <p>Your reps already know how to diagnose the water. Give them one proposal that closes it — presentation, pricing, financing, invoice and signature — built in five minutes at the kitchen table, or sent as a link to an address nobody is driving to.</p>
           <ul className="cta-checklist">
             <li className="cta-check-item">
               <div className="cta-check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
-              Branded proposals built in 5 minutes on a tablet
+              One branded proposal — built at the table or sent as a link
             </li>
             <li className="cta-check-item">
               <div className="cta-check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
-              E-signatures, financing &amp; deposits on the spot
+              E-signatures, financing &amp; deposits, in person or remote
             </li>
             <li className="cta-check-item">
               <div className="cta-check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
-              30%+ increase in first-visit close rate
+              Quote referrals and out-of-area homes without the drive
             </li>
             <li className="cta-check-item">
               <div className="cta-check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
@@ -1859,7 +1859,7 @@ function CTABanner({tweaks}) {
               </div>
               <div>
                 <div className="cta-panel-title">Book a 30-Min ClearDeals Demo</div>
-                <div className="cta-panel-sub">We'll walk you through it live — on your device, with your pricing.</div>
+                <div className="cta-panel-sub">Live, on your device, with your catalog — then we'll send you a real proposal link.</div>
               </div>
             </div>
             <iframe src="https://api.leadconnectorhq.com/widget/booking/Z49wIzGc7lzyMtCA05BW" style={{width:'100%',border:'none',minHeight:680,display:'block'}} scrolling="no" id="Z49wIzGc7lzyMtCA05BW_1776993941100"></iframe>
