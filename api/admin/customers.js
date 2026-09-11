@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { createClient } = require('@supabase/supabase-js');
+const { crm } = require('../../lib/crm');
 
 function verifyToken(req) {
   const auth = req.headers.authorization || '';
@@ -21,22 +21,19 @@ module.exports = async (req, res) => {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const supabase = createClient(
-    process.env.SUPABASE_URL?.trim(),
-    process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()
-  );
-
   const { service, status } = req.query;
 
-  let query = supabase
-    .from('customers')
+  // Reads the CRM's clients table and returns it in the shape /admin was built
+  // around (the retired onboarding database's customers + onboarding join).
+  let query = crm()
+    .from('clients')
     .select(`
-      id, stripe_session_id, stripe_customer_id, stripe_subscription_id,
-      service, plan, email, name, phone, business_name,
-      amount_paid, currency, status, created_at,
-      onboarding ( data, submitted_at )
+      id, session_id, stripe_customer_id, stripe_subscription_id,
+      service, plan, email, full_name, phone, business_name,
+      amount_paid, currency, status, submitted_at,
+      onboarding_data, onboarded_at
     `)
-    .order('created_at', { ascending: false });
+    .order('submitted_at', { ascending: false });
 
   if (service) query = query.eq('service', service);
   if (status)  query = query.eq('status', status);
@@ -47,5 +44,25 @@ module.exports = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 
-  res.json({ customers: data });
+  const customers = (data || []).map((c) => ({
+    id: c.id,
+    stripe_session_id: c.session_id,
+    stripe_customer_id: c.stripe_customer_id,
+    stripe_subscription_id: c.stripe_subscription_id,
+    service: c.service,
+    plan: c.plan,
+    email: c.email,
+    name: c.full_name,
+    phone: c.phone,
+    business_name: c.business_name,
+    amount_paid: c.amount_paid,
+    currency: c.currency,
+    status: c.status,
+    created_at: c.submitted_at,
+    onboarding: c.onboarding_data
+      ? [{ data: c.onboarding_data, submitted_at: c.onboarded_at }]
+      : [],
+  }));
+
+  res.json({ customers });
 };

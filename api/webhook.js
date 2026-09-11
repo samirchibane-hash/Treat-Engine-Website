@@ -1,5 +1,5 @@
 const Stripe = require('stripe');
-const { createClient } = require('@supabase/supabase-js');
+const { crm, onboardingLink } = require('../lib/crm');
 
 const getRawBody = (req) =>
   new Promise((resolve, reject) => {
@@ -13,10 +13,7 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end();
 
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-  const supabase = createClient(
-    process.env.SUPABASE_URL?.trim(),
-    process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()
-  );
+  const db = crm();
 
   const rawBody = await getRawBody(req);
   const sig = req.headers['stripe-signature'];
@@ -31,60 +28,45 @@ module.exports = async (req, res) => {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-    const { service, plan, userCount } = session.metadata || {};
+    const { service, plan } = session.metadata || {};
 
-    const customerRow = {
-      stripe_session_id: session.id,
-      stripe_customer_id: session.customer,
-      stripe_subscription_id: session.subscription || null,
+    // New customers appear in the CRM at checkout, before onboarding. Insert-only:
+    // if the customer already finished onboarding (webhook was slow), their row
+    // and 'onboarded' status must not be overwritten with checkout defaults.
+    const { error: insertError } = await db.from('clients').upsert({
+      session_id: session.id,
       service,
       plan,
+      full_name: session.customer_details?.name,
       email: session.customer_details?.email,
-      name: session.customer_details?.name,
       phone: session.customer_details?.phone,
       amount_paid: session.amount_total,
       currency: session.currency,
       status: 'pending',
-    };
+      onboarding_link: onboardingLink(service, session.id),
+    }, { onConflict: 'session_id', ignoreDuplicates: true });
+    if (insertError) console.error('CRM checkout insert error:', insertError.message);
 
-    const { error } = await supabase
-      .from('customers')
-      .upsert(customerRow, { onConflict: 'stripe_session_id' });
-
-    if (error) console.error('Supabase upsert error:', error.message);
-
-    // Sync purchase to Client Management so new customers appear even before onboarding
-    try {
-      const clientMgmt = createClient(
-        process.env.CLIENT_MGMT_SUPABASE_URL,
-        process.env.CLIENT_MGMT_SUPABASE_KEY
-      );
-      const onboardingPath = service === 'websites' ? 'websites' : service === 'sales' ? 'sales' : 'ads';
-      const { error: cmError } = await clientMgmt.from('clients').upsert({
-        session_id: session.id,
-        service,
-        plan,
-        full_name: session.customer_details?.name,
-        email: session.customer_details?.email,
-        phone: session.customer_details?.phone,
-        amount_paid: session.amount_total,
-        currency: session.currency,
-        status: 'pending',
-        onboarding_link: `https://treatengine.com/${onboardingPath}/onboarding?session_id=${session.id}`,
-      }, { onConflict: 'session_id' });
-      if (cmError) console.error('Client Management sync error:', cmError.message);
-    } catch (err) {
-      console.error('Client Management sync error:', err.message);
-    }
+    // Stripe IDs are always safe to (re)write — cancellations are matched on them.
+    const { error: idsError } = await db.from('clients').update({
+      stripe_customer_id: session.customer,
+      stripe_subscription_id: session.subscription || null,
+    }).eq('session_id', session.id);
+    if (idsError) console.error('CRM Stripe ID update error:', idsError.message);
 
     // For Water Websites CRM: auto-start $199/mo subscription with 30-day trial
     if (service === 'websites' && plan === 'websites-crm' && session.customer) {
       try {
-        await stripe.subscriptions.create({
+        const subscription = await stripe.subscriptions.create({
           customer: session.customer,
           items: [{ price: process.env.STRIPE_PRICE_WEBSITES_MONTHLY }],
           trial_period_days: 30,
         });
+        // The checkout itself was a one-time payment, so this is the subscription
+        // a later cancellation will reference.
+        await db.from('clients')
+          .update({ stripe_subscription_id: subscription.id })
+          .eq('session_id', session.id);
       } catch (err) {
         console.error('Subscription creation error:', err.message);
       }
@@ -112,10 +94,25 @@ module.exports = async (req, res) => {
 
   if (event.type === 'customer.subscription.deleted') {
     const sub = event.data.object;
-    await supabase
-      .from('customers')
-      .update({ status: 'cancelled' })
-      .eq('stripe_subscription_id', sub.id);
+    const { data: client, error: lookupError } = await db
+      .from('clients')
+      .select('id, plan')
+      .eq('stripe_subscription_id', sub.id)
+      .maybeSingle();
+
+    if (lookupError) {
+      console.error('CRM cancellation lookup error:', lookupError.message);
+    } else if (!client) {
+      console.warn('Subscription deleted with no matching CRM client:', sub.id);
+    } else if (client.plan === 'installment') {
+      // Installment plans end on purpose after their last payment — that's
+      // paid in full, not churn.
+    } else {
+      const { error } = await db.from('clients')
+        .update({ status: 'cancelled', cancelled_at: new Date().toISOString() })
+        .eq('id', client.id);
+      if (error) console.error('CRM cancellation update error:', error.message);
+    }
   }
 
   res.json({ received: true });
