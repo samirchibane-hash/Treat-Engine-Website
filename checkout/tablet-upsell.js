@@ -99,8 +99,7 @@
     '11" 2.5K display at 90&nbsp;Hz — readable on a customer’s kitchen table',
     'MediaTek Dimensity 6300 · 4&nbsp;GB RAM · 128&nbsp;GB storage',
     'Android 15 with Dolby Atmos speakers',
-    'Magnetic folio keyboard case — snaps on, no pairing, no charging',
-    'Pen included, and it stores in the keyboard case'
+    'Magnetic folio keyboard case — snaps on, no pairing, no charging'
   ];
 
   function build() {

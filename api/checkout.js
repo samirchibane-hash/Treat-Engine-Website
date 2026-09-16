@@ -179,7 +179,9 @@ module.exports = async (req, res) => {
           tablets: String(tablets),
         },
         success_url: `${origin}/sales/welcome?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${origin}/sales/checkout-v2`,
+        // Stripe's back link. /sales is the main page, whichever page the
+        // dealer started from.
+        cancel_url: `${origin}/sales`,
       };
 
       if (trialDays) {

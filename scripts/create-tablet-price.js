@@ -57,7 +57,7 @@ async function main() {
 
   const product = await stripe.products.create({
     name: 'ClearDeals Field Tablet — Lenovo Idea Tab 11" + Folio Keyboard',
-    description: '11" 2.5K 90Hz Android tablet with pen, bundled with the attachable folio keyboard case. Ships next business day. One-time purchase, not a rental — hardware is yours.',
+    description: '11" 2.5K 90Hz Android tablet, bundled with the attachable folio keyboard case. Ships next business day. One-time purchase, not a rental — hardware is yours.',
     shippable: true,
     images: [imageUrl],
   });
