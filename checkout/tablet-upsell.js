@@ -33,7 +33,7 @@
 
   var mounted = false;
   var els = {};
-  var state = { qty: 1, trial: true, onContinue: null, lastFocus: null };
+  var state = { qty: 0, trial: true, onContinue: null, lastFocus: null };
 
   var money = function (n) { return '$' + n.toLocaleString('en-US'); };
 
@@ -83,6 +83,7 @@
     '.tu-btn.tu-solid:hover{background:#1d4ed8;border-color:#1d4ed8;}',
     '.tu-btn.tu-ghost{background:transparent;color:#7a6f65;border:none;font-size:13.5px;font-weight:500;padding:6px;text-decoration:underline;text-underline-offset:3px;}',
     '.tu-btn.tu-ghost:hover{color:#1c1814;}',
+    '.tu-btn[hidden]{display:none;}',
     // z-index: the product shot's drop-shadow filter gives it its own layer,
     // and on mobile, where the panels stack, that layer sits over the X and
     // swallows the tap.
@@ -223,7 +224,7 @@
   }
 
   function setQty(n) {
-    state.qty = Math.min(STOCK, Math.max(1, n));
+    state.qty = Math.min(STOCK, Math.max(0, n));
     render();
   }
 
@@ -233,12 +234,14 @@
 
     els.stock.textContent = 'Only ' + STOCK + ' left for next-day shipping';
     els.count.textContent = String(qty);
-    els.minus.disabled = qty <= 1;
+    els.minus.disabled = qty <= 0;
     els.plus.disabled = qty >= STOCK;
 
-    els.totalLabel.textContent = qty === 1
-      ? '1 tablet + keyboard'
-      : qty + ' tablets + keyboards (' + money(PRICE) + ' each)';
+    els.totalLabel.textContent = qty === 0
+      ? 'No tablets added'
+      : qty === 1
+        ? '1 tablet + keyboard'
+        : qty + ' tablets + keyboards (' + money(PRICE) + ' each)';
     els.totalAmt.textContent = money(total);
 
     // The hardware is a one-time line item on a subscription Checkout Session,
@@ -247,10 +250,17 @@
     // a dealer who read "$0 due today" on the plan card and then got a $299
     // charge would have a fair complaint.
     els.fine.textContent = state.trial
-      ? 'Charged today and shipped next business day. Your 30-day ClearDeals trial is unaffected — the subscription still starts at $0.'
-      : 'Charged today alongside your subscription and shipped next business day.';
+      ? 'Tablets are charged today and ship next business day. Your 30-day ClearDeals trial still starts at $0.'
+      : 'Tablets are charged today with your subscription and ship next business day.';
 
-    els.add.textContent = 'Add ' + (qty === 1 ? '1 tablet' : qty + ' tablets') + ' — ' + money(total);
+    // Starts at zero so a dealer who hits the blue button without reading
+    // doesn't buy a tablet. At zero it just continues; it only becomes an
+    // "Add" once they've picked a quantity, and only then is a separate
+    // decline link needed.
+    els.add.textContent = qty === 0
+      ? 'Continue without tablets'
+      : 'Add ' + (qty === 1 ? '1 tablet' : qty + ' tablets') + ' — ' + money(total);
+    els.skip.hidden = qty === 0;
   }
 
   function open(opts) {
@@ -261,7 +271,7 @@
     state.onContinue = typeof opts.onContinue === 'function' ? opts.onContinue : null;
     state.onDismiss = typeof opts.onDismiss === 'function' ? opts.onDismiss : null;
     state.lastFocus = document.activeElement;
-    state.qty = 1;
+    state.qty = 0;
 
     render();
     els.backdrop.hidden = false;
