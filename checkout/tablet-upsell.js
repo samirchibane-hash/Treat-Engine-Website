@@ -41,6 +41,9 @@
     '.tu-backdrop{position:fixed;inset:0;z-index:9000;background:rgba(28,24,20,.52);backdrop-filter:blur(3px);',
       'display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;transition:opacity .2s;overflow-y:auto;}',
     '.tu-backdrop.tu-open{opacity:1;}',
+    // display:flex above beats the browser's own [hidden] rule, which would
+    // leave a closed modal as an invisible overlay eating every tap on the page.
+    '.tu-backdrop[hidden]{display:none;}',
     '.tu-modal{position:relative;width:100%;max-width:840px;background:#faf7f2;border-radius:20px;overflow:hidden;',
       'box-shadow:0 30px 80px rgba(28,24,20,.30);transform:translateY(14px) scale(.985);transition:transform .22s;',
       'font-family:"DM Sans",system-ui,sans-serif;color:#1c1814;margin:auto;}',
@@ -263,7 +266,9 @@
     render();
     els.backdrop.hidden = false;
     document.body.style.overflow = 'hidden';
-    requestAnimationFrame(function () { els.backdrop.classList.add('tu-open'); });
+    // Force a layout pass so the fade-in still runs, without waiting on a frame.
+    void els.backdrop.offsetWidth;
+    els.backdrop.classList.add('tu-open');
     els.add.focus();
   }
 
