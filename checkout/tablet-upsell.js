@@ -86,13 +86,36 @@
     '.tu-close{position:absolute;z-index:2;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;',
       'background:rgba(250,247,242,.92);color:#3d3530;font-size:19px;line-height:1;display:flex;align-items:center;justify-content:center;transition:background .15s;}',
     '.tu-close:hover{background:#fff;}',
+    '.tu-specs-m{display:none;}',
+    // Mobile has to fit on one screen with Safari's toolbars showing, so it
+    // drops what is repeated elsewhere: the spec list becomes one line, the tag
+    // repeats the stock banner, and the total box repeats the button. dvh
+    // tracks the toolbars; the vh line is for browsers without it. The scroll
+    // is only a fallback for very short screens.
     '@media(max-width:780px){',
+      '.tu-backdrop{padding:12px;align-items:center;}',
+      '.tu-modal{max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);overflow-y:auto;border-radius:16px;}',
       '.tu-grid{grid-template-columns:1fr;}',
-      '.tu-art{padding:26px 24px 22px;}',
-      '.tu-art-img{max-height:170px;}',
-      '.tu-body{padding:26px 22px 24px;}',
-      '.tu-title{font-size:23px;}',
-      '.tu-backdrop{padding:14px;align-items:flex-start;}',
+      // overflow: keeps the photo's drop-shadow from smudging the panel below.
+      '.tu-art{padding:14px 20px 8px;overflow:hidden;}',
+      '.tu-art-img{max-height:110px;}',
+      '.tu-specs,.tu-tag,.tu-total{display:none;}',
+      '.tu-body{padding:14px 20px 14px;}',
+      '.tu-title{font-size:21px;margin-bottom:6px;}',
+      '.tu-sub{font-size:13px;line-height:1.55;margin-bottom:6px;}',
+      '.tu-specs-m{display:block;font-size:11.5px;line-height:1.5;color:#7a6f65;margin-bottom:12px;}',
+      '.tu-stock{padding:8px 11px;margin-bottom:12px;font-size:12px;}',
+      '.tu-qty-row{padding-top:12px;}',
+      '.tu-step{width:32px;height:32px;}',
+      '.tu-fine{margin-top:10px;font-size:11px;line-height:1.5;}',
+      '.tu-actions{margin-top:12px;gap:2px;}',
+      '.tu-btn.tu-solid{padding:13px 16px;}',
+    '}',
+    // iPhone SE-height screens: the photo is the one thing that can go.
+    '@media(max-width:780px) and (max-height:620px){',
+      '.tu-art{display:none;}',
+      '.tu-title{padding-right:36px;}',
+      '.tu-close{top:10px;right:10px;background:#f0ebe0;}',
     '}'
   ].join('');
 
@@ -134,6 +157,7 @@
             '<span class="tu-tag">Add-on · Ships next day</span>',
             '<h2 class="tu-title" id="tu-title">Put ClearDeals in your reps’ hands</h2>',
             '<p class="tu-sub">The <strong>Lenovo Idea Tab 11"</strong> with the attachable keyboard case — the same setup our dealers run proposals on in the home. <strong>' + money(PRICE) + '</strong> each, one time.</p>',
+            '<p class="tu-specs-m">11" 2.5K display · 4 GB / 128 GB · Android 15 · magnetic keyboard case</p>',
             '<div class="tu-stock">',
               '<svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 1.8 12.6 11.7H1.4Z"/><path d="M7 5.8v2.4"/><circle cx="7" cy="10" r=".55" fill="currentColor" stroke="none"/></svg>',
               '<span id="tu-stock-text"></span>',
