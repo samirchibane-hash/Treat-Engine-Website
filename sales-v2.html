@@ -752,6 +752,7 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
 </div>
 <script>document.body.classList.add('has-sticky-cta');</script>
 <script src="mobile-nav.js" defer></script>
+<script src="/checkout/tablet-upsell.js"></script>
 <script type="text/babel">
 const {useState, useEffect} = React;
 
@@ -1853,14 +1854,30 @@ function Pricing() {
   // Same call /sales/checkout-v2 makes. The page only sends tier and interval —
   // /api/checkout resolves the real Stripe price and attaches the trial, so the
   // buy box here can never drift out of sync with that page's pricing.
-  const startCheckout = async key => {
+  // The tablet offer fronts every plan button, the same way it does on
+  // /sales/checkout-v2 — the modal itself is shared (checkout/tablet-upsell.js)
+  // so the offer, the price and the stock count can't drift between pages.
+  // Declining continues with 0; closing the modal cancels and nothing is
+  // pending, so the buy box is still live.
+  const startCheckout = key => {
+    if (pending) return;
+    // A blocked or failed upsell script must never cost us the subscription —
+    // skip the offer and go straight to Stripe.
+    if (!window.TabletUpsell) return goToStripe(key, 0);
+    window.TabletUpsell.open({
+      trial: billing === 'month',
+      onContinue: tablets => goToStripe(key, tablets),
+    });
+  };
+
+  const goToStripe = async (key, tablets) => {
     if (pending) return;
     setPending(key);
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({service: 'sales', plan: key, interval: billing}),
+        body: JSON.stringify({service: 'sales', plan: key, interval: billing, tablets: tablets}),
       });
       const {url, error} = await res.json();
       if (error || !url) throw new Error(error || 'No checkout URL returned');

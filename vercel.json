@@ -4,6 +4,7 @@
     { "src": "api/**/*.js",       "use": "@vercel/node" },
     { "src": "*.html",            "use": "@vercel/static" },
     { "src": "checkout/*.html",   "use": "@vercel/static" },
+    { "src": "checkout/*.js",     "use": "@vercel/static" },
     { "src": "onboarding/*.html", "use": "@vercel/static" },
     { "src": "welcome/*.html",    "use": "@vercel/static" },
     { "src": "admin/*.html",      "use": "@vercel/static" },

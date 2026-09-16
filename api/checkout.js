@@ -1,4 +1,6 @@
 const Stripe = require('stripe');
+// Stock lives in the modal so the page copy and this cap can't drift apart.
+const { STOCK: TABLET_STOCK } = require('../checkout/tablet-upsell.js');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -124,9 +126,39 @@ module.exports = async (req, res) => {
       // in this funnel.
       const trialDays = interval === 'month' ? 30 : 0;
 
+      const lineItems = [{ price: priceId, quantity: 1 }];
+
+      // ── Field tablet upsell ──
+      // Offered in a modal before the redirect (checkout/tablet-upsell.js). The
+      // page only sends a count — the cap is re-checked here and the charge
+      // comes from the Stripe price, so neither can be edited in the browser.
+      //
+      // TABLET_STOCK is a per-order ceiling, NOT live inventory — nothing
+      // decrements it as orders come in. It's set in checkout/tablet-upsell.js;
+      // lower it there as units sell through, or the page will keep promising
+      // next-day shipping on tablets that are gone.
+      const tablets = Number.parseInt(req.body.tablets, 10) || 0;
+
+      if (tablets < 0 || tablets > TABLET_STOCK) {
+        return res.status(400).json({ error: 'That tablet quantity isn\u2019t available.' });
+      }
+
+      if (tablets > 0) {
+        if (!process.env.STRIPE_PRICE_TABLET_BUNDLE) {
+          return res.status(500).json({ error: 'Missing STRIPE_PRICE_TABLET_BUNDLE price ID' });
+        }
+        // A one-time price inside a subscription-mode session bills on the
+        // subscription's first invoice. When a trial is attached that invoice
+        // is still cut at checkout — Stripe charges one-time items at the START
+        // of the trial, not at its end — so the hardware is paid for before we
+        // ship it while the plan itself stays $0 for 30 days. The modal says so
+        // in as many words.
+        lineItems.push({ price: process.env.STRIPE_PRICE_TABLET_BUNDLE, quantity: tablets });
+      }
+
       sessionParams = {
         mode: 'subscription',
-        line_items: [{ price: priceId, quantity: 1 }],
+        line_items: lineItems,
         // ── Cross-repo contract — read by ClearDeals, not just by this repo ──
         // ClearDeals (separate repo, same Stripe account) provisions dealership
         // accounts off checkout.session.completed, filtering on
@@ -141,6 +173,10 @@ module.exports = async (req, res) => {
           tier: plan,
           interval,
           trial_days: String(trialDays),
+          // Additive — ClearDeals filters on service + tier and ignores the
+          // rest. This is the fulfilment signal: it and the shipping address on
+          // the session are how we know what to put in a box.
+          tablets: String(tablets),
         },
         success_url: `${origin}/sales/welcome?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/sales/checkout-v2`,
@@ -159,6 +195,12 @@ module.exports = async (req, res) => {
           trial_period_days: trialDays,
           trial_settings: { end_behavior: { missing_payment_method: 'cancel' } },
         };
+      }
+
+      // Only asked for when there is something to ship. Set below the trial
+      // block so it applies on monthly and annual alike.
+      if (tablets > 0) {
+        sessionParams.shipping_address_collection = { allowed_countries: ['US'] };
       }
 
     } else if (service === 'sales') {
