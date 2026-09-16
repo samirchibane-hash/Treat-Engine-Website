@@ -80,7 +80,10 @@
     '.tu-btn.tu-solid:hover{background:#1d4ed8;border-color:#1d4ed8;}',
     '.tu-btn.tu-ghost{background:transparent;color:#7a6f65;border:none;font-size:13.5px;font-weight:500;padding:6px;text-decoration:underline;text-underline-offset:3px;}',
     '.tu-btn.tu-ghost:hover{color:#1c1814;}',
-    '.tu-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;',
+    // z-index: the product shot's drop-shadow filter gives it its own layer,
+    // and on mobile, where the panels stack, that layer sits over the X and
+    // swallows the tap.
+    '.tu-close{position:absolute;z-index:2;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;',
       'background:rgba(250,247,242,.92);color:#3d3530;font-size:19px;line-height:1;display:flex;align-items:center;justify-content:center;transition:background .15s;}',
     '.tu-close:hover{background:#fff;}',
     '@media(max-width:780px){',
