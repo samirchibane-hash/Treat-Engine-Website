@@ -502,25 +502,46 @@ a{text-decoration:none;color:inherit;}
 <link rel="stylesheet" href="hero.css"/>
 <link rel="stylesheet" href="mobile.css"/>
 <style>
-/* Sales hero — single-column override (wins over shared hero.css) */
+/* Sales hero — desktop two-column (wins over shared hero.css).
+   Column one carries the argument and the CTA; column two carries the video
+   with the three proof checks tucked underneath it. Each column is a single
+   self-contained element, so neither can stretch the other's internal spacing.
+   Sized to clear a 900px-tall viewport without scrolling.
+   Mobile (<=768px) is deliberately untouched — mobile.css owns the hero there
+   and lays it out purely with `order`, so the DOM regrouping this relies on
+   does not reach a phone. */
 @media(min-width:769px){
+  .hero{
+    padding:84px 32px 0 !important;
+    max-width:1240px !important;
+  }
   .hero-top.hero-single{
-    display:flex !important;
-    flex-direction:column !important;
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1.06fr) !important;
+    column-gap:56px !important;
+    row-gap:0 !important;
     align-items:center !important;
-    text-align:center !important;
-    gap:0 !important;
+    text-align:left !important;
+    padding:18px 0 40px !important;
+    /* The stats strip below brings its own top rule — hero.css's border here
+       would stack a second line 30px above it. */
+    border-bottom:none !important;
   }
+
+  /* ---------- column one: badge, headline, sub, CTA ---------- */
   .hero-top.hero-single .hero-left{
-    max-width:1100px !important;
-    margin:0 auto !important;
+    grid-column:1 !important;
+    max-width:none !important;
+    margin:0 !important;
+    text-align:left !important;
   }
+  .hero-top.hero-single .service-badge{margin-bottom:20px !important;}
   .hero-top.hero-single .hero-left h1{
-    font-size:clamp(36px,3.9vw,50px) !important;
-    margin:0 0 24px !important;
+    font-size:clamp(33px,2.9vw,44px) !important;
+    line-height:1.08 !important;
+    margin:0 0 18px !important;
+    text-align:left !important;
   }
-  /* Headline lines wrap evenly instead of being forced onto one line —
-     a long line 1 stays centred and never overflows the column. */
   .hero-top.hero-single .hero-left h1 span{
     white-space:normal !important;
     text-wrap:balance;
@@ -539,35 +560,62 @@ a{text-decoration:none;color:inherit;}
     vertical-align:baseline;
   }
   .hero-top.hero-single .hero-sub{
-    max-width:680px !important;
-    margin:0 auto 8px !important;
+    max-width:530px !important;
+    margin:0 !important;
+    text-align:left !important;
+    font-size:16.5px !important;
+    line-height:1.62 !important;
   }
+  .hero-top.hero-single .hero-actions{
+    justify-content:flex-start !important;
+    margin:28px 0 0 !important;
+  }
+  /* Primary CTA carries more weight here than in the old centred hero — it is
+     competing with a video for attention rather than sitting alone. */
+  .hero-top.hero-single .hero-actions .btn-dark{
+    padding:14px 34px !important;
+    font-size:16.5px !important;
+  }
+  .hero-top.hero-single .hero-actions-meta{
+    margin:14px 0 0 !important;
+  }
+
+  /* ---------- column two: video + proof checks ---------- */
   .hero-top.hero-single .hero-visual{
+    grid-column:2 !important;
     width:100% !important;
-    max-width:960px !important;
-    margin:28px auto 0 !important;
-    justify-self:center !important;
+    max-width:none !important;
+    margin:0 !important;
     min-height:auto !important;
-  }
-  .hero-top.hero-single .hero-below{
-    width:100% !important;
-    max-width:960px !important;
-    margin:0 auto !important;
     display:flex !important;
     flex-direction:column !important;
-    align-items:center !important;
-    text-align:center !important;
+    align-items:stretch !important;
+    justify-content:flex-start !important;
   }
-  .hero-top.hero-single .hero-below .hero-bullets{
-    flex-direction:row !important;
-    flex-wrap:wrap !important;
-    justify-content:center !important;
-    gap:14px 28px !important;
-    margin:32px auto 28px !important;
+  .hero-top.hero-single .hero-video{
+    border-radius:14px !important;
+    box-shadow:0 22px 44px rgba(28,24,20,0.16),0 6px 14px rgba(28,24,20,0.07) !important;
   }
-  .hero-top.hero-single .hero-below .hero-actions{
-    justify-content:center !important;
+  /* Checks sit above the radial glow, which now spans the whole column. */
+  .hero-top.hero-single .hero-bullets{
+    position:relative;
+    z-index:2;
+    flex-direction:column !important;
+    flex-wrap:nowrap !important;
+    align-items:flex-start !important;
+    justify-content:flex-start !important;
+    gap:11px !important;
+    margin:22px 0 0 !important;
+    text-align:left !important;
   }
+  .hero-top.hero-single .hero-bullets li{
+    font-size:14.5px !important;
+    line-height:1.4 !important;
+  }
+
+  /* Stats strip tightened so the hero itself clears the fold. */
+  .hero-stats-strip .stat-cell{padding:20px 28px !important;}
+  .hero-stats-strip .stat-num{font-size:34px !important;}
 }
 
 /* Sales hero — phone/tablet headline sizing (wins over shared mobile.css) */
@@ -816,6 +864,13 @@ function Hero({tweaks}) {
               })}
             </h1>
             <p className="hero-sub">{tweaks.heroSub}</p>
+            <div className="hero-actions">
+              <a href="#pricing" className="btn-dark btn-stacked">
+                <span>{tweaks.ctaText} →</span>
+                <span className="btn-sub">30-day free trial</span>
+              </a>
+            </div>
+            <div className="hero-actions-meta">No setup fee · Cancel anytime</div>
           </div>
           <div className="hero-visual">
             <div className="hero-visual-glow"/>
@@ -831,8 +886,6 @@ function Hero({tweaks}) {
                 allowFullScreen
               />
             </div>
-          </div>
-          <div className="hero-below">
             <ul className="hero-bullets">
               {bullets.map((b,i) => (
                 <li key={i}>
@@ -845,13 +898,6 @@ function Hero({tweaks}) {
                 </li>
               ))}
             </ul>
-            <div className="hero-actions">
-              <a href="#pricing" className="btn-dark btn-stacked">
-                <span>{tweaks.ctaText} →</span>
-                <span className="btn-sub">30-day free trial</span>
-              </a>
-            </div>
-            <div className="hero-actions-meta">No setup fee · Cancel anytime</div>
           </div>
         </div>
         <div className="hero-stats-strip reveal">
