@@ -552,6 +552,9 @@ render();
 // ── Checkout ──
 let checkingOut = false;
 
+// Straight to Stripe. The field tablet offer used to front every plan button
+// from here; it now runs after checkout on /sales/welcome, where the dealer has
+// already committed and their card is on file.
 async function startCheckout(plan) {
   if (checkingOut) return;
   checkingOut = true;

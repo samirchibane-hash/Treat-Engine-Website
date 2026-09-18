@@ -77,6 +77,101 @@ a{text-decoration:none;color:inherit;}
 .help p{font-size:13.5px;color:var(--ink-muted);line-height:1.75;}
 .help a{color:var(--blue);font-weight:500;}
 .back-link{margin-top:6px;font-size:14px;font-weight:600;color:var(--blue);}
+/* ══════════════════════════════════════════════════════════════════════════
+   FIELD TABLET ADD-ON
+   Sits between the invite card and "What happens next": after the one thing
+   this page is really for, before the dealer starts on setup. It replaced a
+   pre-checkout modal — the point of moving it here is that a "no" now costs
+   nothing, because the subscription is already signed.
+   Styled as an offer, not a system message: the green confirmation language
+   above it is load-bearing and mustn't be diluted.
+   ══════════════════════════════════════════════════════════════════════════ */
+.upsell{margin-top:28px;background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;
+  box-shadow:0 2px 14px rgba(28,24,20,.04);}
+.upsell[hidden]{display:none;}
+.upsell-head{display:flex;gap:22px;padding:26px 28px 0;}
+.upsell-art{flex-shrink:0;width:186px;align-self:center;}
+.upsell-art img{width:100%;display:block;}
+.upsell-copy{flex:1;min-width:0;}
+.upsell-eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--cream-mid);color:var(--navy);
+  font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;padding:5px 11px;border-radius:20px;margin-bottom:13px;}
+.upsell h2{font-size:22px;font-weight:600;letter-spacing:-.015em;margin-bottom:9px;}
+.upsell-lede{font-size:14.5px;line-height:1.7;color:var(--ink-muted);}
+.upsell-lede strong{color:var(--ink);font-weight:600;}
+.upsell-specs{list-style:none;display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:14px;}
+.upsell-specs li{display:flex;gap:7px;align-items:baseline;font-size:12.5px;color:var(--ink-muted);}
+
+.upsell-stock{display:flex;align-items:center;gap:8px;margin:20px 28px 0;padding:9px 13px;font-size:12.5px;font-weight:600;
+  color:#b45309;background:#fffbeb;border:1px solid rgba(180,83,9,.16);border-radius:9px;}
+.upsell-stock svg{flex-shrink:0;}
+
+/* Where it ships. Checkout collected a billing address and nothing else, so
+   this is prefilled from that and stays correctable. */
+.upsell-ship{display:flex;align-items:flex-start;gap:10px;margin:14px 28px 0;padding:11px 13px;
+  background:var(--cream);border:1px solid var(--border);border-radius:9px;font-size:12.5px;line-height:1.55;}
+.upsell-ship svg{flex-shrink:0;margin-top:2px;}
+.upsell-ship-text{flex:1;min-width:0;color:var(--ink-muted);}
+.upsell-ship-text b{display:block;color:var(--ink);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px;}
+.upsell-ship-edit{flex-shrink:0;background:none;border:none;padding:0;font-family:inherit;font-size:12.5px;font-weight:600;
+  color:var(--blue);cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
+.upsell-form{margin:14px 28px 0;display:grid;grid-template-columns:repeat(6,1fr);gap:9px;}
+.upsell-form input{font-family:inherit;font-size:13.5px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;
+  background:var(--white);color:var(--ink);width:100%;}
+.upsell-form input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,.12);}
+.upsell-form .f-6{grid-column:span 6;}
+.upsell-form .f-3{grid-column:span 3;}
+.upsell-form .f-2{grid-column:span 2;}
+.upsell-form .f-1{grid-column:span 1;}
+.upsell-form-done{grid-column:span 6;justify-self:start;background:none;border:none;padding:0;font-family:inherit;
+  font-size:12.5px;font-weight:600;color:var(--blue);cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
+
+.upsell-act{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  margin-top:20px;padding:18px 28px;background:var(--blue-light);border-top:1px solid rgba(59,130,246,.14);}
+.upsell-qty{display:flex;align-items:center;gap:13px;}
+.upsell-qty-label{font-size:13px;font-weight:600;}
+.upsell-qty-label span{display:block;font-size:11.5px;font-weight:400;color:var(--ink-muted);margin-top:1px;}
+.stepper{display:flex;align-items:center;gap:2px;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:4px;}
+.stepper button{width:34px;height:34px;border:none;background:transparent;border-radius:7px;cursor:pointer;font-size:19px;
+  line-height:1;color:var(--navy);font-family:inherit;transition:background .15s;}
+.stepper button:hover:not(:disabled){background:var(--cream-mid);}
+.stepper button:disabled{opacity:.3;cursor:not-allowed;}
+.stepper .count{min-width:34px;text-align:center;font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;}
+.upsell-buy{display:flex;align-items:center;justify-content:center;gap:9px;border:1.5px solid var(--blue);background:var(--blue);
+  color:#fff;border-radius:9px;padding:14px 22px;font-size:14.5px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .18s;}
+.upsell-buy:hover:not(:disabled){background:var(--blue-dark);border-color:var(--blue-dark);}
+.upsell-buy:disabled{opacity:.55;cursor:wait;}
+.upsell-buy .spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+
+.upsell-err{margin:14px 28px 0;padding:10px 13px;background:#fef2f2;border:1px solid rgba(220,38,38,.2);border-radius:9px;
+  font-size:12.5px;line-height:1.6;color:#b91c1c;}
+.upsell-foot{padding:14px 28px 22px;}
+.upsell-fine{font-size:12px;line-height:1.65;color:var(--ink-muted);}
+.upsell-fine strong{color:var(--ink);font-weight:600;}
+.upsell-decline{margin-top:10px;background:none;border:none;padding:0;font-family:inherit;font-size:12.5px;color:var(--ink-muted);
+  text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
+.upsell-decline:hover{color:var(--ink);}
+
+/* Confirmed — replaces the card in place. No reload, no second page. */
+.upsell.is-done{border-color:rgba(22,163,74,.35);background:var(--green-light);}
+.upsell-done{display:flex;gap:16px;padding:24px 28px;}
+.upsell-done-icon{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;}
+.upsell-done h2{font-size:18.5px;margin-bottom:6px;font-family:'DM Sans',sans-serif;}
+.upsell-done p{font-size:13.5px;line-height:1.7;color:var(--ink-muted);}
+.upsell-done dl{display:flex;flex-wrap:wrap;gap:4px 28px;margin-top:12px;}
+.upsell-done dl div{font-size:12.5px;}
+.upsell-done dt{color:var(--ink-muted);}
+.upsell-done dd{font-weight:600;margin-top:1px;}
+
+@media(max-width:620px){
+  .upsell-head{flex-direction:column;gap:14px;padding:22px 20px 0;}
+  .upsell-art{width:150px;align-self:flex-start;}
+  .upsell-stock,.upsell-ship,.upsell-form,.upsell-err{margin-left:20px;margin-right:20px;}
+  .upsell-act{padding:16px 20px;gap:14px;}
+  .upsell-buy{width:100%;}
+  .upsell-qty{width:100%;justify-content:space-between;}
+  .upsell-foot{padding:14px 20px 20px;}
+  .upsell-done{padding:20px;}
+}
 </style>
 <!-- Meta Pixel — Treat Engine (1134033977806212) -->
 <script>
@@ -154,6 +249,10 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
       <p class="invite-note">It usually arrives within a minute. If you don't see it, check your spam folder.</p>
     </div>
   </div>
+
+  <!-- Field tablet add-on. Rendered by renderUpsell(); hidden until
+       /api/verify-session says there is stock, or that tablets were ordered. -->
+  <section class="upsell" id="upsell" hidden></section>
 
   <section class="section">
     <div class="section-eyebrow">What happens next</div>
@@ -266,6 +365,288 @@ function render(s) {
   document.getElementById('summary').innerHTML = html;
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   FIELD TABLET ADD-ON
+   ──────────────────────────────────────────────────────────────────────────
+   The offer used to be a modal that opened when a dealer clicked a plan button,
+   before Stripe. It now runs here, after the subscription is signed, for three
+   reasons:
+
+     1. A "no" here is free. In the modal, every second spent deciding was a
+        chance to lose the subscription itself.
+     2. The card is already on file — Checkout collects one even on the $0
+        trial — so this is genuinely one click. No second Stripe redirect.
+     3. The pitch lands better on someone who has just committed to ClearDeals
+        than on someone still deciding.
+
+   /api/tablet-order charges the saved card off-session. Everything that can
+   actually cost money is decided there: stock ceiling, the price (read from
+   Stripe, cross-checked against lib/tablets.js), and whether this session is
+   even eligible. This file sends a quantity and an address and renders what
+   comes back.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+// Stock and price arrive from the server (lib/tablets.js) so nothing here can
+// quote a number /api/tablet-order would refuse. The fallbacks only matter if
+// an older verify-session response is cached somewhere.
+const tab = {
+  qty: 1,
+  stock: 0,
+  price: 299,
+  state: 'offer',       // offer | busy | done | hidden
+  ordered: 0,
+  error: null,
+  editing: false,
+  ship: null,
+  session: null,
+};
+
+const SPEC_BITS = [
+  '11" 2.5K · 90 Hz',
+  '4 GB / 128 GB',
+  'Android 15',
+  'Magnetic keyboard case',
+];
+
+const CHECK_SM =
+  '<svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6.5 4.8,9.3 10,3.4"/></svg>';
+
+const esc = (v) => String(v == null ? '' : v)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+const upsellEl = () => document.getElementById('upsell');
+
+function cardLine(s) {
+  if (!s.cardLast4) return 'the card you just used';
+  const brand = s.cardBrand ? s.cardBrand.charAt(0).toUpperCase() + s.cardBrand.slice(1) : 'card';
+  return brand + ' ending ' + s.cardLast4;
+}
+
+function shipComplete(a) {
+  return !!(a && a.name && a.line1 && a.city && a.state && a.postal_code);
+}
+
+function shipOneLine(a) {
+  const street = [a.line1, a.line2].filter(Boolean).join(', ');
+  return [a.name, street, [a.city, a.state].filter(Boolean).join(', ') + ' ' + (a.postal_code || '')]
+    .filter(p => p && p.trim()).join(' · ');
+}
+
+function initUpsell(s) {
+  tab.session = s;
+  tab.stock   = Number(s.tabletStock) || 0;
+  tab.price   = Number(s.tabletPrice) || tab.price;
+  tab.ordered = Number(s.tablets) || 0;
+  tab.qty     = 1;
+  tab.state   = tab.ordered > 0 ? 'done' : 'offer';
+
+  const b = s.billingAddress || {};
+  tab.ship = {
+    name: s.customerName || '',
+    line1: b.line1 || '', line2: b.line2 || '',
+    city: b.city || '', state: b.state || '', postal_code: b.postal_code || '',
+  };
+  // Checkout requires a billing address, so this is normally filled in and the
+  // dealer never sees the form. If anything is missing, open it rather than
+  // letting them click Buy into a 400.
+  tab.editing = !shipComplete(tab.ship);
+
+  renderUpsell();
+}
+
+function renderUpsell() {
+  const el = upsellEl();
+  if (!el) return;
+
+  // Nothing to sell and nothing to confirm.
+  if (tab.state === 'hidden' || (tab.stock < 1 && tab.ordered < 1)) {
+    el.hidden = true;
+    return;
+  }
+
+  el.hidden = false;
+  const done = tab.state === 'done';
+  el.classList.toggle('is-done', done);
+  el.innerHTML = done ? doneHTML() : offerHTML();
+  if (!done) bindOffer();
+}
+
+function offerHTML() {
+  const s = tab.session;
+  const total = tab.qty * tab.price;
+  const busy = tab.state === 'busy';
+
+  return ''
+  + '<div class="upsell-head">'
+  +   '<div class="upsell-art"><img src="/images/lenovo-idea-tab-keyboard.png" alt="Lenovo Idea Tab 11-inch tablet with the folio keyboard case attached"></div>'
+  +   '<div class="upsell-copy">'
+  +     '<span class="upsell-eyebrow">One more thing · ships next day</span>'
+  +     '<h2>Put ClearDeals in your reps’ hands</h2>'
+  +     '<p class="upsell-lede">The <strong>Lenovo Idea Tab 11"</strong> with the magnetic keyboard case — the same setup our dealers run proposals on at the kitchen table. <strong>$' + tab.price + '</strong> each, one time.</p>'
+  +     '<ul class="upsell-specs">' + SPEC_BITS.map(b => '<li>' + CHECK_SM + '<span>' + b + '</span></li>').join('') + '</ul>'
+  +   '</div>'
+  + '</div>'
+  + '<div class="upsell-stock">'
+  +   '<svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 1.8 12.6 11.7H1.4Z"/><path d="M7 5.8v2.4"/><circle cx="7" cy="10" r=".55" fill="currentColor" stroke="none"/></svg>'
+  +   '<span>Only ' + tab.stock + ' left for next-day shipping</span>'
+  + '</div>'
+  + shipHTML()
+  + (tab.error ? '<div class="upsell-err">' + esc(tab.error) + '</div>' : '')
+  + '<div class="upsell-act">'
+  +   '<div class="upsell-qty">'
+  +     '<div class="upsell-qty-label">How many?<span>One per rep in the field</span></div>'
+  +     '<div class="stepper">'
+  +       '<button type="button" id="u-minus" aria-label="Remove one tablet"' + (tab.qty <= 1 || busy ? ' disabled' : '') + '>&minus;</button>'
+  +       '<span class="count" id="u-count" aria-live="polite">' + tab.qty + '</span>'
+  +       '<button type="button" id="u-plus" aria-label="Add one tablet"' + (tab.qty >= tab.stock || busy ? ' disabled' : '') + '>+</button>'
+  +     '</div>'
+  +   '</div>'
+  +   '<button class="upsell-buy" type="button" id="u-buy"' + (busy ? ' disabled' : '') + '>'
+  +     (busy
+        ? '<span class="spinner"></span><span>Charging your card…</span>'
+        : '<span>Add ' + tab.qty + (tab.qty === 1 ? ' tablet' : ' tablets') + ' — $' + total.toLocaleString('en-US') + '</span>')
+  +   '</button>'
+  + '</div>'
+  + '<div class="upsell-foot">'
+  // One-click only works if we say exactly what one click does: which card,
+  // how much, and that the trial is untouched. A dealer who read "$0 today" on
+  // the plan card and then sees $299 on their statement has a fair complaint.
+  +   '<p class="upsell-fine">One click — no second checkout. We’ll charge <strong>$' + total.toLocaleString('en-US') + '</strong> to the <strong>' + esc(cardLine(s)) + '</strong>.'
+  +     (Number(s.trialDays) > 0 ? ' Your ' + s.trialDays + '-day trial stays at $0.' : '')
+  +   '</p>'
+  +   '<button class="upsell-decline" type="button" id="u-no">No thanks — my reps already have tablets</button>'
+  + '</div>';
+}
+
+function shipHTML() {
+  const a = tab.ship;
+  if (!tab.editing) {
+    return '<div class="upsell-ship">'
+    + '<svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#7a6f65" stroke-width="1.5"><path d="M7 1.4c2 0 3.6 1.6 3.6 3.6C10.6 7.6 7 12.6 7 12.6S3.4 7.6 3.4 5c0-2 1.6-3.6 3.6-3.6Z"/><circle cx="7" cy="5" r="1.3"/></svg>'
+    + '<div class="upsell-ship-text"><b>Ship to</b>' + esc(shipOneLine(a)) + '</div>'
+    + '<button class="upsell-ship-edit" type="button" id="u-ship-edit">Change</button>'
+    + '</div>';
+  }
+  return '<div class="upsell-form">'
+  + '<input class="f-6" id="u-name"  placeholder="Full name"        value="' + esc(a.name) + '" autocomplete="name">'
+  + '<input class="f-6" id="u-line1" placeholder="Street address"   value="' + esc(a.line1) + '" autocomplete="address-line1">'
+  + '<input class="f-6" id="u-line2" placeholder="Apt, suite (optional)" value="' + esc(a.line2) + '" autocomplete="address-line2">'
+  + '<input class="f-3" id="u-city"  placeholder="City"             value="' + esc(a.city) + '" autocomplete="address-level2">'
+  + '<input class="f-2" id="u-state" placeholder="State"        value="' + esc(a.state) + '" autocomplete="address-level1">'
+  + '<input class="f-1" id="u-zip"   placeholder="ZIP"              value="' + esc(a.postal_code) + '" autocomplete="postal-code">'
+  + '<button class="upsell-form-done" type="button" id="u-ship-save">Use this address</button>'
+  + '</div>';
+}
+
+function doneHTML() {
+  const s = tab.session;
+  const n = tab.ordered;
+  const total = n * tab.price;
+
+  return '<div class="upsell-done">'
+  + '<div class="upsell-done-icon">'
+  +   '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,12.5 9,17.5 20,6.5"/></svg>'
+  + '</div>'
+  + '<div>'
+  +   '<h2>' + n + (n === 1 ? ' tablet' : ' tablets') + ' on the way</h2>'
+  +   '<p>' + (s.cardLast4 ? 'Charged to the ' + esc(cardLine(s)) + ' and shipping' : 'Paid and shipping')
+  +     ' the next business day, so you should have ' + (n === 1 ? 'it' : 'them')
+  +     ' in hand before your team’s first proposal. A receipt is on its way to '
+  +     esc(s.customerEmail || 'your email') + '.</p>'
+  +   '<dl>'
+  +     '<div><dt>Hardware</dt><dd>$' + total.toLocaleString('en-US') + ' one time</dd></div>'
+  +     '<div><dt>Shipping to</dt><dd>' + esc(tab.ship && tab.ship.city ? tab.ship.city + ', ' + tab.ship.state : 'Your address on file') + '</dd></div>'
+  +     '<div><dt>Arrives</dt><dd>Next business day</dd></div>'
+  +   '</dl>'
+  + '</div></div>';
+}
+
+function bindOffer() {
+  const el = upsellEl();
+  const on = (id, fn) => { const n = el.querySelector('#' + id); if (n) n.onclick = fn; };
+
+  on('u-minus', () => { tab.qty = Math.max(1, tab.qty - 1); renderUpsell(); });
+  on('u-plus',  () => { tab.qty = Math.min(tab.stock, tab.qty + 1); renderUpsell(); });
+  on('u-no',    () => { tab.state = 'hidden'; renderUpsell(); });
+  on('u-buy',   orderTablets);
+  on('u-ship-edit', () => { tab.editing = true; renderUpsell(); });
+  on('u-ship-save', () => {
+    readShipFields();
+    if (!shipComplete(tab.ship)) { tab.error = 'Please fill in the street, city, state and ZIP.'; renderUpsell(); return; }
+    tab.error = null;
+    tab.editing = false;
+    renderUpsell();
+  });
+
+  // Typed values are read straight off the inputs at submit time rather than on
+  // every keystroke — re-rendering the card mid-edit would drop focus.
+  const first = el.querySelector('#u-name');
+  if (first && tab.editing && tab.error) first.focus();
+}
+
+function readShipFields() {
+  const el = upsellEl();
+  const val = (id) => { const n = el.querySelector('#' + id); return n ? n.value.trim() : ''; };
+  if (!el.querySelector('#u-name')) return;
+  tab.ship = {
+    name: val('u-name'), line1: val('u-line1'), line2: val('u-line2'),
+    city: val('u-city'), state: val('u-state'), postal_code: val('u-zip'),
+  };
+}
+
+async function orderTablets() {
+  if (tab.state === 'busy') return;
+
+  if (tab.editing) readShipFields();
+  if (!shipComplete(tab.ship)) {
+    tab.editing = true;
+    tab.error = 'We need a US shipping address for the tablets.';
+    renderUpsell();
+    return;
+  }
+
+  tab.state = 'busy';
+  tab.error = null;
+  renderUpsell();
+
+  try {
+    const res = await fetch('/api/tablet-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, quantity: tab.qty, shipping: tab.ship }),
+    });
+    const data = await res.json().catch(() => ({}));
+
+    // The card wants 3-D Secure, or there was no saved card to charge: the
+    // server built a hosted Stripe page that can ask for it. Both success and
+    // cancel come back to this page.
+    if (data.redirectUrl) { window.location.href = data.redirectUrl; return; }
+
+    // Already ordered on this subscription — show it rather than arguing.
+    if (res.status === 409 && data.quantity) {
+      tab.ordered = data.quantity;
+      tab.state = 'done';
+      renderUpsell();
+      return;
+    }
+
+    if (!res.ok || !data.ok) throw new Error(data.error || 'We couldn’t complete that order.');
+
+    tab.ordered = data.quantity || tab.qty;
+    if (data.cardBrand) { tab.session.cardBrand = data.cardBrand; tab.session.cardLast4 = data.cardLast4; }
+    tab.state = 'done';
+    renderUpsell();
+    upsellEl().scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  } catch (err) {
+    // Back to the offer with the reason shown — the subscription is untouched
+    // either way, so a failed add-on is never a failed signup.
+    tab.state = 'offer';
+    tab.error = err.message + ' Your subscription is unaffected — email Info@TreatEngine.com and we’ll sort the tablets out.';
+    renderUpsell();
+  }
+}
+
 // ── Meta Pixel — Purchase ──
 // Fires only after /api/verify-session has confirmed the session against Stripe,
 // so a made-up session_id in the URL can't mint a conversion.
@@ -306,6 +687,7 @@ async function verifyAndRender() {
     const session = await res.json();
     if (session.service !== 'sales') { showOverlay('error'); return; }
     render(session);
+    initUpsell(session);
     showOverlay(null);
     trackPurchase(session);
   } catch {

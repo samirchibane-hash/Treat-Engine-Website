@@ -1,12 +1,11 @@
 /**
  * One-off: create the $299 ClearDeals field tablet bundle — the Lenovo Idea Tab
- * 11" plus the attachable folio keyboard case — sold as a one-time add-on in the
- * upsell modal on /sales, /sales-v2 and /sales/checkout-v2.
+ * 11" plus the attachable folio keyboard case — sold as a one-time add-on on
+ * /sales/welcome, after the dealer's subscription is already signed.
  *
- * The price is one-time, not recurring, on purpose: /api/checkout pushes it into
- * a subscription-mode Checkout Session, where Stripe bills one-time line items
- * on the first invoice. That invoice is cut at checkout even when a 30-day trial
- * is attached, so the hardware is paid for before it ships.
+ * The price is one-time, not recurring, on purpose: api/tablet-order.js reads
+ * its unit_amount and charges that once against the card Checkout saved, rather
+ * than putting anything recurring on the dealer's subscription.
  *
  * Usage:  node scripts/create-tablet-price.js
  * Reads STRIPE_SECRET_KEY from the environment or from ../.env
@@ -74,7 +73,7 @@ async function main() {
   console.log('Add this to Vercel → Settings → Environment Variables (Production), then redeploy:\n');
   console.log(`STRIPE_PRICE_TABLET_BUNDLE=${price.id}`);
   console.log('──────────────────────────────────────────────');
-  console.log('\nStock is set by STOCK in checkout/tablet-upsell.js — no env var. It is a');
+  console.log('\nStock is set by STOCK in lib/tablets.js — no env var. It is a');
   console.log('hand-maintained ceiling, not live inventory: lower it as units sell through.');
 }
 

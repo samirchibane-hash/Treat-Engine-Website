@@ -30,6 +30,33 @@ module.exports = async (req, res) => {
     const session = event.data.object;
     const { service, plan } = session.metadata || {};
 
+    // ── Field tablet add-on, paid through hosted checkout ──
+    // api/tablet-order.js normally charges the saved card off-session and
+    // records the order itself. It only creates a Checkout Session when the
+    // card demands 3-D Secure, and that session lands here.
+    //
+    // This must return BEFORE the CRM insert below: it carries service:'sales'
+    // but it is an add-on to an existing dealership, not a new customer, and
+    // letting it through would create a second, tier-less client row.
+    if (session.metadata?.kind === 'tablet_order') {
+      const subscriptionId = session.metadata.subscription;
+      if (subscriptionId) {
+        try {
+          const sub = await stripe.subscriptions.retrieve(subscriptionId);
+          await stripe.subscriptions.update(subscriptionId, {
+            metadata: {
+              ...(sub.metadata || {}),
+              tablets: session.metadata.tablets,
+              tablet_order: session.payment_intent || session.id,
+            },
+          });
+        } catch (err) {
+          console.error('Tablet order webhook error:', err.message);
+        }
+      }
+      return res.json({ received: true });
+    }
+
     // New customers appear in the CRM at checkout, before onboarding. Insert-only:
     // if the customer already finished onboarding (webhook was slow), their row
     // and 'onboarded' status must not be overwritten with checkout defaults.

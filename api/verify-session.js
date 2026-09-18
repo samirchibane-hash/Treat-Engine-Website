@@ -1,4 +1,5 @@
 const Stripe = require('stripe');
+const { STOCK: TABLET_STOCK, PRICE: TABLET_PRICE } = require('../lib/tablets');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,8 +15,11 @@ module.exports = async (req, res) => {
     // and renewal amount off Stripe instead of hardcoding prices in the page.
     // Payment-mode sessions (websites) simply have no subscription — hence the
     // null guards below.
+    // default_payment_method is expanded so /sales/welcome can name the card the
+    // tablet add-on would charge ("the Visa ending 4242 you just used"). Naming
+    // it is the whole basis for asking someone to buy with one click.
     const session = await stripe.checkout.sessions.retrieve(session_id, {
-      expand: ['subscription'],
+      expand: ['subscription', 'subscription.default_payment_method'],
     });
 
     // A trialing subscription completes with payment_status 'no_payment_required'
@@ -35,6 +39,16 @@ module.exports = async (req, res) => {
       : null;
     const item = sub?.items?.data?.[0] || null;
 
+    // ── Field tablet add-on ──
+    // Ordered after checkout now, not in a modal before it, so the count lives
+    // on the subscription (api/tablet-order.js writes it there). The session is
+    // read as a fallback: the hosted-checkout path records it there via the
+    // webhook, and it's also where any legacy pre-checkout order was written.
+    const pm = sub?.default_payment_method;
+    const card = pm && typeof pm === 'object' ? pm.card : null;
+    const tablets =
+      Number.parseInt(sub?.metadata?.tablets || session.metadata?.tablets || '0', 10) || 0;
+
     res.json({
       valid: true,
       service: session.metadata?.service,
@@ -52,6 +66,18 @@ module.exports = async (req, res) => {
       renewsAt: sub?.current_period_end || null,
       recurringAmount: item?.price?.unit_amount ?? null,
       recurringInterval: item?.price?.recurring?.interval ?? null,
+      // ── Field tablet add-on ──
+      // Stock and price come from lib/tablets.js rather than being hardcoded in
+      // the page, so the offer copy can never drift from what the server will
+      // actually accept and charge.
+      tablets,
+      tabletStock: TABLET_STOCK,
+      tabletPrice: TABLET_PRICE,
+      cardBrand: card?.brand || null,
+      cardLast4: card?.last4 || null,
+      // Prefills the "ship to" line on the add-on — a no-tablet checkout never
+      // collected a shipping address, only this one.
+      billingAddress: session.customer_details?.address || null,
     });
   } catch (err) {
     console.error('Verify session error:', err.message);
