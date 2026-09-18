@@ -650,7 +650,7 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
 <body>
 <div id="root"></div>
 <div class="mobile-sticky-cta">
-  <a href="#pricing" class="scta-primary"><span>Start Now →</span><span class="scta-sub">30-day free trial</span></a>
+  <a href="#pricing" class="scta-primary"><span>Get Started Free →</span><span class="scta-sub">30-day free trial</span></a>
 </div>
 <script>document.body.classList.add('has-sticky-cta');</script>
 <script src="mobile-nav.js" defer></script>
@@ -660,9 +660,26 @@ const {useState, useEffect} = React;
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "heroHeadline": "Boost Water Softener Installs\nBy Up To 30% - OR YOU DON’T PAY",
   "heroSub": "Automate your (in-home and remote) water treatment proposals and sales process.",
-  "ctaText": "Start Now",
+  "ctaText": "Get My 30-Day Free Trial",
   "showComparison": false
 }/*EDITMODE-END*/;
+
+// Every CTA label on this page must stay UNIQUE. Clarity aggregates clicks by
+// the text inside the element, so two buttons sharing a label are reported as
+// one number and cannot be told apart. Seven identical "Start Now" buttons is
+// why we previously had no idea which section was actually driving pricing
+// clicks. Keep these distinct (and distinct within the first ~25 characters,
+// since Clarity truncates and masks digits) whenever you add or reword one.
+const CTA = {
+  nav:        'Get Started',
+  hero:       'Get My 30-Day Free Trial',
+  ways:       'Start My Free 30 Days',
+  features:   'Start My Free Trial',
+  flow:       'Get Started in Minutes',
+  comparison: 'Claim My 30-Day Free Trial',
+  faq:        'Get Started Risk-Free',
+  ctaBanner:  'Get My Free 30 Days',
+};
 
 function useReveal() {
   useEffect(() => {
@@ -681,7 +698,6 @@ function Nav({tweaks}) {
     window.addEventListener('scroll', h);
     return () => window.removeEventListener('scroll', h);
   }, []);
-  const ctaLabel = (tweaks && tweaks.ctaText) ? tweaks.ctaText : 'Start Now';
   return (
     <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
       <div className="nav-inner">
@@ -693,7 +709,7 @@ function Nav({tweaks}) {
           <a href="/blog">Blog</a>
         </div>
         <div className="nav-actions">
-          <a href="#pricing" className="nav-cta">{ctaLabel} →</a>
+          <a href="#pricing" className="nav-cta">{CTA.nav} →</a>
         </div>
       </div>
     </nav>
@@ -986,7 +1002,7 @@ function Ways() {
         <div className="reveal" style={{textAlign:'center',marginTop:56}}>
           <div className="cta-pair">
             <a href="#pricing" className="btn-dark btn-stacked" style={{fontSize:16,padding:'13px 36px'}}>
-              <span>Start Now →</span>
+              <span>{CTA.ways} →</span>
               <span className="btn-sub">30-day free trial</span>
             </a>
           </div>
@@ -1359,7 +1375,7 @@ function Features() {
           <p style={{fontSize:16,color:'var(--ink-muted)',marginBottom:10,lineHeight:1.7}}>Your techs already know how to diagnose the problem.<br/>Give them a proposal that finishes the job — at the table, or three counties away.</p>
           <div className="cta-pair" style={{marginTop:14}}>
             <a href="#pricing" className="btn-dark btn-stacked" style={{fontSize:16,padding:'13px 36px'}}>
-              <span>Start Now →</span>
+              <span>{CTA.features} →</span>
               <span className="btn-sub">30-day free trial</span>
             </a>
           </div>
@@ -1399,7 +1415,7 @@ function DealFlow() {
         <div className="reveal" style={{marginTop:56,paddingTop:48,borderTop:'1px solid rgba(255,255,255,0.08)',textAlign:'center'}}>
           <div className="cta-pair">
             <a href="#pricing" className="btn-dark btn-stacked" style={{fontSize:15,padding:'12px 34px'}}>
-              <span>Start Now →</span>
+              <span>{CTA.flow} →</span>
               <span className="btn-sub">30-day free trial</span>
             </a>
           </div>
@@ -1462,7 +1478,7 @@ function Comparison({tweaks}) {
           <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28}}>Pick a plan and run it free for 30 days. Load your catalog and your pricing, run your next appointment on it — then send the referral you were never going to drive to.</p>
           <div className="cta-pair">
             <a href="#pricing" className="btn-dark btn-stacked" style={{fontSize:16,padding:'13px 36px'}}>
-              <span>Start Now →</span>
+              <span>{CTA.comparison} →</span>
               <span className="btn-sub">30-day free trial</span>
             </a>
           </div>
@@ -1532,7 +1548,7 @@ function Pricing() {
 
   // Trial language is monthly-only — annual bills up front, so the button and
   // the line under it must never promise a free trial while isYear.
-  const ctaFor = name => isYear ? ('Get ' + name + ' →') : 'Start 30-day free trial →';
+  const ctaFor = name => isYear ? ('Get ' + name + ' →') : ('Start ' + name + ' Free →');
   const billedFor = key => {
     const amt = money(amountFor(key));
     return isYear
@@ -1755,7 +1771,7 @@ function FAQ() {
           <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28,maxWidth:440,margin:'0 auto 28px'}}>Run ClearDeals free for 30 days. Load your catalog, hand it to a rep for the next appointment, and send the next remote quote as a link instead of three attachments. You'll know inside a week.</p>
           <div className="cta-pair">
             <a href="#pricing" className="btn-dark btn-stacked" style={{fontSize:16,padding:'13px 36px'}}>
-              <span>Start Now →</span>
+              <span>{CTA.faq} →</span>
               <span className="btn-sub">30-day free trial</span>
             </a>
           </div>
@@ -1841,7 +1857,7 @@ function CTABanner({tweaks}) {
           </ul>
           <div className="cta-pair left" style={{marginTop:34}}>
             <a href="#pricing" className="btn-dark btn-stacked">
-              <span>Start Now →</span>
+              <span>{CTA.ctaBanner} →</span>
               <span className="btn-sub">30-day free trial</span>
             </a>
             <span style={{fontSize:13.5,color:'rgba(255,255,255,0.5)',lineHeight:1.5}}>or pick a demo time with the calendar</span>
@@ -1932,7 +1948,7 @@ function TweaksPanel({tweaks, setTweaks, visible}) {
         <textarea value={tweaks.heroHeadline} onChange={e=>update('heroHeadline',e.target.value)} rows={2} style={fs}/>
       </div>
       <div style={{marginBottom:14}}>
-        <label style={ls}>Primary CTA text</label>
+        <label style={ls}>Hero CTA text</label>
         <input value={tweaks.ctaText} onChange={e=>update('ctaText',e.target.value)} style={fs}/>
       </div>
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',paddingTop:14,borderTop:'1px solid var(--border)'}}>
