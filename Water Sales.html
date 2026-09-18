@@ -537,36 +537,21 @@ a{text-decoration:none;color:inherit;}
   }
   .hero-top.hero-single .service-badge{margin-bottom:20px !important;}
   .hero-top.hero-single .hero-left h1{
-    font-size:clamp(21px,2.85vw,42px) !important;
-    line-height:1.08 !important;
+    font-size:clamp(26px,3.35vw,48px) !important;
+    line-height:1.12 !important;
     margin:0 0 18px !important;
     text-align:left !important;
   }
-  /* Exactly three lines, at every desktop width: the two written lines never
-     wrap, and the handwritten run is forced onto its own third line below.
-     The lower clamp bound has to stay small enough that line one still fits
-     the column down at the 769px breakpoint — if it cannot shrink, it wraps
-     and the headline silently becomes four lines. The 42px ceiling is load
-     bearing too: the container caps at 1240px, so past ~1520px the column
-     stops growing while the font would not, and line one runs past its
-     column edge. Measure line one against .hero-left before raising it. */
+  /* The headline wraps on its own word boundaries with balanced line lengths,
+     so the copy can change without re-tuning a fixed line count. The column
+     stops growing at 544px once the container hits its 1240px cap, so the
+     font ceiling is what keeps lines short enough to read — raise it and the
+     headline just takes more lines. */
   .hero-top.hero-single .hero-left h1 span{
     display:block !important;
-    white-space:nowrap !important;
+    white-space:normal !important;
+    text-wrap:balance;
     max-width:100% !important;
-  }
-  /* Handwritten guarantee run. Caveat sits small for its em size, so scale
-     it up to read level with the Playfair it sits beside. */
-  .hero-top.hero-single .hero-left h1 .hl-script{
-    font-family:'Caveat',cursive !important;
-    font-weight:700 !important;
-    font-size:1.34em !important;
-    color:var(--navy) !important;
-    letter-spacing:.01em !important;
-    line-height:1 !important;
-    display:block !important;
-    white-space:nowrap !important;
-    margin-top:3px !important;
   }
   .hero-top.hero-single .hero-sub{
     max-width:530px !important;
@@ -715,8 +700,8 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
 const {useState, useEffect} = React;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "heroHeadline": "Boost Water Softener Installs\nBy Up To 30% - OR YOU DON’T PAY",
-  "heroSub": "Automate your (in-home and remote) water treatment proposals and sales process.",
+  "heroHeadline": "Close Up to 30% More Water Softener Deals With ClearDeals",
+  "heroSub": "Everything sales teams (in-home and remote) need to customize, send and close proposals.",
   "ctaText": "Get My 30-Day Free Trial",
   "showComparison": false,
   "showHeroChecks": false
