@@ -40,7 +40,10 @@ const pages = {
 };
 
 const server = http.createServer((req, res) => {
-  const url = req.url === '/' ? '/' : req.url.replace(/\/$/, '');
+  // Strip the query string before routing — /sales/welcome carries a
+  // ?session_id=, and without this every such URL 404s locally.
+  const bare = req.url.split(/[?#]/)[0];
+  const url  = bare === '/' ? '/' : bare.replace(/\/$/, '');
   const filePath = pages[url]
     ? path.join(__dirname, pages[url])
     : path.join(__dirname, decodeURIComponent(url));
