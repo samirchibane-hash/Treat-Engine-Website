@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Set Up Your Dealership — ClearDeals · Treat Engine</title>
+<title>Build Your Catalog — ClearDeals · Treat Engine</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/images/catalog/catalog.json" as="fetch" crossorigin>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -15,10 +16,13 @@
   --navy:#1a2744;--blue:#3b82f6;--blue-light:#eff6ff;--blue-dark:#1d4ed8;
   --white:#fffefb;--border:rgba(28,24,20,0.10);--border-mid:rgba(28,24,20,0.06);
   --green:#16a34a;--green-light:#f0fdf4;--red:#b91c1c;--red-light:#fef2f2;
+  --ease:cubic-bezier(.22,.61,.36,1);
 }
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;}
 h1,h2{font-family:'Playfair Display',serif;line-height:1.12;}
 a{color:var(--blue);text-decoration:none;}
+button{font:inherit;}
+[hidden]{display:none !important;}
 
 /* Logo only — no nav links to leak out of the funnel. */
 .nav{border-bottom:1px solid var(--border);background:rgba(250,247,242,.94);}
@@ -26,82 +30,155 @@ a{color:var(--blue);text-decoration:none;}
 .nav-inner img{height:30px;display:block;}
 .nav-secure{font-size:12.5px;color:var(--ink-muted);display:flex;align-items:center;gap:6px;}
 
-.page{max-width:640px;margin:0 auto;padding:36px 24px 72px;}
+.page{max-width:680px;margin:0 auto;padding:30px 24px 72px;}
 
-.progress{display:flex;align-items:center;gap:12px;margin-bottom:20px;font-size:12.5px;font-weight:600;color:var(--ink-muted);}
+.progress{display:flex;align-items:center;gap:12px;margin-bottom:18px;font-size:12.5px;font-weight:600;color:var(--ink-muted);}
 .progress-bar{flex:1;display:flex;gap:6px;max-width:220px;}
 .progress-seg{flex:1;height:5px;border-radius:5px;background:var(--cream-dark);overflow:hidden;}
-.progress-seg i{display:block;height:100%;width:0;background:var(--navy);border-radius:5px;transition:width .45s cubic-bezier(.22,.61,.36,1);}
+.progress-seg i{display:block;height:100%;width:0;background:var(--navy);border-radius:5px;transition:width .45s var(--ease);}
 .progress-seg.done i{width:100%;}
-
-/* Two slides side by side; the track shifts by one slide width. The viewport
-   height follows the active slide so step 1 carries no step-2 dead space. */
-.viewport{overflow:hidden;transition:height .45s cubic-bezier(.22,.61,.36,1);margin:0 -4px;}
-.track{display:flex;width:200%;align-items:flex-start;transition:transform .45s cubic-bezier(.22,.61,.36,1);}
-.track.at2{transform:translateX(-50%);}
-.slide{width:50%;padding:0 4px 4px;transition:opacity .35s ease;}
-.slide[inert]{opacity:0;}
-@media(prefers-reduced-motion:reduce){.viewport,.track,.slide,.progress-seg i{transition:none;}}
-.back{font:inherit;font-size:13.5px;font-weight:600;color:var(--ink-muted);background:none;border:none;cursor:pointer;padding:4px 0;margin-bottom:10px;display:inline-flex;align-items:center;gap:6px;}
-.back:hover{color:var(--ink);}
-.title:focus{outline:none;}
 
 .title{font-size:clamp(28px,6vw,38px);font-weight:600;letter-spacing:-.02em;margin-bottom:10px;}
 .title em{font-style:italic;color:var(--navy);}
+.title:focus{outline:none;}
 .sub{font-size:15.5px;line-height:1.65;color:var(--ink-muted);margin-bottom:20px;}
+.sub strong{color:var(--ink);font-weight:600;}
 
-.plan-pill{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-size:14px;margin-bottom:26px;}
+.plan-pill{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:11px 16px;font-size:13.5px;margin-top:18px;}
 .plan-pill b{font-weight:700;}
 .plan-pill span{color:var(--ink-muted);}
 .plan-pill a{font-size:13px;font-weight:600;white-space:nowrap;}
 
-.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:14px;box-shadow:0 1px 3px rgba(28,24,20,.04);}
-.card h2{font-size:21px;font-weight:600;margin-bottom:4px;}
-.card-sub{font-size:14px;line-height:1.6;color:var(--ink-muted);margin-bottom:18px;}
+/* ── Slides: two side by side, the track shifts by one slide width. The
+   viewport height follows the active slide. ── */
+.viewport{overflow:hidden;transition:height .45s var(--ease);margin:0 -4px;}
+.track{display:flex;width:200%;align-items:flex-start;transition:transform .5s var(--ease);}
+.track.at2{transform:translateX(-50%);}
+.slide{width:50%;padding:0 4px 4px;transition:opacity .35s ease;}
+.slide[inert]{opacity:0;}
+.back{color:var(--ink-muted);background:none;border:none;cursor:pointer;padding:4px 0;margin-bottom:8px;font-size:13.5px;font-weight:600;}
+.back:hover{color:var(--ink);}
 
+/* ── Brand dropdown ── */
+/* The open list hangs below the slide, so the viewport stops clipping it
+   vertically — but keeps clipping sideways, where step 2 is parked. */
+.viewport.menu-open{overflow-x:clip;overflow-y:visible;}
+.picker{position:relative;margin-bottom:10px;z-index:5;}
+.picker-btn{width:100%;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;background:var(--white);border:2px solid var(--navy);border-radius:14px;padding:14px 16px;min-height:64px;box-shadow:0 6px 22px rgba(26,39,68,.10);transition:box-shadow .2s;}
+.picker-btn:hover{box-shadow:0 8px 28px rgba(26,39,68,.16);}
+.picker-btn:focus-visible{outline:3px solid rgba(59,130,246,.35);outline-offset:2px;}
+.picker-btn .ph{flex:1;min-width:0;}
+.picker-btn .ph b{display:block;font-size:17px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.picker-btn .ph small{display:block;font-size:13px;color:var(--ink-muted);margin-top:2px;}
+.picker-btn .chev{width:28px;height:28px;border-radius:50%;background:var(--navy);display:grid;place-items:center;flex-shrink:0;transition:transform .25s var(--ease);}
+.picker.open .chev{transform:rotate(180deg);}
+.picker-list{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:20;background:var(--white);border:1px solid var(--border);border-radius:14px;box-shadow:0 18px 50px rgba(28,24,20,.18);max-height:min(420px,60vh);overflow-y:auto;padding:6px;opacity:0;transform:translateY(-6px);pointer-events:none;visibility:hidden;transition:opacity .18s ease,transform .18s var(--ease),visibility 0s .18s;list-style:none;outline:none;}
+.picker.open .picker-list{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .18s ease,transform .18s var(--ease);}
+.opt{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px;cursor:pointer;}
+.opt:hover,.opt.hl{background:var(--cream);}
+.opt .thumb{width:42px;height:42px;border-radius:9px;background:#fff;border:1px solid var(--border-mid);display:grid;place-items:center;flex-shrink:0;overflow:hidden;}
+.opt .thumb img{max-width:34px;max-height:34px;object-fit:contain;}
+.opt .lbl{flex:1;min-width:0;}
+.opt .lbl b{display:block;font-size:15px;font-weight:600;}
+.opt .lbl small{font-size:12.5px;color:var(--ink-muted);}
+.opt .tick{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--cream-dark);flex-shrink:0;}
+.opt[aria-selected="true"] .tick{background:var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none' stroke='white' stroke-width='2.4'%3E%3Cpolyline points='3,7.5 6,10.5 11,4'/%3E%3C/svg%3E") center/12px no-repeat;border-color:var(--blue);}
+.opt-sep{height:1px;background:var(--border);margin:6px 8px;}
+
+.chosen{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:14px;}
+.chosen:empty{display:none;}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--blue-light);color:var(--blue-dark);font-size:13px;font-weight:600;border-radius:20px;padding:5px 6px 5px 12px;}
+.pill button{width:20px;height:20px;border-radius:50%;border:none;background:rgba(29,78,216,.12);color:var(--blue-dark);cursor:pointer;font-size:13px;line-height:1;}
+.add-brand{background:none;border:1.5px dashed var(--cream-dark);color:var(--ink-muted);font-size:13px;font-weight:600;border-radius:20px;padding:5px 12px;cursor:pointer;}
+.add-brand:hover{border-color:var(--navy);color:var(--ink);}
+
+/* ── Catalog preview. Cards arrive faint and "prepare" one by one while the
+   shelf scrolls with them — the dealer watches their catalog being built. ── */
+.preview{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 3px rgba(28,24,20,.04);}
+.preview-head{padding:14px 16px 12px;border-bottom:1px solid var(--border-mid);}
+.preview-status{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px;font-weight:600;}
+.preview-status .count{font-variant-numeric:tabular-nums;color:var(--ink-muted);font-weight:500;font-size:13px;white-space:nowrap;}
+.preview-status.done{color:#15803d;}
+.spinner{width:14px;height:14px;border-radius:50%;border:2px solid var(--cream-dark);border-top-color:var(--navy);display:inline-block;vertical-align:-2px;margin-right:8px;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.meter{height:4px;border-radius:4px;background:var(--cream-mid);margin-top:10px;overflow:hidden;}
+.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--navy));transition:width .25s linear;}
+.preview-status.done + .meter i{background:var(--green);}
+
+.shelf-wrap{position:relative;}
+.shelf-wrap::after{content:"";position:absolute;left:0;right:0;bottom:0;height:56px;background:linear-gradient(rgba(255,254,251,0),var(--white));pointer-events:none;}
+.shelf{height:430px;overflow:hidden;}
+.shelf.free{overflow-y:auto;}
+.grid-p{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px 14px 40px;}
+.prod{background:var(--cream);border:1px solid var(--border-mid);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:6px;position:relative;opacity:.22;filter:grayscale(1);transform:scale(.97);transition:opacity .4s ease,filter .5s ease,transform .4s var(--ease);}
+.prod.ready{opacity:1;filter:none;transform:none;}
+.prod .ph{aspect-ratio:1;background:#fff;border-radius:9px;display:grid;place-items:center;overflow:hidden;position:relative;}
+.prod .ph img{width:82%;height:82%;object-fit:contain;}
+/* Shimmer on cards still waiting their turn. */
+.prod:not(.ready) .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.8) 50%,transparent 70%);background-size:220% 100%;animation:shimmer 1.4s linear infinite;}
+@keyframes shimmer{from{background-position:120% 0;}to{background-position:-120% 0;}}
+.prod .cat{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-muted);}
+.prod .nm{font-size:12.5px;font-weight:600;line-height:1.3;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em;}
+.prod .price{font-size:11.5px;color:var(--ink-muted);border:1.5px dashed var(--cream-dark);border-radius:7px;padding:4px 7px;background:var(--white);}
+.prod .ok{position:absolute;top:8px;right:8px;z-index:1;width:20px;height:20px;border-radius:50%;background:var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none' stroke='white' stroke-width='2.4'%3E%3Cpolyline points='3,7.5 6,10.5 11,4'/%3E%3C/svg%3E") center/12px no-repeat;transform:scale(0);transition:transform .3s var(--ease);box-shadow:0 2px 6px rgba(22,163,74,.35);}
+.prod.ready .ok{transform:scale(1);}
+
+/* Before a brand is picked: a faint, slowly drifting wall of products hints
+   at what's coming. */
+.teaser{position:relative;height:250px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;border-radius:16px;background:var(--white);border:1px solid var(--border);margin-bottom:14px;}
+.teaser-row{display:flex;gap:10px;padding:10px 0 0;width:max-content;animation:drift 70s linear infinite;opacity:.5;filter:grayscale(.4);}
+.teaser-row.r2{animation-direction:reverse;animation-duration:80s;}
+.teaser-row div{width:100px;height:100px;background:#fff;border:1px solid var(--border-mid);border-radius:12px;display:grid;place-items:center;flex-shrink:0;}
+.teaser-row img{max-width:76px;max-height:76px;object-fit:contain;}
+@keyframes drift{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.teaser-msg{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;background:radial-gradient(ellipse at center,rgba(255,254,251,.94) 30%,rgba(255,254,251,.35) 78%);}
+.teaser-msg b{display:block;font-family:'Playfair Display',serif;font-size:22px;font-weight:600;margin-bottom:4px;}
+.teaser-msg span{font-size:13.5px;color:var(--ink-muted);}
+
+/* ── Step 2 ── */
+.summary{display:flex;align-items:center;gap:14px;background:var(--green-light);border:1px solid rgba(22,163,74,.18);border-radius:14px;padding:12px 14px;margin-bottom:14px;}
+.stack{display:flex;flex-shrink:0;}
+.stack span{width:44px;height:44px;border-radius:10px;background:#fff;border:2px solid var(--green-light);display:grid;place-items:center;margin-left:-12px;overflow:hidden;box-shadow:0 1px 4px rgba(28,24,20,.1);}
+.stack span:first-child{margin-left:0;}
+.stack img{max-width:34px;max-height:34px;object-fit:contain;}
+.summary-txt{font-size:13.5px;line-height:1.45;color:#15803d;min-width:0;}
+.summary-txt b{display:block;color:var(--ink);font-size:14.5px;}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:14px;box-shadow:0 1px 3px rgba(28,24,20,.04);}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .field{display:flex;flex-direction:column;gap:6px;}
 .field.full{grid-column:1/-1;}
 .field label{font-size:13px;font-weight:600;color:var(--ink-mid);}
-.field label .opt{font-weight:400;color:var(--ink-muted);}
+.field label .opt-l{font-weight:400;color:var(--ink-muted);}
 /* 16px keeps iOS Safari from zooming into the field on focus. */
 .field input{font:inherit;font-size:16px;color:var(--ink);background:var(--cream);border:1.5px solid var(--cream-dark);border-radius:10px;padding:12px 13px;outline:none;transition:border-color .15s,background .15s;width:100%;}
 .field input:focus{border-color:var(--blue);background:var(--white);}
 .field input[aria-invalid="true"]{border-color:var(--red);}
-
 .consent{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--ink-muted);line-height:1.5;grid-column:1/-1;cursor:pointer;}
 .consent input{width:18px;height:18px;margin-top:1px;accent-color:var(--navy);flex-shrink:0;}
 
-.brands{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.brand{font:inherit;text-align:left;cursor:pointer;background:var(--cream);border:1.5px solid var(--cream-dark);border-radius:10px;padding:11px 12px;min-height:58px;display:flex;flex-direction:column;justify-content:center;gap:2px;transition:border-color .15s,background .15s;position:relative;}
-.brand:hover{border-color:rgba(26,39,68,.35);}
-.brand b{font-size:14.5px;font-weight:600;color:var(--ink);}
-.brand small{font-size:12px;color:var(--ink-muted);}
-.brand[aria-pressed="true"]{background:var(--blue-light);border-color:var(--blue);}
-.brand[aria-pressed="true"] small{color:var(--blue-dark);}
-.brand[aria-pressed="true"]::after{content:"";position:absolute;top:9px;right:9px;width:16px;height:16px;border-radius:50%;background:var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none' stroke='white' stroke-width='2.4'%3E%3Cpolyline points='3,7.5 6,10.5 11,4'/%3E%3C/svg%3E") center/11px no-repeat;}
-.brand:focus-visible,.cta:focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
-
-.tally{margin-top:14px;font-size:14px;padding:11px 14px;border-radius:10px;background:var(--cream);color:var(--ink-muted);line-height:1.5;}
-.tally.on{background:var(--green-light);color:#15803d;font-weight:600;}
-
 .error{display:none;background:var(--red-light);color:var(--red);font-size:14px;border-radius:10px;padding:11px 14px;margin-bottom:14px;}
 .error.show{display:block;}
-
-.cta{width:100%;font:inherit;font-size:17px;font-weight:700;color:#fff;background:var(--navy);border:none;border-radius:12px;padding:17px 20px;cursor:pointer;transition:background .15s,transform .1s;margin-top:8px;}
+.cta{width:100%;font-size:17px;font-weight:700;color:#fff;background:var(--navy);border:none;border-radius:12px;padding:17px 20px;cursor:pointer;transition:background .15s,transform .1s;}
 .cta:hover{background:#0f1a33;}
 .cta:active{transform:scale(.99);}
 .cta[disabled]{opacity:.7;cursor:progress;}
+.cta:focus-visible{outline:3px solid rgba(59,130,246,.35);outline-offset:2px;}
 .cta-sub{text-align:center;font-size:13px;color:var(--ink-muted);margin-top:11px;}
 .fine{text-align:center;font-size:12.5px;color:var(--ink-muted);margin-top:18px;line-height:1.6;}
 
 @media(max-width:560px){
-  .page{padding:26px 16px 56px;}
+  .page{padding:22px 16px 56px;}
   .nav-inner{padding:0 16px;}
-  .card{padding:20px 16px;border-radius:14px;}
+  .card{padding:18px 16px;border-radius:14px;}
   .grid{grid-template-columns:1fr;}
-  .brands{grid-template-columns:1fr 1fr;}
-  .plan-pill{flex-wrap:wrap;}
+  .grid-p{grid-template-columns:1fr 1fr;gap:8px;padding:10px 10px 40px;}
+  .shelf{height:400px;}
+  .plan-pill{flex-wrap:wrap;gap:4px 12px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .viewport,.track,.slide,.progress-seg i,.prod,.prod .ok,.meter i{transition:none;}
+  .teaser-row,.spinner,.prod .ph::after{animation:none;}
 }
 </style>
 <!-- Meta Pixel — Treat Engine (1134033977806212) -->
@@ -148,22 +225,57 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
       <span class="progress-seg done" id="seg1"><i></i></span>
       <span class="progress-seg" id="seg2"><i></i></span>
     </div>
-    <span id="progress-label">Step 1 of 2</span>
-  </div>
-
-  <div class="plan-pill">
-    <div><b id="plan-name">Pro plan</b> <span id="plan-terms">· $0 today, then $297/mo after 30 days</span></div>
-    <a href="/sales-v2#pricing" id="plan-change">Change plan</a>
+    <span id="progress-label">Step 1 of 2 · Your catalog</span>
   </div>
 
   <form id="setup" novalidate>
     <div class="viewport" id="viewport">
       <div class="track" id="track">
 
-        <!-- ── Step 1: the dealer. Saved as a lead the moment it's done. ── -->
+        <!-- ── Step 1: pick a brand, watch the catalog get built. ── -->
         <section class="slide" id="slide1" aria-labelledby="title1">
-          <h1 class="title" id="title1" tabindex="-1">Let's set up <em>your dealership</em></h1>
-          <p class="sub">About a minute. This becomes your ClearDeals account, and we'll load your equipment for you on the next step.</p>
+          <h1 class="title" id="title1" tabindex="-1">Let's build <em>your catalog</em></h1>
+          <p class="sub">Pick the brand you sell. We'll load every system, filter and add-on with photos and descriptions. <strong>You just add your prices.</strong></p>
+
+          <div class="picker" id="picker">
+            <button type="button" class="picker-btn" id="picker-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="picker-list">
+              <span class="ph"><b id="picker-title">Select your brand</b><small id="picker-sub">11 major brands + independent dealers</small></span>
+              <span class="chev" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2"><polyline points="2.5,4.5 6,8 9.5,4.5"/></svg></span>
+            </button>
+            <ul class="picker-list" id="picker-list" role="listbox" aria-label="Brands" tabindex="-1"></ul>
+          </div>
+          <div class="chosen" id="chosen"></div>
+
+          <div class="teaser" id="teaser" aria-hidden="true">
+            <div class="teaser-row" id="teaser-r1"></div>
+            <div class="teaser-row r2" id="teaser-r2"></div>
+            <div class="teaser-msg"><div><b>186 products, ready to load</b><span>Pick your brand above to see yours</span></div></div>
+          </div>
+
+          <div class="preview" id="preview" hidden>
+            <div class="preview-head">
+              <div class="preview-status" id="status" aria-live="polite"><span id="status-txt">Preparing your catalog…</span><span class="count" id="status-count"></span></div>
+              <div class="meter"><i id="meter"></i></div>
+            </div>
+            <div class="shelf-wrap"><div class="shelf" id="shelf"><div class="grid-p" id="grid-p"></div></div></div>
+          </div>
+
+          <div class="error" id="error1" role="alert"></div>
+          <button class="cta" type="button" id="next">Next: create your account →</button>
+          <p class="cta-sub">Nothing to pay on this step</p>
+        </section>
+
+        <!-- ── Step 2: confirm details, then Stripe. ── -->
+        <section class="slide" id="slide2" aria-labelledby="title2" inert>
+          <button class="back" type="button" id="back">← Back to catalog</button>
+          <h1 class="title" id="title2" tabindex="-1">Your catalog is <em>ready</em></h1>
+          <p class="sub">Last step. Tell us who you are and we'll set up your account with everything you picked.</p>
+
+          <div class="summary">
+            <div class="stack" id="stack"></div>
+            <div class="summary-txt"><b id="summary-title"></b><span id="summary-sub"></span></div>
+          </div>
+
           <div class="card">
             <div class="grid">
               <div class="field">
@@ -179,11 +291,11 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
                 <input id="email" name="email" type="email" inputmode="email" autocomplete="email" enterkeyhint="next" required>
               </div>
               <div class="field">
-                <label for="phone">Mobile phone <span class="opt">(optional)</span></label>
+                <label for="phone">Mobile phone <span class="opt-l">(optional)</span></label>
                 <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" enterkeyhint="next">
               </div>
               <div class="field">
-                <label for="website">Website <span class="opt">(optional)</span></label>
+                <label for="website">Website <span class="opt-l">(optional)</span></label>
                 <input id="website" name="website" inputmode="url" autocomplete="url" enterkeyhint="go" placeholder="yourdealership.com">
               </div>
               <!-- Unchecked by default: a phone number alone is not consent to text (TCPA). -->
@@ -193,26 +305,18 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
               </label>
             </div>
           </div>
-          <div class="error" id="error1" role="alert"></div>
-          <button class="cta" type="button" id="next">Next: pick your brands →</button>
-          <p class="cta-sub">Nothing to pay on this step</p>
-        </section>
 
-        <!-- ── Step 2: brands, then Stripe. ── -->
-        <section class="slide" id="slide2" aria-labelledby="title2" inert>
-          <button class="back" type="button" id="back">← Back</button>
-          <h1 class="title" id="title2" tabindex="-1">Which brands does <em id="dealer-name">your dealership</em> sell?</h1>
-          <p class="sub">Pick any that apply. We'll load their systems, filters and add-ons into your catalog with descriptions and models filled in. You just add your prices.</p>
-          <div class="card">
-            <div class="brands" id="brands" role="group" aria-label="Brands you sell"></div>
-            <div class="tally" id="tally" aria-live="polite">Not sure yet? Skip this, and we'll build your catalog with you during setup.</div>
-          </div>
           <div class="error" id="error2" role="alert"></div>
-          <button class="cta" type="submit" id="submit">Continue to free trial →</button>
+          <button class="cta" type="submit" id="submit">Start my free trial →</button>
           <p class="cta-sub" id="cta-sub">$0 due today · Cancel anytime · Secure checkout by Stripe</p>
         </section>
 
       </div>
+    </div>
+
+    <div class="plan-pill">
+      <div><b id="plan-name">Pro plan</b> <span id="plan-terms">· $0 today, then $297/mo after 30 days</span></div>
+      <a href="/sales-v2#pricing">Change plan</a>
     </div>
     <p class="fine">Rather see it first? <a href="/sales-v2#book">Book a 30-min demo</a><br>
       We use these details to set up your account and to help if you get stuck finishing.</p>
@@ -220,99 +324,238 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
 </main>
 
 <script>
-// Mirrors lib/brand-catalog.js — the server re-checks names and recounts, so
-// a drift here only mislabels a chip, it can't send ClearDeals a bad brand.
-var BRANDS = [
-  ['Culligan',25],['Kinetico',15],['RainSoft',10],['EcoWater',13],['Hague',18],
-  ['WaterCare',16],['Aerus',11],['Puronics',15],['Hellenbrand',21],
-  ['Water-Right',15],['Canopus',5],
-];
-var GENERIC = ['Generic', 22];
+// Manufacturer photos on this public page. Flip to false to show ClearDeals
+// illustrations instead — e.g. if an OEM asks for its images to come down.
+var SHOW_OEM_PHOTOS = true;
+
+// Brand order in the dropdown. Names are the library keys in
+// /images/catalog/catalog.json and lib/brand-catalog.js — the server re-checks
+// them and recounts, so ClearDeals never receives an unknown brand.
+var BRAND_ORDER = ['Culligan','Kinetico','RainSoft','EcoWater','Hague','WaterCare',
+  'Aerus','Puronics','Hellenbrand','Water-Right','Canopus'];
+var GENERIC = 'Generic';
+var GENERIC_ART = {
+  'Softeners':'gen-softener.svg','Conditioners':'gen-conditioner.svg','Filters':'gen-filter.svg',
+  'Reverse Osmosis':'gen-ro.svg','Bottled Coolers':'gen-accessory.svg',
+  'Bottleless Coolers':'gen-ro-tankless.svg','Add Ons':'gen-accessory.svg',
+};
 // Mirrors PRICING_PLANS on /sales-v2 and /sales/checkout-v2.
 var PLANS = {
   starter: {name:'Starter', month:97,  year:997},
   pro:     {name:'Pro',     month:297, year:2997},
 };
 
+var $ = function(id){ return document.getElementById(id); };
 var params = new URLSearchParams(location.search);
 var plan = PLANS[params.get('plan')] ? params.get('plan') : 'pro';
 var interval = params.get('interval') === 'year' ? 'year' : 'month';
 var money = function(n){ return '$' + n.toLocaleString('en-US'); };
-var $ = function(id){ return document.getElementById(id); };
+var reduceMotion = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+var CATALOG = null;
+var picked = [];           // brand keys, in the order chosen
+
+function labelOf(b) { return b === GENERIC ? 'Independent / other brand' : b; }
+function photoOf(p) {
+  if (p.i && (SHOW_OEM_PHOTOS || p.i.indexOf('gen-') === 0)) return '/images/catalog/' + p.i;
+  return '/images/catalog/' + (GENERIC_ART[p.c] || 'gen-filter.svg');
+}
+function total() {
+  return picked.reduce(function(n, b){ return n + CATALOG[b].length; }, 0);
+}
+function el(tag, cls, text) {
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text != null) e.textContent = text;
+  return e;
+}
+function img(src, alt) {
+  var i = el('img'); i.src = src; i.alt = alt || ''; i.decoding = 'async';
+  return i;
+}
 
 // ── Plan summary. The trial is monthly-only, so annual never promises one. ──
-var p = PLANS[plan];
-$('plan-name').textContent = p.name + ' plan';
-if (interval === 'year') {
-  $('plan-terms').textContent = '· ' + money(p.year) + '/year, billed today';
-  $('submit').textContent = 'Continue to checkout →';
-  $('cta-sub').textContent = 'Secure checkout by Stripe · No contract';
-} else {
-  $('plan-terms').textContent = '· $0 today, then ' + money(p.month) + '/mo after 30 days';
-}
-
-// ── Brand chips ──
-var picked = new Set();
-var countOf = {};
-BRANDS.concat([GENERIC]).forEach(function(b){ countOf[b[0]] = b[1]; });
-
-function chip(key, label, count) {
-  var b = document.createElement('button');
-  b.type = 'button';
-  b.className = 'brand';
-  b.dataset.brand = key;
-  b.setAttribute('aria-pressed', 'false');
-  b.innerHTML = '<b></b><small></small>';
-  b.querySelector('b').textContent = label;
-  b.querySelector('small').textContent = count + (key === GENERIC[0] ? ' generic products' : ' products');
-  b.addEventListener('click', function(){
-    picked.has(key) ? picked.delete(key) : picked.add(key);
-    syncBrands();
-    saveDraft();
-  });
-  return b;
-}
-BRANDS.forEach(function(b){ $('brands').appendChild(chip(b[0], b[0], b[1])); });
-$('brands').appendChild(chip(GENERIC[0], 'Independent', GENERIC[1]));
-
-function syncBrands() {
-  var total = 0;
-  $('brands').querySelectorAll('.brand').forEach(function(el){
-    var on = picked.has(el.dataset.brand);
-    el.setAttribute('aria-pressed', on ? 'true' : 'false');
-    if (on) total += countOf[el.dataset.brand];
-  });
-  var t = $('tally');
-  t.classList.toggle('on', total > 0);
-  t.textContent = total > 0
-    ? '✓ ' + total + ' products ready to load into your catalog'
-    : 'Not sure yet? Skip this, and we’ll build your catalog with you during setup.';
-}
-
-// ── Draft, so "back" from Stripe returns a filled form. Convenience only. ──
-var FIELDS = ['name','dealership','email','phone','website'];
-function saveDraft() {
-  var d = {brands: Array.from(picked), smsConsent: $('smsConsent').checked};
-  FIELDS.forEach(function(f){ d[f] = $(f).value; });
-  try { localStorage.setItem('cd-setup-draft', JSON.stringify(d)); } catch (e) {}
-}
-(function loadDraft(){
-  var d = null;
-  try { d = JSON.parse(localStorage.getItem('cd-setup-draft') || 'null'); } catch (e) {}
-  if (!d) return;
-  FIELDS.forEach(function(f){ if (d[f]) $(f).value = d[f]; });
-  $('smsConsent').checked = !!d.smsConsent;
-  (d.brands || []).forEach(function(b){ if (countOf[b]) picked.add(b); });
-  syncBrands();
+(function(){
+  var p = PLANS[plan];
+  $('plan-name').textContent = p.name + ' plan';
+  if (interval === 'year') {
+    $('plan-terms').textContent = '· ' + money(p.year) + '/year, billed today';
+    $('submit').textContent = 'Continue to checkout →';
+    $('cta-sub').textContent = 'Secure checkout by Stripe · No contract';
+  } else {
+    $('plan-terms').textContent = '· $0 today, then ' + money(p.month) + '/mo after 30 days';
+  }
 })();
-$('setup').addEventListener('input', saveDraft);
+
+// ── Dropdown ──
+var hl = -1;
+function options() { return Array.prototype.slice.call($('picker-list').querySelectorAll('.opt')); }
+function openPicker(open) {
+  $('picker').classList.toggle('open', open);
+  $('viewport').classList.toggle('menu-open', open);
+  $('picker-btn').setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) { hl = -1; $('picker-list').focus({preventScroll: true}); }
+}
+function buildPicker() {
+  var list = $('picker-list');
+  BRAND_ORDER.concat(['sep', GENERIC]).forEach(function(b){
+    if (b === 'sep') { list.appendChild(el('li', 'opt-sep')); return; }
+    var items = CATALOG[b];
+    var li = el('li', 'opt');
+    li.setAttribute('role', 'option');
+    li.setAttribute('aria-selected', 'false');
+    li.dataset.brand = b;
+    var th = el('span', 'thumb'); th.appendChild(img(photoOf(items[0]), ''));
+    var lb = el('span', 'lbl');
+    lb.appendChild(el('b', null, labelOf(b)));
+    lb.appendChild(el('small', null, items.length + (b === GENERIC ? ' generic products' : ' products')));
+    li.appendChild(th); li.appendChild(lb); li.appendChild(el('span', 'tick'));
+    li.addEventListener('click', function(e){ e.stopPropagation(); choose(b); });
+    list.appendChild(li);
+  });
+}
+$('picker-btn').addEventListener('click', function(e){
+  e.stopPropagation();
+  openPicker(!$('picker').classList.contains('open'));
+});
+document.addEventListener('click', function(e){ if (!$('picker').contains(e.target)) openPicker(false); });
+$('picker-list').addEventListener('keydown', function(e){
+  var opts = options();
+  if (e.key === 'Escape') { openPicker(false); $('picker-btn').focus(); return; }
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    hl = (hl + (e.key === 'ArrowDown' ? 1 : -1) + opts.length) % opts.length;
+  } else if ((e.key === 'Enter' || e.key === ' ') && hl >= 0) {
+    e.preventDefault(); choose(opts[hl].dataset.brand); return;
+  } else return;
+  opts.forEach(function(o, i){ o.classList.toggle('hl', i === hl); });
+  opts[hl].scrollIntoView({block: 'nearest'});
+});
+
+// Picking a brand closes the list and starts its preview. Picking it again
+// is a no-op; brands come off with the pill's ×.
+function choose(b) {
+  openPicker(false);
+  $('error1').classList.remove('show');
+  if (picked.indexOf(b) > -1) return;
+  picked.push(b);
+  try { if (window.clarity) clarity('event', 'setup_brand_picked'); } catch (e) {}
+  renderChosen();
+  prepare(b, false);
+  saveDraft();
+}
+function removeBrand(b) {
+  picked = picked.filter(function(x){ return x !== b; });
+  $('grid-p').querySelectorAll('[data-brand="' + b + '"]').forEach(function(n){ n.remove(); });
+  renderChosen();
+  if (!picked.length) { runId++; $('preview').hidden = true; $('teaser').hidden = false; }
+  else finishStatus();
+  saveDraft();
+}
+function renderChosen() {
+  options().forEach(function(o){
+    o.setAttribute('aria-selected', picked.indexOf(o.dataset.brand) > -1 ? 'true' : 'false');
+  });
+  var c = $('chosen'); c.innerHTML = '';
+  if (!picked.length) {
+    $('picker-title').textContent = 'Select your brand';
+    $('picker-sub').textContent = '11 major brands + independent dealers';
+    return;
+  }
+  $('picker-title').textContent = picked.map(labelOf).join(', ');
+  $('picker-sub').textContent = total() + ' products · tap to add another brand';
+  picked.forEach(function(b){
+    var p = el('span', 'pill', labelOf(b));
+    var x = el('button', null, '×');
+    x.type = 'button'; x.setAttribute('aria-label', 'Remove ' + labelOf(b));
+    x.addEventListener('click', function(e){ e.stopPropagation(); removeBrand(b); });
+    p.appendChild(x); c.appendChild(p);
+  });
+  var add = el('button', 'add-brand', '+ I sell another brand');
+  add.type = 'button';
+  add.addEventListener('click', function(e){ e.stopPropagation(); openPicker(true); });
+  c.appendChild(add);
+}
+
+// ── The preview: cards land faint, then get "prepared" one at a time while
+// the shelf scrolls along with them. A run takes ~3s whatever the count. ──
+var runId = 0;
+function prepare(b, instant) {
+  $('teaser').hidden = true;
+  $('preview').hidden = false;
+  var shelf = $('shelf'), grid = $('grid-p');
+  var id = ++runId;
+  // Any cards still mid-run from an earlier brand finish immediately.
+  grid.querySelectorAll('.prod:not(.ready)').forEach(function(c){ c.classList.add('ready'); });
+
+  var cards = CATALOG[b].map(function(p){
+    var c = el('div', 'prod'); c.dataset.brand = b;
+    var ph = el('div', 'ph'); ph.appendChild(img(photoOf(p), p.n));
+    c.appendChild(el('span', 'ok'));
+    c.appendChild(ph);
+    c.appendChild(el('span', 'cat', p.c));
+    c.appendChild(el('span', 'nm', p.n));
+    c.appendChild(el('span', 'price', 'Your price: $ —'));
+    grid.appendChild(c);
+    return c;
+  });
+  if (instant || reduceMotion) {
+    cards.forEach(function(c){ c.classList.add('ready'); });
+    finishStatus(true);
+    return;
+  }
+
+  shelf.classList.remove('free');
+  shelf.scrollTop = Math.max(0, cards[0].offsetTop - 14);
+  $('status').classList.remove('done');
+  $('status-txt').innerHTML = '';
+  $('status-txt').appendChild(el('span', 'spinner'));
+  $('status-txt').appendChild(document.createTextNode(
+    'Preparing your ' + (b === GENERIC ? 'independent-dealer' : b) + ' catalog…'));
+
+  var ready = total() - cards.length;
+  var delay = Math.max(80, Math.min(220, 3000 / cards.length));
+  var i = 0;
+  (function tick(){
+    if (id !== runId) return;          // a newer brand (or a removal) took over
+    if (i >= cards.length) { finishStatus(); return; }
+    var c = cards[i++];
+    c.classList.add('ready');
+    ready++;
+    $('status-count').textContent = ready + ' / ' + total();
+    $('meter').style.width = Math.round(ready / total() * 100) + '%';
+    // Keep the card being prepared in the lower half of the shelf.
+    var target = c.offsetTop - shelf.clientHeight * 0.45;
+    if (target > shelf.scrollTop) shelf.scrollTo({top: target, behavior: 'smooth'});
+    setTimeout(tick, delay);
+  })();
+}
+function finishStatus(instant) {
+  $('status').classList.add('done');
+  $('status-txt').textContent = '✓ ' + total() + ' products ready. You just add prices.';
+  $('status-count').textContent = '';
+  $('meter').style.width = '100%';
+  var shelf = $('shelf');
+  shelf.classList.add('free');
+  // Settle back to the top so they can browse what was built.
+  if (instant) shelf.scrollTop = 0;
+  else setTimeout(function(){ shelf.scrollTo({top: 0, behavior: reduceMotion ? 'auto' : 'smooth'}); }, 600);
+}
+
+// The idle wall before a brand is picked: two rows drifting in opposite
+// directions, each doubled so the loop is seamless.
+function buildTeaser() {
+  var all = [];
+  BRAND_ORDER.forEach(function(b){ all = all.concat(CATALOG[b].slice(0, 2)); });
+  [['teaser-r1', all.filter(function(_, i){ return i % 2 === 0; })],
+   ['teaser-r2', all.filter(function(_, i){ return i % 2 === 1; })]].forEach(function(r){
+    var row = $(r[0]);
+    r[1].concat(r[1]).forEach(function(p){ var d = el('div'); d.appendChild(img(photoOf(p), '')); row.appendChild(d); });
+  });
+}
 
 // ── Slides ──
 var step = 1;
 var slides = [null, $('slide1'), $('slide2')];
-
-// The viewport tracks the active slide's height, including when an error or
-// the brand tally changes it after the slide is shown.
 function fitHeight() { $('viewport').style.height = slides[step].offsetHeight + 'px'; }
 if (window.ResizeObserver) {
   var ro = new ResizeObserver(fitHeight);
@@ -322,86 +565,45 @@ window.addEventListener('resize', fitHeight);
 
 function go(to, quiet) {
   step = to;
+  openPicker(false);
   $('track').classList.toggle('at2', to === 2);
   slides[1].inert = to !== 1;
   slides[2].inert = to !== 2;
   $('seg2').classList.toggle('done', to === 2);
-  $('progress-label').textContent = 'Step ' + to + ' of 2';
+  $('progress-label').textContent = to === 1 ? 'Step 1 of 2 · Your catalog' : 'Step 2 of 2 · Your account';
   fitHeight();
-  // Each slide starts at the top, not wherever the last one was scrolled to.
   if (quiet) return;
   if (window.scrollY > 0) window.scrollTo({top: 0, behavior: 'smooth'});
-  setTimeout(function(){ $('title' + to).focus({preventScroll: true}); }, 460);
+  setTimeout(function(){ $('title' + to).focus({preventScroll: true}); }, 500);
 }
-
-// Step 2 is its own history entry, so a phone's back gesture returns to step 1
-// instead of leaving the page.
+// Step 2 is its own history entry, so a phone's back gesture returns to the
+// catalog instead of leaving the page.
 function stepUrl(n) {
   var q = new URLSearchParams(location.search);
   n === 2 ? q.set('step', '2') : q.delete('step');
   return location.pathname + '?' + q.toString();
 }
-window.addEventListener('popstate', function(e){
-  go(e.state && e.state.step === 2 ? 2 : 1);
-});
+window.addEventListener('popstate', function(e){ go(e.state && e.state.step === 2 ? 2 : 1); });
 
-function fail(n, msg, field) {
-  $('error' + n).textContent = msg;
-  $('error' + n).classList.add('show');
-  if (field) { $(field).setAttribute('aria-invalid', 'true'); $(field).focus(); }
-}
-function clearErrors() {
-  $('error1').classList.remove('show');
-  $('error2').classList.remove('show');
-  FIELDS.forEach(function(f){ $(f).removeAttribute('aria-invalid'); });
+function fillSummary() {
+  $('summary-title').textContent = total() + ' products saved to your catalog';
+  $('summary-sub').textContent = picked.map(labelOf).join(' · ') + ' · you just add prices';
+  var s = $('stack'); s.innerHTML = '';
+  var firsts = [];
+  picked.forEach(function(b){ firsts = firsts.concat(CATALOG[b].slice(0, 4)); });
+  firsts.slice(0, 4).forEach(function(p){ var sp = el('span'); sp.appendChild(img(photoOf(p), '')); s.appendChild(sp); });
 }
 
-function values() {
-  var v = {};
-  FIELDS.forEach(function(f){ v[f] = $(f).value.trim(); });
-  return v;
-}
-function step1Error(v) {
-  if (!v.name) return ['Please add your name.', 'name'];
-  if (!v.dealership) return ['Please add your dealership name.', 'dealership'];
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) return ['Please enter a valid email.', 'email'];
-  return null;
-}
-function leadBody(v) {
-  return {
-    name: v.name, dealership: v.dealership, email: v.email,
-    phone: v.phone, website: v.website,
-    smsConsent: $('smsConsent').checked,
-    brands: Array.from(picked),
-    source: 'sales-v2',
-  };
-}
-
-// ── Step 1 → 2 ──
-var captured = '';
 function next() {
-  clearErrors();
-  var v = values();
-  var bad = step1Error(v);
-  if (bad) { fail(1, bad[0], bad[1]); fitHeight(); return; }
-
-  // Saved before the slide moves: a dealer who stops at brands is still a
-  // lead. Once per set of details, however often they go back and forth.
-  var key = [v.name, v.dealership, v.email, v.phone, $('smsConsent').checked].join('|');
-  if (key !== captured) {
-    captured = key;
-    try {
-      fetch('/api/lead', {
-        method: 'POST', keepalive: true,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({plan: plan, interval: interval, lead: leadBody(v)}),
-      }).catch(function(){});
-    } catch (e) {}
-    try { if (window.fbq) fbq('track', 'Lead', {content_name: 'ClearDeals ' + plan}); } catch (e) {}
-    try { if (window.clarity) clarity('event', 'setup_step1_done'); } catch (e) {}
+  if (!CATALOG) return;
+  if (!picked.length) {
+    $('error1').textContent = 'Pick the brand you sell, or "Independent / other brand" at the bottom of the list.';
+    $('error1').classList.add('show');
+    openPicker(true);
+    return;
   }
-
-  $('dealer-name').textContent = v.dealership;
+  fillSummary();
+  try { if (window.clarity) clarity('event', 'setup_step1_done'); } catch (e) {}
   history.pushState({step: 2}, '', stepUrl(2));
   go(2);
 }
@@ -409,61 +611,106 @@ $('next').addEventListener('click', next);
 $('back').addEventListener('click', function(){ history.back(); });
 
 // ── Step 2 → Stripe ──
+var FIELDS = ['name','dealership','email','phone','website'];
+function fail(msg, field) {
+  $('error2').textContent = msg;
+  $('error2').classList.add('show');
+  if (field) { $(field).setAttribute('aria-invalid', 'true'); $(field).focus(); }
+}
 async function checkout() {
-  clearErrors();
-  var v = values();
-  var bad = step1Error(v);
-  if (bad) { history.back(); fail(1, bad[0], bad[1]); return; }
+  $('error2').classList.remove('show');
+  FIELDS.forEach(function(f){ $(f).removeAttribute('aria-invalid'); });
+  var v = {};
+  FIELDS.forEach(function(f){ v[f] = $(f).value.trim(); });
+  if (!v.name) return fail('Please add your name.', 'name');
+  if (!v.dealership) return fail('Please add your dealership name.', 'dealership');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) return fail('Please enter a valid email.', 'email');
 
   var btn = $('submit');
   var label = btn.textContent;
   btn.disabled = true;
-  btn.textContent = 'Saving your setup…';
+  btn.textContent = 'Saving your catalog…';
 
   var res;
   try {
     res = await fetch('/api/checkout', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({service: 'sales', plan: plan, interval: interval, lead: leadBody(v)}),
+      body: JSON.stringify({
+        service: 'sales', plan: plan, interval: interval,
+        lead: {
+          name: v.name, dealership: v.dealership, email: v.email,
+          phone: v.phone, website: v.website,
+          smsConsent: $('smsConsent').checked,
+          brands: picked.slice(),
+          source: 'sales-v2',
+        },
+      }),
     });
     var out = await res.json();
     if (!res.ok || !out.url) throw new Error(out.error || 'No checkout URL returned');
 
-    try { if (window.fbq) fbq('track', 'InitiateCheckout', {content_name: 'ClearDeals ' + plan}); } catch (e) {}
+    try {
+      if (window.fbq) {
+        fbq('track', 'Lead', {content_name: 'ClearDeals ' + plan});
+        fbq('track', 'InitiateCheckout', {content_name: 'ClearDeals ' + plan});
+      }
+    } catch (e) {}
     try { if (window.clarity) clarity('event', 'setup_step2_done'); } catch (e) {}
     location.href = out.url;
   } catch (err) {
     btn.disabled = false;
     btn.textContent = label;
-    fail(2, res && res.status === 400 ? err.message
+    fail(res && res.status === 400 ? err.message
       : 'Something went wrong starting checkout. Please try again, or call us at +1 (617) 315-6471.');
   }
 }
-
 // Enter on step 1 means "next", never a checkout.
 $('setup').addEventListener('submit', function(e){
   e.preventDefault();
   step === 1 ? next() : checkout();
 });
 
-// ── Entry: back from Stripe (?step=2) reopens the brands step if step 1 is
-// still filled from the draft. Step 1 goes under it in history. ──
-(function enter(){
-  var v = values();
-  if (params.get('step') === '2' && !step1Error(v)) {
-    captured = [v.name, v.dealership, v.email, v.phone, $('smsConsent').checked].join('|');
-    $('dealer-name').textContent = v.dealership;
-    history.replaceState({step: 1}, '', stepUrl(1));
+// ── Draft, so "back" from Stripe returns everything filled. Convenience only. ──
+function saveDraft() {
+  var d = {brands: picked.slice(), smsConsent: $('smsConsent').checked};
+  FIELDS.forEach(function(f){ d[f] = $(f).value; });
+  try { localStorage.setItem('cd-setup-draft', JSON.stringify(d)); } catch (e) {}
+}
+$('setup').addEventListener('input', saveDraft);
+function loadDraft() {
+  var d = null;
+  try { d = JSON.parse(localStorage.getItem('cd-setup-draft') || 'null'); } catch (e) {}
+  if (!d) return;
+  FIELDS.forEach(function(f){ if (d[f]) $(f).value = d[f]; });
+  $('smsConsent').checked = !!d.smsConsent;
+  // Restored brands appear already prepared — no replaying the show.
+  (d.brands || []).forEach(function(b){
+    if (CATALOG[b] && picked.indexOf(b) === -1) { picked.push(b); prepare(b, true); }
+  });
+  if (picked.length) renderChosen();
+}
+
+// ── Boot ──
+history.replaceState({step: 1}, '', stepUrl(1));
+go(1, true);
+fetch('/images/catalog/catalog.json').then(function(r){ return r.json(); }).then(function(data){
+  CATALOG = data;
+  buildPicker();
+  buildTeaser();
+  loadDraft();
+  // Back from Stripe (?step=2) reopens the account step, catalog intact.
+  if (params.get('step') === '2' && picked.length) {
+    fillSummary();
     history.pushState({step: 2}, '', stepUrl(2));
     $('track').style.transition = 'none';
     go(2, true);
     requestAnimationFrame(function(){ $('track').style.transition = ''; });
-  } else {
-    history.replaceState({step: 1}, '', stepUrl(1));
-    go(1, true);
   }
-})();
+}).catch(function(){
+  $('error1').textContent = 'Couldn’t load the brand list. Please refresh, or call us at +1 (617) 315-6471.';
+  $('error1').classList.add('show');
+});
 </script>
 </body>
 </html>
