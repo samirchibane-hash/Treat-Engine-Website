@@ -1859,6 +1859,9 @@ function Pricing() {
   const startCheckout = key => {
     if (pending) return;
     setPending(key);
+    // Clicks are told apart by this event, not by the button text — so both
+    // buttons can read naturally. Filter Clarity on cta_pricing_<plan>_<interval>.
+    try { if (window.clarity) window.clarity('event', `cta_pricing_${key}_${billing}`); } catch (e) {}
     window.location.href = `/sales-v2/start?plan=${key}&interval=${billing}`;
   };
 
@@ -1872,7 +1875,7 @@ function Pricing() {
 
   // Trial language is monthly-only — annual bills up front, so the button and
   // the line under it must never promise a free trial while isYear.
-  const ctaFor = name => isYear ? ('Get ' + name + ' →') : 'Start 30-day free trial →';
+  const ctaFor = name => isYear ? ('Get ' + name + ' →') : ('Try ' + name + ' free →');
   const billedFor = key => {
     const amt = money(amountFor(key));
     return isYear
