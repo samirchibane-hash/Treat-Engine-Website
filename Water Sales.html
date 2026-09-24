@@ -276,7 +276,7 @@ a{text-decoration:none;color:inherit;}
 .wi-bullet.on .wi-bullet-text{color:var(--ink);font-weight:500;}
 .wi-bullet:hover .wi-bullet-text{color:var(--ink);}
 .wi-stage{position:relative;width:100%;aspect-ratio:4/3;border-radius:22px;overflow:hidden;background:hsl(40,25%,93%);border:1px solid var(--border);border-top:4px solid var(--wi-solid);transition:border-color .3s;box-shadow:0 24px 60px rgba(28,24,20,.10);font-family:'Inter',system-ui,sans-serif;}
-.wi-stage.is-narrow{aspect-ratio:35/36;}
+.wi-stage.is-phone{aspect-ratio:600/760;}
 .wi-canvas{position:absolute;top:0;left:0;width:960px;height:720px;transform-origin:top left;}
 .wi-canvas *{box-sizing:border-box;}
 .wi-canvas p{line-height:inherit;}
@@ -294,6 +294,10 @@ a{text-decoration:none;color:inherit;}
   .wi-bullets{order:5;}
   .wi-tabs{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;margin:0 -20px 28px;padding:2px 20px 6px;scrollbar-width:none;}
   .wi-tabs::-webkit-scrollbar{display:none;}
+}
+@media(max-width:600px){
+  /* edge to edge on phones: every pixel goes to the equipment and the control */
+  .wi-stage{width:100vw;margin-left:calc(50% - 50vw);border-radius:0;border-left:0;border-right:0;box-shadow:none;}
 }
 @media (prefers-reduced-motion: reduce){.wi-copy{animation:none;}}
 
@@ -1163,10 +1167,10 @@ const APP = {
 
 /* Commers Water — confirmed lineup, every item over the $1,500 retail floor. */
 const WI_P = {
-  wwhs:   {name: 'Whole House System WWHS', category: 'Softeners', retail: 5799, img: 'uploads/whats-inside/wwhs.webp', care: 15.99},
-  croPro: {name: 'CRO PRO 20 R0', category: 'Reverse Osmosis', retail: 2999, img: 'uploads/whats-inside/cropro20.webp', care: 26.99},
-  vortex: {name: 'The Vortex', category: 'Softeners', retail: 4399, img: 'uploads/whats-inside/vortex.webp'},
-  evolve: {name: 'Evolve Series Well Water Conditioner', category: 'Filters', retail: 4899, img: 'uploads/whats-inside/evolve.webp'},
+  wwhs:   {name: 'Whole House System WWHS', category: 'Softeners', retail: 5799, img: 'uploads/whats-inside/wwhs.webp', ar: 420 / 740, care: 15.99},
+  croPro: {name: 'CRO PRO 20 R0', category: 'Reverse Osmosis', retail: 2999, img: 'uploads/whats-inside/cropro20.webp', ar: 541 / 783, care: 26.99},
+  vortex: {name: 'The Vortex', category: 'Softeners', retail: 4399, img: 'uploads/whats-inside/vortex.webp', ar: 420 / 859},
+  evolve: {name: 'Evolve Series Well Water Conditioner', category: 'Filters', retail: 4899, img: 'uploads/whats-inside/evolve.webp', ar: 420 / 813},
 };
 const WI_FIN = {partner: 'US Bank Avvance', apr: 9.99, months: 60};
 const WI_CUSTOMER = 'Sarah Mitchell';
@@ -1207,10 +1211,14 @@ const shake = (t, at, dur = 420) => { const p = prog(t, at, dur); return p > 0 &
 
 /* ── canvas furniture ───────────────────────────────────────────────── */
 
+/** True inside the phone layout, where MobileStage draws the pill and the equipment itself. */
+const WiMobile = React.createContext(false);
+
 /** Audience tag — the app's own bg-primary/10 text-primary tint. */
 function AudiencePill({label, side}) {
+  if (React.useContext(WiMobile)) return null;
   return (
-    <div style={{position: 'absolute', top: 30, [side]: 34, padding: '10px 20px', borderRadius: 999,
+    <div data-wi="pill" style={{position: 'absolute', top: 30, [side]: 34, padding: '10px 20px', borderRadius: 999,
       background: APP.primary10, color: APP.primary, fontSize: 17, fontWeight: 700, letterSpacing: '-0.01em', whiteSpace: 'nowrap'}}>
       {label}
     </div>
@@ -1219,9 +1227,10 @@ function AudiencePill({label, side}) {
 
 /** The client's own system photo, near full canvas height, bleeding off one edge. */
 function ProductBleed({p, side, t, height = 600, bottom = -70, inset = -34}) {
+  if (React.useContext(WiMobile)) return null;
   const s = lerp(1, 1.035, t / BEAT);
   return (
-    <img src={p.img} alt="" draggable="false"
+    <img data-wi="product" src={p.img} alt="" draggable="false"
       style={{position: 'absolute', bottom, [side]: inset, height, width: 'auto', transformOrigin: `${side} bottom`,
         transform: `scale(${s})`, filter: 'drop-shadow(0 24px 40px rgba(20,30,50,.18))', pointerEvents: 'none'}}/>
   );
@@ -1229,7 +1238,7 @@ function ProductBleed({p, side, t, height = 600, bottom = -70, inset = -34}) {
 
 function Cursor({x, y, down}) {
   return (
-    <svg width="30" height="30" viewBox="0 0 24 24" style={{position: 'absolute', left: x, top: y, transform: `scale(${down ? 0.86 : 1})`,
+    <svg data-wi="cursor" width="30" height="30" viewBox="0 0 24 24" style={{position: 'absolute', left: x, top: y, transform: `scale(${down ? 0.86 : 1})`,
       transformOrigin: '4px 3px', filter: 'drop-shadow(0 3px 6px rgba(0,0,0,.25))', pointerEvents: 'none', zIndex: 5}}>
       <path d="M4 3l15 8.2-6.6 1.5L9.3 19z" fill="#111" stroke="#fff" strokeWidth="1.6" strokeLinejoin="round"/>
     </svg>
@@ -2651,6 +2660,68 @@ const WI_PROPS = [
   },
 ];
 
+
+/* ── Phone layout ──────────────────────────────────────────────────────
+ * A 600×760 portrait canvas. The top half shows the beat's control (the desktop scene,
+ * cropped to `box` = [x, y, width] in desktop canvas px and scaled to fit); the bottom
+ * half is the equipment, fully in frame, with the beat's bullet as a caption beside it.
+ */
+const M = (box, product, side, pill) => ({box, product, side, pill});
+const WI_MOBILE = {
+  onboarding: [M([40, 92, 710], 'wwhs', 'right', 'Owners'), M([210, 96, 710], 'croPro', 'left', 'Owners'),
+               M([40, 150, 710], 'vortex', 'right', 'Owners'), M([210, 96, 710], 'evolve', 'left', 'Owners')],
+  pricing: [M([36, 108, 667], 'wwhs', 'right', 'Owners & Managers'), M([356, 300, 560], 'wwhs', 'left', 'Sales Reps'),
+            M([44, 222, 560], 'wwhs', 'right', 'Sales Reps'), M([218, 200, 706], 'croPro', 'left', 'Sales Reps')],
+  presentation: [M([36, 104, 707], 'wwhs', 'right', 'Sales Reps'), M([250, 84, 680], 'croPro', 'left', 'Sales Reps'),
+                 M([36, 110, 728], 'croPro', 'right', 'Sales Reps'), M([280, 88, 650], 'wwhs', 'left', 'Sales Reps & Homeowners')],
+  virtual: [M([299, 140, 605], 'wwhs', 'left', 'Sales Reps'), M([190, 64, 487], 'wwhs', 'right', 'Homeowners'),
+            M([262, 40, 437], 'vortex', 'right', 'Homeowners'), M([300, 130, 616], 'wwhs', 'left', 'Sales Reps')],
+  grow: [M([191, 96, 739], 'vortex', 'right', 'Sales Reps'), M([36, 110, 676], 'wwhs', 'right', 'Sales Reps'),
+         M([337, 76, 583], 'wwhs', 'left', 'Sales Reps'), M([337, 76, 583], 'wwhs', 'left', 'Owners & Managers')],
+  payments: [M([190, 44, 730], 'wwhs', 'right', 'Homeowners'), M([40, 170, 638], 'wwhs', 'right', 'Homeowners'),
+             M([286, 76, 634], 'wwhs', 'left', 'Homeowners'), M([40, 110, 616], 'wwhs', 'right', 'Owners & Managers')],
+};
+
+function MobileStage({spec, Beat, beat, t, caption}) {
+  const [x, y, w] = spec.box;
+  const k = Math.min(1.2, 568 / w);
+  const p = WI_P[spec.product];
+  const other = spec.side === 'right' ? 'left' : 'right';
+  const PH = 380;                                   // equipment height: top edge at y 440, just below the control band
+  const captionW = Math.min(310, 600 - 24 - 10 - PH * p.ar * 1.04);
+  return (
+    <>
+      <div style={{position: 'absolute', left: 16, top: 70, width: 568, height: 364, overflow: 'hidden',
+        WebkitMaskImage: 'linear-gradient(to bottom, #000 88%, transparent)', maskImage: 'linear-gradient(to bottom, #000 88%, transparent)'}}>
+        <div style={{position: 'absolute', left: 0, top: 0, width: 960, height: 720, transformOrigin: 'top left', transform: `scale(${k}) translate(${-x}px, ${-y}px)`}}>
+          <WiMobile.Provider value={true}><Beat beat={beat} t={t}/></WiMobile.Provider>
+        </div>
+      </div>
+      <div style={{position: 'absolute', top: 18, left: 16, padding: '9px 18px', borderRadius: 999, background: APP.primary10, color: APP.primary,
+        fontSize: 21, fontWeight: 700, whiteSpace: 'nowrap'}}>{spec.pill}</div>
+      <img src={p.img} alt="" draggable="false" style={{position: 'absolute', bottom: -60, [spec.side]: -10, height: PH, width: 'auto', zIndex: 2,
+        transformOrigin: `${spec.side} bottom`, transform: `scale(${lerp(1, 1.04, t / BEAT)})`, filter: 'drop-shadow(0 24px 40px rgba(20,30,50,.22))', pointerEvents: 'none'}}/>
+      <div style={{position: 'absolute', bottom: 40, [other]: 24, width: captionW, zIndex: 3, ...rise(t, 250, 12)}}>
+        <div style={{width: 36, height: 4, borderRadius: 4, background: 'var(--wi-solid)', marginBottom: 12}}/>
+        <div style={{fontSize: captionW < 280 ? 23 : 25, fontWeight: 650, lineHeight: 1.28, letterSpacing: '-0.01em', color: APP.fg}}>{caption}</div>
+      </div>
+    </>
+  );
+}
+
+function usePhoneLayout() {
+  const q = '(max-width: 600px)';
+  const [on, setOn] = useState(() => !!(window.matchMedia && window.matchMedia(q).matches));
+  useEffect(() => {
+    if (!window.matchMedia) return;
+    const mq = window.matchMedia(q);
+    const h = (e) => setOn(e.matches);
+    mq.addEventListener ? mq.addEventListener('change', h) : mq.addListener(h);
+    return () => (mq.removeEventListener ? mq.removeEventListener('change', h) : mq.removeListener(h));
+  }, []);
+  return on;
+}
+
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(() => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   useEffect(() => {
@@ -2674,6 +2745,7 @@ function WhatsInside() {
   const sectionRef = useRef(null);
   const stageRef = useRef(null);
   const reduced = usePrefersReducedMotion();
+  const phone = usePhoneLayout();
 
   // Only animate while the stage is on screen.
   useEffect(() => {
@@ -2727,12 +2799,9 @@ function WhatsInside() {
   const fade = reduced ? 1 : Math.min(prog(lt, 0, 280), 1 - prog(lt, BEAT - 300, 300));
   const prop = WI_PROPS[active];
   const Beat = prop.Beat;
-  // On a narrow stage the full 960 canvas would shrink the app text past legibility, so it
-  // crops to a 700-wide window on whichever side the beat's control sits (the product photo
-  // bleeds off the other edge anyway).
-  const narrow = stageW < 520;
-  const scale = stageW / (narrow ? 700 : 960);
-  const offsetX = narrow ? (prop.focus[beat] === 'right' ? 250 : 10) : 0;
+  // Phones get their own portrait layout (MobileStage): the control on top, the equipment
+  // fully in frame below it.
+  const scale = stageW / (phone ? 600 : 960);
 
   return (
     <section className="features-section" id="features" ref={sectionRef}>
@@ -2780,10 +2849,12 @@ function WhatsInside() {
               </ol>
             </div>
 
-            <div className={`wi-stage${narrow ? ' is-narrow' : ''}`} ref={stageRef} aria-hidden="true">
-              <div className="wi-canvas" style={{transform: `scale(${scale}) translateX(${-offsetX}px)`}}>
+            <div className={`wi-stage${phone ? ' is-phone' : ''}`} ref={stageRef} aria-hidden="true">
+              <div className="wi-canvas" style={{transform: `scale(${scale})`, width: phone ? 600 : 960, height: phone ? 760 : 720}}>
                 <div style={{position: 'absolute', inset: 0, opacity: fade}}>
-                  <Beat beat={beat} t={lt}/>
+                  {phone
+                    ? <MobileStage spec={WI_MOBILE[prop.key][beat]} Beat={Beat} beat={beat} t={lt} caption={prop.bullets[beat]}/>
+                    : <Beat beat={beat} t={lt}/>}
                 </div>
               </div>
             </div>
