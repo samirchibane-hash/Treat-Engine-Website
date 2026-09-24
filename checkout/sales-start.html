@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Set Up Your Dealership — ClearDeals · Treat Engine</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#faf7f2;--cream-mid:#f0ebe0;--cream-dark:#e5ddd0;
+  --ink:#1c1814;--ink-mid:#3d3530;--ink-muted:#7a6f65;
+  --navy:#1a2744;--blue:#3b82f6;--blue-light:#eff6ff;--blue-dark:#1d4ed8;
+  --white:#fffefb;--border:rgba(28,24,20,0.10);--border-mid:rgba(28,24,20,0.06);
+  --green:#16a34a;--green-light:#f0fdf4;--red:#b91c1c;--red-light:#fef2f2;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;}
+h1,h2{font-family:'Playfair Display',serif;line-height:1.12;}
+a{color:var(--blue);text-decoration:none;}
+
+/* Logo only — no nav links to leak out of the funnel. */
+.nav{border-bottom:1px solid var(--border);background:rgba(250,247,242,.94);}
+.nav-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.nav-inner img{height:30px;display:block;}
+.nav-secure{font-size:12.5px;color:var(--ink-muted);display:flex;align-items:center;gap:6px;}
+
+.page{max-width:640px;margin:0 auto;padding:36px 24px 72px;}
+
+.steps{display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:600;color:var(--ink-muted);margin-bottom:22px;}
+.step{display:flex;align-items:center;gap:7px;}
+.step-num{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;border:1.5px solid var(--cream-dark);background:var(--white);}
+.step.on{color:var(--ink);}
+.step.on .step-num{background:var(--navy);border-color:var(--navy);color:#fff;}
+.step-line{flex:0 0 28px;height:1.5px;background:var(--cream-dark);}
+
+.title{font-size:clamp(28px,6vw,38px);font-weight:600;letter-spacing:-.02em;margin-bottom:10px;}
+.title em{font-style:italic;color:var(--navy);}
+.sub{font-size:15.5px;line-height:1.65;color:var(--ink-muted);margin-bottom:20px;}
+
+.plan-pill{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-size:14px;margin-bottom:26px;}
+.plan-pill b{font-weight:700;}
+.plan-pill span{color:var(--ink-muted);}
+.plan-pill a{font-size:13px;font-weight:600;white-space:nowrap;}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px;box-shadow:0 1px 3px rgba(28,24,20,.04);}
+.card h2{font-size:21px;font-weight:600;margin-bottom:4px;}
+.card-sub{font-size:14px;line-height:1.6;color:var(--ink-muted);margin-bottom:18px;}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field.full{grid-column:1/-1;}
+.field label{font-size:13px;font-weight:600;color:var(--ink-mid);}
+.field label .opt{font-weight:400;color:var(--ink-muted);}
+/* 16px keeps iOS Safari from zooming into the field on focus. */
+.field input{font:inherit;font-size:16px;color:var(--ink);background:var(--cream);border:1.5px solid var(--cream-dark);border-radius:10px;padding:12px 13px;outline:none;transition:border-color .15s,background .15s;width:100%;}
+.field input:focus{border-color:var(--blue);background:var(--white);}
+.field input[aria-invalid="true"]{border-color:var(--red);}
+
+.consent{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--ink-muted);line-height:1.5;grid-column:1/-1;cursor:pointer;}
+.consent input{width:18px;height:18px;margin-top:1px;accent-color:var(--navy);flex-shrink:0;}
+
+.brands{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.brand{font:inherit;text-align:left;cursor:pointer;background:var(--cream);border:1.5px solid var(--cream-dark);border-radius:10px;padding:11px 12px;min-height:58px;display:flex;flex-direction:column;justify-content:center;gap:2px;transition:border-color .15s,background .15s;position:relative;}
+.brand:hover{border-color:rgba(26,39,68,.35);}
+.brand b{font-size:14.5px;font-weight:600;color:var(--ink);}
+.brand small{font-size:12px;color:var(--ink-muted);}
+.brand[aria-pressed="true"]{background:var(--blue-light);border-color:var(--blue);}
+.brand[aria-pressed="true"] small{color:var(--blue-dark);}
+.brand[aria-pressed="true"]::after{content:"";position:absolute;top:9px;right:9px;width:16px;height:16px;border-radius:50%;background:var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none' stroke='white' stroke-width='2.4'%3E%3Cpolyline points='3,7.5 6,10.5 11,4'/%3E%3C/svg%3E") center/11px no-repeat;}
+.brand:focus-visible,.cta:focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+
+.tally{margin-top:14px;font-size:14px;padding:11px 14px;border-radius:10px;background:var(--cream);color:var(--ink-muted);line-height:1.5;}
+.tally.on{background:var(--green-light);color:#15803d;font-weight:600;}
+
+.error{display:none;background:var(--red-light);color:var(--red);font-size:14px;border-radius:10px;padding:11px 14px;margin-bottom:14px;}
+.error.show{display:block;}
+
+.cta{width:100%;font:inherit;font-size:17px;font-weight:700;color:#fff;background:var(--navy);border:none;border-radius:12px;padding:17px 20px;cursor:pointer;transition:background .15s,transform .1s;margin-top:8px;}
+.cta:hover{background:#0f1a33;}
+.cta:active{transform:scale(.99);}
+.cta[disabled]{opacity:.7;cursor:progress;}
+.cta-sub{text-align:center;font-size:13px;color:var(--ink-muted);margin-top:11px;}
+.fine{text-align:center;font-size:12.5px;color:var(--ink-muted);margin-top:18px;line-height:1.6;}
+
+@media(max-width:560px){
+  .page{padding:26px 16px 56px;}
+  .nav-inner{padding:0 16px;}
+  .card{padding:20px 16px;border-radius:14px;}
+  .grid{grid-template-columns:1fr;}
+  .brands{grid-template-columns:1fr 1fr;}
+  .plan-pill{flex-wrap:wrap;}
+}
+</style>
+<!-- Meta Pixel — Treat Engine (1134033977806212) -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1134033977806212');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt=""/></noscript>
+<!-- End Meta Pixel -->
+<!-- Microsoft Clarity — Treat Engine (y7pouto6cn) -->
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "y7pouto6cn");
+</script>
+<!-- End Microsoft Clarity -->
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/sales-v2"><img src="/uploads/Treat Engine Logo .png" alt="Treat Engine"></a>
+    <span class="nav-secure">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2"/></svg>
+      Secure setup
+    </span>
+  </div>
+</nav>
+
+<main class="page">
+  <div class="steps" aria-label="Setup progress">
+    <div class="step on"><span class="step-num">1</span>Your dealership</div>
+    <div class="step-line"></div>
+    <div class="step"><span class="step-num">2</span><span id="step2-label">Start free trial</span></div>
+  </div>
+
+  <h1 class="title">Let's set up <em>your dealership</em></h1>
+  <p class="sub">About a minute. Tell us what you sell and we'll load your equipment into ClearDeals for you, so you're ready for your next appointment.</p>
+
+  <div class="plan-pill">
+    <div><b id="plan-name">Pro plan</b> <span id="plan-terms">· $0 today, then $297/mo after 30 days</span></div>
+    <a href="/sales-v2#pricing" id="plan-change">Change plan</a>
+  </div>
+
+  <form id="setup" novalidate>
+    <section class="card">
+      <h2>Your dealership</h2>
+      <p class="card-sub">This becomes your ClearDeals account.</p>
+      <div class="grid">
+        <div class="field">
+          <label for="name">Your name</label>
+          <input id="name" name="name" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="dealership">Dealership name</label>
+          <input id="dealership" name="dealership" autocomplete="organization" required>
+        </div>
+        <div class="field full">
+          <label for="email">Work email</label>
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="phone">Mobile phone <span class="opt">(optional)</span></label>
+          <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel">
+        </div>
+        <div class="field">
+          <label for="website">Website <span class="opt">(optional)</span></label>
+          <input id="website" name="website" inputmode="url" autocomplete="url" placeholder="yourdealership.com">
+        </div>
+        <!-- Unchecked by default: a phone number alone is not consent to text (TCPA). -->
+        <label class="consent">
+          <input type="checkbox" id="smsConsent" name="smsConsent">
+          <span>Text me setup help at this number. Msg &amp; data rates may apply. Reply STOP to opt out.</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Which brands do you sell?</h2>
+      <p class="card-sub">Pick any that apply. We'll load their systems, filters and add-ons into your catalog with descriptions and models filled in. You just add your prices.</p>
+      <div class="brands" id="brands" role="group" aria-label="Brands you sell"></div>
+      <div class="tally" id="tally" aria-live="polite">Not sure yet? Skip this, and we'll build your catalog with you during setup.</div>
+    </section>
+
+    <div class="error" id="error" role="alert"></div>
+    <button class="cta" type="submit" id="submit">Continue to free trial →</button>
+    <p class="cta-sub" id="cta-sub">$0 due today · Cancel anytime · Secure checkout by Stripe</p>
+    <p class="fine">Rather see it first? <a href="/sales-v2#book">Book a 30-min demo</a><br>
+      We use these details to set up your account and to help if you get stuck finishing.</p>
+  </form>
+</main>
+
+<script>
+// Mirrors lib/brand-catalog.js — the server re-checks names and recounts, so
+// a drift here only mislabels a chip, it can't send ClearDeals a bad brand.
+var BRANDS = [
+  ['Culligan',25],['Kinetico',15],['RainSoft',10],['EcoWater',13],['Hague',18],
+  ['WaterCare',16],['Aerus',11],['Puronics',15],['Hellenbrand',21],
+  ['Water-Right',15],['Canopus',5],
+];
+var GENERIC = ['Generic', 22];
+// Mirrors PRICING_PLANS on /sales-v2 and /sales/checkout-v2.
+var PLANS = {
+  starter: {name:'Starter', month:97,  year:997},
+  pro:     {name:'Pro',     month:297, year:2997},
+};
+
+var params = new URLSearchParams(location.search);
+var plan = PLANS[params.get('plan')] ? params.get('plan') : 'pro';
+var interval = params.get('interval') === 'year' ? 'year' : 'month';
+var money = function(n){ return '$' + n.toLocaleString('en-US'); };
+var $ = function(id){ return document.getElementById(id); };
+
+// ── Plan summary. The trial is monthly-only, so annual never promises one. ──
+var p = PLANS[plan];
+$('plan-name').textContent = p.name + ' plan';
+if (interval === 'year') {
+  $('plan-terms').textContent = '· ' + money(p.year) + '/year, billed today';
+  $('step2-label').textContent = 'Checkout';
+  $('submit').textContent = 'Continue to checkout →';
+  $('cta-sub').textContent = 'Secure checkout by Stripe · No contract';
+} else {
+  $('plan-terms').textContent = '· $0 today, then ' + money(p.month) + '/mo after 30 days';
+}
+
+// ── Brand chips ──
+var picked = new Set();
+var countOf = {};
+BRANDS.concat([GENERIC]).forEach(function(b){ countOf[b[0]] = b[1]; });
+
+function chip(key, label, count) {
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'brand';
+  b.dataset.brand = key;
+  b.setAttribute('aria-pressed', 'false');
+  b.innerHTML = '<b></b><small></small>';
+  b.querySelector('b').textContent = label;
+  b.querySelector('small').textContent = count + (key === GENERIC[0] ? ' generic products' : ' products');
+  b.addEventListener('click', function(){
+    picked.has(key) ? picked.delete(key) : picked.add(key);
+    syncBrands();
+    saveDraft();
+  });
+  return b;
+}
+BRANDS.forEach(function(b){ $('brands').appendChild(chip(b[0], b[0], b[1])); });
+$('brands').appendChild(chip(GENERIC[0], 'Independent', GENERIC[1]));
+
+function syncBrands() {
+  var total = 0;
+  $('brands').querySelectorAll('.brand').forEach(function(el){
+    var on = picked.has(el.dataset.brand);
+    el.setAttribute('aria-pressed', on ? 'true' : 'false');
+    if (on) total += countOf[el.dataset.brand];
+  });
+  var t = $('tally');
+  t.classList.toggle('on', total > 0);
+  t.textContent = total > 0
+    ? '✓ ' + total + ' products ready to load into your catalog'
+    : 'Not sure yet? Skip this, and we’ll build your catalog with you during setup.';
+}
+
+// ── Draft, so "back" from Stripe returns a filled form. Convenience only. ──
+var FIELDS = ['name','dealership','email','phone','website'];
+function saveDraft() {
+  var d = {brands: Array.from(picked), smsConsent: $('smsConsent').checked};
+  FIELDS.forEach(function(f){ d[f] = $(f).value; });
+  try { localStorage.setItem('cd-setup-draft', JSON.stringify(d)); } catch (e) {}
+}
+(function loadDraft(){
+  var d = null;
+  try { d = JSON.parse(localStorage.getItem('cd-setup-draft') || 'null'); } catch (e) {}
+  if (!d) return;
+  FIELDS.forEach(function(f){ if (d[f]) $(f).value = d[f]; });
+  $('smsConsent').checked = !!d.smsConsent;
+  (d.brands || []).forEach(function(b){ if (countOf[b]) picked.add(b); });
+  syncBrands();
+})();
+$('setup').addEventListener('input', saveDraft);
+
+// ── Submit ──
+function fail(msg, field) {
+  $('error').textContent = msg;
+  $('error').classList.add('show');
+  if (field) { $(field).setAttribute('aria-invalid', 'true'); $(field).focus(); }
+}
+
+$('setup').addEventListener('submit', async function(e){
+  e.preventDefault();
+  $('error').classList.remove('show');
+  FIELDS.forEach(function(f){ $(f).removeAttribute('aria-invalid'); });
+
+  var v = {};
+  FIELDS.forEach(function(f){ v[f] = $(f).value.trim(); });
+  if (!v.name) return fail('Please add your name.', 'name');
+  if (!v.dealership) return fail('Please add your dealership name.', 'dealership');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) return fail('Please enter a valid email.', 'email');
+
+  var btn = $('submit');
+  var label = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Saving your setup…';
+
+  try {
+    var res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        service: 'sales', plan: plan, interval: interval,
+        lead: {
+          name: v.name, dealership: v.dealership, email: v.email,
+          phone: v.phone, website: v.website,
+          smsConsent: $('smsConsent').checked,
+          brands: Array.from(picked),
+          source: 'sales-v2',
+        },
+      }),
+    });
+    var out = await res.json();
+    if (!res.ok || !out.url) throw new Error(out.error || 'No checkout URL returned');
+
+    try { if (window.fbq) fbq('track', 'Lead', {content_name: 'ClearDeals ' + plan}); } catch (err) {}
+    try { if (window.clarity) clarity('event', 'setup_submitted'); } catch (err) {}
+    location.href = out.url;
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = label;
+    fail(res && res.status === 400 ? err.message
+      : 'Something went wrong starting checkout. Please try again, or call us at +1 (617) 315-6471.');
+  }
+});
+</script>
+</body>
+</html>

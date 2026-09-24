@@ -1,5 +1,6 @@
 const Stripe = require('stripe');
 const { crm, onboardingLink } = require('../lib/crm');
+const { postLead, leadFromSession } = require('../lib/leads');
 
 const getRawBody = (req) =>
   new Promise((resolve, reject) => {
@@ -55,6 +56,13 @@ module.exports = async (req, res) => {
         }
       }
       return res.json({ received: true });
+    }
+
+    // Pre-checkout leads (/sales-v2/start) — tells the abandoned-cart
+    // sequence to stop. Only sessions that started from that form carry
+    // `lead_source`.
+    if (session.metadata?.lead_source) {
+      await postLead('checkout_completed', leadFromSession(session));
     }
 
     // New customers appear in the CRM at checkout, before onboarding. Insert-only:
@@ -116,6 +124,20 @@ module.exports = async (req, res) => {
       } catch (err) {
         console.error('Billing schedule error:', err.message);
       }
+    }
+  }
+
+  // Unpaid session timed out (24h). Only pre-checkout leads are followed up:
+  // they gave us their details and asked to be set up. recovery.url reopens a
+  // fresh session with the same plan and prefilled email, valid 30 days.
+  // Requires checkout.session.expired to be enabled on this Stripe endpoint.
+  if (event.type === 'checkout.session.expired') {
+    const session = event.data.object;
+    if (session.metadata?.lead_source) {
+      await postLead('checkout_abandoned', {
+        ...leadFromSession(session),
+        recovery_url: session.after_expiration?.recovery?.url || null,
+      });
     }
   }
 

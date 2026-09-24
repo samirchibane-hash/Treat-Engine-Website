@@ -1850,30 +1850,25 @@ function Pricing() {
   const money = n => '$' + n.toLocaleString('en-US');
   const amountFor = key => isYear ? PRICING_PLANS[key].year : PRICING_PLANS[key].month;
 
-  // Same call /sales/checkout-v2 makes. The page only sends tier and interval —
-  // /api/checkout resolves the real Stripe price and attaches the trial, so the
-  // buy box here can never drift out of sync with that page's pricing.
+  // Test of the pre-checkout step: /sales-v2/start collects the dealer's
+  // details and brands, then makes the same /api/checkout call with a `lead`
+  // attached. /sales still goes straight to Stripe.
   //
-  // Nothing stands between this click and Stripe. The field tablet offer used
-  // to open a modal here first; it now runs after checkout, on /sales/welcome,
-  // so an upsell can never cost us the commitment and the card.
-  const startCheckout = async key => {
+  // The field tablet offer used to open a modal here first; it now runs after
+  // checkout, on /sales/welcome, so an upsell can never cost us the card.
+  const startCheckout = key => {
     if (pending) return;
     setPending(key);
-    try {
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({service: 'sales', plan: key, interval: billing}),
-      });
-      const {url, error} = await res.json();
-      if (error || !url) throw new Error(error || 'No checkout URL returned');
-      window.location.href = url;
-    } catch (err) {
-      alert('Something went wrong starting checkout. Please try again, or contact us at Info@TreatEngine.com');
-      setPending(null);
-    }
+    window.location.href = `/sales-v2/start?plan=${key}&interval=${billing}`;
   };
+
+  // Back from /sales-v2/start restores this page from the back-forward cache
+  // with the buttons still disabled — re-enable them.
+  useEffect(() => {
+    const reset = e => { if (e.persisted) setPending(null); };
+    window.addEventListener('pageshow', reset);
+    return () => window.removeEventListener('pageshow', reset);
+  }, []);
 
   // Trial language is monthly-only — annual bills up front, so the button and
   // the line under it must never promise a free trial while isYear.

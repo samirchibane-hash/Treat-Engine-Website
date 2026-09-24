@@ -1,4 +1,34 @@
 const Stripe = require('stripe');
+const { postLead } = require('../lib/leads');
+const { BRAND_PRODUCT_COUNTS } = require('../lib/brand-catalog');
+
+// The dealer details collected on /sales-v2/start, or null when the request
+// came straight from a pricing card (/sales, /sales/checkout-v2). Returns
+// { error } when a lead was sent but is unusable. Every value is clipped to
+// fit Stripe's 500-character metadata limit.
+function parseLead(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  const clip = (v, n = 200) => String(v || '').trim().slice(0, n);
+
+  const lead = {
+    name: clip(raw.name),
+    email: clip(raw.email).toLowerCase(),
+    phone: clip(raw.phone, 40),
+    dealership: clip(raw.dealership),
+    website: clip(raw.website),
+    sms_consent: raw.smsConsent === true,
+    // Only known libraries — this list goes to ClearDeals' catalog import.
+    brands: [...new Set([].concat(raw.brands || []))]
+      .filter(b => Object.prototype.hasOwnProperty.call(BRAND_PRODUCT_COUNTS, b)),
+    source: clip(raw.source, 40) || 'sales-v2',
+  };
+
+  if (!lead.name || !lead.dealership) return { error: 'Please add your name and dealership.' };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email)) return { error: 'Please enter a valid email.' };
+
+  lead.product_count = lead.brands.reduce((n, b) => n + BRAND_PRODUCT_COUNTS[b], 0);
+  return lead;
+}
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -11,6 +41,7 @@ module.exports = async (req, res) => {
   const origin = process.env.SITE_URL || `https://${req.headers.host}`;
 
   const { service, plan } = req.body || {};
+  let lead = null;
 
   try {
     let sessionParams;
@@ -169,6 +200,49 @@ module.exports = async (req, res) => {
         };
       }
 
+      // ── Pre-checkout lead (/sales-v2/start only) ──
+      // Sessions without a lead are left exactly as they were, so /sales and
+      // /sales/checkout-v2 behave the same while this is being tested.
+      lead = parseLead(req.body.lead);
+      if (lead && lead.error) return res.status(400).json({ error: lead.error });
+
+      if (lead) {
+        const { brands, product_count } = lead;
+        sessionParams.customer_email = lead.email;
+
+        // Adds to the cross-repo contract above, never renames: ClearDeals
+        // can read these to prefill Profile, Company details and the brand
+        // import. `brands` holds exact library names from lib/brand-catalog.js.
+        Object.assign(sessionParams.metadata, {
+          lead_source: lead.source,
+          lead_name: lead.name,
+          lead_phone: lead.phone,
+          sms_consent: lead.sms_consent ? 'yes' : 'no',
+          dealership_name: lead.dealership,
+          website: lead.website,
+          brands: brands.join(','),
+          product_count: String(product_count),
+        });
+
+        // Expired sessions get a recovery link, delivered to the lead webhook
+        // by api/webhook.js on checkout.session.expired.
+        sessionParams.after_expiration = { recovery: { enabled: true } };
+
+        // Back from Stripe lands on the filled-in form, not the top of /sales.
+        sessionParams.cancel_url =
+          `${origin}/sales-v2/start?plan=${plan}&interval=${interval}`;
+
+        if (product_count) {
+          const list = brands.map(b => (b === 'Generic' ? 'independent-dealer library' : b)).join(', ');
+          sessionParams.custom_text = {
+            submit: {
+              message: `We'll load ${product_count} products (${list}) into ${lead.dealership}'s ` +
+                'ClearDeals catalog during setup. You just add your prices.',
+            },
+          };
+        }
+      }
+
     } else if (service === 'sales') {
       // ── /sales/checkout (legacy) ──
       // Testimonial promo waives the one-time setup fee. The server is the source
@@ -213,10 +287,27 @@ module.exports = async (req, res) => {
     sessionParams.phone_number_collection = { enabled: true };
 
     const session = await stripe.checkout.sessions.create(sessionParams);
+
+    // Awaited so the serverless function isn't frozen mid-request; postLead
+    // times out at 4s and never throws, so it can't block the redirect.
+    if (lead) {
+      await postLead('checkout_started', {
+        ...lead,
+        first_name: lead.name.split(/\s+/)[0],
+        brands: lead.brands.join(', '),
+        plan,
+        interval: sessionParams.metadata.interval,
+        checkout_url: session.url,
+        stripe_session_id: session.id,
+      });
+    }
+
     res.json({ url: session.url });
 
   } catch (err) {
     console.error('Checkout error:', err.message);
+    // Stripe failed but the dealer still told us who they are — keep the lead.
+    if (lead && !lead.error) await postLead('checkout_error', { ...lead, brands: lead.brands.join(', '), plan });
     res.status(500).json({ error: err.message });
   }
 };

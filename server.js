@@ -30,6 +30,7 @@ const pages = {
   '/websites/checkout':   'checkout/websites.html',
   '/sales/checkout':      'checkout/sales.html',
   '/sales/checkout-v2':   'checkout/sales-v2.html',
+  '/sales-v2/start':      'checkout/sales-start.html',
   '/ads/checkout':        'checkout/leads.html',
   '/ads/onboarding':      'onboarding/leads.html',
   '/websites/onboarding': 'onboarding/websites.html',
