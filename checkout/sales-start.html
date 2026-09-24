@@ -98,6 +98,7 @@ button{font:inherit;}
 .meter{height:4px;border-radius:4px;background:var(--cream-mid);margin-top:10px;overflow:hidden;}
 .meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--navy));transition:width .25s linear;}
 .preview-status.done + .meter i{background:var(--green);}
+.swap-note{margin-top:10px;font-size:13px;line-height:1.5;color:var(--ink-mid);background:var(--blue-light);border-radius:9px;padding:8px 11px;}
 
 .shelf-wrap{position:relative;}
 .shelf-wrap::after{content:"";position:absolute;left:0;right:0;bottom:0;height:56px;background:linear-gradient(rgba(255,254,251,0),var(--white));pointer-events:none;}
@@ -249,6 +250,7 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
             <div class="preview-head">
               <div class="preview-status" id="status" aria-live="polite"><span id="status-txt">Preparing your catalog…</span><span class="count" id="status-count"></span></div>
               <div class="meter"><i id="meter"></i></div>
+              <p class="swap-note" id="swap-note" hidden>📷 These are placeholder illustrations. Once your account is set up, you can swap in photos of your own equipment anytime.</p>
             </div>
             <div class="shelf-wrap"><div class="shelf" id="shelf"><div class="grid-p" id="grid-p"></div></div></div>
           </div>
@@ -447,6 +449,7 @@ function renderChosen() {
     $('picker-sub').textContent = '11 major brands + independent dealers';
     return;
   }
+  $('swap-note').hidden = picked[0] !== GENERIC && SHOW_OEM_PHOTOS;
   $('picker-title').textContent = labelOf(picked[0]);
   $('picker-sub').textContent = total() + ' products · tap to change brand';
 }
