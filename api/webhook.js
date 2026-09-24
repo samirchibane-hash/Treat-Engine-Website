@@ -58,7 +58,7 @@ module.exports = async (req, res) => {
       return res.json({ received: true });
     }
 
-    // Pre-checkout leads (/sales-v2/start) — tells the abandoned-cart
+    // Pre-checkout leads (/sales/start, /sales-v2/start) — tells the abandoned-cart
     // sequence to stop. Only sessions that started from that form carry
     // `lead_source`.
     if (session.metadata?.lead_source) {

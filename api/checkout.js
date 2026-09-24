@@ -171,9 +171,8 @@ module.exports = async (req, res) => {
         };
       }
 
-      // ── Pre-checkout lead (/sales-v2/start only) ──
-      // Sessions without a lead are left exactly as they were, so /sales and
-      // /sales/checkout-v2 behave the same while this is being tested.
+      // ── Pre-checkout lead (/sales/start and /sales-v2/start) ──
+      // Sessions without a lead (/sales/checkout-v2) are left exactly as they were.
       lead = parseLead(req.body.lead);
       if (lead && lead.error) return res.status(400).json({ error: lead.error });
 
@@ -200,8 +199,9 @@ module.exports = async (req, res) => {
         sessionParams.after_expiration = { recovery: { enabled: true } };
 
         // Back from Stripe lands on the filled-in brands step, not the top of /sales.
+        const startPage = lead.source === 'sales-v2' ? '/sales-v2/start' : '/sales/start';
         sessionParams.cancel_url =
-          `${origin}/sales-v2/start?plan=${plan}&interval=${interval}&step=2`;
+          `${origin}${startPage}?plan=${plan}&interval=${interval}&step=2`;
 
         if (product_count) {
           const list = brands.map(b => (b === 'Generic' ? 'independent-dealer library' : b)).join(', ');

@@ -206,7 +206,7 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="/sales-v2"><img src="/uploads/Treat Engine Logo .png" alt="Treat Engine"></a>
+    <a href="/sales" data-base-href=""><img src="/uploads/Treat Engine Logo .png" alt="Treat Engine"></a>
     <span class="nav-secure">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2"/></svg>
       Secure setup
@@ -311,9 +311,9 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
 
     <div class="plan-pill">
       <div><b id="plan-name">Pro plan</b> <span id="plan-terms">· $0 today, then $297/mo after 30 days</span></div>
-      <a href="/sales-v2#pricing">Change plan</a>
+      <a href="/sales#pricing" data-base-href="#pricing">Change plan</a>
     </div>
-    <p class="fine">Rather see it first? <a href="/sales-v2#book">Book a 30-min demo</a><br>
+    <p class="fine">Rather see it first? <a href="/sales#book" data-base-href="#book">Book a 30-min demo</a><br>
       We use these details to set up your account and to help if you get stuck finishing.</p>
   </form>
 </main>
@@ -335,13 +335,19 @@ var GENERIC_ART = {
   'Reverse Osmosis':'gen-ro.svg','Bottled Coolers':'gen-accessory.svg',
   'Bottleless Coolers':'gen-ro-tankless.svg','Add Ons':'gen-accessory.svg',
 };
-// Mirrors PRICING_PLANS on /sales-v2 and /sales/checkout-v2.
+// Mirrors PRICING_PLANS on /sales, /sales-v2 and /sales/checkout-v2.
 var PLANS = {
   starter: {name:'Starter', month:97,  year:997},
   pro:     {name:'Pro',     month:297, year:2997},
 };
 
 var $ = function(id){ return document.getElementById(id); };
+// Served at /sales/start (live) and /sales-v2/start (test page). Links go back
+// to whichever sales page the dealer came from, and the lead is tagged with it.
+var BASE = location.pathname.indexOf('/sales-v2/') === 0 ? '/sales-v2' : '/sales';
+document.querySelectorAll('[data-base-href]').forEach(function(a){
+  a.setAttribute('href', BASE + a.getAttribute('data-base-href'));
+});
 var params = new URLSearchParams(location.search);
 var plan = PLANS[params.get('plan')] ? params.get('plan') : 'pro';
 var interval = params.get('interval') === 'year' ? 'year' : 'month';
@@ -619,7 +625,7 @@ async function checkout() {
           phone: v.phone, website: v.website,
           smsConsent: $('smsConsent').checked,
           brands: picked.slice(),
-          source: 'sales-v2',
+          source: BASE.slice(1),
         },
       }),
     });
