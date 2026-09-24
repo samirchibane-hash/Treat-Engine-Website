@@ -1,34 +1,5 @@
 const Stripe = require('stripe');
-const { postLead } = require('../lib/leads');
-const { BRAND_PRODUCT_COUNTS } = require('../lib/brand-catalog');
-
-// The dealer details collected on /sales-v2/start, or null when the request
-// came straight from a pricing card (/sales, /sales/checkout-v2). Returns
-// { error } when a lead was sent but is unusable. Every value is clipped to
-// fit Stripe's 500-character metadata limit.
-function parseLead(raw) {
-  if (!raw || typeof raw !== 'object') return null;
-  const clip = (v, n = 200) => String(v || '').trim().slice(0, n);
-
-  const lead = {
-    name: clip(raw.name),
-    email: clip(raw.email).toLowerCase(),
-    phone: clip(raw.phone, 40),
-    dealership: clip(raw.dealership),
-    website: clip(raw.website),
-    sms_consent: raw.smsConsent === true,
-    // Only known libraries — this list goes to ClearDeals' catalog import.
-    brands: [...new Set([].concat(raw.brands || []))]
-      .filter(b => Object.prototype.hasOwnProperty.call(BRAND_PRODUCT_COUNTS, b)),
-    source: clip(raw.source, 40) || 'sales-v2',
-  };
-
-  if (!lead.name || !lead.dealership) return { error: 'Please add your name and dealership.' };
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email)) return { error: 'Please enter a valid email.' };
-
-  lead.product_count = lead.brands.reduce((n, b) => n + BRAND_PRODUCT_COUNTS[b], 0);
-  return lead;
-}
+const { postLead, parseLead } = require('../lib/leads');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -228,9 +199,9 @@ module.exports = async (req, res) => {
         // by api/webhook.js on checkout.session.expired.
         sessionParams.after_expiration = { recovery: { enabled: true } };
 
-        // Back from Stripe lands on the filled-in form, not the top of /sales.
+        // Back from Stripe lands on the filled-in brands step, not the top of /sales.
         sessionParams.cancel_url =
-          `${origin}/sales-v2/start?plan=${plan}&interval=${interval}`;
+          `${origin}/sales-v2/start?plan=${plan}&interval=${interval}&step=2`;
 
         if (product_count) {
           const list = brands.map(b => (b === 'Generic' ? 'independent-dealer library' : b)).join(', ');

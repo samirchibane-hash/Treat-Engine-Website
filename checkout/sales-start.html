@@ -28,12 +28,23 @@ a{color:var(--blue);text-decoration:none;}
 
 .page{max-width:640px;margin:0 auto;padding:36px 24px 72px;}
 
-.steps{display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:600;color:var(--ink-muted);margin-bottom:22px;}
-.step{display:flex;align-items:center;gap:7px;}
-.step-num{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;border:1.5px solid var(--cream-dark);background:var(--white);}
-.step.on{color:var(--ink);}
-.step.on .step-num{background:var(--navy);border-color:var(--navy);color:#fff;}
-.step-line{flex:0 0 28px;height:1.5px;background:var(--cream-dark);}
+.progress{display:flex;align-items:center;gap:12px;margin-bottom:20px;font-size:12.5px;font-weight:600;color:var(--ink-muted);}
+.progress-bar{flex:1;display:flex;gap:6px;max-width:220px;}
+.progress-seg{flex:1;height:5px;border-radius:5px;background:var(--cream-dark);overflow:hidden;}
+.progress-seg i{display:block;height:100%;width:0;background:var(--navy);border-radius:5px;transition:width .45s cubic-bezier(.22,.61,.36,1);}
+.progress-seg.done i{width:100%;}
+
+/* Two slides side by side; the track shifts by one slide width. The viewport
+   height follows the active slide so step 1 carries no step-2 dead space. */
+.viewport{overflow:hidden;transition:height .45s cubic-bezier(.22,.61,.36,1);margin:0 -4px;}
+.track{display:flex;width:200%;align-items:flex-start;transition:transform .45s cubic-bezier(.22,.61,.36,1);}
+.track.at2{transform:translateX(-50%);}
+.slide{width:50%;padding:0 4px 4px;transition:opacity .35s ease;}
+.slide[inert]{opacity:0;}
+@media(prefers-reduced-motion:reduce){.viewport,.track,.slide,.progress-seg i{transition:none;}}
+.back{font:inherit;font-size:13.5px;font-weight:600;color:var(--ink-muted);background:none;border:none;cursor:pointer;padding:4px 0;margin-bottom:10px;display:inline-flex;align-items:center;gap:6px;}
+.back:hover{color:var(--ink);}
+.title:focus{outline:none;}
 
 .title{font-size:clamp(28px,6vw,38px);font-weight:600;letter-spacing:-.02em;margin-bottom:10px;}
 .title em{font-style:italic;color:var(--navy);}
@@ -44,7 +55,7 @@ a{color:var(--blue);text-decoration:none;}
 .plan-pill span{color:var(--ink-muted);}
 .plan-pill a{font-size:13px;font-weight:600;white-space:nowrap;}
 
-.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px;box-shadow:0 1px 3px rgba(28,24,20,.04);}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:14px;box-shadow:0 1px 3px rgba(28,24,20,.04);}
 .card h2{font-size:21px;font-weight:600;margin-bottom:4px;}
 .card-sub{font-size:14px;line-height:1.6;color:var(--ink-muted);margin-bottom:18px;}
 
@@ -132,14 +143,13 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
 </nav>
 
 <main class="page">
-  <div class="steps" aria-label="Setup progress">
-    <div class="step on"><span class="step-num">1</span>Your dealership</div>
-    <div class="step-line"></div>
-    <div class="step"><span class="step-num">2</span><span id="step2-label">Start free trial</span></div>
+  <div class="progress" aria-hidden="true">
+    <div class="progress-bar">
+      <span class="progress-seg done" id="seg1"><i></i></span>
+      <span class="progress-seg" id="seg2"><i></i></span>
+    </div>
+    <span id="progress-label">Step 1 of 2</span>
   </div>
-
-  <h1 class="title">Let's set up <em>your dealership</em></h1>
-  <p class="sub">About a minute. Tell us what you sell and we'll load your equipment into ClearDeals for you, so you're ready for your next appointment.</p>
 
   <div class="plan-pill">
     <div><b id="plan-name">Pro plan</b> <span id="plan-terms">· $0 today, then $297/mo after 30 days</span></div>
@@ -147,48 +157,63 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
   </div>
 
   <form id="setup" novalidate>
-    <section class="card">
-      <h2>Your dealership</h2>
-      <p class="card-sub">This becomes your ClearDeals account.</p>
-      <div class="grid">
-        <div class="field">
-          <label for="name">Your name</label>
-          <input id="name" name="name" autocomplete="name" required>
-        </div>
-        <div class="field">
-          <label for="dealership">Dealership name</label>
-          <input id="dealership" name="dealership" autocomplete="organization" required>
-        </div>
-        <div class="field full">
-          <label for="email">Work email</label>
-          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required>
-        </div>
-        <div class="field">
-          <label for="phone">Mobile phone <span class="opt">(optional)</span></label>
-          <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel">
-        </div>
-        <div class="field">
-          <label for="website">Website <span class="opt">(optional)</span></label>
-          <input id="website" name="website" inputmode="url" autocomplete="url" placeholder="yourdealership.com">
-        </div>
-        <!-- Unchecked by default: a phone number alone is not consent to text (TCPA). -->
-        <label class="consent">
-          <input type="checkbox" id="smsConsent" name="smsConsent">
-          <span>Text me setup help at this number. Msg &amp; data rates may apply. Reply STOP to opt out.</span>
-        </label>
+    <div class="viewport" id="viewport">
+      <div class="track" id="track">
+
+        <!-- ── Step 1: the dealer. Saved as a lead the moment it's done. ── -->
+        <section class="slide" id="slide1" aria-labelledby="title1">
+          <h1 class="title" id="title1" tabindex="-1">Let's set up <em>your dealership</em></h1>
+          <p class="sub">About a minute. This becomes your ClearDeals account, and we'll load your equipment for you on the next step.</p>
+          <div class="card">
+            <div class="grid">
+              <div class="field">
+                <label for="name">Your name</label>
+                <input id="name" name="name" autocomplete="name" enterkeyhint="next" required>
+              </div>
+              <div class="field">
+                <label for="dealership">Dealership name</label>
+                <input id="dealership" name="dealership" autocomplete="organization" enterkeyhint="next" required>
+              </div>
+              <div class="field full">
+                <label for="email">Work email</label>
+                <input id="email" name="email" type="email" inputmode="email" autocomplete="email" enterkeyhint="next" required>
+              </div>
+              <div class="field">
+                <label for="phone">Mobile phone <span class="opt">(optional)</span></label>
+                <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" enterkeyhint="next">
+              </div>
+              <div class="field">
+                <label for="website">Website <span class="opt">(optional)</span></label>
+                <input id="website" name="website" inputmode="url" autocomplete="url" enterkeyhint="go" placeholder="yourdealership.com">
+              </div>
+              <!-- Unchecked by default: a phone number alone is not consent to text (TCPA). -->
+              <label class="consent">
+                <input type="checkbox" id="smsConsent" name="smsConsent">
+                <span>Text me setup help at this number. Msg &amp; data rates may apply. Reply STOP to opt out.</span>
+              </label>
+            </div>
+          </div>
+          <div class="error" id="error1" role="alert"></div>
+          <button class="cta" type="button" id="next">Next: pick your brands →</button>
+          <p class="cta-sub">Nothing to pay on this step</p>
+        </section>
+
+        <!-- ── Step 2: brands, then Stripe. ── -->
+        <section class="slide" id="slide2" aria-labelledby="title2" inert>
+          <button class="back" type="button" id="back">← Back</button>
+          <h1 class="title" id="title2" tabindex="-1">Which brands does <em id="dealer-name">your dealership</em> sell?</h1>
+          <p class="sub">Pick any that apply. We'll load their systems, filters and add-ons into your catalog with descriptions and models filled in. You just add your prices.</p>
+          <div class="card">
+            <div class="brands" id="brands" role="group" aria-label="Brands you sell"></div>
+            <div class="tally" id="tally" aria-live="polite">Not sure yet? Skip this, and we'll build your catalog with you during setup.</div>
+          </div>
+          <div class="error" id="error2" role="alert"></div>
+          <button class="cta" type="submit" id="submit">Continue to free trial →</button>
+          <p class="cta-sub" id="cta-sub">$0 due today · Cancel anytime · Secure checkout by Stripe</p>
+        </section>
+
       </div>
-    </section>
-
-    <section class="card">
-      <h2>Which brands do you sell?</h2>
-      <p class="card-sub">Pick any that apply. We'll load their systems, filters and add-ons into your catalog with descriptions and models filled in. You just add your prices.</p>
-      <div class="brands" id="brands" role="group" aria-label="Brands you sell"></div>
-      <div class="tally" id="tally" aria-live="polite">Not sure yet? Skip this, and we'll build your catalog with you during setup.</div>
-    </section>
-
-    <div class="error" id="error" role="alert"></div>
-    <button class="cta" type="submit" id="submit">Continue to free trial →</button>
-    <p class="cta-sub" id="cta-sub">$0 due today · Cancel anytime · Secure checkout by Stripe</p>
+    </div>
     <p class="fine">Rather see it first? <a href="/sales-v2#book">Book a 30-min demo</a><br>
       We use these details to set up your account and to help if you get stuck finishing.</p>
   </form>
@@ -220,7 +245,6 @@ var p = PLANS[plan];
 $('plan-name').textContent = p.name + ' plan';
 if (interval === 'year') {
   $('plan-terms').textContent = '· ' + money(p.year) + '/year, billed today';
-  $('step2-label').textContent = 'Checkout';
   $('submit').textContent = 'Continue to checkout →';
   $('cta-sub').textContent = 'Secure checkout by Stripe · No contract';
 } else {
@@ -283,57 +307,163 @@ function saveDraft() {
 })();
 $('setup').addEventListener('input', saveDraft);
 
-// ── Submit ──
-function fail(msg, field) {
-  $('error').textContent = msg;
-  $('error').classList.add('show');
-  if (field) { $(field).setAttribute('aria-invalid', 'true'); $(field).focus(); }
+// ── Slides ──
+var step = 1;
+var slides = [null, $('slide1'), $('slide2')];
+
+// The viewport tracks the active slide's height, including when an error or
+// the brand tally changes it after the slide is shown.
+function fitHeight() { $('viewport').style.height = slides[step].offsetHeight + 'px'; }
+if (window.ResizeObserver) {
+  var ro = new ResizeObserver(fitHeight);
+  ro.observe(slides[1]); ro.observe(slides[2]);
+}
+window.addEventListener('resize', fitHeight);
+
+function go(to, quiet) {
+  step = to;
+  $('track').classList.toggle('at2', to === 2);
+  slides[1].inert = to !== 1;
+  slides[2].inert = to !== 2;
+  $('seg2').classList.toggle('done', to === 2);
+  $('progress-label').textContent = 'Step ' + to + ' of 2';
+  fitHeight();
+  // Each slide starts at the top, not wherever the last one was scrolled to.
+  if (quiet) return;
+  if (window.scrollY > 0) window.scrollTo({top: 0, behavior: 'smooth'});
+  setTimeout(function(){ $('title' + to).focus({preventScroll: true}); }, 460);
 }
 
-$('setup').addEventListener('submit', async function(e){
-  e.preventDefault();
-  $('error').classList.remove('show');
-  FIELDS.forEach(function(f){ $(f).removeAttribute('aria-invalid'); });
+// Step 2 is its own history entry, so a phone's back gesture returns to step 1
+// instead of leaving the page.
+function stepUrl(n) {
+  var q = new URLSearchParams(location.search);
+  n === 2 ? q.set('step', '2') : q.delete('step');
+  return location.pathname + '?' + q.toString();
+}
+window.addEventListener('popstate', function(e){
+  go(e.state && e.state.step === 2 ? 2 : 1);
+});
 
+function fail(n, msg, field) {
+  $('error' + n).textContent = msg;
+  $('error' + n).classList.add('show');
+  if (field) { $(field).setAttribute('aria-invalid', 'true'); $(field).focus(); }
+}
+function clearErrors() {
+  $('error1').classList.remove('show');
+  $('error2').classList.remove('show');
+  FIELDS.forEach(function(f){ $(f).removeAttribute('aria-invalid'); });
+}
+
+function values() {
   var v = {};
   FIELDS.forEach(function(f){ v[f] = $(f).value.trim(); });
-  if (!v.name) return fail('Please add your name.', 'name');
-  if (!v.dealership) return fail('Please add your dealership name.', 'dealership');
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) return fail('Please enter a valid email.', 'email');
+  return v;
+}
+function step1Error(v) {
+  if (!v.name) return ['Please add your name.', 'name'];
+  if (!v.dealership) return ['Please add your dealership name.', 'dealership'];
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) return ['Please enter a valid email.', 'email'];
+  return null;
+}
+function leadBody(v) {
+  return {
+    name: v.name, dealership: v.dealership, email: v.email,
+    phone: v.phone, website: v.website,
+    smsConsent: $('smsConsent').checked,
+    brands: Array.from(picked),
+    source: 'sales-v2',
+  };
+}
+
+// ── Step 1 → 2 ──
+var captured = '';
+function next() {
+  clearErrors();
+  var v = values();
+  var bad = step1Error(v);
+  if (bad) { fail(1, bad[0], bad[1]); fitHeight(); return; }
+
+  // Saved before the slide moves: a dealer who stops at brands is still a
+  // lead. Once per set of details, however often they go back and forth.
+  var key = [v.name, v.dealership, v.email, v.phone, $('smsConsent').checked].join('|');
+  if (key !== captured) {
+    captured = key;
+    try {
+      fetch('/api/lead', {
+        method: 'POST', keepalive: true,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({plan: plan, interval: interval, lead: leadBody(v)}),
+      }).catch(function(){});
+    } catch (e) {}
+    try { if (window.fbq) fbq('track', 'Lead', {content_name: 'ClearDeals ' + plan}); } catch (e) {}
+    try { if (window.clarity) clarity('event', 'setup_step1_done'); } catch (e) {}
+  }
+
+  $('dealer-name').textContent = v.dealership;
+  history.pushState({step: 2}, '', stepUrl(2));
+  go(2);
+}
+$('next').addEventListener('click', next);
+$('back').addEventListener('click', function(){ history.back(); });
+
+// ── Step 2 → Stripe ──
+async function checkout() {
+  clearErrors();
+  var v = values();
+  var bad = step1Error(v);
+  if (bad) { history.back(); fail(1, bad[0], bad[1]); return; }
 
   var btn = $('submit');
   var label = btn.textContent;
   btn.disabled = true;
   btn.textContent = 'Saving your setup…';
 
+  var res;
   try {
-    var res = await fetch('/api/checkout', {
+    res = await fetch('/api/checkout', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        service: 'sales', plan: plan, interval: interval,
-        lead: {
-          name: v.name, dealership: v.dealership, email: v.email,
-          phone: v.phone, website: v.website,
-          smsConsent: $('smsConsent').checked,
-          brands: Array.from(picked),
-          source: 'sales-v2',
-        },
-      }),
+      body: JSON.stringify({service: 'sales', plan: plan, interval: interval, lead: leadBody(v)}),
     });
     var out = await res.json();
     if (!res.ok || !out.url) throw new Error(out.error || 'No checkout URL returned');
 
-    try { if (window.fbq) fbq('track', 'Lead', {content_name: 'ClearDeals ' + plan}); } catch (err) {}
-    try { if (window.clarity) clarity('event', 'setup_submitted'); } catch (err) {}
+    try { if (window.fbq) fbq('track', 'InitiateCheckout', {content_name: 'ClearDeals ' + plan}); } catch (e) {}
+    try { if (window.clarity) clarity('event', 'setup_step2_done'); } catch (e) {}
     location.href = out.url;
   } catch (err) {
     btn.disabled = false;
     btn.textContent = label;
-    fail(res && res.status === 400 ? err.message
+    fail(2, res && res.status === 400 ? err.message
       : 'Something went wrong starting checkout. Please try again, or call us at +1 (617) 315-6471.');
   }
+}
+
+// Enter on step 1 means "next", never a checkout.
+$('setup').addEventListener('submit', function(e){
+  e.preventDefault();
+  step === 1 ? next() : checkout();
 });
+
+// ── Entry: back from Stripe (?step=2) reopens the brands step if step 1 is
+// still filled from the draft. Step 1 goes under it in history. ──
+(function enter(){
+  var v = values();
+  if (params.get('step') === '2' && !step1Error(v)) {
+    captured = [v.name, v.dealership, v.email, v.phone, $('smsConsent').checked].join('|');
+    $('dealer-name').textContent = v.dealership;
+    history.replaceState({step: 1}, '', stepUrl(1));
+    history.pushState({step: 2}, '', stepUrl(2));
+    $('track').style.transition = 'none';
+    go(2, true);
+    requestAnimationFrame(function(){ $('track').style.transition = ''; });
+  } else {
+    history.replaceState({step: 1}, '', stepUrl(1));
+    go(1, true);
+  }
+})();
 </script>
 </body>
 </html>

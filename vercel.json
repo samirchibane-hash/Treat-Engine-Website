@@ -24,6 +24,7 @@
     { "src": "/api/verify-session",    "dest": "/api/verify-session.js" },
     { "src": "/api/tablet-order",      "dest": "/api/tablet-order.js" },
     { "src": "/api/onboarding",        "dest": "/api/onboarding.js" },
+    { "src": "/api/lead",              "dest": "/api/lead.js" },
     { "src": "/api/admin/login",       "dest": "/api/admin/login.js" },
     { "src": "/api/admin/customers",   "dest": "/api/admin/customers.js" },
     { "src": "/",                      "dest": "/Home.html" },
