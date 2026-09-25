@@ -743,7 +743,7 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
 <body>
 <div id="root"></div>
 <div class="mobile-sticky-cta">
-  <a href="#pricing" class="scta-primary"><span>Get Started Free →</span><span class="scta-sub">30-day free trial</span></a>
+  <a href="#plan-starter" class="scta-primary"><span>Get Started Free →</span><span class="scta-sub">30-day free trial</span></a>
 </div>
 <script>document.body.classList.add('has-sticky-cta');</script>
 <script src="mobile-nav.js" defer></script>
@@ -3138,7 +3138,7 @@ function Pricing() {
 
         <div className="pr-grid reveal">
           {plans.map(p => (
-            <div className={`pr-card${p.featured ? ' featured' : ''}`} key={p.key}>
+            <div className={`pr-card${p.featured ? ' featured' : ''}`} key={p.key} id={`plan-${p.key}`}>
               {p.featured && <span className="pr-ribbon">Most popular</span>}
               <div className="pr-name">{p.name}</div>
               <div className="pr-for">{p.blurb}</div>
