@@ -286,8 +286,8 @@ src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt
                 <input id="email" name="email" type="email" inputmode="email" autocomplete="email" enterkeyhint="next" required>
               </div>
               <div class="field">
-                <label for="phone">Mobile phone <span class="opt-l">(optional)</span></label>
-                <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" enterkeyhint="next">
+                <label for="phone">Mobile phone</label>
+                <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" enterkeyhint="next" required>
               </div>
               <div class="field">
                 <label for="website">Website <span class="opt-l">(optional)</span></label>
@@ -607,6 +607,16 @@ async function checkout() {
   if (!v.name) return fail('Please add your name.', 'name');
   if (!v.dealership) return fail('Please add your dealership name.', 'dealership');
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) return fail('Please enter a valid email.', 'email');
+  if (v.phone.replace(/\D/g, '').length < 10) return fail('Please add your mobile phone number.', 'phone');
+
+  // Fires on the click itself, before the checkout request, so it counts
+  // every valid submit even if Stripe is slow or errors.
+  try {
+    if (window.fbq) fbq('track', 'AddToCart', {
+      content_name: 'ClearDeals ' + plan, content_ids: ['cleardeals-' + plan + '-' + interval],
+      content_type: 'product', value: PLANS[plan][interval], currency: 'USD',
+    });
+  } catch (e) {}
 
   var btn = $('submit');
   var label = btn.textContent;
