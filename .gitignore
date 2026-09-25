@@ -1,4 +1,1 @@
 .vercel
-.env*.local
-.env*
-.mcp.json
