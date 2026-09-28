@@ -351,6 +351,19 @@ document.querySelectorAll('[data-base-href]').forEach(function(a){
 var params = new URLSearchParams(location.search);
 var plan = PLANS[params.get('plan')] ? params.get('plan') : 'pro';
 var interval = params.get('interval') === 'year' ? 'year' : 'month';
+// Ad attribution, forwarded from /sales in the query string. Kept in storage
+// too: Stripe's back link returns here without it, and a resubmit must still
+// send it. A visit that arrives with fresh values replaces the stored ones.
+var ATTR_KEYS = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','fbclid','gclid'];
+var attribution = (function(){
+  var a = {};
+  ATTR_KEYS.forEach(function(k){ if (params.get(k)) a[k] = params.get(k); });
+  try {
+    if (Object.keys(a).length) localStorage.setItem('cd-attribution', JSON.stringify(a));
+    else a = JSON.parse(localStorage.getItem('cd-attribution') || '{}') || {};
+  } catch (e) {}
+  return a;
+})();
 var money = function(n){ return '$' + n.toLocaleString('en-US'); };
 var reduceMotion = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
 var CATALOG = null;
@@ -636,6 +649,7 @@ async function checkout() {
           smsConsent: $('smsConsent').checked,
           brands: picked.slice(),
           source: BASE.slice(1),
+          attribution: attribution,
         },
       }),
     });

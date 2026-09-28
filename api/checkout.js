@@ -1,5 +1,5 @@
 const Stripe = require('stripe');
-const { postLead, parseLead } = require('../lib/leads');
+const { postLead, parseLead, ATTRIBUTION_KEYS } = require('../lib/leads');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -193,6 +193,11 @@ module.exports = async (req, res) => {
           brands: brands.join(','),
           product_count: String(product_count),
         });
+        // UTMs and click IDs, only when present — the webhook reads them back
+        // for checkout_completed / checkout_abandoned.
+        for (const k of ATTRIBUTION_KEYS) {
+          if (lead[k]) sessionParams.metadata[k] = lead[k];
+        }
 
         // Expired sessions get a recovery link, delivered to the lead webhook
         // by api/webhook.js on checkout.session.expired.

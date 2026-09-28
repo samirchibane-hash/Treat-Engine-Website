@@ -1862,7 +1862,12 @@ function Pricing() {
     // Clicks are told apart by this event, not by the button text — so both
     // buttons can read naturally. Filter Clarity on cta_pricing_<plan>_<interval>.
     try { if (window.clarity) window.clarity('event', `cta_pricing_${key}_${billing}`); } catch (e) {}
-    window.location.href = `/sales-v2/start?plan=${key}&interval=${billing}`;
+    // Carry the landing page's query string (UTMs, fbclid, gclid) along —
+    // /sales-v2/start forwards it to Stripe metadata and the lead webhook.
+    const q = new URLSearchParams(window.location.search);
+    q.set('plan', key);
+    q.set('interval', billing);
+    window.location.href = `/sales-v2/start?${q}`;
   };
 
   // Back from /sales-v2/start restores this page from the back-forward cache
