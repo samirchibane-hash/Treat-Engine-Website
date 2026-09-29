@@ -25,6 +25,8 @@ const pages = {
   '/booking':             'Water Leads Booking.html',
   '/sales':               'Water Sales.html',
   '/roi-calculator':      'roi-calculator.html',
+  '/privacypolicy':       'privacy-policy.html',
+  '/termsofservice':      'terms-of-service.html',
   '/websites':            'Water Websites.html',
   '/v1':                  'index v1.html',
   '/websites/checkout':   'checkout/websites.html',
