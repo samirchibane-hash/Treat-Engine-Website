@@ -189,6 +189,15 @@ fbq('track', 'PageView');
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt=""/></noscript>
 <!-- End Meta Pixel -->
+<!-- Google tag — Google Ads (AW-16631843401) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-16631843401"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-16631843401');
+</script>
+<!-- End Google tag -->
 <!-- Microsoft Clarity — Treat Engine (y7pouto6cn) -->
 <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
@@ -658,9 +667,10 @@ async function orderTablets() {
 // eventID is the Stripe Checkout session id — stable for one signup, so a
 // refresh or a second tab dedupes against the first send, and a Conversions API
 // event sent later from api/webhook.js can dedupe against this one by reusing it.
+//
+// Google Ads "CD | Purchase" gets the same value, with the session id as
+// transaction_id so Google dedupes repeats the same way.
 function trackPurchase(s) {
-  if (typeof fbq !== 'function') return;
-
   const guardKey = 'te_fb_purchase_' + sessionId;
   try {
     if (localStorage.getItem(guardKey)) return;
@@ -668,6 +678,20 @@ function trackPurchase(s) {
   } catch { /* private mode — the eventID below still dedupes server-side */ }
 
   const cents = s.recurringAmount != null ? s.recurringAmount : (s.amountTotal || 0);
+
+  try {
+    if (typeof gtag === 'function') {
+      if (s.customerEmail) gtag('set', 'user_data', { email: s.customerEmail });
+      gtag('event', 'conversion', {
+        send_to: 'AW-16631843401/lsxhCICq9YkdEMmU1_o9',
+        value: cents / 100,
+        currency: 'USD',
+        transaction_id: sessionId,
+      });
+    }
+  } catch { /* never let Google break the Meta send */ }
+
+  if (typeof fbq !== 'function') return;
 
   fbq('track', 'Purchase', {
     value: cents / 100,

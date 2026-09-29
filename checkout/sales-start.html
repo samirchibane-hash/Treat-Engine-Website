@@ -192,6 +192,15 @@ fbq('track', 'PageView');
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt=""/></noscript>
 <!-- End Meta Pixel -->
+<!-- Google tag — Google Ads (AW-16631843401) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-16631843401"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-16631843401');
+</script>
+<!-- End Google tag -->
 <!-- Microsoft Clarity — Treat Engine (y7pouto6cn) -->
 <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
@@ -629,6 +638,17 @@ async function checkout() {
       content_name: 'ClearDeals ' + plan, content_ids: ['cleardeals-' + plan + '-' + interval],
       content_type: 'product', value: PLANS[plan][interval], currency: 'USD',
     });
+  } catch (e) {}
+  // Google Ads "CD | Opt-in". The email goes out as enhanced-conversions
+  // user data, which gtag hashes before sending.
+  try {
+    if (window.gtag) {
+      gtag('set', 'user_data', {email: v.email});
+      gtag('event', 'conversion', {
+        send_to: 'AW-16631843401/zwjCCIOq9YkdEMmU1_o9',
+        value: PLANS[plan][interval], currency: 'USD',
+      });
+    }
   } catch (e) {}
 
   var btn = $('submit');
