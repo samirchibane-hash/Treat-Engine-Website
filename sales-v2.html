@@ -263,6 +263,8 @@ a{text-decoration:none;color:inherit;}
 .wi-also strong{color:var(--ink);font-weight:600;}
 /* What's inside — grid of live cards (one animation per value prop) */
 .wig{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:8px;}
+.wig-cell{display:flex;}
+.wig-cell>.wig-card{flex:1;}
 .wig-card{display:flex;flex-direction:column;background:#fffefb;border:1px solid var(--border);border-radius:20px;overflow:hidden;text-align:left;}
 .wig-media{position:relative;aspect-ratio:4/3;overflow:hidden;background:hsl(40,25%,93%);border-top:3px solid var(--wi-solid);border-bottom:1px solid var(--border);font-family:'Inter',system-ui,sans-serif;}
 .wig-media .wi-canvas{transition:opacity .25s;}
@@ -2797,7 +2799,10 @@ function WiCard({f}) {
   const k = w / cw;
   const Beat = prop.Beat;
   return (
-    <article className={`wig-card reveal${playing ? ' is-playing' : ''}`} ref={cardRef} style={wiVars(prop)}
+    // `reveal` lives on a wrapper: useReveal adds `visible` to it imperatively, and a
+    // className React re-renders (is-playing) would wipe that and hide the card.
+    <div className="reveal wig-cell">
+    <article className={`wig-card${playing ? ' is-playing' : ''}`} ref={cardRef} style={wiVars(prop)}
       onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
       <div className="wig-media" ref={mediaRef} aria-hidden="true">
         <div className="wi-canvas" style={{transform: `scale(${k}) translate(${-x}px, ${-y}px)`}}>
@@ -2811,6 +2816,7 @@ function WiCard({f}) {
         <p className="wig-sub">{f.sub}</p>
       </div>
     </article>
+    </div>
   );
 }
 
