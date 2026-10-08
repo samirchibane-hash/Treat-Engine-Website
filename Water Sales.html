@@ -254,52 +254,30 @@ a{text-decoration:none;color:inherit;}
 
 
 /* WHAT'S INSIDE — capsules + copy/animation columns */
-.wi{margin-top:8px;}
-.wi-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:44px;}
-.wi-tab{display:inline-flex;align-items:center;gap:7px;padding:10px 16px;border-radius:999px;border:1.5px solid color-mix(in srgb, var(--wi-solid) 28%, transparent);background:var(--wi-tint);color:var(--wi-ink);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s,box-shadow .2s;white-space:nowrap;}
-.wi-tab:hover{border-color:var(--wi-solid);transform:translateY(-1px);box-shadow:0 6px 16px color-mix(in srgb, var(--wi-solid) 18%, transparent);}
-.wi-tab.is-active{background:var(--wi-solid);border-color:var(--wi-solid);color:#fff;box-shadow:0 8px 22px color-mix(in srgb, var(--wi-solid) 35%, transparent);}
-.wi-tab{transition:background .2s,color .2s,border-color .2s,box-shadow .2s,transform .2s;}
-.wi-tab:focus-visible,.wi-bullet:focus-visible{outline:2px solid var(--blue);outline-offset:3px;}
-.wi-panel{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:56px;align-items:center;}
-.wi-copy{animation:wi-in .5s cubic-bezier(.22,.61,.36,1) both;}
-@keyframes wi-in{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
-.wi-count{font-family:'Playfair Display',serif;font-size:14px;color:var(--wi-ink);letter-spacing:.06em;margin-bottom:14px;}
-.wi-count span{color:var(--ink-muted);}
-.wi-title{font-size:clamp(26px,2.6vw,36px);font-weight:600;color:var(--ink);letter-spacing:-.02em;line-height:1.12;margin-bottom:16px;}
-.wi-summary{font-size:16px;color:var(--ink-muted);line-height:1.7;margin-bottom:26px;}
-.wi-bullets{list-style:none;display:flex;flex-direction:column;gap:4px;}
-.wi-bullet{display:flex;gap:16px;width:100%;text-align:left;background:none;border:0;padding:10px 0;cursor:pointer;font-family:'DM Sans',sans-serif;}
 .wi-bullet-bar{position:relative;flex-shrink:0;width:3px;border-radius:3px;background:var(--cream-dark);overflow:hidden;}
 .wi-bullet-bar span{position:absolute;inset:0;background:var(--wi-solid);transform-origin:top;border-radius:3px;}
-.wi-bullet-text{font-size:15px;line-height:1.55;color:var(--ink-muted);transition:color .25s;}
-.wi-bullet.on .wi-bullet-text{color:var(--ink);font-weight:500;}
-.wi-bullet:hover .wi-bullet-text{color:var(--ink);}
-.wi-stage{position:relative;width:100%;aspect-ratio:4/3;border-radius:22px;overflow:hidden;background:hsl(40,25%,93%);border:1px solid var(--border);border-top:4px solid var(--wi-solid);transition:border-color .3s;box-shadow:0 24px 60px rgba(28,24,20,.10);font-family:'Inter',system-ui,sans-serif;}
-.wi-stage.is-phone{aspect-ratio:600/760;}
 .wi-canvas{position:absolute;top:0;left:0;width:960px;height:720px;transform-origin:top left;}
 .wi-canvas *{box-sizing:border-box;}
 .wi-canvas p{line-height:inherit;}
 .wi-also{margin-top:40px;text-align:center;font-size:14px;color:var(--ink-muted);line-height:1.7;}
 .wi-also strong{color:var(--ink);font-weight:600;}
-@media(max-width:960px){
-  /* Stacked: headline + summary, then the animation, then the bullets that drive it, so a
-     tapped bullet's beat plays right above it instead of off screen. */
-  .wi-panel{display:flex;flex-direction:column;gap:0;align-items:stretch;}
-  .wi-copy{display:contents;}
-  .wi-count{order:1;}
-  .wi-title{order:2;}
-  .wi-summary{order:3;margin-bottom:22px;}
-  .wi-stage{order:4;margin-bottom:18px;}
-  .wi-bullets{order:5;}
-  .wi-tabs{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;margin:0 -20px 28px;padding:2px 20px 6px;scrollbar-width:none;}
-  .wi-tabs::-webkit-scrollbar{display:none;}
-}
-@media(max-width:600px){
-  /* edge to edge on phones: every pixel goes to the equipment and the control */
-  .wi-stage{width:100vw;margin-left:calc(50% - 50vw);border-radius:0;border-left:0;border-right:0;box-shadow:none;}
-}
-@media (prefers-reduced-motion: reduce){.wi-copy{animation:none;}}
+/* What's inside — grid of live cards (one animation per value prop) */
+.wig{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:8px;}
+.wig-cell{display:flex;}
+.wig-cell>.wig-card{flex:1;}
+.wig-card{display:flex;flex-direction:column;background:#fffefb;border:1px solid var(--border);border-radius:20px;overflow:hidden;text-align:left;}
+.wig-media{position:relative;aspect-ratio:4/3;overflow:hidden;background:hsl(40,25%,93%);border-top:3px solid var(--wi-solid);border-bottom:1px solid var(--border);font-family:'Inter',system-ui,sans-serif;}
+.wig-media .wi-canvas{transition:opacity .25s;}
+.wig-body{display:flex;flex-direction:column;gap:8px;flex:1;padding:20px 22px 24px;}
+.wig-sub{font-size:14.5px;line-height:1.55;color:var(--ink-muted);}
+.wig-card{transition:box-shadow .25s,border-color .25s;}
+.wig-card.is-playing{border-color:color-mix(in srgb,var(--wi-solid) 40%,var(--cream-dark));box-shadow:0 16px 36px rgba(28,24,20,.09);}
+.wig-play{position:absolute;right:12px;bottom:12px;width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:rgba(255,255,255,.9);border:1px solid var(--border);color:var(--wi-ink);box-shadow:0 2px 8px rgba(28,24,20,.08);transition:opacity .2s;}
+.wig-card.is-playing .wig-play{opacity:0;}
+.wig-label{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;padding:5px 11px;border-radius:999px;background:var(--wi-tint);color:var(--wi-ink);font-size:12.5px;font-weight:600;}
+.wig-title{font-family:'Playfair Display',serif;font-size:21px;line-height:1.22;font-weight:600;color:var(--ink);letter-spacing:-.01em;}
+@media (max-width:1024px){.wig{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media (max-width:640px){.wig{grid-template-columns:1fr;gap:18px;}}
 
 /* FLOW — how a deal works */
 .flow-section{background:var(--navy);padding:110px 32px;}
@@ -750,6 +728,341 @@ gtag('config', 'AW-16631843401');
     })(window, document, "clarity", "script", "y7pouto6cn");
 </script>
 <!-- End Microsoft Clarity -->
+<style>
+/* ═══════════════ /sales — redesign (Figma: "/sales — V2 Redesign") ═══════════════ */
+.v2-sec{padding:110px 32px;}
+.v2-sec.white{background:var(--white);}
+.v2-sec.cream{background:var(--cream);}
+.v2-sec.sand{background:var(--cream-mid);}
+.v2-sec.navy{background:var(--navy);}
+.v2-in{max-width:1180px;margin:0 auto;}
+.v2-head{display:flex;flex-direction:column;gap:18px;margin-bottom:56px;}
+.v2-head.center{align-items:center;text-align:center;}
+.v2-head .eyebrow{margin-bottom:0;}
+.v2-head h2{font-size:clamp(34px,4vw,52px);font-weight:600;letter-spacing:-.02em;line-height:1.1;color:var(--ink);}
+.v2-head h2 em{font-style:italic;color:var(--navy);}
+.v2-head p{font-size:17px;line-height:1.65;color:var(--ink-muted);max-width:600px;}
+.v2-head.dark h2,.v2-head.dark h2 em{color:#fff;}
+.v2-head.dark p{color:rgba(255,255,255,.72);}
+.v2-head.dark .eyebrow{color:rgba(255,255,255,.75);}
+.v2-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,480px);gap:64px;align-items:end;margin-bottom:56px;}
+.v2-split .v2-head{margin-bottom:0;}
+.v2-split>p{font-size:17px;line-height:1.65;color:var(--ink-muted);}
+.v2-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:15px 24px;border-radius:9px;font-size:15.5px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;border:1px solid transparent;transition:transform .15s,background .2s,box-shadow .2s;white-space:nowrap;}
+.v2-btn:hover{transform:translateY(-1px);}
+.v2-btn.primary{background:var(--blue);color:#fff;box-shadow:0 6px 16px -4px rgba(59,130,246,.45);}
+.v2-btn.primary:hover{background:var(--blue-dark);}
+.v2-btn.ghost{background:#fff;color:var(--ink);border-color:rgba(28,24,20,.16);}
+.v2-btn.light{background:#fff;color:var(--ink);}
+.v2-btn.ghostw{color:#fff;border-color:rgba(255,255,255,.35);}
+.v2-btn.dark{background:var(--ink);color:#fff;}
+.v2-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;background:var(--blue-light);color:var(--blue-dark);}
+.v2-check{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.5;color:var(--ink-mid);}
+.v2-check i{flex-shrink:0;width:18px;height:18px;border-radius:999px;background:var(--blue-light);color:var(--blue-dark);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:10px;font-weight:700;margin-top:2px;}
+.v2-checks{display:flex;flex-direction:column;gap:12px;list-style:none;}
+/* nav */
+.nav.v2-nav{background:transparent;border-bottom:0;backdrop-filter:none;padding:14px 32px 0;}
+.nav.v2-nav .nav-inner{max-width:1180px;height:62px;padding:0 10px 0 22px;background:#fff;border:1px solid var(--cream-dark);border-radius:14px;box-shadow:0 1px 3px rgba(28,24,20,.06);}
+.nav.v2-nav.scrolled .nav-inner{box-shadow:0 10px 30px rgba(28,24,20,.10);}
+.nav.v2-nav.scrolled{box-shadow:none;}
+.v2-nav .nav-actions .nav-cta{border-radius:8px;}
+/* hero */
+.v2-hero{padding:150px 32px 0;background:linear-gradient(180deg,var(--cream) 0%,#f3eee4 55%,var(--cream) 100%);text-align:center;}
+.v2-hero h1{font-size:clamp(44px,6.4vw,78px);font-weight:600;letter-spacing:-.025em;line-height:1.05;color:var(--ink);margin:26px auto 0;max-width:980px;}
+.v2-hero h1 em{font-style:italic;color:var(--navy);}
+.v2-hero-sub{font-size:19px;line-height:1.63;color:var(--ink-muted);max-width:660px;margin:26px auto 0;}
+.v2-hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:30px;}
+.v2-hero-meta{margin-top:18px;font-size:13.5px;color:var(--ink-muted);}
+.v2-badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--cream-dark);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:500;color:var(--ink-mid);}
+.v2-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);}
+.v2-show{position:relative;max-width:1180px;margin:64px auto 0;}
+.v2-show::before{content:'';position:absolute;left:10%;right:10%;top:22%;bottom:12%;background:radial-gradient(ellipse at center,rgba(59,130,246,.22),transparent 70%);filter:blur(30px);}
+.v2-video{position:relative;width:min(980px,100%);margin:0 auto;border-radius:18px;overflow:hidden;background:#0f1b33;border:1px solid rgba(28,24,20,.10);box-shadow:0 32px 64px -12px rgba(28,24,20,.28);}
+.v2-video wistia-player{display:block;width:100%;}
+.v2-chip{position:absolute;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--cream-dark);border-radius:12px;padding:12px 16px;box-shadow:0 8px 24px -4px rgba(28,24,20,.12);text-align:left;}
+.v2-chip b{display:block;font-size:13.5px;font-weight:600;color:var(--ink);}
+.v2-chip span{display:block;font-size:12px;color:var(--ink-muted);}
+.v2-chip i{width:28px;height:28px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:13px;}
+.v2-chip.signed{left:0;bottom:12%;z-index:2;}
+.v2-chip.signed i{background:#ecfdf3;color:#16a34a;}
+.v2-chip.opened{right:0;top:10%;z-index:2;}
+.v2-chip.opened i{background:var(--blue-light);color:var(--blue-dark);}
+/* proof */
+.v2-proof{padding:72px 32px 96px;text-align:center;background:var(--cream);}
+.v2-proof-label{font-size:14px;font-weight:500;color:var(--ink-muted);margin-bottom:40px;}
+.v2-logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:28px 44px;max-width:1180px;margin:0 auto;}
+.v2-logos img{height:32px;width:auto;max-width:130px;object-fit:contain;filter:grayscale(1);opacity:.55;}
+.v2-logos img.tall{height:40px;}
+.v2-stats{max-width:1180px;margin:48px auto 0;display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border:1px solid var(--cream-dark);border-radius:16px;box-shadow:0 1px 3px rgba(28,24,20,.06);text-align:left;}
+.v2-stat{padding:36px 40px;}
+.v2-stat+.v2-stat{border-left:1px solid var(--cream-dark);}
+.v2-stat b{display:block;font-family:'Playfair Display',serif;font-size:48px;font-weight:600;letter-spacing:-.02em;color:var(--navy);line-height:1.05;}
+.v2-stat span{display:block;margin-top:8px;font-size:15px;color:var(--ink-muted);}
+/* ways */
+.v2-ways{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.v2-way{border-radius:20px;overflow:hidden;background:#fff;border:1px solid var(--cream-dark);box-shadow:0 1px 3px rgba(28,24,20,.06);display:flex;flex-direction:column;}
+.v2-way.dark{background:var(--navy);border-color:var(--navy);}
+.v2-way-media{background:var(--cream-mid);padding:28px 28px 0;height:330px;overflow:hidden;}
+.v2-way.dark .v2-way-media{background:#0f1b33;}
+.v2-way-media img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:12px 12px 0 0;display:block;}
+.v2-way-body{padding:32px 36px 36px;display:flex;flex-direction:column;gap:16px;}
+.v2-way-body h3{font-size:30px;font-weight:600;line-height:1.2;color:var(--ink);}
+.v2-way-body p{font-size:15.5px;line-height:1.62;color:var(--ink-muted);}
+.v2-way.dark h3{color:#fff;}
+.v2-way.dark p{color:rgba(255,255,255,.75);}
+.v2-way.dark .v2-check{color:#fff;}
+.v2-way.dark .v2-check i{background:var(--blue);color:#fff;}
+.v2-way.dark .v2-pill{background:#fff;color:var(--navy);}
+.v2-way-tag{font-size:13px;font-weight:600;color:var(--blue-dark);}
+.v2-way.dark .v2-way-tag{color:#fff;opacity:.9;}
+/* audiences */
+.v2-aud{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.v2-aud-card{background:#fff;border:1px solid var(--cream-dark);border-radius:20px;padding:30px 30px 32px;display:flex;flex-direction:column;gap:16px;}
+.v2-aud-card .bar{width:36px;height:4px;border-radius:4px;}
+.v2-aud-card h3{font-size:26px;font-weight:600;line-height:1.2;color:var(--ink);white-space:pre-line;}
+/* comparison */
+.v2-cmp{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;border-radius:24px;background:var(--cream-mid);}
+.v2-cmp-col{padding:28px 28px 20px;border-radius:18px;}
+.v2-cmp-col.new{background:#fff;border:1px solid rgba(59,130,246,.35);box-shadow:0 8px 24px -4px rgba(28,24,20,.10);}
+.v2-cmp-col h3{font-size:17px;font-family:'DM Sans',sans-serif;font-weight:600;color:var(--ink-muted);padding-bottom:18px;}
+.v2-cmp-col.new h3{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);}
+.v2-cmp-row{display:flex;gap:12px;align-items:center;padding:15px 0;border-top:1px solid var(--cream-dark);font-size:15.5px;line-height:1.45;color:var(--ink-muted);}
+.v2-cmp-col.new .v2-cmp-row{color:var(--ink);font-weight:500;}
+.v2-cmp-row i{flex-shrink:0;width:22px;height:22px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;font-weight:700;background:var(--cream-dark);color:var(--ink-muted);}
+.v2-cmp-col.new .v2-cmp-row i{background:var(--blue);color:#fff;}
+.v2-center-cta{display:flex;justify-content:center;margin-top:40px;}
+/* what's inside header (centred) */
+.v2-features .features-header{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0;border-bottom:0;padding-bottom:0;margin-bottom:56px;}
+.v2-features .features-header .section-sub{margin:0 auto;}
+.v2-features .section-title em{color:var(--navy);}
+/* live in minutes */
+.v2-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.v2-step{background:#fff;border:1px solid var(--cream-dark);border-radius:18px;overflow:hidden;box-shadow:0 1px 3px rgba(28,24,20,.06);display:flex;flex-direction:column;}
+.v2-step-ui{background:var(--cream-mid);padding:18px;height:268px;display:flex;flex-direction:column;gap:8px;}
+.v2-step-body{padding:22px 22px 26px;display:flex;flex-direction:column;gap:8px;}
+.v2-step-num{width:28px;height:28px;border-radius:999px;background:var(--navy);color:#fff;font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;}
+.v2-step-body h3{font-size:21px;font-weight:600;line-height:1.27;color:var(--ink);}
+.v2-step-body p{font-size:14px;line-height:1.58;color:var(--ink-muted);}
+.v2-ui-panel{background:#fff;border:1px solid var(--cream-dark);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:0 1px 3px rgba(28,24,20,.06);}
+.v2-ui-search{background:var(--cream);border:1px solid var(--cream-dark);border-radius:7px;padding:7px 10px;font-size:11.5px;color:var(--ink-muted);}
+.v2-ui-row{display:flex;align-items:center;gap:8px;}
+.v2-ui-row img{width:30px;height:30px;object-fit:contain;border-radius:6px;background:var(--cream);}
+.v2-ui-row b{display:block;font-size:11.5px;font-weight:600;color:var(--ink);}
+.v2-ui-row small{display:block;font-size:10px;color:var(--ink-muted);}
+.v2-ui-row .tag{margin-left:auto;font-size:10px;font-weight:600;padding:4px 8px;border-radius:6px;white-space:nowrap;}
+.v2-ui-row .tag.ok{background:#ecfdf3;color:#16a34a;}
+.v2-ui-row .tag.add{background:var(--blue-light);color:var(--blue-dark);}
+.v2-tpls{display:flex;gap:8px;}
+.v2-tpl{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:var(--ink-muted);}
+.v2-tpl-th{width:100%;max-width:70px;height:120px;background:#fff;border:1px solid var(--cream-dark);border-radius:8px;padding:7px;display:flex;flex-direction:column;gap:5px;box-shadow:0 1px 3px rgba(28,24,20,.06);}
+.v2-tpl.on .v2-tpl-th{border:2px solid var(--blue);}
+.v2-tpl.on{color:var(--blue-dark);font-weight:600;}
+.v2-tpl-th span{display:block;border-radius:3px;background:#e9e2d4;height:4px;}
+.v2-tpl-th span.hd{height:34px;border-radius:4px;}
+.v2-tpl-th span.ft{height:22px;background:var(--cream-mid);}
+.v2-ui-note{align-self:flex-start;background:#fff;border:1px solid var(--cream-dark);border-radius:999px;padding:5px 10px;font-size:10.5px;font-weight:500;color:var(--ink-mid);}
+.v2-drop{border:1.5px dashed rgba(59,130,246,.55);background:#fff;border-radius:10px;padding:14px;text-align:center;}
+.v2-drop b{display:block;font-size:11.5px;color:var(--ink);}
+.v2-drop small{display:block;font-size:10px;color:var(--ink-muted);margin-top:2px;}
+.v2-drop .ic{color:var(--blue-dark);font-weight:700;font-size:18px;}
+.v2-file{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--cream-dark);border-radius:8px;padding:8px 10px;}
+.v2-file .pdf{width:22px;height:26px;border-radius:4px;background:var(--blue-light);color:var(--blue-dark);font-size:7px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;}
+.v2-file b{display:block;font-size:11px;color:var(--ink);}
+.v2-file small{display:block;font-size:9.5px;color:var(--ink-muted);}
+.v2-file .ok{margin-left:auto;color:#16a34a;font-weight:700;}
+.v2-stripe{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--cream-dark);border-radius:8px;padding:8px 10px;}
+.v2-stripe img{height:20px;width:auto;}
+.v2-conn{font-size:10px;font-weight:600;color:#16a34a;background:#ecfdf3;border-radius:999px;padding:4px 9px;}
+.v2-ui-label{font-size:9.5px;font-weight:600;letter-spacing:.08em;color:var(--ink-muted);margin-top:2px;}
+.v2-lenders{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.v2-lenders span{height:40px;background:#fff;border:1px solid var(--cream-dark);border-radius:7px;display:flex;align-items:center;justify-content:center;padding:5px;}
+.v2-lenders img{max-width:100%;max-height:28px;object-fit:contain;}
+.v2-step{transition:border-color .3s,box-shadow .3s,transform .3s;cursor:default;}
+.v2-step.on{border-color:rgba(59,130,246,.45);box-shadow:0 18px 40px -10px rgba(28,24,20,.18);transform:translateY(-3px);}
+.v2-step.on .v2-step-num{background:var(--blue);}
+.v2-step-ui{position:relative;overflow:hidden;}
+.v2-strip .track span{transition:width .2s linear;}
+/* step 1 — brand catalog import (mirrors /sales/start) */
+.sc{position:relative;display:flex;flex-direction:column;gap:8px;height:100%;}
+.sc-picker{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--navy);border-radius:10px;padding:7px 9px;box-shadow:0 4px 14px rgba(26,39,68,.10);}
+.sc-picker img{width:24px;height:24px;object-fit:contain;}
+.sc-pick-txt{flex:1;min-width:0;}
+.sc-pick-txt b{display:block;font-size:12px;font-weight:700;color:var(--ink);}
+.sc-pick-txt small{display:block;font-size:9.5px;color:var(--ink-muted);}
+.sc-chev{width:18px;height:18px;border-radius:50%;background:var(--navy);color:#fff;font-size:10px;display:grid;place-items:center;line-height:1;transition:transform .25s;}
+.sc-chev.up{transform:rotate(180deg);}
+.sc-list{position:absolute;left:0;right:0;top:46px;z-index:3;background:#fff;border:1px solid var(--cream-dark);border-radius:10px;box-shadow:0 14px 34px rgba(28,24,20,.18);padding:4px;transition:opacity .2s,transform .2s;}
+.sc-opt{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:7px;font-size:11.5px;font-weight:600;color:var(--ink);transition:background .2s;}
+.sc-opt.hl{background:var(--cream);}
+.sc-opt img{width:22px;height:22px;object-fit:contain;background:#fff;border:1px solid var(--cream-dark);border-radius:5px;}
+.sc-preview{flex:1;background:#fff;border:1px solid var(--cream-dark);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px;transition:opacity .3s;min-height:0;overflow:hidden;}
+.sc-status{display:flex;justify-content:space-between;font-size:10.5px;font-weight:600;color:var(--ink);}
+.sc-status.done{color:#15803d;}
+.sc-status .n{color:var(--ink-muted);font-weight:500;font-variant-numeric:tabular-nums;}
+.sc-meter{height:3px;border-radius:3px;background:var(--cream-mid);overflow:hidden;}
+.sc-meter i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--navy));transition:width .15s linear;}
+.sc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;}
+.sc-prod{min-width:0;position:relative;background:var(--cream);border:1px solid var(--border-mid);border-radius:7px;padding:4px;opacity:.25;filter:grayscale(1);transform:scale(.96);transition:opacity .35s,filter .45s,transform .35s;}
+.sc-prod.on{opacity:1;filter:none;transform:none;}
+.sc-prod .ph{aspect-ratio:4/3;background:#fff;border-radius:5px;display:grid;place-items:center;}
+.sc-prod .ph img{width:78%;height:78%;object-fit:contain;}
+.sc-prod b{display:block;font-size:8.5px;font-weight:600;line-height:1.25;color:var(--ink);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sc-prod .ok{position:absolute;top:3px;right:3px;width:11px;height:11px;border-radius:50%;background:#16a34a;transform:scale(0);transition:transform .3s;z-index:1;}
+.sc-prod .ok::after{content:'✓';position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:7px;font-weight:700;}
+.sc-prod.on .ok{transform:scale(1);}
+/* step 2 — presentation styles */
+.stp{display:flex;flex-direction:column;gap:8px;}
+.stp-main{position:relative;aspect-ratio:16/9;border-radius:9px;overflow:hidden;background:#fff;border:1px solid var(--cream-dark);box-shadow:0 8px 22px -6px rgba(28,24,20,.22);}
+.stp-main img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .45s,transform 1.2s;}
+.stp-name{position:absolute;left:8px;bottom:8px;background:rgba(15,27,51,.85);color:#fff;font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:999px;}
+.stp-thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+.stp-thumbs img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:4px;border:2px solid transparent;opacity:.6;transition:opacity .3s,border-color .3s;}
+.stp-thumbs img.on{opacity:1;border-color:var(--blue);}
+/* step 3 — agreement upload */
+.sa{display:flex;flex-direction:column;gap:7px;}
+.sa-drop{border:1.5px dashed rgba(59,130,246,.55);background:#fff;border-radius:10px;padding:10px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:11.5px;}
+.sa-drop .ic{color:var(--blue-dark);font-weight:700;font-size:15px;}
+.sa-drop.pulse{animation:sa-pulse 1s ease-in-out infinite;}
+@keyframes sa-pulse{50%{background:var(--blue-light);border-color:var(--blue);}}
+.sa .v2-file{transition:none;}
+.sa-bar{height:3px;border-radius:3px;background:var(--cream-mid);margin-top:4px;overflow:hidden;}
+.sa-bar i{display:block;height:100%;background:var(--blue);}
+.sa-fields{display:flex;flex-wrap:wrap;gap:4px;}
+.sa-fields span{font-size:9.5px;font-weight:600;padding:3px 7px;border-radius:999px;background:#fff;border:1px solid var(--cream-dark);color:var(--ink-muted);opacity:.35;transform:scale(.92);transition:all .3s;}
+.sa-fields span.on{opacity:1;transform:none;background:#ecfdf3;border-color:rgba(22,163,74,.25);color:#15803d;}
+.sa-ready{font-size:11px;font-weight:600;color:var(--ink-muted);text-align:center;padding:6px;border-radius:8px;background:#fff;border:1px solid var(--cream-dark);transition:all .3s;}
+.sa-ready.on{color:#15803d;background:#ecfdf3;border-color:rgba(22,163,74,.25);}
+/* step 4 — Stripe + lenders */
+.sp{display:flex;flex-direction:column;gap:8px;}
+.sp-btn{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:#fff;background:#635bff;border-radius:999px;padding:4px 10px;}
+.sp-btn.busy{opacity:.85;}
+.sp-btn .spin{width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);border-top-color:#fff;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.sp .v2-lenders span{transition:none;}
+.sp-foot{font-size:10.5px;font-weight:600;color:var(--blue-dark);text-align:center;}
+.v2-strip{margin-top:24px;display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:14px;padding:22px 28px;color:#fff;font-size:14px;font-weight:700;}
+.v2-strip .track{flex:1;height:6px;border-radius:999px;background:rgba(255,255,255,.15);overflow:hidden;}
+.v2-strip .track span{display:block;height:100%;width:66%;background:var(--blue);border-radius:999px;}
+/* integrations */
+.v2-hub{position:relative;max-width:1000px;height:300px;margin:0 auto 48px;}
+.v2-hub svg{position:absolute;inset:0;width:100%;height:100%;}
+.v2-hub-col{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-between;padding:12px 0;}
+.v2-hub-col.l{left:0;}
+.v2-hub-col.r{right:0;}
+.v2-tool{display:flex;align-items:center;gap:10px;width:210px;padding:14px 20px;background:var(--cream);border:1px solid var(--cream-dark);border-radius:14px;box-shadow:0 1px 3px rgba(28,24,20,.06);font-size:15px;font-weight:600;color:var(--ink);}
+.v2-tool::before{content:'';width:10px;height:10px;border-radius:50%;background:#16a34a;}
+.v2-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:220px;background:var(--navy);border-radius:20px;padding:22px 26px;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:0 32px 64px -12px rgba(28,24,20,.28);}
+.v2-core b{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:#fff;}
+.v2-core span{background:#fff;color:#16a34a;border-radius:999px;padding:5px 11px;font-size:11px;font-weight:600;}
+.v2-tools-m{display:none;}
+.v2-benefits{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.v2-benefit i{width:40px;height:40px;border-radius:12px;background:var(--blue-light);color:var(--blue-dark);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:17px;margin-bottom:12px;}
+.v2-benefit h3{font-family:'DM Sans',sans-serif;font-size:17px;font-weight:600;color:var(--ink);margin-bottom:8px;}
+.v2-benefit p{font-size:15px;line-height:1.6;color:var(--ink-muted);}
+.v2-integ-foot{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:40px;font-size:15px;font-weight:500;color:var(--ink-mid);flex-wrap:wrap;}
+/* results */
+.v2-quote{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:56px;align-items:center;background:var(--blue-light);border-radius:24px;padding:56px 64px;}
+.v2-quote .mark{font-family:'Playfair Display',serif;font-weight:700;font-size:88px;line-height:.7;color:var(--blue);}
+.v2-quote blockquote{font-family:'Playfair Display',serif;font-size:40px;line-height:1.25;font-weight:600;color:var(--navy);margin:22px 0;}
+.v2-who{display:flex;align-items:center;gap:12px;}
+.v2-who .logo{width:64px;height:48px;background:#fff;border:1px solid var(--cream-dark);border-radius:12px;display:flex;align-items:center;justify-content:center;padding:6px 8px;}
+.v2-who .logo img{max-width:100%;max-height:100%;object-fit:contain;}
+.v2-who b{display:block;font-size:16px;font-weight:600;color:var(--ink);}
+.v2-who span{display:block;font-size:13.5px;color:var(--ink-muted);}
+.v2-metrics{display:flex;flex-direction:column;gap:14px;}
+.v2-metric{background:#fff;border:1px solid var(--cream-dark);border-radius:14px;padding:18px 22px;}
+.v2-metric b{display:block;font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:var(--navy);line-height:1.1;}
+.v2-metric span{display:block;font-size:13.5px;color:var(--ink-muted);}
+/* pricing tweaks (dark featured plan, no billing toggle) */
+.v2-pricing .pr-card.featured{background:var(--navy);border-color:var(--navy);box-shadow:0 32px 64px -12px rgba(28,24,20,.28);}
+.v2-pricing .pr-card.featured .pr-name,.v2-pricing .pr-card.featured .pr-amt{color:#fff;}
+.v2-pricing .pr-card.featured .pr-for,.v2-pricing .pr-card.featured .pr-per,.v2-pricing .pr-card.featured .pr-note,.v2-pricing .pr-card.featured .pr-btn-note{color:rgba(255,255,255,.72);}
+.v2-pricing .pr-card.featured .pr-note-save{color:#86efac;}
+.v2-pricing .pr-card.featured .pr-features li{color:#fff;}
+.v2-pricing .pr-card.featured .pr-feat-head{color:rgba(255,255,255,.6);}
+.v2-pricing .pr-card.featured .pr-divider{background:rgba(255,255,255,.14);}
+.v2-pricing .pr-card.featured .pr-lead{color:#fff;}
+/* faq */
+.v2-faq{display:grid;grid-template-columns:400px minmax(0,1fr);gap:80px;align-items:start;}
+.v2-faq .v2-head{margin-bottom:22px;}
+.v2-faq-left p{font-size:15.5px;line-height:1.6;color:var(--ink-muted);margin-bottom:22px;max-width:360px;}
+.v2-faq .faq-list{margin:0;}
+/* final cta */
+.v2-final{padding:40px 32px 120px;background:var(--cream);}
+.v2-final-card{max-width:1180px;margin:0 auto;background:var(--navy);border-radius:28px;padding:64px;display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:56px;align-items:start;overflow:hidden;}
+.v2-final-card h2{font-size:clamp(36px,4.6vw,56px);font-weight:600;letter-spacing:-.02em;line-height:1.08;color:#fff;margin:22px 0;}
+.v2-final-card h2 em{font-style:italic;}
+.v2-final-card>div>p{font-size:17px;line-height:1.6;color:rgba(255,255,255,.72);max-width:480px;}
+.v2-final-card .eyebrow{color:rgba(255,255,255,.75);margin:0;}
+.v2-final-card .v2-checks{margin:28px 0 32px;}
+.v2-final-card .v2-check{color:#fff;}
+.v2-final-card .v2-check i{background:var(--blue);color:#fff;}
+.v2-final-ctas{display:flex;gap:12px;flex-wrap:wrap;}
+.v2-book{background:#fff;border-radius:16px;overflow:hidden;}
+.v2-book-head{padding:18px 20px;border-bottom:1px solid var(--cream-dark);}
+.v2-book-head b{display:block;font-size:15px;font-weight:600;color:var(--ink);}
+.v2-book-head span{display:block;font-size:13px;color:var(--ink-muted);margin-top:2px;}
+
+/* ── tablet ── */
+@media (max-width:1024px){
+  .v2-steps{grid-template-columns:repeat(2,1fr);}
+  .v2-final-card{grid-template-columns:1fr;}
+  .v2-faq{grid-template-columns:1fr;gap:40px;}
+}
+/* ── phone (matches Figma "/sales — V2 Mobile 390") ── */
+@media (max-width:768px){
+  .v2-sec{padding:64px 20px;}
+  .nav.v2-nav{padding:10px 12px 0;}
+  .nav.v2-nav .nav-inner{padding:0 10px 0 16px;height:58px;}
+  .v2-hero{padding:104px 20px 0;}
+  .v2-badge{font-size:12px;padding:6px 12px;}
+  .v2-hero h1{font-size:44px;line-height:1.08;margin-top:20px;}
+  .v2-hero-sub{font-size:17px;margin-top:18px;}
+  .v2-hero-ctas{flex-direction:column;align-items:stretch;}
+  .v2-show{margin-top:36px;}
+  .v2-chip.opened{display:none;}
+  .v2-chip.signed{display:none;}
+  .v2-video{border-radius:12px;}
+  .v2-proof{padding:56px 20px 64px;}
+  .v2-logos{gap:20px 26px;}
+  .v2-logos img{height:26px;max-width:100px;}
+  .v2-logos img.tall{height:32px;}
+  .v2-stats{grid-template-columns:1fr;}
+  .v2-stat{padding:22px 24px;}
+  .v2-stat+.v2-stat{border-left:0;border-top:1px solid var(--cream-dark);}
+  .v2-stat b{font-size:34px;}
+  .v2-split{grid-template-columns:1fr;gap:18px;margin-bottom:36px;}
+  .v2-head{margin-bottom:36px;}
+  .v2-head h2{font-size:34px;}
+  .v2-ways,.v2-aud,.v2-cmp,.v2-benefits,.v2-steps{grid-template-columns:1fr;}
+  .v2-way-media{height:220px;padding:18px 18px 0;}
+  .v2-way-body{padding:24px 22px 26px;}
+  .v2-way-body h3{font-size:24px;}
+  .v2-aud-card h3{font-size:22px;}
+  .v2-cmp{padding:6px;}
+  .v2-cmp-col{padding:22px 20px 14px;}
+  .v2-hub{display:none;}
+  .v2-tools-m{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:36px;}
+  .v2-tools-m .v2-core{position:static;transform:none;width:auto;flex-direction:row;padding:12px 18px;}
+  .v2-tools-m .v2-core b{font-size:18px;}
+  .v2-tools-m small{font-size:12px;color:var(--ink-muted);}
+  .v2-tools-m .wrap{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;}
+  .v2-tools-m .v2-tool{width:auto;padding:9px 14px;font-size:13px;border-radius:10px;}
+  .v2-tools-m .v2-tool::before{width:8px;height:8px;}
+  .v2-quote{grid-template-columns:1fr;padding:32px 24px;gap:28px;}
+  .v2-quote blockquote{font-size:28px;line-height:1.3;}
+  .v2-final{padding:24px 20px 72px;}
+  .v2-final-card{padding:40px 24px;border-radius:22px;}
+  .v2-final-card h2{font-size:36px;}
+  .v2-final-ctas{flex-direction:column;}
+  .v2-strip{flex-wrap:wrap;gap:12px;font-size:13px;}
+  .v2-strip .track{flex-basis:100%;order:3;}
+  .v2-strip .v2-btn{order:4;}
+}
+</style>
+<script src="https://fast.wistia.com/player.js" async></script>
+<script src="https://fast.wistia.com/embed/0xlqtl7x8b.js" async type="module"></script>
+<style>wistia-player[media-id='0xlqtl7x8b']:not(:defined){background:center / contain no-repeat url('https://fast.wistia.com/embed/medias/0xlqtl7x8b/swatch');display:block;filter:blur(5px);padding-top:56.25%;}</style>
 </head>
 <body>
 <div id="root"></div>
@@ -761,13 +1074,6 @@ gtag('config', 'AW-16631843401');
 <script type="text/babel">
 const {useState, useEffect} = React;
 
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "heroHeadline": "Close Up to 30% More Water Softener Deals With ClearDeals",
-  "heroSub": "Everything sales teams (in-home and remote) need to customize, send and close proposals.",
-  "ctaText": "Get My 30-Day Free Trial",
-  "showComparison": false,
-  "showHeroChecks": false
-}/*EDITMODE-END*/;
 
 // Every CTA label on this page must stay UNIQUE. Clarity aggregates clicks by
 // the text inside the element, so two buttons sharing a label are reported as
@@ -776,14 +1082,17 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 // clicks. Keep these distinct (and distinct within the first ~25 characters,
 // since Clarity truncates and masks digits) whenever you add or reword one.
 const CTA = {
-  nav:        'Get Started',
-  hero:       'Get My 30-Day Free Trial',
-  ways:       'Start My Free 30 Days',
-  features:   'Start My Free Trial',
-  flow:       'Get Started in Minutes',
-  comparison: 'Claim My 30-Day Free Trial',
-  faq:        'Get Started Risk-Free',
-  ctaBanner:  'Get My Free 30 Days',
+  nav:          'Start free trial',
+  navDemo:      'Book a demo',
+  hero:         'Start my 30-day free trial',
+  heroWatch:    'Watch the 2-min walkthrough',
+  features:     'Start My Free Trial',
+  comparison:   'Claim my 30-day free trial',
+  steps:        'Start my free trial today',
+  integrations: 'Talk to us about setup',
+  flow:         'Get Started in Minutes',
+  faqDemo:      'Book a 30-min demo',
+  final:        'Get my free 30 days',
 };
 
 function useReveal() {
@@ -796,327 +1105,14 @@ function useReveal() {
   }, []);
 }
 
-function Nav({tweaks}) {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const h = () => setScrolled(window.scrollY > 30);
-    window.addEventListener('scroll', h);
-    return () => window.removeEventListener('scroll', h);
-  }, []);
-  return (
-    <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
-      <div className="nav-inner">
-        <a href="Home.html"><img src="uploads/Treat Engine Logo .png" alt="Treat Engine" style={{height:34}}/></a>
-        <div className="nav-links">
-          <a href="/home">Home</a>
-          <a href="/ads">Water Leads</a>
-          <a href="/sales" className="active">Water Sales</a>
-          <a href="/blog">Blog</a>
-        </div>
-        <div className="nav-actions">
-          <a href="#plan-starter" className="nav-cta">{CTA.nav} →</a>
-        </div>
-      </div>
-    </nav>
-  );
-}
 
-function TabletMockup() {
-  const proposals = [
-    {icon:'💧', bg:'#eff6ff', title:'Kinetico Premier Softener', sub:'Whole-home softener + install', price:'$3,200', status:'Signed', cls:'status-signed'},
-    {icon:'🔬', bg:'#f0fdf4', title:'Reverse Osmosis System', sub:'Under-sink RO + filter replacement', price:'$1,100', status:'Pending', cls:'status-pending'},
-    {icon:'⚙️', bg:'#fefce8', title:'Annual Service Plan', sub:'2× service + filter kit', price:'$349', status:'Signed', cls:'status-signed'},
-  ];
-  return (
-    <div className="tablet-wrap">
-      <div className="tablet">
-        <div className="tablet-screen">
-          <div className="tablet-chrome">
-            <div className="tablet-dots">
-              <div className="tablet-dot" style={{background:'#f87171'}}/>
-              <div className="tablet-dot" style={{background:'#fbbf24'}}/>
-              <div className="tablet-dot" style={{background:'#4ade80'}}/>
-            </div>
-            <div className="tablet-url">cleardeals.app</div>
-          </div>
-          <div className="tablet-home">
-            <div className="app-header">
-              <div>
-                <div className="app-logo">Clear<span>Deals</span></div>
-                <div className="app-dealer">Phoenix Water Solutions — James Ortega</div>
-              </div>
-              <div style={{textAlign:'right'}}>
-                <div style={{fontFamily:'Playfair Display,serif',fontSize:20,color:'#fff',fontWeight:600}}>$4,649</div>
-                <div style={{fontSize:10,color:'rgba(255,255,255,0.5)',fontFamily:'DM Sans,sans-serif'}}>today's proposals</div>
-              </div>
-            </div>
-            <div className="app-section-label">Active proposals — today</div>
-            {proposals.map((p,i) => (
-              <div className="app-proposal-row" key={i}>
-                <div className="app-proposal-icon" style={{background:p.bg,fontSize:16}}>{p.icon}</div>
-                <div>
-                  <div className="app-proposal-title">{p.title}</div>
-                  <div className="app-proposal-sub">{p.sub}</div>
-                </div>
-                <div style={{marginLeft:'auto',display:'flex',flexDirection:'column',alignItems:'flex-end',gap:4}}>
-                  <div className="app-proposal-price">{p.price}</div>
-                  <span className={`app-status ${p.cls}`}>{p.status}</span>
-                </div>
-              </div>
-            ))}
-            <div className="app-bottom">
-              <div className="app-metric">
-                <div className="app-metric-num">74%</div>
-                <div className="app-metric-label">Close rate this month</div>
-              </div>
-              <div className="app-metric">
-                <div className="app-metric-num">$2.4k</div>
-                <div className="app-metric-label">Avg. deal value</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
-function Hero({tweaks}) {
-  const lines = tweaks.heroHeadline.split('\n');
-  const tickerItems = [
-    'Professional proposals in seconds','E-signatures on the spot','Integrated financing options',
-    'Dealer pricing controls','Product catalog built in','Works offline','Real-time analytics',
-  ];
-  const bullets = [
-    'Branded proposals built in 5 minutes, on-site',
-    'E-signatures, financing & deposits on the spot',
-    'Real-time pricing controls for every technician',
-  ];
-  const stats = [
-    {num:'30%+', label:'average lift in first-visit close rate'},
-    {num:'$800+', label:'increase in average deal value'},
-    {num:'5 min', label:'to build a full proposal on-site'},
-  ];
-  return (
-    <div>
-      <div className="hero">
-        <div className="hero-top hero-single reveal">
-          <div className="hero-left">
-            <div className="service-badge">
-              #1 Water Treatment Proposal & Sales Tool
-            </div>
-            <h1>
-              {lines.map((line,i) => {
-                // Everything from " - " onward is the handwritten guarantee,
-                // so the script run can sit mid-line rather than owning a whole line.
-                const d = line.indexOf(' - ');
-                return (
-                  <span key={i} style={{display:'block',color:'var(--ink)'}}>
-                    {d === -1 ? line : <React.Fragment>
-                      {line.slice(0,d)}{' '}
-                      <span className="hl-script">{line.slice(d+1)}</span>
-                    </React.Fragment>}
-                  </span>
-                );
-              })}
-            </h1>
-            <p className="hero-sub">{tweaks.heroSub}</p>
-            <div className="hero-actions">
-              <a href="#plan-starter" className="btn-dark btn-stacked">
-                <span>{tweaks.ctaText} →</span>
-                <span className="btn-sub">30-day free trial</span>
-              </a>
-            </div>
-            <div className="hero-actions-meta">No setup fee · Cancel anytime</div>
-          </div>
-          <div className="hero-visual">
-            <div className="hero-visual-glow"/>
-            <div className="hero-video">
-              <iframe
-                width="560"
-                height="315"
-                src="https://www.youtube.com/embed/EPhLvXlvddc?si=gNdWCdW18LMBKJCT&controls=0"
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              />
-            </div>
-            {tweaks.showHeroChecks && (
-              <ul className="hero-bullets">
-                {bullets.map((b,i) => (
-                  <li key={i}>
-                    <span className="hb-check">
-                      <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
-                        <path d="M2 5.5l2.2 2.2L9 3" stroke="#3b82f6" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </span>
-                    {b}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-        <div className="hero-stats-strip reveal">
-          {stats.map((s,i) => (
-            <div className="stat-cell" key={i}>
-              <div className="stat-num">{s.num}</div>
-              <div className="stat-label">{s.label}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="hero-ticker" style={{marginTop:0}}>
-        <div className="hero-ticker-inner">
-          {[...tickerItems,...tickerItems].map((item,i) => (
-            <span className="hero-ticker-item" key={i}>
-              <span className="hero-ticker-dot"/>
-              {item}
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
 
-function Trust() {
-  const logos = [
-    {name:'Kinetico of SW Idaho', src:'uploads/kinetico-sw-idaho.png'},
-    {name:'Watersurgeon', src:'uploads/watersurgeon.webp'},
-    {name:'Miami Alkaline Water', src:'uploads/miami-alkaline.webp'},
-    {name:'Lux Pure Alkaline', src:'uploads/lux.webp'},
-    {name:'Culligan', src:'uploads/culligan.webp'},
-    {name:'Alka Magnum', src:'uploads/alka-magnum.webp'},
-    {name:'One Green Filter', src:'uploads/one-green-filter.webp'},
-    {name:'Select Source Water', src:'uploads/select-source.png'},
-    {name:'Tarheel Pure Water', src:'uploads/tarheel.png'},
-    {name:'Kevin\u2019s Soft Water', src:'uploads/kevins-soft-water.png'},
-  ];
-  return (
-    <div className="trust">
-      <div className="trust-inner reveal">
-        <div className="trust-label">Clients we've worked with</div>
-        <div className="trust-logos">
-          {logos.map(l => (
-            <div className={`trust-logo${['Select Source Water','Tarheel Pure Water','Lux Pure Alkaline'].includes(l.name)?' is-circle':''}`} key={l.name} title={l.name}>
-              <img src={l.src} alt={l.name} />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
 
-function WayIcon({kind}) {
-  const B = '#3b82f6';
-  if (kind === 'home') return (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke={B} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 9.2 11 3l8 6.2V18a1.4 1.4 0 0 1-1.4 1.4H4.4A1.4 1.4 0 0 1 3 18Z"/>
-      <path d="M8.4 19.4v-6h5.2v6"/>
-    </svg>
-  );
-  return (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke={B} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="1.8" y="4.2" width="12.6" height="9" rx="1.5"/>
-      <path d="M1 15.6h13.4"/>
-      <rect x="14.4" y="8.2" width="6.4" height="11.2" rx="1.6"/>
-      <path d="M17 17.4h1.2"/>
-    </svg>
-  );
-}
 
 // The problem section and the motions section were saying the same thing twice.
 // Fused: one header carries the stakes, two cards carry the only two ways the
 // proposal ever reaches a homeowner.
-function Ways() {
-  const ways = [
-    {
-      kind:'home',
-      title:'In the home',
-      tag:'At the kitchen table',
-      img:'uploads/cleardeals-in-use.png',
-      caption:'Live proposal — built at the kitchen table',
-      desc:'Your rep builds the proposal live on a tablet — water test, presentation, recommended system, savings math, financing — and asks for the sale while they are still sitting there.',
-      points:[
-        'Test results, system and price assembled in front of the homeowner',
-        'Signature and deposit captured before the truck leaves the driveway',
-        'Runs fully offline — basements, well houses, dead zones',
-      ],
-    },
-    {
-      kind:'remote',
-      title:'Remote',
-      tag:'Sent, opened, signed',
-      img:'uploads/cleardeals-remote-proposal.webp',
-      caption:'Same proposal — opened on their own couch',
-      render:true,
-      desc:'Build the proposal from your office and send the link. Nobody is at the sink to run a test — so pull the local water quality report for the address instead and let published utility data make the case. The homeowner walks the same sequence, at their own pace, and signs at the bottom of it.',
-      points:[
-        'Pull and share the local water quality report for their address — a public source, not a sales claim',
-        'Quote referrals and out-of-area homes without the windshield time',
-        'The "let me think about it" visit gets the full walkthrough again, not three attachments',
-      ],
-    },
-  ];
-  return (
-    <section className="ways-section" id="ways">
-      <div className="section-inner">
-        <div className="ways-header reveal">
-          <div>
-            <div className="eyebrow">Two ways to sell</div>
-            <h2 className="section-title">One proposal engine.<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>Two ways to close.</em></h2>
-          </div>
-          <div>
-            <p className="section-sub">Your technicians are skilled at diagnosing water problems. Where deals get lost is everything after that — presenting the solution, showing the money, and asking for the signature. ClearDeals runs the same guided proposal whether your rep is at the kitchen table or three counties away.</p>
-            <div className="ways-stat">
-              <div className="ways-stat-num">67%</div>
-              <div className="ways-stat-label">of water treatment sales that don't close on the first visit never close at all.</div>
-            </div>
-          </div>
-        </div>
-        <div className="ways-grid reveal">
-          {ways.map(w => (
-            <div className="way-card" key={w.title}>
-              <div className={`way-media${w.render?' is-render':''}`}>
-                <img src={w.img} alt={w.kind==='home'
-                  ? 'Water technician walking a homeowner through a ClearDeals proposal on a tablet at the kitchen table'
-                  : 'A ClearDeals proposal open on a laptop and a phone, showing savings math and the recommended system'}/>
-                <div className="way-media-caption">
-                  <span className="pc-dot"/>
-                  {w.caption}
-                </div>
-              </div>
-              <div className="way-body">
-                <div className="way-ico"><WayIcon kind={w.kind}/></div>
-                <div className="way-title">{w.title}</div>
-                <div className="way-desc">{w.desc}</div>
-                <ul className="way-points">
-                  {w.points.map((pt,i) => (
-                    <li key={i}><span className="way-check">✓</span>{pt}</li>
-                  ))}
-                </ul>
-                <span className="way-tag">{w.tag}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="reveal" style={{textAlign:'center',marginTop:56}}>
-          <div className="cta-pair">
-            <a href="#plan-starter" className="btn-dark btn-stacked" style={{fontSize:16,padding:'13px 36px'}}>
-              <span>{CTA.ways} →</span>
-              <span className="btn-sub">30-day free trial</span>
-            </a>
-          </div>
-          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>No setup fee · Cancel anytime</div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /* ─────────────────────────── WHAT'S INSIDE ───────────────────────────
  * Capsules up top, then two columns: the value prop's copy on the left and a
@@ -1222,7 +1218,7 @@ const shake = (t, at, dur = 420) => { const p = prog(t, at, dur); return p > 0 &
 
 /* ── canvas furniture ───────────────────────────────────────────────── */
 
-/** True inside the phone layout, where MobileStage draws the pill and the equipment itself. */
+/** True inside a cropped card scene: beats skip the equipment photo and audience pill. */
 const WiMobile = React.createContext(false);
 
 /** Audience tag — the app's own bg-primary/10 text-primary tint. */
@@ -2660,7 +2656,7 @@ const WI_PROPS = [
   },
   {
     key: 'payments', color: {solid: '#047857', tint: '#ecfdf5', ink: '#047857'}, focus: ['left', 'left', 'right', 'left'], label: 'Payments & agreements', icon: 'FileSignature', Beat: PaymentsBeat,
-    title: 'Get paid and signed before you leave the driveway.',
+    title: 'Get paid and signed before the deal goes cold.',
     summary: 'Financing, Stripe payments and a signed agreement in the same flow as the sale. Taking a check or cash? Record it and move on.',
     bullets: [
       'Customers apply with your lender, like U.S. Bank, or pay by card or bank through Stripe.',
@@ -2693,46 +2689,6 @@ const WI_MOBILE = {
              M([286, 76, 634], 'wwhs', 'left', 'Homeowners'), M([40, 110, 616], 'wwhs', 'right', 'Owners & Managers')],
 };
 
-function MobileStage({spec, Beat, beat, t, caption}) {
-  const [x, y, w] = spec.box;
-  const k = Math.min(1.2, 568 / w);
-  const p = WI_P[spec.product];
-  const other = spec.side === 'right' ? 'left' : 'right';
-  const PH = 380;                                   // equipment height: top edge at y 440, just below the control band
-  const captionW = Math.min(310, 600 - 24 - 10 - PH * p.ar * 1.04);
-  return (
-    <>
-      <div style={{position: 'absolute', left: 16, top: 70, width: 568, height: 364, overflow: 'hidden',
-        WebkitMaskImage: 'linear-gradient(to bottom, #000 88%, transparent)', maskImage: 'linear-gradient(to bottom, #000 88%, transparent)'}}>
-        <div style={{position: 'absolute', left: 0, top: 0, width: 960, height: 720, transformOrigin: 'top left', transform: `scale(${k}) translate(${-x}px, ${-y}px)`}}>
-          <WiMobile.Provider value={true}><Beat beat={beat} t={t}/></WiMobile.Provider>
-        </div>
-      </div>
-      <div style={{position: 'absolute', top: 18, left: 16, padding: '9px 18px', borderRadius: 999, background: APP.primary10, color: APP.primary,
-        fontSize: 21, fontWeight: 700, whiteSpace: 'nowrap'}}>{spec.pill}</div>
-      <img src={p.img} alt="" draggable="false" style={{position: 'absolute', bottom: -60, [spec.side]: -10, height: PH, width: 'auto', zIndex: 2,
-        transformOrigin: `${spec.side} bottom`, transform: `scale(${lerp(1, 1.04, t / BEAT)})`, filter: 'drop-shadow(0 24px 40px rgba(20,30,50,.22))', pointerEvents: 'none'}}/>
-      <div style={{position: 'absolute', bottom: 40, [other]: 24, width: captionW, zIndex: 3, ...rise(t, 250, 12)}}>
-        <div style={{width: 36, height: 4, borderRadius: 4, background: 'var(--wi-solid)', marginBottom: 12}}/>
-        <div style={{fontSize: captionW < 280 ? 23 : 25, fontWeight: 650, lineHeight: 1.28, letterSpacing: '-0.01em', color: APP.fg}}>{caption}</div>
-      </div>
-    </>
-  );
-}
-
-function usePhoneLayout() {
-  const q = '(max-width: 600px)';
-  const [on, setOn] = useState(() => !!(window.matchMedia && window.matchMedia(q).matches));
-  useEffect(() => {
-    if (!window.matchMedia) return;
-    const mq = window.matchMedia(q);
-    const h = (e) => setOn(e.matches);
-    mq.addEventListener ? mq.addEventListener('change', h) : mq.addListener(h);
-    return () => (mq.removeEventListener ? mq.removeEventListener('change', h) : mq.removeListener(h));
-  }, []);
-  return on;
-}
-
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(() => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   useEffect(() => {
@@ -2745,77 +2701,127 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
-function WhatsInside() {
-  const {useRef} = React;
-  const [active, setActive] = useState(0);
-  const [t, setT] = useState(0);
-  const [inView, setInView] = useState(false);
-  const [stageW, setStageW] = useState(640);
-  const tRef = useRef(0);
-  const pinned = useRef(false);
-  const sectionRef = useRef(null);
-  const stageRef = useRef(null);
-  const reduced = usePrefersReducedMotion();
-  const phone = usePhoneLayout();
 
-  // Only animate while the stage is on screen.
-  useEffect(() => {
-    const el = stageRef.current;
-    if (!el || !('IntersectionObserver' in window)) { setInView(true); return; }
-    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), {threshold: 0.2});
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
 
-  // The canvas is authored at 960×720 and scaled to the column.
+
+function useWidth(ref, fallback) {
+  const [w, setW] = useState(fallback);
   useEffect(() => {
-    const el = stageRef.current;
+    const el = ref.current;
     if (!el) return;
-    const fit = () => setStageW(el.clientWidth);
+    const fit = () => setW(el.clientWidth);
     fit();
     if (!('ResizeObserver' in window)) { window.addEventListener('resize', fit); return () => window.removeEventListener('resize', fit); }
     const ro = new ResizeObserver(fit);
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+  return w;
+}
 
-  // The clock. After a full pass it moves on to the next value prop, until the visitor
-  // picks one themselves; from then on it loops the one they chose.
+const wiVars = (p) => ({'--wi-solid': p.color.solid, '--wi-tint': p.color.tint, '--wi-ink': p.color.ink});
+
+/* ── Feature grid ──────────────────────────────────────────────────────
+ * Nine cards, one function each. A card plays ONE beat of an existing value-prop scene,
+ * cropped to that beat's control (WI_MOBILE boxes). Cards rest on the beat's finished
+ * frame and only animate while hovered (mouse) or while centred on screen (touch), so
+ * at most one plays at a time.
+ */
+const FEATURES = [
+  {prop: 'presentation', beat: 0, icon: 'Droplets',    label: 'Water test',      title: 'Show them their water.',              sub: 'Their ZIP’s public report is ready before you test. Log your results and they take over.'},
+  {prop: 'presentation', beat: 1, icon: 'Package',     label: 'System buildout', title: 'Build the system in front of them.',  sub: 'The monthly payment updates at your financing rate as you go.'},
+  {prop: 'presentation', beat: 3, icon: 'TrendingUp',  label: 'Savings',         title: 'Close on the savings.',               sub: 'A 20-year comparison against what they spend today.'},
+  {prop: 'pricing',      beat: 1, icon: 'ShieldCheck', label: 'Red-line pricing', dy: -56, title: 'Nobody sells below your floor.',     sub: 'Set a red line on any product. Reps can’t quote under it.'},
+  {prop: 'grow',         beat: 0, icon: 'PlusCircle',  label: 'Add-ons',         title: 'Add-ons in one tap.',                 sub: 'Offer upgrades the moment a system is added. The price updates live.'},
+  {prop: 'grow',         beat: 3, icon: 'Mic',         label: 'AI coaching',     title: 'Every pitch, scored by AI.',          sub: 'Record the appointment and get a score and next steps in about 30 seconds.'},
+  {prop: 'virtual',      beat: 2, icon: 'Smartphone',  label: 'Remote sales',    title: 'They choose from their couch.',       sub: 'Send one link. They compare your options and pick one from their phone.'},
+  {prop: 'payments',     beat: 0, icon: 'Landmark',    label: 'Financing',       title: 'Financing right in the proposal.',    sub: 'Apply with your lender, or pay by card or bank through Stripe.'},
+  {prop: 'payments',     beat: 2, icon: 'PenLine',     label: 'E-signature',     title: 'Signed on any device.',               sub: 'Draw it or type it, and the agreement is done.'},
+];
+const REST_T = BEAT * 0.9;          // finished state shown while a card is idle
+const HOLD = 900;                   // linger on the finished state before replaying
+
+function useCanHover() {
+  const q = '(hover: hover) and (pointer: fine)';
+  return !!(window.matchMedia && window.matchMedia(q).matches);
+}
+
+// Touch screens: a card plays while it sits in the middle band of the viewport.
+function useCentered(ref, enabled) {
+  const [on, setOn] = useState(false);
   useEffect(() => {
-    if (!inView || reduced) return;
-    let raf, last = performance.now();
+    const el = ref.current;
+    if (!enabled || !el || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver(([e]) => setOn(e.isIntersecting), {rootMargin: '-38% 0px -38% 0px'});
+    io.observe(el);
+    return () => io.disconnect();
+  }, [enabled]);
+  return on;
+}
+
+// Loops one beat while `playing`; snaps back to the finished frame when it stops.
+function useBeatLoop(playing) {
+  const [t, setT] = useState(null);
+  useEffect(() => {
+    if (!playing) { setT(null); return; }
+    let raf, start = performance.now(), last = 0;
     const tick = (now) => {
-      const dt = Math.min(64, now - last);
-      last = now;
-      let n = tRef.current + dt;
-      if (n >= LOOP) {
-        n %= LOOP;
-        if (!pinned.current) setActive((a) => (a + 1) % WI_PROPS.length);
-      }
-      tRef.current = n;
-      setT(n);
+      const e = (now - start) % (BEAT + HOLD);
+      if (now - last >= 33) { last = now; setT(Math.min(e, BEAT * 0.97)); }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [inView, reduced]);
+  }, [playing]);
+  return t;
+}
 
-  const jump = (ms) => { tRef.current = ms; setT(ms); };
-  const pick = (i) => { pinned.current = true; setActive(i); jump(0); };
-  const pickBeat = (b) => { pinned.current = true; jump(b * BEAT); };
-
-  // Reduced motion: no clock — each beat is shown in its finished state.
-  const beat = Math.min(BEATS - 1, Math.floor(t / BEAT));
-  const lt = reduced ? BEAT * 0.9 : t - beat * BEAT;
-  const fade = reduced ? 1 : Math.min(prog(lt, 0, 280), 1 - prog(lt, BEAT - 300, 300));
-  const prop = WI_PROPS[active];
+function WiCard({f}) {
+  const {useRef} = React;
+  const prop = WI_PROPS.find(p => p.key === f.prop);
+  const cardRef = useRef(null);
+  const mediaRef = useRef(null);
+  const reduced = usePrefersReducedMotion();
+  const canHover = useCanHover();
+  const [hover, setHover] = useState(false);
+  const centered = useCentered(cardRef, !canHover);
+  const playing = !reduced && (canHover ? hover : centered);
+  const t = useBeatLoop(playing);
+  const lt = t === null ? REST_T : t;
+  const w = useWidth(mediaRef, 380);
+  // Crop boxes were framed for the phone layout's 568×364 band; this frame is 4:3, so pad
+  // the box a little and centre the control vertically.
+  const [bx, by, bw] = WI_MOBILE[prop.key][f.beat].box;
+  const cw = bw * 1.08;
+  const x = bx - (cw - bw) / 2;
+  const y = Math.max(0, Math.min(720 - cw * 0.75, by - (cw * 0.75 - bw * 364 / 568) / 2 + (f.dy || 0)));
+  const k = w / cw;
   const Beat = prop.Beat;
-  // Phones get their own portrait layout (MobileStage): the control on top, the equipment
-  // fully in frame below it.
-  const scale = stageW / (phone ? 600 : 960);
-
   return (
-    <section className="features-section" id="features" ref={sectionRef}>
+    // `reveal` lives on a wrapper: useReveal adds `visible` to it imperatively, and a
+    // className React re-renders (is-playing) would wipe that and hide the card.
+    <div className="reveal wig-cell">
+    <article className={`wig-card${playing ? ' is-playing' : ''}`} ref={cardRef} style={wiVars(prop)}
+      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+      <div className="wig-media" ref={mediaRef} aria-hidden="true">
+        <div className="wi-canvas" style={{transform: `scale(${k}) translate(${-x}px, ${-y}px)`}}>
+          <WiMobile.Provider value={true}><Beat beat={f.beat} t={lt}/></WiMobile.Provider>
+        </div>
+        {canHover && !reduced && <span className="wig-play" title="Hover to play"><Ic n="Play" size={12}/></span>}
+      </div>
+      <div className="wig-body">
+        <span className="wig-label"><Ic n={f.icon} size={14}/>{f.label}</span>
+        <h3 className="wig-title">{f.title}</h3>
+        <p className="wig-sub">{f.sub}</p>
+      </div>
+    </article>
+    </div>
+  );
+}
+
+function WhatsInside() {
+  return (
+    <section className="features-section v2-features" id="features">
       <div className="section-inner">
         <div className="features-header reveal">
           <div>
@@ -2823,69 +2829,18 @@ function WhatsInside() {
             <h2 className="section-title">Everything your rep needs.<br/><em style={{fontStyle: 'italic', color: 'var(--navy)'}}>Even when they aren't there.</em></h2>
           </div>
           <div>
-            <p className="section-sub">Every tool below works in both directions — a rep driving the tablet at the kitchen table, or a homeowner scrolling the link alone on a Tuesday night. Nobody on your team has to become a salesperson for it to work.</p>
+            <p className="section-sub">Every tool works in both directions — a rep driving the tablet, or a homeowner scrolling the link alone on a Tuesday night.</p>
           </div>
         </div>
 
-        <div className="wi reveal">
-          <div className="wi-tabs" role="tablist" aria-label="What's inside ClearDeals">
-            {WI_PROPS.map((p, i) => (
-              <button key={p.key} type="button" role="tab" id={`wi-tab-${p.key}`} aria-selected={i === active} aria-controls="wi-panel"
-                className={`wi-tab${i === active ? ' is-active' : ''}`} onClick={() => pick(i)}
-                style={{'--wi-solid': p.color.solid, '--wi-tint': p.color.tint, '--wi-ink': p.color.ink}}>
-                <Ic n={p.icon} size={16}/>{p.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="wi-panel" id="wi-panel" role="tabpanel" aria-labelledby={`wi-tab-${prop.key}`}
-            style={{'--wi-solid': prop.color.solid, '--wi-tint': prop.color.tint, '--wi-ink': prop.color.ink}}>
-            <div className="wi-copy" key={prop.key}>
-              <div className="wi-count">0{active + 1} <span>/ 0{WI_PROPS.length}</span></div>
-              <h3 className="wi-title">{prop.title}</h3>
-              <p className="wi-summary">{prop.summary}</p>
-              <ol className="wi-bullets">
-                {prop.bullets.map((b, i) => {
-                  const state = i < beat ? 'done' : i === beat ? 'on' : '';
-                  const fill = reduced ? (i === beat ? 1 : 0) : i < beat ? 1 : i === beat ? lt / BEAT : 0;
-                  return (
-                    <li key={i}>
-                      <button type="button" className={`wi-bullet ${state}`} onClick={() => pickBeat(i)} aria-current={i === beat ? 'step' : undefined}>
-                        <span className="wi-bullet-bar"><span style={{transform: `scaleY(${fill})`}}/></span>
-                        <span className="wi-bullet-text">{b}</span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ol>
-            </div>
-
-            <div className={`wi-stage${phone ? ' is-phone' : ''}`} ref={stageRef} aria-hidden="true">
-              <div className="wi-canvas" style={{transform: `scale(${scale})`, width: phone ? 600 : 960, height: phone ? 760 : 720}}>
-                <div style={{position: 'absolute', inset: 0, opacity: fade}}>
-                  {phone
-                    ? <MobileStage spec={WI_MOBILE[prop.key][beat]} Beat={Beat} beat={beat} t={lt} caption={prop.bullets[beat]}/>
-                    : <Beat beat={beat} t={lt}/>}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <p className="wi-also">
-            <strong>Also inside:</strong> CRM integrations with ServiceTitan, GoHighLevel, Housecall Pro, Jobber and more
-          </p>
+        <div className="wig">
+          {FEATURES.map((f) => <WiCard key={f.prop + f.beat} f={f}/>)}
         </div>
 
-        <div className="reveal" style={{textAlign: 'center', marginTop: 72, paddingTop: 64, borderTop: '1px solid var(--border)'}}>
-          <p style={{fontSize: 16, color: 'var(--ink-muted)', marginBottom: 10, lineHeight: 1.7}}>Your techs already know how to diagnose the problem.<br/>Give them a proposal that finishes the job — at the table, or three counties away.</p>
-          <div className="cta-pair" style={{marginTop: 14}}>
-            <a href="#plan-starter" className="btn-dark btn-stacked" style={{fontSize: 16, padding: '13px 36px'}}>
-              <span>{CTA.features} →</span>
-              <span className="btn-sub">30-day free trial</span>
-            </a>
-          </div>
-          <div style={{marginTop: 14, fontSize: 13, color: 'var(--ink-muted)'}}>No setup fee · Cancel anytime</div>
-        </div>
+        <p className="wi-also">
+          <strong>Also inside:</strong> maintenance plans, rentals, offline mode, team updates, and CRM integrations with ServiceTitan, GoHighLevel, Housecall Pro, Jobber and more
+        </p>
+
       </div>
     </section>
   );
@@ -2931,68 +2886,6 @@ function DealFlow() {
   );
 }
 
-function Comparison({tweaks}) {
-  if(!tweaks.showComparison) return null;
-  const rows = [
-    {old:'Verbal quote at the table, PDF quote by email', next:'One branded proposal, built in 5 minutes either way'},
-    {old:'Presentation, invoice and agreement sent as three attachments', next:'One link holds the whole proposal, in the order it should be read'},
-    {old:'Homeowner "thinks about it" and goes quiet', next:'E-signature at the table — or at 11pm from the couch'},
-    {old:'Financing never comes up unless the rep raises it', next:'Monthly payments quoted automatically, in person or in the link'},
-    {old:'Referrals outside your radius never get quoted at all', next:'Any address gets a full proposal, without the windshield time'},
-    {old:'No visibility into what is being quoted, or whether it was opened', next:'Every proposal tracked by rep — sent, opened, signed'},
-  ];
-  return (
-    <section className="compare-section">
-      <div className="section-inner">
-        <div className="reveal">
-          <div className="eyebrow">Before & after</div>
-          <h2 className="section-title">What changes when<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>your team uses ClearDeals.</em></h2>
-        </div>
-        <div className="compare-grid reveal">
-          <div className="compare-col">
-            <div className="compare-col-header old">
-              <div>
-                <div className="compare-label">Without ClearDeals</div>
-                <div className="compare-sub">How most dealers quote today</div>
-              </div>
-            </div>
-            {rows.map((r,i) => (
-              <div className="compare-row" key={i}>
-                <span className="compare-icon">✗</span>
-                <span style={{color:'var(--ink-muted)'}}>{r.old}</span>
-              </div>
-            ))}
-          </div>
-          <div className="compare-col">
-            <div className="compare-col-header new">
-              <div>
-                <div className="compare-label">With ClearDeals</div>
-                <div className="compare-sub">One proposal engine, two ways to close</div>
-              </div>
-            </div>
-            {rows.map((r,i) => (
-              <div className="compare-row" key={i}>
-                <span className="compare-icon" style={{color:'var(--blue)'}}>✓</span>
-                <span style={{color:'var(--ink-mid)',fontWeight:500}}>{r.next}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="reveal" style={{textAlign:'center',marginTop:64,paddingTop:56,borderTop:'1px solid var(--border)'}}>
-          <h3 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(22px,3vw,32px)',fontWeight:600,color:'var(--ink)',marginBottom:12,letterSpacing:'-.02em'}}>Ready to sell it both ways?</h3>
-          <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28}}>Pick a plan and run it free for 30 days. Load your catalog and your pricing, run your next appointment on it — then send the referral you were never going to drive to.</p>
-          <div className="cta-pair">
-            <a href="#plan-starter" className="btn-dark btn-stacked" style={{fontSize:16,padding:'13px 36px'}}>
-              <span>{CTA.comparison} →</span>
-              <span className="btn-sub">30-day free trial</span>
-            </a>
-          </div>
-          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>30-day results guarantee · No contracts</div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 // Plan pricing and per-asset rates mirror /sales/checkout-v2 — keep the two
 // in sync when either changes.
@@ -3018,7 +2911,7 @@ function PrIco({kind}) {
 }
 
 function Pricing() {
-  const [billing, setBilling] = useState('month');
+  const billing = 'month'; // monthly only on this page — no annual toggle
   const [volIdx, setVolIdx] = useState(1);
   const [pending, setPending] = useState(null);
 
@@ -3026,27 +2919,54 @@ function Pricing() {
   const money = n => '$' + n.toLocaleString('en-US');
   const amountFor = key => isYear ? PRICING_PLANS[key].year : PRICING_PLANS[key].month;
 
-  // /sales/start picks the dealer's brand, previews their catalog and takes
-  // their details, then makes the /api/checkout call with a `lead` attached.
-  //
   // The field tablet offer used to open a modal here first; it now runs after
   // checkout, on /sales/welcome, so an upsell can never cost us the card.
-  const startCheckout = key => {
+  //
+  // Straight to Stripe — no opt-in step. /api/checkout picks the real price and
+  // attaches the 30-day trial; the page's UTMs and click IDs ride along into the
+  // Stripe session metadata, and Stripe's back link returns here.
+  const ATTRIBUTION_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'utm_id', 'fbclid', 'gclid'];
+  const startCheckout = async key => {
     if (pending) return;
     setPending(key);
     // Clicks are told apart by this event, not by the button text — so both
     // buttons can read naturally. Filter Clarity on cta_pricing_<plan>_<interval>.
     try { if (window.clarity) window.clarity('event', `cta_pricing_${key}_${billing}`); } catch (e) {}
-    // Carry the landing page's query string (UTMs, fbclid, gclid) along —
-    // /sales/start forwards it to Stripe metadata and the lead webhook.
     const q = new URLSearchParams(window.location.search);
-    q.set('plan', key);
-    q.set('interval', billing);
-    window.location.href = `/sales/start?${q}`;
+    const attribution = {};
+    ATTRIBUTION_KEYS.forEach(k => { if (q.get(k)) attribution[k] = q.get(k); });
+    const value = amountFor(key);
+    // The ad signals /sales/start used to send, now fired on the buy click (before
+    // the checkout request, so Stripe being slow or erroring can't drop them).
+    // Google Ads "CD | Opt-in" is the YouTube campaign's primary conversion — no
+    // email exists yet, so it goes out without enhanced-conversions user data.
+    try {
+      if (window.fbq) fbq('track', 'AddToCart', {
+        content_name: 'ClearDeals ' + key, content_ids: ['cleardeals-' + key + '-' + billing],
+        content_type: 'product', value, currency: 'USD',
+      });
+    } catch (e) {}
+    try {
+      if (window.gtag) gtag('event', 'conversion', {send_to: 'AW-16631843401/zwjCCIOq9YkdEMmU1_o9', value, currency: 'USD'});
+    } catch (e) {}
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({service: 'sales', plan: key, interval: billing, attribution, return_path: '/sales'}),
+      });
+      const {url, error} = await res.json();
+      if (error || !url) throw new Error(error || 'No checkout URL returned');
+      try { if (window.fbq) fbq('track', 'InitiateCheckout', {content_name: 'ClearDeals ' + key}); } catch (e) {}
+      window.location.href = url;
+    } catch (err) {
+      alert('Something went wrong starting checkout. Please try again, or contact us at Info@TreatEngine.com');
+      setPending(null);
+    }
   };
 
-  // Back from /sales/start restores this page from the back-forward cache
-  // with the buttons still disabled — re-enable them.
+  // Back from Stripe restores this page from the back-forward cache with the
+  // buttons still disabled — re-enable them.
   useEffect(() => {
     const reset = e => { if (e.persisted) setPending(null); };
     window.addEventListener('pageshow', reset);
@@ -3126,21 +3046,12 @@ function Pricing() {
   ];
 
   return (
-    <section className="pricing-section" id="pricing">
+    <section className="pricing-section v2-pricing" id="pricing">
       <div className="pricing-inner">
         <div className="pricing-head reveal">
           <div className="eyebrow">Pricing</div>
           <h2 className="section-title">Dealer pricing,<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>with nothing hidden.</em></h2>
           <p className="pricing-sub">Setup, catalog build, customization and team training are <strong>included free</strong> on both plans. Monthly plans start with a <strong>30-day free trial</strong> — no contracts, cancel anytime.</p>
-        </div>
-
-        <div className="pr-toggle-wrap reveal">
-          <div className="pr-toggle" role="group" aria-label="Billing interval">
-            <button type="button" className="pr-opt" aria-pressed={!isYear} onClick={() => setBilling('month')}>Monthly</button>
-            <button type="button" className="pr-opt" aria-pressed={isYear} onClick={() => setBilling('year')}>
-              Annual <span className="pr-save">Save 16%</span>
-            </button>
-          </div>
         </div>
 
         <div className="pr-promo-wrap reveal">
@@ -3242,165 +3153,8 @@ function Pricing() {
   );
 }
 
-function FAQ() {
-  const [open, setOpen] = useState(null);
-  const faqs = [
-    {q:'How is our product catalog loaded?', a:'In a few clicks. ClearDeals comes with a growing catalog of water treatment equipment from the major brands — pick the brands you sell, import the lineup, and edit the pricing to match yours. Anything that isn\'t in the catalog yet, from your own systems to add-ons and services, you can add yourself in minutes. The same catalog drives the in-home flow and the proposals you send remotely, so there is only ever one version to keep current.'},
-    {q:'How long does setup take?', a:'Minutes, not weeks. Import your equipment from our product catalog or upload your own, add your company details and logo, and ClearDeals brands your presentation and agreement for you — you can send your first proposal the same day you sign up.'},
-    {q:'Does ClearDeals integrate with my CRM?', a:'Yes. ClearDeals connects with the CRMs water treatment dealers use most — ServiceTitan, GoHighLevel, Housecall Pro and Jobber — and can be integrated with just about any other CRM you run. You don\'t have to set it up yourself, either: we offer done-for-you CRM integrations, so our team connects ClearDeals to your system and your leads, proposals and signed deals land where your office already works.'},
-    {q:'Can I customize my presentation and agreement?', a:'Yes — our high-converting presentation and agreement templates are automatically branded with your company details, so you can run your first appointment on day one. Want to take it a step further? Add permitting forms, your warranties and your terms — just contact support and they\'ll take care of it.'},
-    {q:'Does it pull public water quality data?', a:'Yes. ClearDeals can pull local results from the EPA Water Quality Portal, so homeowners see what\'s actually in their area\'s water before you recommend a system. Already tested the home? Upload your own water test results instead, and they go straight into the proposal — the homeowner\'s own numbers, right next to the system that fixes them.'},
-    {q:'What financing options does ClearDeals support?', a:'ClearDeals integrates with major home service financing providers. Monthly payment estimates calculate in real time — inside the appointment and inside the link you send — with no separate application or redirect.'},
-    {q:'Can I control what my techs can discount?', a:'Absolutely. You set minimum prices per product. Techs can move within your defined range but cannot go below the floor — and the same floor applies to proposals sent from the office, so nobody discounts their way out of your margin from a desk either.'},
-  ];
-  return (
-    <section className="faq-section" id="faq">
-      <div className="faq-inner">
-        <div className="reveal" style={{textAlign:'center'}}>
-          <div className="eyebrow" style={{justifyContent:'center'}}>Common questions</div>
-          <h2 className="section-title" style={{textAlign:'center'}}>Questions about ClearDeals</h2>
-        </div>
-        <div className="faq-list reveal">
-          {faqs.map((f,i) => (
-            <div key={i} className={`faq-item ${open===i?'open':''}`}>
-              <div className="faq-q" onClick={() => setOpen(open===i ? null : i)}>
-                <span className="faq-q-text">{f.q}</span>
-                <svg className="faq-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <path d="M9 4v10M4 9h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                </svg>
-              </div>
-              <div className="faq-a">{f.a}</div>
-            </div>
-          ))}
-        </div>
-        <div className="reveal" style={{textAlign:'center',marginTop:64,padding:'48px 32px',background:'var(--white)',borderRadius:10,border:'1px solid var(--border)'}}>
-          <div style={{fontSize:11,fontWeight:700,letterSpacing:'.12em',textTransform:'uppercase',color:'var(--blue)',marginBottom:16}}>Still have questions?</div>
-          <h3 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(22px,3vw,30px)',fontWeight:600,color:'var(--ink)',marginBottom:12,letterSpacing:'-.02em'}}>Start free this week.</h3>
-          <p style={{fontSize:15,color:'var(--ink-muted)',marginBottom:28,maxWidth:440,margin:'0 auto 28px'}}>Run ClearDeals free for 30 days. Load your catalog, hand it to a rep for the next appointment, and send the next remote quote as a link instead of three attachments. You'll know inside a week.</p>
-          <div className="cta-pair">
-            <a href="#plan-starter" className="btn-dark btn-stacked" style={{fontSize:16,padding:'13px 36px'}}>
-              <span>{CTA.faq} →</span>
-              <span className="btn-sub">30-day free trial</span>
-            </a>
-          </div>
-          <div style={{marginTop:14,fontSize:13,color:'var(--ink-muted)'}}>No commitment · No setup fee · Cancel anytime</div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
-function BookingSection() {
-  return (
-    <section className="booking-section" id="book">
-      <div className="booking-inner">
-        <div className="booking-header reveal">
-          <div className="eyebrow">Get started</div>
-          <h2>Book your ClearDeals demo.<br/><em>See it close deals.</em></h2>
-          <p>Pick a time below and we'll walk you through the full ClearDeals platform — live, on your device, with your pricing.</p>
-        </div>
-        <div className="booking-panel reveal">
-          <div className="booking-panel-header">
-            <div className="booking-panel-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <rect x="2" y="4" width="16" height="14" rx="2" stroke="#3b82f6" strokeWidth="1.5"/>
-                <path d="M2 8h16" stroke="#3b82f6" strokeWidth="1.5"/>
-                <path d="M6 2v4M14 2v4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round"/>
-                <circle cx="7" cy="12" r="1" fill="#3b82f6"/>
-                <circle cx="10" cy="12" r="1" fill="#3b82f6"/>
-                <circle cx="13" cy="12" r="1" fill="#3b82f6"/>
-              </svg>
-            </div>
-            <div>
-              <div className="booking-panel-title">30-Minute ClearDeals Demo</div>
-              <div className="booking-panel-sub">Pick a time — we'll confirm by email and send a prep doc.</div>
-            </div>
-          </div>
-          <iframe src="https://api.leadconnectorhq.com/widget/booking/Z49wIzGc7lzyMtCA05BW" style={{width:'100%',border:'none',minHeight:680,display:'block'}} scrolling="no" id="Z49wIzGc7lzyMtCA05BW_1776993941099"></iframe>
-        </div>
-        <div className="booking-trust reveal">
-          <div className="booking-trust-item">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3 3 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            No contracts
-          </div>
-          <div className="booking-trust-item">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3 3 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            Live on your device in minutes
-          </div>
-          <div className="booking-trust-item">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3 3 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            30-day results guarantee
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
-function CTABanner({tweaks}) {
-  return (
-    <section className="cta-banner" id="book">
-      <div className="cta-inner">
-        <div className="cta-left">
-          <div className="cta-tag">ClearDeals</div>
-          <h2>Turn every proposal<br/><em>into an install.</em></h2>
-          <p>Your reps already know how to diagnose the water. Give them one proposal that closes it — presentation, pricing, financing, invoice and signature — built in five minutes at the kitchen table, or sent as a link to an address nobody is driving to.</p>
-          <ul className="cta-checklist">
-            <li className="cta-check-item">
-              <div className="cta-check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
-              One branded proposal — built at the table or sent as a link
-            </li>
-            <li className="cta-check-item">
-              <div className="cta-check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
-              E-signatures, financing &amp; deposits, in person or remote
-            </li>
-            <li className="cta-check-item">
-              <div className="cta-check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
-              Quote referrals and out-of-area homes without the drive
-            </li>
-            <li className="cta-check-item">
-              <div className="cta-check-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
-              30-day results guarantee
-            </li>
-          </ul>
-          <div className="cta-pair left" style={{marginTop:34}}>
-            <a href="#plan-starter" className="btn-dark btn-stacked">
-              <span>{CTA.ctaBanner} →</span>
-              <span className="btn-sub">30-day free trial</span>
-            </a>
-            <span style={{fontSize:13.5,color:'rgba(255,255,255,0.5)',lineHeight:1.5}}>or pick a demo time with the calendar</span>
-          </div>
-        </div>
-        <div className="cta-right">
-          <div className="cta-panel">
-            <div className="cta-panel-header">
-              <div className="cta-panel-icon">
-                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-                  <rect x="2" y="4" width="16" height="14" rx="2" stroke="#3b82f6" strokeWidth="1.5"/>
-                  <path d="M2 8h16" stroke="#3b82f6" strokeWidth="1.5"/>
-                  <path d="M6 2v4M14 2v4" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round"/>
-                  <circle cx="7" cy="12" r="1" fill="#3b82f6"/>
-                  <circle cx="10" cy="12" r="1" fill="#3b82f6"/>
-                  <circle cx="13" cy="12" r="1" fill="#3b82f6"/>
-                </svg>
-              </div>
-              <div>
-                <div className="cta-panel-title">Book a 30-Min ClearDeals Demo</div>
-                <div className="cta-panel-sub">Live, on your device, with your catalog — then we'll send you a real proposal link.</div>
-              </div>
-            </div>
-            <iframe src="https://api.leadconnectorhq.com/widget/booking/Z49wIzGc7lzyMtCA05BW" style={{width:'100%',border:'none',minHeight:680,display:'block'}} scrolling="no" id="Z49wIzGc7lzyMtCA05BW_1776993941100"></iframe>
-          </div>
-          <div className="cta-trust">
-            <div className="cta-trust-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>No contracts</div>
-            <div className="cta-trust-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>Live on your device</div>
-            <div className="cta-trust-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>30-day guarantee</div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function Footer() {
   return (
@@ -3439,65 +3193,526 @@ function Footer() {
   );
 }
 
-function TweaksPanel({tweaks, setTweaks, visible}) {
-  if(!visible) return null;
-  const update = (k,v) => {
-    const next = {...tweaks,[k]:v};
-    setTweaks(next);
-    window.parent.postMessage({type:'__edit_mode_set_keys',edits:next},'*');
-  };
-  const fs = {width:'100%',padding:'8px 10px',border:'1px solid var(--border)',borderRadius:6,fontSize:13,fontFamily:'DM Sans,sans-serif',background:'var(--cream)',color:'var(--ink)',resize:'none'};
-  const ls = {fontSize:11,fontWeight:600,color:'var(--ink-muted)',marginBottom:6,display:'block',textTransform:'uppercase',letterSpacing:'0.08em'};
+
+const FAQS = [
+    {q:'How is our product catalog loaded?', a:'In a few clicks. ClearDeals comes with a growing catalog of water treatment equipment from the major brands — pick the brands you sell, import the lineup, and edit the pricing to match yours. Anything that isn\'t in the catalog yet, from your own systems to add-ons and services, you can add yourself in minutes. The same catalog drives the in-home flow and the proposals you send remotely, so there is only ever one version to keep current.'},
+    {q:'How long does setup take?', a:'Minutes, not weeks. Import your equipment from our product catalog or upload your own, add your company details and logo, and ClearDeals brands your presentation and agreement for you — you can send your first proposal the same day you sign up.'},
+    {q:'Does ClearDeals integrate with my CRM?', a:'Yes. ClearDeals connects with the CRMs water treatment dealers use most — ServiceTitan, GoHighLevel, Housecall Pro and Jobber — and can be integrated with just about any other CRM you run. You don\'t have to set it up yourself, either: we offer done-for-you CRM integrations, so our team connects ClearDeals to your system and your leads, proposals and signed deals land where your office already works.'},
+    {q:'Can I customize my presentation and agreement?', a:'Yes — our high-converting presentation and agreement templates are automatically branded with your company details, so you can run your first appointment on day one. Want to take it a step further? Add permitting forms, your warranties and your terms — just contact support and they\'ll take care of it.'},
+    {q:'Does it pull public water quality data?', a:'Yes. ClearDeals can pull local results from the EPA Water Quality Portal, so homeowners see what\'s actually in their area\'s water before you recommend a system. Already tested the home? Upload your own water test results instead, and they go straight into the proposal — the homeowner\'s own numbers, right next to the system that fixes them.'},
+    {q:'What financing options does ClearDeals support?', a:'ClearDeals integrates with major home service financing providers. Monthly payment estimates calculate in real time — inside the appointment and inside the link you send — with no separate application or redirect.'},
+    {q:'Can I control what my techs can discount?', a:'Absolutely. You set minimum prices per product. Techs can move within your defined range but cannot go below the floor — and the same floor applies to proposals sent from the office, so nobody discounts their way out of your margin from a desk either.'},
+  ];
+
+/* ═══════════════ /sales sections (Figma: "/sales — V2 Redesign") ═══════════════ */
+
+const Ck = ({children}) => <li className="v2-check"><i>✓</i><span>{children}</span></li>;
+
+function V2Head({eyebrow, l1, l2, sub, center, dark}) {
   return (
-    <div style={{position:'fixed',bottom:24,right:24,background:'var(--white)',borderRadius:12,boxShadow:'0 8px 40px rgba(28,24,20,0.12)',padding:24,width:300,zIndex:9999,border:'1px solid var(--border)',fontFamily:'DM Sans,sans-serif'}}>
-      <div style={{fontSize:12,fontWeight:700,color:'var(--ink-muted)',textTransform:'uppercase',letterSpacing:'0.1em',marginBottom:20,paddingBottom:16,borderBottom:'1px solid var(--border)'}}>Tweaks</div>
-      <div style={{marginBottom:14}}>
-        <label style={ls}>Hero Headline</label>
-        <textarea value={tweaks.heroHeadline} onChange={e=>update('heroHeadline',e.target.value)} rows={2} style={fs}/>
+    <div className={`v2-head${center ? ' center' : ''}${dark ? ' dark' : ''}`}>
+      <div className="eyebrow">{eyebrow}</div>
+      <h2>{l1}{l2 && <><br/><em>{l2}</em></>}</h2>
+      {sub && <p>{sub}</p>}
+    </div>
+  );
+}
+
+function V2Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 30);
+    window.addEventListener('scroll', h);
+    return () => window.removeEventListener('scroll', h);
+  }, []);
+  return (
+    <nav className={`nav v2-nav ${scrolled ? 'scrolled' : ''}`}>
+      <div className="nav-inner">
+        <a href="/home"><img src="uploads/Treat Engine Logo .png" alt="Treat Engine" style={{height:30}}/></a>
+        <div className="nav-links">
+          <a href="/home">Home</a>
+          <a href="/ads">Water Leads</a>
+          <a href="/sales" className="active">Water Sales</a>
+          <a href="#pricing">Pricing</a>
+          <a href="/blog">Blog</a>
+        </div>
+        <div className="nav-actions">
+          <a href="#book" className="nav-cta-ghost">{CTA.navDemo}</a>
+          <a href="#plan-starter" className="nav-cta">{CTA.nav} →</a>
+        </div>
       </div>
-      <div style={{marginBottom:14}}>
-        <label style={ls}>Hero CTA text</label>
-        <input value={tweaks.ctaText} onChange={e=>update('ctaText',e.target.value)} style={fs}/>
+    </nav>
+  );
+}
+
+function V2Hero() {
+  return (
+    <header className="v2-hero">
+      <span className="v2-badge">#1 proposal &amp; sales tool for water treatment dealers</span>
+      <h1>Close up to 30% more<br/><em>water softener deals.</em></h1>
+      <p className="v2-hero-sub">One guided proposal — water test, system, savings math, financing and signature — built live at the kitchen table or sent as a link to close remotely.</p>
+      <div className="v2-hero-ctas">
+        <a href="#plan-starter" className="v2-btn primary">{CTA.hero} →</a>
+        <a href="#flow" className="v2-btn ghost">▶&nbsp; {CTA.heroWatch}</a>
       </div>
-      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',paddingTop:14,borderTop:'1px solid var(--border)'}}>
-        <label style={{...ls,margin:0}}>Show comparison table</label>
-        <input type="checkbox" checked={tweaks.showComparison} onChange={e=>update('showComparison',e.target.checked)} style={{width:16,height:16,accentColor:'var(--navy)'}}/>
+      <div className="v2-hero-meta">No setup fee · Cancel anytime · Live in minutes</div>
+      <div className="v2-show">
+        <div className="v2-video">
+          <wistia-player media-id="0xlqtl7x8b" aspect="1.7777777777777777"></wistia-player>
+        </div>
+        <div className="v2-chip signed"><i>✓</i><div><b>Agreement signed</b><span>Deposit collected · Stripe</span></div></div>
+        <div className="v2-chip opened"><i>↗</i><div><b>Proposal opened</b><span>Customer journey link · 2 views</span></div></div>
       </div>
-      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',paddingTop:14,borderTop:'1px solid var(--border)'}}>
-        <label style={{...ls,margin:0}}>Show hero checks</label>
-        <input type="checkbox" checked={tweaks.showHeroChecks} onChange={e=>update('showHeroChecks',e.target.checked)} style={{width:16,height:16,accentColor:'var(--navy)'}}/>
+    </header>
+  );
+}
+
+function V2Proof() {
+  const logos = [
+    ['Kinetico of SW Idaho', 'uploads/kinetico-sw-idaho.png'], ['Watersurgeon', 'uploads/watersurgeon.webp'],
+    ['Miami Alkaline Water', 'uploads/miami-alkaline.webp'], ['Lux Pure Alkaline', 'uploads/lux.webp', 1],
+    ['Culligan', 'uploads/culligan.webp'], ['Alka Magnum', 'uploads/alka-magnum.webp'],
+    ['One Green Filter', 'uploads/one-green-filter.webp'], ['Select Source Water', 'uploads/select-source.png', 1],
+    ['Tarheel Pure Water', 'uploads/tarheel.png', 1], ['Kevin’s Soft Water', 'uploads/kevins-soft-water.png'],
+  ];
+  return (
+    <section className="v2-proof">
+      <div className="v2-proof-label">Trusted by water treatment dealers across the U.S.</div>
+      <div className="v2-logos">
+        {logos.map(([n, src, tall]) => <img key={n} src={src} alt={n} title={n} className={tall ? 'tall' : ''}/>)}
+      </div>
+      <div className="v2-stats">
+        <div className="v2-stat"><b>30%+</b><span>average lift in first-visit close rate</span></div>
+        <div className="v2-stat"><b>$800+</b><span>increase in average deal value</span></div>
+        <div className="v2-stat"><b>5 min</b><span>to build a full proposal</span></div>
+      </div>
+    </section>
+  );
+}
+
+function V2Ways() {
+  return (
+    <section className="v2-sec white" id="ways">
+      <div className="v2-in">
+        <div className="v2-split">
+          <V2Head eyebrow="Two ways to sell" l1="One proposal engine." l2="Two ways to close."/>
+          <p>67% of water treatment sales that don't close on the first visit never close at all. ClearDeals runs the same guided proposal whether your rep is at the kitchen table or three counties away.</p>
+        </div>
+        <div className="v2-ways">
+          <div className="v2-way">
+            <div className="v2-way-media"><img src="uploads/cleardeals-in-use.png" alt="Water technician walking a homeowner through a ClearDeals proposal on a tablet"/></div>
+            <div className="v2-way-body">
+              <span className="v2-pill" style={{alignSelf:'flex-start',textTransform:'uppercase',letterSpacing:'.06em',fontSize:11}}>In the home</span>
+              <h3>Close at the kitchen table</h3>
+              <p>Your rep builds the proposal live on a tablet — water test, recommended system, savings math, financing — and asks for the sale while they're still sitting there.</p>
+              <ul className="v2-checks">
+                <Ck>Test results, system and price assembled in front of the homeowner</Ck>
+                <Ck>Signature and deposit captured before the truck leaves</Ck>
+                <Ck>Runs fully offline — basements, well houses, dead zones</Ck>
+              </ul>
+              <span className="v2-way-tag">At the kitchen table →</span>
+            </div>
+          </div>
+          <div className="v2-way dark">
+            <div className="v2-way-media"><img src="uploads/cleardeals-remote-proposal.webp" alt="A ClearDeals proposal open on a laptop and a phone"/></div>
+            <div className="v2-way-body">
+              <span className="v2-pill" style={{alignSelf:'flex-start',textTransform:'uppercase',letterSpacing:'.06em',fontSize:11}}>Remote</span>
+              <h3>Close from three counties away</h3>
+              <p>Build it from the office and send the link. Pull the local water quality report for the address and let published utility data make the case — they walk the same sequence and sign at the bottom.</p>
+              <ul className="v2-checks">
+                <Ck>Public water-quality report for their address, not a sales claim</Ck>
+                <Ck>Quote referrals and out-of-area homes without the drive</Ck>
+                <Ck>"Let me think about it" gets the full walkthrough again</Ck>
+              </ul>
+              <span className="v2-way-tag">Sent, opened, signed →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function V2Audiences() {
+  const A = [
+    {who: 'Owners & Managers', bar: 'var(--navy)', bg: '#e8ecf5', fg: 'var(--navy)', title: 'Control the price.\nSee every deal.',
+     items: ['Set a red line so no deal loses money', 'Get a heads-up the moment a deal closes', 'Coach reps with scored pitch recordings']},
+    {who: 'Sales Reps', bar: 'var(--blue)', bg: 'var(--blue-light)', fg: 'var(--blue-dark)', title: 'Pitch it right.\nGet it signed.',
+     items: ['Your best pitch, step by step — in person or by link', 'Prices, financing and add-ons in a few taps', 'Works offline in basements and well houses']},
+    {who: 'Homeowners', bar: '#16a34a', bg: '#ecfdf3', fg: '#16a34a', title: 'A proposal that\nfinally makes sense.',
+     items: ['Their own water report, not a sales claim', 'A clear monthly payment and 20-year savings', 'Sign on any device — at the table or at home']},
+  ];
+  return (
+    <section className="v2-sec cream">
+      <div className="v2-in">
+        <V2Head center eyebrow="Who it's for" l1="One tool. Three people" l2="it has to win over."/>
+        <div className="v2-aud">
+          {A.map(a => (
+            <div className="v2-aud-card" key={a.who}>
+              <span className="bar" style={{background: a.bar}}/>
+              <span className="v2-pill" style={{alignSelf:'flex-start', background: a.bg, color: a.fg}}>{a.who}</span>
+              <h3>{a.title}</h3>
+              <ul className="v2-checks">
+                {a.items.map(t => <li className="v2-check" key={t}><i style={{background: a.bg, color: a.fg}}>✓</i><span>{t}</span></li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function V2Compare() {
+  const rows = [
+    ['A paper quote or a PDF attachment', 'One guided proposal they actually walk through'],
+    ['Price changes from rep to rep', 'Your pricing, with a red line nobody can go under'],
+    ['"Let me think about it"', 'Signed with a deposit — at the table or from their couch'],
+    ['Financing is a phone call next week', 'Financing offered right inside the proposal'],
+    ['Every rep pitches it their own way', 'Every rep runs your best pitch, step by step'],
+    ['Follow-up calls nobody returns', 'They get a link, and you see when they open it'],
+  ];
+  return (
+    <section className="v2-sec cream">
+      <div className="v2-in">
+        <V2Head center eyebrow="Why dealers switch" l1="Stop losing deals" l2="you should have closed."
+          sub={'Most deals aren’t lost on price. They’re lost on a messy quote and a "let me think about it." Here’s what changes.'}/>
+        <div className="v2-cmp">
+          <div className="v2-cmp-col">
+            <h3>The old way</h3>
+            {rows.map(([o]) => <div className="v2-cmp-row" key={o}><i>✕</i>{o}</div>)}
+          </div>
+          <div className="v2-cmp-col new">
+            <h3>With ClearDeals</h3>
+            {rows.map(([, n]) => <div className="v2-cmp-row" key={n}><i>✓</i>{n}</div>)}
+          </div>
+        </div>
+        <div className="v2-center-cta"><a href="#plan-starter" className="v2-btn primary">{CTA.comparison} →</a></div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Live in minutes ──────────────────────────────────────────────────────
+ * The four setup steps play in order, like a quick run through sign-up: the active
+ * card animates and lights up, the others rest on their finished state, and the
+ * progress bar under them fills as the run goes. Hover (or tap) a card to jump to it.
+ * Step 1 mirrors the brand-catalog import on /sales/start; step 2 uses the real
+ * presentation-style covers (treatprezi public/presentation-styles).
+ */
+const STEP_DUR = [5600, 5600, 4800, 4800];
+const CAT_BRANDS = [['Aerus', 'ae-wc200.webp'], ['Canopus', 'cn-200.webp'], ['Culligan', 'cul-smart-he.webp'], ['EcoWater', 'eco-ecr3700.webp']];
+const CAT_PRODUCTS = [['Smart HE Softener', 'Softeners', 'cul-smart-he.webp'], ['Smart HE Twin', 'Softeners', 'cul-smart-he-twin.webp'], ['Salt-Free Conditioner', 'Conditioners', 'cul-salt-free.webp'],
+  ['Smart HE Filter', 'Filters', 'cul-smart-he-filter.webp'], ['Smart RO', 'Drinking water', 'cul-smart-ro.webp'], ['Iron-Cleer', 'Filters', 'cul-iron-cleer.webp']];
+const CAT_TOTAL = 25;
+const STYLES = [['classic', 'Classic'], ['editorial', 'Fresh Pour'], ['bold', 'Clear & Bold'], ['marble', 'Marble'], ['ironclad', 'Ironclad']];
+const LENDERS = ['foundation-finance-mark.png', 'aqua-finance-mark.png', 'goodleap-logo.jpg', 'usbank-logo.png', 'greensky-mark.png', 'synchrony-mark.png', 'service-finance-mark.png', 'wisetack-mark.png'];
+const ease = (x) => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
+const span = (t, a, d) => ease((t - a) / d);          // 0→1 over [a, a+d]
+
+function StepCatalog({t}) {
+  const open = t > 900 && t < 2100;
+  const hl = t < 1500 ? 0 : 2;                          // highlight walks down to Culligan
+  const picked = t >= 2100;
+  const prep = span(t, 2300, 2500);
+  const done = t >= 4900;
+  const ready = Math.round(prep * CAT_TOTAL);
+  return (
+    <div className="sc">
+      <div className={`sc-picker${picked ? ' picked' : ''}`}>
+        {picked ? <img src="images/catalog/cul-smart-he.webp" alt=""/> : null}
+        <span className="sc-pick-txt"><b>{picked ? 'Culligan' : 'Select your brand'}</b><small>{picked ? `${CAT_TOTAL} products` : '11 major brands + independent'}</small></span>
+        <span className={`sc-chev${open ? ' up' : ''}`}>⌄</span>
+      </div>
+      <div className="sc-list" style={{opacity: open ? 1 : 0, transform: `translateY(${open ? 0 : -6}px)`}}>
+        {CAT_BRANDS.map(([n, img], i) => (
+          <div className={`sc-opt${i === hl ? ' hl' : ''}`} key={n}><img src={`images/catalog/${img}`} alt=""/>{n}</div>
+        ))}
+      </div>
+      <div className="sc-preview" style={{opacity: picked ? 1 : 0.35}}>
+        <div className={`sc-status${done ? ' done' : ''}`}>
+          <span>{done ? `✓ ${CAT_TOTAL} products ready` : picked ? 'Preparing your catalog…' : '186 products, ready to load'}</span>
+          {picked && !done && <span className="n">{ready} / {CAT_TOTAL}</span>}
+        </div>
+        <div className="sc-meter"><i style={{width: `${picked ? prep * 100 : 0}%`, background: done ? '#16a34a' : undefined}}/></div>
+        <div className="sc-grid">
+          {CAT_PRODUCTS.map(([n, c, img], i) => {
+            const on = picked && prep >= (i + 1) / CAT_PRODUCTS.length - 0.02;   // tiles light up in step with the counter
+            return (
+              <div className={`sc-prod${on ? ' on' : ''}`} key={n}>
+                <span className="ok"/>
+                <div className="ph"><img src={`images/catalog/${img}`} alt=""/></div>
+                <b>{n}</b>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
 }
 
-function App() {
-  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
-  const [tweaksVisible, setTweaksVisible] = useState(false);
-  useReveal();
+function StepTemplates({t}) {
+  // Walk through every style, then settle back on Classic.
+  const sel = t >= STEP_DUR[1] - 600 ? 0 : Math.min(STYLES.length - 1, Math.floor(t / 1000));
+  return (
+    <div className="stp">
+      <div className="stp-main">
+        {STYLES.map(([id, name], i) => (
+          <img key={id} src={`uploads/presentation-styles/${id}/cover-sm.jpg`} alt={`${name} presentation template`} style={{opacity: i === sel ? 1 : 0, transform: `scale(${i === sel ? 1 : 1.03})`}}/>
+        ))}
+        <span className="stp-name">{STYLES[sel][1]}</span>
+      </div>
+      <div className="stp-thumbs">
+        {STYLES.map(([id], i) => <img key={id} className={i === sel ? 'on' : ''} src={`uploads/presentation-styles/${id}/cover-sm.jpg`} alt=""/>)}
+      </div>
+      <span className="v2-ui-note">✓ Your logo &amp; brand colors applied</span>
+    </div>
+  );
+}
+
+function StepAgreement({t}) {
+  const drop = span(t, 700, 600);
+  const up = span(t, 1300, 1100);
+  const fields = ['Customer name', 'Address', 'System & price', 'Signature', 'Date'];
+  const ready = t >= 4000;
+  return (
+    <div className="sa">
+      <div className={`sa-drop${t < 700 ? ' pulse' : ''}`}><span className="ic">⤒</span><b>Drop PDF or DOCX</b></div>
+      <div className="v2-file" style={{opacity: drop, transform: `translateY(${(1 - drop) * -14}px)`}}>
+        <span className="pdf">PDF</span>
+        <div style={{flex: 1, minWidth: 0}}><b>Purchase-Agreement.pdf</b>
+          <div className="sa-bar"><i style={{width: `${up * 100}%`}}/></div>
+        </div>
+        <span className="ok" style={{opacity: up >= 1 ? 1 : 0}}>✓</span>
+      </div>
+      <div className="sa-fields">
+        {fields.map((f, i) => <span key={f} className={t > 2500 + i * 280 ? 'on' : ''}>✓ {f}</span>)}
+      </div>
+      <div className={`sa-ready${ready ? ' on' : ''}`}>{ready ? '✓ Ready for e-signature' : 'Mapping fields…'}</div>
+    </div>
+  );
+}
+
+function StepPayments({t}) {
+  const state = t < 900 ? 0 : t < 1500 ? 1 : 2;           // connect → connecting → connected
+  return (
+    <div className="sp">
+      <div className="v2-stripe">
+        <img src="uploads/whats-inside/stripe-wordmark.svg" alt="Stripe"/>
+        {state === 0 && <span className="sp-btn">Connect</span>}
+        {state === 1 && <span className="sp-btn busy"><i className="spin"/>Connecting</span>}
+        {state === 2 && <span className="v2-conn">● Connected</span>}
+      </div>
+      <div className="v2-ui-label">FINANCING PARTNERS</div>
+      <div className="v2-lenders">
+        {LENDERS.map((l, i) => {
+          const k = span(t, 1700 + i * 200, 350);
+          return <span key={l} style={{opacity: k, transform: `scale(${0.7 + k * 0.3})`}}><img src={`uploads/lenders/${l}`} alt=""/></span>;
+        })}
+      </div>
+      <div className="sp-foot" style={{opacity: span(t, 3500, 400)}}>Offers show up in every proposal</div>
+    </div>
+  );
+}
+
+const STEP_UI = [StepCatalog, StepTemplates, StepAgreement, StepPayments];
+const STEP_COPY = [
+  ['Import your product catalog', 'Pick your brand and we load every system with photos and descriptions. You just set prices.'],
+  ['Choose a presentation template', 'Pick a ready-made, branded presentation — your logo and colors applied automatically — or send us yours.'],
+  ['Upload your agreement', 'Drop in your purchase agreement and we map the fields — or go live instantly on the ClearDeals Standard agreement.'],
+  ['Connect Stripe & financing', 'Link Stripe for deposits and invoices, then add the lenders you already work with.'],
+];
+
+function V2Steps() {
+  const {useRef} = React;
+  const ref = useRef(null);
+  const reduced = usePrefersReducedMotion();
+  const [inView, setInView] = useState(false);
+  const [active, setActive] = useState(0);
+  const [t, setT] = useState(0);
+  const tRef = useRef(0), aRef = useRef(0);
   useEffect(() => {
-    const h = e => {
-      if(e.data?.type==='__activate_edit_mode') setTweaksVisible(true);
-      if(e.data?.type==='__deactivate_edit_mode') setTweaksVisible(false);
-    };
-    window.addEventListener('message', h);
-    window.parent.postMessage({type:'__edit_mode_available'},'*');
-    return () => window.removeEventListener('message', h);
+    const el = ref.current;
+    if (!el || !('IntersectionObserver' in window)) { setInView(true); return; }
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), {threshold: 0.3});
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
+  useEffect(() => {
+    if (!inView || reduced) return;
+    let raf, last = performance.now(), acc = 0;
+    const tick = (now) => {
+      const dt = Math.min(64, now - last); last = now;
+      tRef.current += dt;
+      if (tRef.current >= STEP_DUR[aRef.current] + 700) { tRef.current = 0; aRef.current = (aRef.current + 1) % 4; setActive(aRef.current); }
+      acc += dt; if (acc >= 33) { acc = 0; setT(tRef.current); }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, reduced]);
+  const go = (i) => { aRef.current = i; tRef.current = 0; setActive(i); setT(0); };
+  const fill = reduced ? 1 : (active + Math.min(1, t / STEP_DUR[active])) / 4;
+  return (
+    <section className="v2-sec white" id="get-started" ref={ref}>
+      <div className="v2-in">
+        <div className="v2-split">
+          <V2Head eyebrow="Getting started" l1="Live in minutes." l2="First proposal same day."/>
+          <p>No implementation project, no waiting on us. Sign up, follow four quick steps, and start building, sending and closing proposals within minutes.</p>
+        </div>
+        <div className="v2-steps">
+          {STEP_UI.map((UI, i) => {
+            const on = !reduced && i === active;
+            const st = on ? t : STEP_DUR[i];          // idle cards rest on their finished state
+            return (
+              <div className={`v2-step${on ? ' on' : ''}`} key={i} onMouseEnter={() => !reduced && i !== active && go(i)} onClick={() => !reduced && go(i)}>
+                <div className="v2-step-ui"><UI t={st}/></div>
+                <div className="v2-step-body"><span className="v2-step-num">{i + 1}</span><h3>{STEP_COPY[i][0]}</h3><p>{STEP_COPY[i][1]}</p></div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="v2-strip">
+          <span>Sign up</span><span className="track"><span style={{width: `${fill * 100}%`}}/></span><span>First proposal sent — same day</span>
+          <a href="#plan-starter" className="v2-btn light" style={{padding:'11px 18px',fontSize:14}}>{CTA.steps} →</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function V2Integrations() {
+  const left = ['GoHighLevel', 'ServiceTitan', 'Housecall Pro'], right = ['Jobber', 'Zapier', 'Your website forms'];
+  // connector curves from each tool to the centre card (viewBox matches the 1000×300 hub)
+  const ys = [32, 150, 268];
+  return (
+    <section className="v2-sec cream" id="integrations">
+      <div className="v2-in">
+        <V2Head center eyebrow="Integrations" l1="Hooks up to the tools" l2="you already use."
+          sub="Got a CRM or a lead form on your website? Hook it up once and new leads show up in ClearDeals on their own. We'll do the setup for you."/>
+        <div className="v2-hub" aria-hidden="true">
+          <svg viewBox="0 0 1000 300" preserveAspectRatio="none">
+            {ys.map(y => <path key={'l' + y} d={`M210 ${y} C355 ${y} 355 150 500 150`} fill="none" stroke="rgba(59,130,246,.35)" strokeWidth="1.5" strokeDasharray="5 5"/>)}
+            {ys.map(y => <path key={'r' + y} d={`M790 ${y} C645 ${y} 645 150 500 150`} fill="none" stroke="rgba(59,130,246,.35)" strokeWidth="1.5" strokeDasharray="5 5"/>)}
+          </svg>
+          <div className="v2-hub-col l">{left.map(t => <div className="v2-tool" key={t}>{t}</div>)}</div>
+          <div className="v2-hub-col r">{right.map(t => <div className="v2-tool" key={t}>{t}</div>)}</div>
+          <div className="v2-core"><b>ClearDeals</b><span>● Connected</span></div>
+        </div>
+        <div className="v2-tools-m">
+          <div className="v2-core"><b>ClearDeals</b><span>● Connected</span></div>
+          <small>works with</small>
+          <div className="wrap">{[...left, ...right].map(t => <div className="v2-tool" key={t}>{t}</div>)}</div>
+        </div>
+        <div className="v2-benefits">
+          <div className="v2-benefit"><i>↓</i><h3>New leads show up on their own</h3><p>A lead comes in from your CRM or website and it's waiting in ClearDeals, ready to quote.</p></div>
+          <div className="v2-benefit"><i>↺</i><h3>Signed jobs go back to your CRM</h3><p>When the customer signs or pays, your CRM gets updated. No typing it in twice.</p></div>
+          <div className="v2-benefit"><i>✓</i><h3>We set it up for you</h3><p>No tech skills needed. We hook it all up on your onboarding call.</p></div>
+        </div>
+        <div className="v2-integ-foot">Not sure what you use? We'll figure it out together. <a href="#book" className="v2-btn ghost" style={{padding:'10px 16px',fontSize:14}}>{CTA.integrations} →</a></div>
+      </div>
+    </section>
+  );
+}
+
+function V2Results() {
+  return (
+    <section className="v2-sec cream" style={{paddingTop: 110, paddingBottom: 110}}>
+      <div className="v2-in">
+        <div className="v2-quote">
+          <div>
+            <div className="mark">“</div>
+            <blockquote>It's a game changer. This is what dealers and the industry have been missing.</blockquote>
+            <div className="v2-who">
+              <span className="logo"><img src="uploads/select-source.png" alt="Select Source Water"/></span>
+              <div><b>Ryan Neill</b><span>Select Source Water</span></div>
+            </div>
+          </div>
+          <div className="v2-metrics">
+            <div className="v2-metric"><b>30%+</b><span>first-visit close rate lift</span></div>
+            <div className="v2-metric"><b>$800+</b><span>higher average deal</span></div>
+            <div className="v2-metric"><b>5 min</b><span>to a full proposal</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function V2FAQ() {
+  const [open, setOpen] = useState(0);
+  return (
+    <section className="v2-sec cream" id="faq">
+      <div className="v2-in v2-faq">
+        <div className="v2-faq-left">
+          <V2Head eyebrow="Common questions" l1="Questions about" l2="ClearDeals."/>
+          <p>Still deciding? See it run with your own catalog and pricing.</p>
+          <a href="#book" className="v2-btn ghost" style={{padding:'11px 18px',fontSize:14}}>{CTA.faqDemo} →</a>
+        </div>
+        <div className="faq-list">
+          {FAQS.map((f, i) => (
+            <div key={i} className={`faq-item ${open === i ? 'open' : ''}`}>
+              <div className="faq-q" onClick={() => setOpen(open === i ? null : i)}>
+                <span className="faq-q-text">{f.q}</span>
+                <svg className="faq-icon" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 4v10M4 9h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+              </div>
+              <div className="faq-a">{f.a}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function V2Final() {
+  return (
+    <section className="v2-final" id="book">
+      <div className="v2-final-card">
+        <div>
+          <div className="eyebrow">ClearDeals</div>
+          <h2>Turn every proposal<br/><em>into an install.</em></h2>
+          <p>Five minutes at the kitchen table, or one link to an address nobody is driving to.</p>
+          <ul className="v2-checks">
+            <Ck>Branded proposal — at the table or as a link</Ck>
+            <Ck>E-signature, financing &amp; deposits</Ck>
+            <Ck>Live on your device in minutes</Ck>
+            <Ck>30-day results guarantee</Ck>
+          </ul>
+          <div className="v2-final-ctas">
+            <a href="#plan-starter" className="v2-btn primary">{CTA.final} →</a>
+            <span style={{alignSelf:'center',fontSize:14,color:'rgba(255,255,255,.6)'}}>or pick a demo time →</span>
+          </div>
+        </div>
+        <div className="v2-book">
+          <div className="v2-book-head"><b>Book a 30-min ClearDeals demo</b><span>Live, on your device, with your catalog.</span></div>
+          <iframe src="https://api.leadconnectorhq.com/widget/booking/Z49wIzGc7lzyMtCA05BW" style={{width:'100%',border:'none',minHeight:680,display:'block'}} scrolling="no" id="Z49wIzGc7lzyMtCA05BW_1776993941101" title="Book a ClearDeals demo"></iframe>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function App() {
+  useReveal();
   return (
     <>
-      <Nav tweaks={tweaks}/>
-      <Hero tweaks={tweaks}/>
-      <Trust/>
-      <Ways/>
+      <V2Nav/>
+      <V2Hero/>
+      <V2Proof/>
+      <V2Ways/>
+      <V2Audiences/>
       <WhatsInside/>
+      <V2Compare/>
+      <V2Steps/>
+      <V2Integrations/>
       <DealFlow/>
-      <Comparison tweaks={tweaks}/>
+      <V2Results/>
       <Pricing/>
-      <FAQ/>
-      <CTABanner tweaks={tweaks}/>
+      <V2FAQ/>
+      <V2Final/>
       <Footer/>
-      <TweaksPanel tweaks={tweaks} setTweaks={setTweaks} visible={tweaksVisible}/>
     </>
   );
 }

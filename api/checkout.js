@@ -176,7 +176,7 @@ module.exports = async (req, res) => {
       lead = parseLead(req.body.lead);
       if (lead && lead.error) return res.status(400).json({ error: lead.error });
 
-      // ── Straight from a pricing card (/sales-v2 buy boxes) ──
+      // ── Straight from a pricing card (/sales buy boxes) ──
       // No opt-in, so no lead — but keep the ad attribution on the session so
       // UTMs and click IDs still reach Stripe metadata, and send Stripe's back
       // link to the page the dealer came from. Additive only: no `lead_source`,
