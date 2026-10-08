@@ -266,13 +266,14 @@ a{text-decoration:none;color:inherit;}
 .wig-card{display:flex;flex-direction:column;background:#fffefb;border:1px solid var(--border);border-radius:20px;overflow:hidden;text-align:left;}
 .wig-media{position:relative;aspect-ratio:4/3;overflow:hidden;background:hsl(40,25%,93%);border-top:3px solid var(--wi-solid);border-bottom:1px solid var(--border);font-family:'Inter',system-ui,sans-serif;}
 .wig-media .wi-canvas{transition:opacity .25s;}
-.wig-body{display:flex;flex-direction:column;gap:12px;flex:1;padding:22px 24px 24px;}
+.wig-body{display:flex;flex-direction:column;gap:8px;flex:1;padding:20px 22px 24px;}
+.wig-sub{font-size:14.5px;line-height:1.55;color:var(--ink-muted);}
+.wig-card{transition:box-shadow .25s,border-color .25s;}
+.wig-card.is-playing{border-color:color-mix(in srgb,var(--wi-solid) 40%,var(--cream-dark));box-shadow:0 16px 36px rgba(28,24,20,.09);}
+.wig-play{position:absolute;right:12px;bottom:12px;width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:rgba(255,255,255,.9);border:1px solid var(--border);color:var(--wi-ink);box-shadow:0 2px 8px rgba(28,24,20,.08);transition:opacity .2s;}
+.wig-card.is-playing .wig-play{opacity:0;}
 .wig-label{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;padding:5px 11px;border-radius:999px;background:var(--wi-tint);color:var(--wi-ink);font-size:12.5px;font-weight:600;}
 .wig-title{font-family:'Playfair Display',serif;font-size:21px;line-height:1.22;font-weight:600;color:var(--ink);letter-spacing:-.01em;}
-.wig-steps{list-style:none;display:flex;flex-direction:column;gap:2px;}
-.wig-step{display:flex;gap:12px;padding:5px 0;}
-.wig-step-text{font-size:13.5px;line-height:1.5;color:var(--ink-muted);transition:color .25s;}
-.wig-step.on .wig-step-text{color:var(--ink);font-weight:500;}
 @media (max-width:1024px){.wig{grid-template-columns:repeat(2,minmax(0,1fr));}}
 @media (max-width:640px){.wig{grid-template-columns:1fr;gap:18px;}}
 
@@ -2636,57 +2637,8 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
-/* ── Grid version ──────────────────────────────────────────────────────
- * Every value prop gets its own card with its own looping animation, so a visitor sees all
- * six on scroll instead of one at a time behind tabs. A card's clock only runs while it is on
- * screen. The card crops the scene to the beat's control (WI_MOBILE boxes, the same crops the
- * phone layout uses).
- */
-function useInView(ref, threshold = 0.35) {
-  const [on, setOn] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || !('IntersectionObserver' in window)) { setOn(true); return; }
-    const io = new IntersectionObserver(([e]) => setOn(e.isIntersecting), {threshold});
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  return on;
-}
 
-// One clock per scene. `every` throttles re-renders (ms) so six cards stay cheap.
-// Start mid-way through the first beat: t=0 is the fade-in, so a card that hasn't
-// scrolled into view yet would otherwise sit blank.
-const CLOCK_START = BEAT * 0.4;
-function useBeatClock(running, every = 0) {
-  const {useRef} = React;
-  const [t, setT] = useState(CLOCK_START);
-  const tRef = useRef(CLOCK_START);
-  useEffect(() => {
-    if (!running) return;
-    let raf, last = performance.now(), acc = every;
-    const tick = (now) => {
-      const dt = Math.min(64, now - last);
-      last = now;
-      tRef.current = (tRef.current + dt) % LOOP;
-      acc += dt;
-      if (acc >= every) { acc = 0; setT(tRef.current); }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [running]);
-  const jump = (ms) => { tRef.current = ms; setT(ms); };
-  return [t, jump];
-}
 
-// Reduced motion: no clock — each beat is shown in its finished state.
-function beatOf(t, reduced) {
-  const beat = Math.min(BEATS - 1, Math.floor(t / BEAT));
-  const lt = reduced ? BEAT * 0.9 : t - beat * BEAT;
-  const fade = reduced ? 1 : Math.min(prog(lt, 0, 280), 1 - prog(lt, BEAT - 300, 300));
-  return {beat, lt, fade};
-}
 
 function useWidth(ref, fallback) {
   const [w, setW] = useState(fallback);
@@ -2705,44 +2657,95 @@ function useWidth(ref, fallback) {
 
 const wiVars = (p) => ({'--wi-solid': p.color.solid, '--wi-tint': p.color.tint, '--wi-ink': p.color.ink});
 
-function WiCard({prop}) {
+/* ── Feature grid ──────────────────────────────────────────────────────
+ * Nine cards, one function each. A card plays ONE beat of an existing value-prop scene,
+ * cropped to that beat's control (WI_MOBILE boxes). Cards rest on the beat's finished
+ * frame and only animate while hovered (mouse) or while centred on screen (touch), so
+ * at most one plays at a time.
+ */
+const FEATURES = [
+  {prop: 'presentation', beat: 0, icon: 'Droplets',    label: 'Water test',      title: 'Show them their water.',              sub: 'Their ZIP’s public report is ready before you test. Log your results and they take over.'},
+  {prop: 'presentation', beat: 1, icon: 'Package',     label: 'System buildout', title: 'Build the system in front of them.',  sub: 'The monthly payment updates at your financing rate as you go.'},
+  {prop: 'presentation', beat: 3, icon: 'TrendingUp',  label: 'Savings',         title: 'Close on the savings.',               sub: 'A 20-year comparison against what they spend today.'},
+  {prop: 'pricing',      beat: 1, icon: 'ShieldCheck', label: 'Red-line pricing', dy: -56, title: 'Nobody sells below your floor.',     sub: 'Set a red line on any product. Reps can’t quote under it.'},
+  {prop: 'grow',         beat: 0, icon: 'PlusCircle',  label: 'Add-ons',         title: 'Add-ons in one tap.',                 sub: 'Offer upgrades the moment a system is added. The price updates live.'},
+  {prop: 'grow',         beat: 3, icon: 'Mic',         label: 'AI coaching',     title: 'Every pitch, scored by AI.',          sub: 'Record the appointment and get a score and next steps in about 30 seconds.'},
+  {prop: 'virtual',      beat: 2, icon: 'Smartphone',  label: 'Remote sales',    title: 'They choose from their couch.',       sub: 'Send one link. They compare your options and pick one from their phone.'},
+  {prop: 'payments',     beat: 0, icon: 'Landmark',    label: 'Financing',       title: 'Financing right in the proposal.',    sub: 'Apply with your lender, or pay by card or bank through Stripe.'},
+  {prop: 'payments',     beat: 2, icon: 'PenLine',     label: 'E-signature',     title: 'Signed on any device.',               sub: 'Draw it or type it, and the agreement is done.'},
+];
+const REST_T = BEAT * 0.9;          // finished state shown while a card is idle
+const HOLD = 900;                   // linger on the finished state before replaying
+
+function useCanHover() {
+  const q = '(hover: hover) and (pointer: fine)';
+  return !!(window.matchMedia && window.matchMedia(q).matches);
+}
+
+// Touch screens: a card plays while it sits in the middle band of the viewport.
+function useCentered(ref, enabled) {
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!enabled || !el || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver(([e]) => setOn(e.isIntersecting), {rootMargin: '-38% 0px -38% 0px'});
+    io.observe(el);
+    return () => io.disconnect();
+  }, [enabled]);
+  return on;
+}
+
+// Loops one beat while `playing`; snaps back to the finished frame when it stops.
+function useBeatLoop(playing) {
+  const [t, setT] = useState(null);
+  useEffect(() => {
+    if (!playing) { setT(null); return; }
+    let raf, start = performance.now(), last = 0;
+    const tick = (now) => {
+      const e = (now - start) % (BEAT + HOLD);
+      if (now - last >= 33) { last = now; setT(Math.min(e, BEAT * 0.97)); }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [playing]);
+  return t;
+}
+
+function WiCard({f}) {
   const {useRef} = React;
+  const prop = WI_PROPS.find(p => p.key === f.prop);
   const cardRef = useRef(null);
   const mediaRef = useRef(null);
   const reduced = usePrefersReducedMotion();
-  const inView = useInView(cardRef);
-  const [t] = useBeatClock(inView && !reduced, 33);
+  const canHover = useCanHover();
+  const [hover, setHover] = useState(false);
+  const centered = useCentered(cardRef, !canHover);
+  const playing = !reduced && (canHover ? hover : centered);
+  const t = useBeatLoop(playing);
+  const lt = t === null ? REST_T : t;
   const w = useWidth(mediaRef, 380);
-  const {beat, lt, fade} = beatOf(t, reduced);
-  // The crop boxes were framed for the phone layout's wider band (568×364). Here the frame is
-  // 4:3, so pad the box a little and centre the control vertically in the taller frame.
-  const [bx, by, bw] = WI_MOBILE[prop.key][beat].box;
+  // Crop boxes were framed for the phone layout's 568×364 band; this frame is 4:3, so pad
+  // the box a little and centre the control vertically.
+  const [bx, by, bw] = WI_MOBILE[prop.key][f.beat].box;
   const cw = bw * 1.08;
   const x = bx - (cw - bw) / 2;
-  const y = Math.max(0, Math.min(720 - cw * 0.75, by - (cw * 0.75 - bw * 364 / 568) / 2));
+  const y = Math.max(0, Math.min(720 - cw * 0.75, by - (cw * 0.75 - bw * 364 / 568) / 2 + (f.dy || 0)));
   const k = w / cw;
   const Beat = prop.Beat;
   return (
-    <article className="wig-card reveal" ref={cardRef} style={wiVars(prop)}>
+    <article className={`wig-card reveal${playing ? ' is-playing' : ''}`} ref={cardRef} style={wiVars(prop)}
+      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
       <div className="wig-media" ref={mediaRef} aria-hidden="true">
-        <div className="wi-canvas" style={{transform: `scale(${k}) translate(${-x}px, ${-y}px)`, opacity: fade}}>
-          <WiMobile.Provider value={true}><Beat beat={beat} t={lt}/></WiMobile.Provider>
+        <div className="wi-canvas" style={{transform: `scale(${k}) translate(${-x}px, ${-y}px)`}}>
+          <WiMobile.Provider value={true}><Beat beat={f.beat} t={lt}/></WiMobile.Provider>
         </div>
+        {canHover && !reduced && <span className="wig-play" title="Hover to play"><Ic n="Play" size={12}/></span>}
       </div>
       <div className="wig-body">
-        <span className="wig-label"><Ic n={prop.icon} size={14}/>{prop.label}</span>
-        <h3 className="wig-title">{prop.title}</h3>
-        <ol className="wig-steps">
-          {prop.bullets.map((b, i) => {
-            const fill = reduced ? (i === beat ? 1 : 0) : i < beat ? 1 : i === beat ? lt / BEAT : 0;
-            return (
-              <li key={i} className={`wig-step${i === beat ? ' on' : ''}`}>
-                <span className="wi-bullet-bar"><span style={{transform: `scaleY(${fill})`}}/></span>
-                <span className="wig-step-text">{b}</span>
-              </li>
-            );
-          })}
-        </ol>
+        <span className="wig-label"><Ic n={f.icon} size={14}/>{f.label}</span>
+        <h3 className="wig-title">{f.title}</h3>
+        <p className="wig-sub">{f.sub}</p>
       </div>
     </article>
   );
@@ -2763,11 +2766,11 @@ function WhatsInside() {
         </div>
 
         <div className="wig">
-          {WI_PROPS.map((p) => <WiCard key={p.key} prop={p}/>)}
+          {FEATURES.map((f) => <WiCard key={f.prop + f.beat} f={f}/>)}
         </div>
 
         <p className="wi-also">
-          <strong>Also inside:</strong> CRM integrations with ServiceTitan, GoHighLevel, Housecall Pro, Jobber and more
+          <strong>Also inside:</strong> maintenance plans, rentals, offline mode, team updates, and CRM integrations with ServiceTitan, GoHighLevel, Housecall Pro, Jobber and more
         </p>
 
       </div>
