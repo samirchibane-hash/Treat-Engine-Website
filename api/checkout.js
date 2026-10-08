@@ -176,6 +176,23 @@ module.exports = async (req, res) => {
       lead = parseLead(req.body.lead);
       if (lead && lead.error) return res.status(400).json({ error: lead.error });
 
+      // ── Straight from a pricing card (/sales-v2 buy boxes) ──
+      // No opt-in, so no lead — but keep the ad attribution on the session so
+      // UTMs and click IDs still reach Stripe metadata, and send Stripe's back
+      // link to the page the dealer came from. Additive only: no `lead_source`,
+      // so api/webhook.js sends no lead events for these sessions.
+      if (!lead) {
+        const attribution = (req.body && typeof req.body.attribution === 'object' && req.body.attribution) || {};
+        for (const k of ATTRIBUTION_KEYS) {
+          const v = String(attribution[k] || '').trim().slice(0, 500);
+          if (v) sessionParams.metadata[k] = v;
+        }
+        const RETURN_PATHS = new Set(['/sales', '/sales-v2']);
+        if (RETURN_PATHS.has(req.body && req.body.return_path)) {
+          sessionParams.cancel_url = `${origin}${req.body.return_path}#pricing`;
+        }
+      }
+
       if (lead) {
         const { brands, product_count } = lead;
         sessionParams.customer_email = lead.email;

@@ -2920,27 +2920,39 @@ function Pricing() {
   const money = n => '$' + n.toLocaleString('en-US');
   const amountFor = key => isYear ? PRICING_PLANS[key].year : PRICING_PLANS[key].month;
 
-  // /sales/start picks the dealer's brand, previews their catalog and takes
-  // their details, then makes the /api/checkout call with a `lead` attached.
-  //
   // The field tablet offer used to open a modal here first; it now runs after
   // checkout, on /sales/welcome, so an upsell can never cost us the card.
-  const startCheckout = key => {
+  //
+  // Straight to Stripe — no opt-in step. /api/checkout picks the real price and
+  // attaches the 30-day trial; the page's UTMs and click IDs ride along into the
+  // Stripe session metadata, and Stripe's back link returns here.
+  const ATTRIBUTION_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'utm_id', 'fbclid', 'gclid'];
+  const startCheckout = async key => {
     if (pending) return;
     setPending(key);
     // Clicks are told apart by this event, not by the button text — so both
     // buttons can read naturally. Filter Clarity on cta_pricing_<plan>_<interval>.
     try { if (window.clarity) window.clarity('event', `cta_pricing_${key}_${billing}`); } catch (e) {}
-    // Carry the landing page's query string (UTMs, fbclid, gclid) along —
-    // /sales/start forwards it to Stripe metadata and the lead webhook.
     const q = new URLSearchParams(window.location.search);
-    q.set('plan', key);
-    q.set('interval', billing);
-    window.location.href = `/sales/start?${q}`;
+    const attribution = {};
+    ATTRIBUTION_KEYS.forEach(k => { if (q.get(k)) attribution[k] = q.get(k); });
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({service: 'sales', plan: key, interval: billing, attribution, return_path: '/sales-v2'}),
+      });
+      const {url, error} = await res.json();
+      if (error || !url) throw new Error(error || 'No checkout URL returned');
+      window.location.href = url;
+    } catch (err) {
+      alert('Something went wrong starting checkout. Please try again, or contact us at Info@TreatEngine.com');
+      setPending(null);
+    }
   };
 
-  // Back from /sales/start restores this page from the back-forward cache
-  // with the buttons still disabled — re-enable them.
+  // Back from Stripe restores this page from the back-forward cache with the
+  // buttons still disabled — re-enable them.
   useEffect(() => {
     const reset = e => { if (e.persisted) setPending(null); };
     window.addEventListener('pageshow', reset);
