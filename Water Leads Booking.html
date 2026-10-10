@@ -5,133 +5,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Book Your Free Strategy Call — Treat Engine Water Leads</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --cream:#faf7f2;
-  --cream-mid:#f0ebe0;
-  --cream-dark:#e5ddd0;
-  --ink:#1c1814;
-  --ink-mid:#3d3530;
-  --ink-muted:#7a6f65;
-  --navy:#1a2744;
-  --blue:#3b82f6;
-  --blue-light:#eff6ff;
-  --blue-dark:#1d4ed8;
-  --white:#fffefb;
-  --border:rgba(28,24,20,0.10);
-  --border-mid:rgba(28,24,20,0.06);
-  --green:#16a34a;
-  --green-light:#f0fdf4;
+/* ═══ /booking — V2 (Figma "02 · Ads Journey" → "V2 — /booking") ═══ */
+.b-grid{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:32px;align-items:start;}
+.b-cal{background:#fff;border:1px solid var(--cream-dark);border-radius:24px;box-shadow:var(--shadow-float);padding:28px;display:flex;flex-direction:column;gap:18px;}
+.b-cal-head{display:flex;align-items:center;gap:12px;}
+.b-cal-head>div{flex:1;min-width:0;}
+.b-cal-head .b-cal-title{font-family:'DM Sans',sans-serif;font-size:18px;font-weight:600;color:var(--ink);}
+.b-cal-head .b-cal-sub{font-size:14px;line-height:1.4;color:var(--ink-muted);margin-top:4px;}
+.b-embed{min-height:680px;border-radius:14px;overflow:hidden;}
+.b-embed iframe{display:block;width:100%;min-height:680px;border:none;overflow:hidden;}
+.b-side{display:flex;flex-direction:column;gap:16px;}
+.b-card{background:#fff;border:1px solid var(--cream-dark);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:18px;}
+.b-card.shadow{box-shadow:var(--shadow-card);}
+.b-steps{list-style:none;display:flex;flex-direction:column;gap:18px;}
+.b-step{display:flex;gap:14px;align-items:flex-start;}
+.b-step-no{width:32px;height:32px;flex-shrink:0;border-radius:9px;background:var(--blue-light);color:var(--blue-dark);font-family:'Playfair Display',serif;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;}
+.b-step>div>b{display:block;font-size:15px;font-weight:600;color:var(--ink);}
+.b-step>div>span{display:block;margin-top:3px;font-size:13.5px;line-height:1.55;color:var(--ink-muted);}
+.b-quote{background:var(--navy);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow-card);}
+.b-quote .v2-side-label{color:rgba(255,255,255,.6);}
+.b-quote blockquote{font-family:'Playfair Display',serif;font-style:italic;font-weight:600;font-size:20px;line-height:1.45;color:#fff;}
+.b-who{display:flex;align-items:center;gap:12px;}
+.b-avatar{width:38px;height:38px;flex-shrink:0;border-radius:999px;background:#fff;color:var(--navy);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.b-who>div{flex:1;min-width:0;}
+.b-who>div>b{display:block;font-size:14px;font-weight:600;color:#fff;}
+.b-who>div>span{display:block;margin-top:2px;font-size:12.5px;color:rgba(255,255,255,.6);}
+.b-who .stars{color:#f59e0b;font-size:12px;letter-spacing:1px;}
+.b-guar{background:var(--green-light);border-radius:16px;padding:20px;display:flex;gap:14px;align-items:flex-start;}
+.b-guar-ic{width:44px;height:44px;flex-shrink:0;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.b-guar>div>b{display:block;font-size:15px;font-weight:600;color:var(--ink);}
+.b-guar>div>span{display:block;margin-top:4px;font-size:13.5px;line-height:1.55;color:var(--ink-mid);}
+@media (max-width:1024px){
+  .b-grid{grid-template-columns:1fr;}
 }
-html{scroll-behavior:smooth;}
-body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;min-height:100vh;}
-a{text-decoration:none;color:inherit;}
-
-/* ── TOP BAR ── */
-.topbar{background:var(--navy);padding:10px 32px;text-align:center;}
-.topbar-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;}
-.topbar-item{display:flex;align-items:center;gap:7px;font-size:12.5px;color:rgba(255,255,255,0.75);font-weight:500;}
-.topbar-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;}
-.topbar-divider{width:1px;height:14px;background:rgba(255,255,255,0.15);}
-
-/* ── NAV ── */
-.nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 32px;}
-.nav-inner{max-width:900px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between;}
-.nav-logo img{height:30px;width:auto;}
-.nav-back{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--ink-muted);transition:color .2s;}
-.nav-back:hover{color:var(--ink);}
-.nav-back svg{transition:transform .2s;}
-.nav-back:hover svg{transform:translateX(-2px);}
-
-/* ── LAYOUT ── */
-.page{max-width:900px;margin:0 auto;padding:0 32px 80px;}
-
-/* ── HERO ── */
-.hero{padding:52px 0 44px;border-bottom:1px solid var(--border);margin-bottom:52px;}
-.hero-eyebrow{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:18px;}
-.hero-eyebrow::before{content:'';display:block;width:18px;height:1.5px;background:var(--blue);}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,4.5vw,52px);font-weight:700;color:var(--ink);line-height:1.07;letter-spacing:-.025em;margin-bottom:16px;}
-.hero h1 em{font-style:italic;color:var(--navy);}
-.hero-sub{font-size:16.5px;color:var(--ink-muted);line-height:1.8;max-width:600px;}
-
-/* ── MAIN GRID ── */
-.main-grid{display:grid;grid-template-columns:1fr 360px;gap:40px;align-items:start;}
-
-/* ── CALENDAR PANEL ── */
-.calendar-panel{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
-.calendar-header{padding:24px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;}
-.calendar-icon{width:42px;height:42px;border-radius:10px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.calendar-header-title{font-size:15px;font-weight:700;color:var(--ink);}
-.calendar-header-sub{font-size:12.5px;color:var(--ink-muted);margin-top:2px;}
-.calendar-embed{padding:4px 0;}
-.calendar-embed iframe{display:block;width:100%;min-height:680px;border:none;}
-
-/* ── SIDEBAR ── */
-.sidebar{display:flex;flex-direction:column;gap:24px;}
-
-/* What to expect */
-.sidebar-card{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
-.sidebar-card-header{padding:18px 22px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-muted);}
-.sidebar-card-body{padding:20px 22px;}
-
-.expect-list{list-style:none;display:flex;flex-direction:column;gap:0;}
-.expect-item{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid var(--border-mid);}
-.expect-item:last-child{border-bottom:none;}
-.expect-num{width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-.expect-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:2px;}
-.expect-desc{font-size:12.5px;color:var(--ink-muted);line-height:1.55;}
-
-/* Social proof */
-.testi-quote{font-family:'Playfair Display',serif;font-size:14.5px;font-style:italic;color:var(--ink);line-height:1.65;margin-bottom:16px;}
-.testi-quote::before{content:'\201C';font-size:36px;color:var(--cream-dark);display:block;line-height:.7;margin-bottom:10px;font-style:normal;}
-.testi-author{display:flex;align-items:center;gap:10px;}
-.testi-avatar{width:36px;height:36px;border-radius:50%;background:var(--cream-mid);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--navy);border:1px solid var(--border);flex-shrink:0;}
-.testi-name{font-size:13px;font-weight:600;color:var(--ink);}
-.testi-role{font-size:11.5px;color:var(--ink-muted);}
-.stars{color:oklch(0.72 0.10 72);font-size:12px;letter-spacing:1px;margin-top:3px;}
-
-/* Trust badges */
-.trust-list{list-style:none;display:flex;flex-direction:column;gap:0;}
-.trust-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--border-mid);font-size:13px;color:var(--ink-mid);}
-.trust-item:last-child{border-bottom:none;}
-.trust-icon{width:20px;height:20px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.trust-icon svg{color:var(--green);}
-
-/* Guarantee */
-.guarantee{background:var(--navy);border-radius:10px;padding:22px;display:flex;gap:14px;align-items:flex-start;}
-.guarantee-icon{font-size:28px;flex-shrink:0;line-height:1;}
-.guarantee-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;font-family:'Playfair Display',serif;}
-.guarantee-desc{font-size:12.5px;color:rgba(255,255,255,0.6);line-height:1.6;}
-
-/* ── FOOTER ── */
-.footer{max-width:900px;margin:0 auto;padding:28px 32px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-.footer-copy{font-size:12px;color:var(--ink-muted);}
-.footer-links{display:flex;gap:20px;}
-.footer-links a{font-size:12px;color:var(--ink-muted);transition:color .2s;}
-.footer-links a:hover{color:var(--ink);}
-
-@media(max-width:800px){
-  .main-grid{grid-template-columns:1fr;}
-  .topbar-divider{display:none;}
-  .hero{padding:36px 0 32px;}
-  .page{padding:0 20px 60px;}
-  .nav{padding:0 20px;}
-  .topbar{padding:10px 20px;}
-  .hero h1{font-size:clamp(28px,7vw,44px);}
-  .hero-sub{font-size:15px;}
-  .topbar-item:nth-child(n+3){display:none;}
-}
-@media(max-width:480px){
-  .topbar-item:not(:first-child){display:none;}
-  .guarantee{flex-direction:column;gap:10px;}
-  .footer{flex-direction:column;gap:12px;text-align:center;}
-  .footer-links{justify-content:center;}
-  .calendar-header{flex-direction:column;align-items:flex-start;gap:10px;}
+@media (max-width:768px){
+  .b-cal{padding:16px;border-radius:18px;gap:14px;}
+  .b-card,.b-quote{padding:22px;}
+  .b-quote blockquote{font-size:18px;}
 }
 </style>
-<link rel="stylesheet" href="mobile.css"/>
+<link rel="stylesheet" href="v2.css"/>
 <!-- Meta Pixel — Treat Engine (1134033977806212) -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -168,188 +84,86 @@ gtag('config', 'AW-16631843401');
 <!-- End Microsoft Clarity -->
 </head>
 <body>
-<script src="mobile-nav.js" defer></script>
 
-<!-- Top urgency bar -->
-<div class="topbar">
-  <div class="topbar-inner">
-    <span class="topbar-item">
-      <span class="topbar-dot"></span>
-      Exclusive territories — limited availability
-    </span>
-    <span class="topbar-divider"></span>
-    <span class="topbar-item">
-      <span class="topbar-dot"></span>
-      No contracts · Month-to-month
-    </span>
-    <span class="topbar-divider"></span>
-    <span class="topbar-item">
-      <span class="topbar-dot"></span>
-      30-day satisfaction guarantee
-    </span>
-  </div>
-</div>
-
-<!-- Nav -->
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="/home"><img src="uploads/Treat Engine Logo .png" alt="Treat Engine" style="height:28px;"/></a>
-    <a href="/ads" class="nav-back">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      Back to Water Leads
-    </a>
-  </div>
-</nav>
-
-<div class="page">
-
-  <!-- Hero -->
-  <div class="hero">
-    <div class="hero-eyebrow">Water Leads — Free Strategy Call</div>
-    <h1>Book your call.<br/><em>Check your territory.</em></h1>
-    <p class="hero-sub">In 30 minutes, we'll map out exactly how Water Leads works in your market, show you what competitors are spending, and confirm whether your territory is still available.</p>
-  </div>
-
-  <!-- Main grid -->
-  <div class="main-grid">
-
-    <!-- Calendar embed -->
-    <div class="calendar-panel">
-      <div class="calendar-header">
-        <div class="calendar-icon">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <rect x="2" y="4" width="16" height="14" rx="2" stroke="#3b82f6" stroke-width="1.5"/>
-            <path d="M2 8h16" stroke="#3b82f6" stroke-width="1.5"/>
-            <path d="M6 2v4M14 2v4" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="7" cy="12" r="1" fill="#3b82f6"/>
-            <circle cx="10" cy="12" r="1" fill="#3b82f6"/>
-            <circle cx="13" cy="12" r="1" fill="#3b82f6"/>
-          </svg>
-        </div>
-        <div>
-          <div class="calendar-header-title">30-Minute Strategy Call</div>
-          <div class="calendar-header-sub">Pick a time that works for you — we'll confirm by email.</div>
-        </div>
-      </div>
-      <div class="calendar-embed">
-        <iframe src="https://api.leadconnectorhq.com/widget/booking/qo6VvOIO6tHLdpHKZZmp" style="width:100%;border:none;overflow:hidden;min-height:680px;" scrolling="no" id="qo6VvOIO6tHLdpHKZZmp_1776987523535"></iframe>
-      </div>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-
-      <!-- What to expect -->
-      <div class="sidebar-card">
-        <div class="sidebar-card-header">What happens on the call</div>
-        <div class="sidebar-card-body">
-          <ul class="expect-list">
-            <li class="expect-item">
-              <div class="expect-num">1</div>
-              <div>
-                <div class="expect-title">Territory check</div>
-                <div class="expect-desc">We confirm your market is available and show you the competitive landscape.</div>
-              </div>
-            </li>
-            <li class="expect-item">
-              <div class="expect-num">2</div>
-              <div>
-                <div class="expect-title">Lead volume estimate</div>
-                <div class="expect-desc">You'll see a realistic projection of in-home water test appointments per week your reps can expect to close in your area.</div>
-              </div>
-            </li>
-            <li class="expect-item">
-              <div class="expect-num">3</div>
-              <div>
-                <div class="expect-title">Pricing & onboarding</div>
-                <div class="expect-desc">No hard sell — just clear numbers and a plain-language walkthrough of how we work.</div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Testimonial -->
-      <div class="sidebar-card">
-        <div class="sidebar-card-header">Dealer result</div>
-        <div class="sidebar-card-body">
-          <div class="testi-quote">We hit 18 installs in a single month after years of averaging 4 or 5. The quality of lead changed everything.</div>
-          <div class="testi-author">
-            <div class="testi-avatar">DK</div>
-            <div>
-              <div class="testi-name">Dave K.</div>
-              <div class="testi-role">PureFlow Water Solutions — Phoenix, AZ</div>
-              <div class="stars">★★★★★</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Trust items -->
-      <div class="sidebar-card">
-        <div class="sidebar-card-header">Why dealers choose us</div>
-        <div class="sidebar-card-body">
-          <ul class="trust-list">
-            <li class="trust-item">
-              <div class="trust-icon">
-                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              Exclusive territory — one dealer per market
-            </li>
-            <li class="trust-item">
-              <div class="trust-icon">
-                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              Pre-qualified homeowners — booked for in-home water tests
-            </li>
-            <li class="trust-item">
-              <div class="trust-icon">
-                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              Month-to-month — no long-term contracts
-            </li>
-            <li class="trust-item">
-              <div class="trust-icon">
-                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              Water treatment specialists — not generalists
-            </li>
-            <li class="trust-item">
-              <div class="trust-icon">
-                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              Live dashboard — see results in real time
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Guarantee -->
-      <div class="guarantee">
-        <div class="guarantee-icon">🛡️</div>
-        <div>
-          <div class="guarantee-title">30-Day Satisfaction Guarantee</div>
-          <div class="guarantee-desc">Not satisfied with your lead and appointment quality within 30 days? We make it right — no arguments, no fine print.</div>
-        </div>
-      </div>
-
+<header class="v2-chead">
+  <div class="v2-chead-in">
+    <div class="v2-chead-left">
+      <a href="/home"><img src="uploads/Treat Engine Logo .png" alt="Treat Engine"></a>
+      <div class="v2-crumb"><a class="hide-sm" href="/ads">Water Leads</a><b><span class="hide-sm">› </span>Book a call</b></div>
     </div>
   </div>
+</header>
+<div class="v2-trustbar">
+  <span>Exclusive territories — limited availability</span>
+  <span>No contracts · Month-to-month</span>
+  <span class="hide-sm">30-day satisfaction guarantee</span>
 </div>
 
-<!-- Footer -->
-<footer class="footer">
-  <span class="footer-copy">© 2026 Treat Engine. All rights reserved.</span>
-  <div class="footer-links">
-    <a href="/privacypolicy">Privacy</a>
-    <a href="/termsofservice">Terms</a>
-    <a href="/home">Home</a>
+<main class="v2-flow">
+  <div class="v2-flow-intro">
+    <a class="v2-back" href="/ads">← Back to Water Leads</a>
+    <div class="eyebrow">Water Leads — Free Strategy Call</div>
+    <h1>Book your call. <em>Check your territory.</em></h1>
+    <p>In 30 minutes, we'll map out exactly how Water Leads works in your market, show you what competitors are spending, and confirm whether your territory is still available.</p>
+  </div>
+
+  <div class="b-grid">
+    <section class="b-cal" aria-labelledby="cal-title">
+      <div class="b-cal-head">
+        <div>
+          <p class="b-cal-title" id="cal-title">30-Minute Strategy Call</p>
+          <p class="b-cal-sub">Pick a time that works for you — we'll confirm by email.</p>
+        </div>
+        <span class="v2-pill">30 min</span>
+      </div>
+      <div class="b-embed">
+        <iframe src="https://api.leadconnectorhq.com/widget/booking/qo6VvOIO6tHLdpHKZZmp" style="width:100%;border:none;overflow:hidden;min-height:680px;" scrolling="no" id="qo6VvOIO6tHLdpHKZZmp_1776987523535" title="Book a 30-minute strategy call"></iframe>
+      </div>
+    </section>
+
+    <aside class="b-side">
+      <div class="b-card shadow">
+        <div class="v2-side-label">What happens on the call</div>
+        <ol class="b-steps">
+          <li class="b-step"><span class="b-step-no">1</span><div><b>Territory check</b><span>We confirm your market is available and show you the competitive landscape.</span></div></li>
+          <li class="b-step"><span class="b-step-no">2</span><div><b>Lead volume estimate</b><span>You'll see a realistic projection of in-home water test appointments per week your reps can expect to close in your area.</span></div></li>
+          <li class="b-step"><span class="b-step-no">3</span><div><b>Pricing &amp; onboarding</b><span>No hard sell — just clear numbers and a plain-language walkthrough of how we work.</span></div></li>
+        </ol>
+      </div>
+      <div class="b-quote">
+        <div class="v2-side-label">Dealer result</div>
+        <blockquote>“We hit 18 installs in a single month after years of averaging 4 or 5. The quality of lead changed everything.”</blockquote>
+        <div class="b-who">
+          <span class="b-avatar" aria-hidden="true">DK</span>
+          <div><b>Dave K.</b><span>PureFlow Water Solutions — Phoenix, AZ</span></div>
+          <span class="stars" aria-label="5 out of 5 stars">★★★★★</span>
+        </div>
+      </div>
+      <div class="b-card">
+        <div class="v2-side-label">Why dealers choose us</div>
+        <ul class="v2-checks">
+          <li class="v2-check"><i>✓</i>Exclusive territory — one dealer per market</li>
+          <li class="v2-check"><i>✓</i>Pre-qualified homeowners — booked for in-home water tests</li>
+          <li class="v2-check"><i>✓</i>Month-to-month — no long-term contracts</li>
+          <li class="v2-check"><i>✓</i>Water treatment specialists — not generalists</li>
+          <li class="v2-check"><i>✓</i>Live dashboard — see results in real time</li>
+        </ul>
+      </div>
+      <div class="b-guar">
+        <span class="b-guar-ic" aria-hidden="true">🛡️</span>
+        <div><b>30-Day Satisfaction Guarantee</b><span>Not satisfied with your lead and appointment quality within 30 days? We make it right — no arguments, no fine print.</span></div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="v2-minifoot">
+  <div class="v2-minifoot-in">
+    <span>© 2026 Treat Engine. All rights reserved.</span>
+    <nav><a href="/privacypolicy">Privacy</a><a href="/termsofservice">Terms</a><a href="/home">Home</a></nav>
   </div>
 </footer>
 
 <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
-
 </body>
 </html>

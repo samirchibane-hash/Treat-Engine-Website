@@ -16,7 +16,9 @@
     { "src": "*.png",             "use": "@vercel/static" },
     { "src": "*.jpg",             "use": "@vercel/static" },
     { "src": "*.webp",            "use": "@vercel/static" },
-    { "src": "*.css",             "use": "@vercel/static" }
+    { "src": "*.css",             "use": "@vercel/static" },
+    { "src": "mobile-nav.js",     "use": "@vercel/static" },
+    { "src": "v2.js",             "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/api/checkout",          "dest": "/api/checkout.js" },
