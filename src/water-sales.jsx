@@ -2525,7 +2525,7 @@ function V2Integrations() {
     <section className="v2-sec cream" id="integrations">
       <div className="v2-in">
         <V2Head center eyebrow="Integrations" l1="Works with the software" l2="you already run."
-          sub="Leads come in from your CRM. Signed deals go back to it. We set it up for you."/>
+          sub="Leads come in from your CRM. Signed deals go back to it."/>
         <div className="v2-integ-grid">
           {tools.map(([f, name, cls]) => (
             <div className="v2-integ" key={name}><img loading="lazy" src={`uploads/integrations/${f}`} alt={name} className={cls || ''}/></div>
