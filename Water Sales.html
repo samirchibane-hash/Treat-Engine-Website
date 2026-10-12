@@ -949,21 +949,10 @@ gtag('config', 'AW-16631843401');
 .v2-strip .track{flex:1;height:6px;border-radius:999px;background:rgba(255,255,255,.15);overflow:hidden;}
 .v2-strip .track span{display:block;height:100%;width:66%;background:var(--blue);border-radius:999px;}
 /* integrations */
-.v2-hub{position:relative;max-width:1000px;height:300px;margin:0 auto 48px;}
-.v2-hub svg{position:absolute;inset:0;width:100%;height:100%;}
-.v2-hub-col{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-between;padding:12px 0;}
-.v2-hub-col.l{left:0;}
-.v2-hub-col.r{right:0;}
-.v2-tool{display:flex;align-items:center;gap:10px;width:210px;padding:14px 20px;background:var(--cream);border:1px solid var(--cream-dark);border-radius:14px;box-shadow:0 1px 3px rgba(28,24,20,.06);font-size:15px;font-weight:600;color:var(--ink);}
-.v2-tool::before{content:'';width:10px;height:10px;border-radius:50%;background:#16a34a;}
-.v2-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:220px;background:var(--navy);border-radius:20px;padding:22px 26px;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:0 32px 64px -12px rgba(28,24,20,.28);}
-.v2-core b{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:#fff;}
-.v2-core span{background:#fff;color:#16a34a;border-radius:999px;padding:5px 11px;font-size:11px;font-weight:600;}
-.v2-tools-m{display:none;}
-.v2-benefits{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-.v2-benefit i{width:40px;height:40px;border-radius:12px;background:var(--blue-light);color:var(--blue-dark);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:17px;margin-bottom:12px;}
-.v2-benefit h3{font-family:'DM Sans',sans-serif;font-size:17px;font-weight:600;color:var(--ink);margin-bottom:8px;}
-.v2-benefit p{font-size:15px;line-height:1.6;color:var(--ink-muted);}
+.v2-integ-grid{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:repeat(7,1fr);gap:14px;}
+.v2-integ{height:88px;display:flex;align-items:center;justify-content:center;padding:0 18px;background:#fff;border:1px solid var(--cream-dark);border-radius:14px;box-shadow:0 1px 3px rgba(28,24,20,.06);}
+.v2-integ img{display:block;height:28px;width:auto;max-width:100%;object-fit:contain;}
+.v2-integ img.dim{filter:brightness(.6);}
 .v2-integ-foot{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:40px;font-size:15px;font-weight:500;color:var(--ink-mid);flex-wrap:wrap;}
 /* results */
 .v2-quote{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:56px;align-items:center;background:var(--blue-light);border-radius:24px;padding:56px 64px;}
@@ -1010,6 +999,7 @@ gtag('config', 'AW-16631843401');
 
 /* ── tablet ── */
 @media (max-width:1024px){
+  .v2-integ-grid{grid-template-columns:repeat(4,1fr);}
   .v2-steps{grid-template-columns:repeat(2,1fr);}
   .v2-final-card{grid-template-columns:1fr;}
   .v2-faq{grid-template-columns:1fr;gap:40px;}
@@ -1039,21 +1029,17 @@ gtag('config', 'AW-16631843401');
   .v2-split{grid-template-columns:1fr;gap:18px;margin-bottom:36px;}
   .v2-head{margin-bottom:36px;}
   .v2-head h2{font-size:34px;}
-  .v2-ways,.v2-aud,.v2-cmp,.v2-benefits,.v2-steps{grid-template-columns:1fr;}
+  .v2-ways,.v2-aud,.v2-cmp,.v2-steps{grid-template-columns:1fr;}
+  .v2-integ-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .v2-integ{height:72px;}
+  .v2-integ:last-child:nth-child(odd){grid-column:1/-1;}
+  .v2-integ img{height:24px;}
   .v2-way-media{height:220px;padding:18px 18px 0;}
   .v2-way-body{padding:24px 22px 26px;}
   .v2-way-body h3{font-size:24px;}
   .v2-aud-card h3{font-size:22px;}
   .v2-cmp{padding:6px;}
   .v2-cmp-col{padding:22px 20px 14px;}
-  .v2-hub{display:none;}
-  .v2-tools-m{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:36px;}
-  .v2-tools-m .v2-core{position:static;transform:none;width:auto;flex-direction:row;padding:12px 18px;}
-  .v2-tools-m .v2-core b{font-size:18px;}
-  .v2-tools-m small{font-size:12px;color:var(--ink-muted);}
-  .v2-tools-m .wrap{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;}
-  .v2-tools-m .v2-tool{width:auto;padding:9px 14px;font-size:13px;border-radius:10px;}
-  .v2-tools-m .v2-tool::before{width:8px;height:8px;}
   .v2-quote{grid-template-columns:1fr;padding:32px 24px;gap:28px;}
   .v2-quote blockquote{font-size:28px;line-height:1.3;}
   .v2-final{padding:24px 20px 72px;}

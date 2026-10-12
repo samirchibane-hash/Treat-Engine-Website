@@ -2509,34 +2509,29 @@ function V2Steps() {
 }
 
 function V2Integrations() {
-  const left = ['GoHighLevel', 'ServiceTitan', 'Housecall Pro'], right = ['Jobber', 'Zapier', 'Your website forms'];
-  // connector curves from each tool to the centre card (viewBox matches the 1000×300 hub)
-  const ys = [32, 150, 268];
+  // Logos of the software ClearDeals connects to. Real connection paths only: a built-in
+  // CRM webhook, a public API and webhooks (with GoHighLevel / Zapier / n8n guides),
+  // Stripe payments. Add a logo here only once there is a working way to connect it.
+  const tools = [
+    ['servicetitan.svg', 'ServiceTitan'],
+    ['housecall-pro.webp', 'Housecall Pro', 'dim'],
+    ['jobber.svg', 'Jobber'],
+    ['highlevel.svg', 'HighLevel'],
+    ['zapier.svg', 'Zapier'],
+    ['n8n.svg', 'n8n'],
+  ];
   return (
     <section className="v2-sec cream" id="integrations">
       <div className="v2-in">
-        <V2Head center eyebrow="Integrations" l1="Hooks up to the tools" l2="you already use."
-          sub="Got a CRM or a lead form on your website? Hook it up once and new leads show up in ClearDeals on their own. We'll do the setup for you."/>
-        <div className="v2-hub" aria-hidden="true">
-          <svg viewBox="0 0 1000 300" preserveAspectRatio="none">
-            {ys.map(y => <path key={'l' + y} d={`M210 ${y} C355 ${y} 355 150 500 150`} fill="none" stroke="rgba(59,130,246,.35)" strokeWidth="1.5" strokeDasharray="5 5"/>)}
-            {ys.map(y => <path key={'r' + y} d={`M790 ${y} C645 ${y} 645 150 500 150`} fill="none" stroke="rgba(59,130,246,.35)" strokeWidth="1.5" strokeDasharray="5 5"/>)}
-          </svg>
-          <div className="v2-hub-col l">{left.map(t => <div className="v2-tool" key={t}>{t}</div>)}</div>
-          <div className="v2-hub-col r">{right.map(t => <div className="v2-tool" key={t}>{t}</div>)}</div>
-          <div className="v2-core"><b>ClearDeals</b><span>● Connected</span></div>
+        <V2Head center eyebrow="Integrations" l1="Works with the software" l2="you already run."
+          sub="Leads come in from your CRM. Signed deals go back to it. We set it up for you."/>
+        <div className="v2-integ-grid">
+          {tools.map(([f, name, cls]) => (
+            <div className="v2-integ" key={name}><img loading="lazy" src={`uploads/integrations/${f}`} alt={name} className={cls || ''}/></div>
+          ))}
+          <div className="v2-integ"><img loading="lazy" src="uploads/whats-inside/stripe-wordmark.svg" alt="Stripe"/></div>
         </div>
-        <div className="v2-tools-m">
-          <div className="v2-core"><b>ClearDeals</b><span>● Connected</span></div>
-          <small>works with</small>
-          <div className="wrap">{[...left, ...right].map(t => <div className="v2-tool" key={t}>{t}</div>)}</div>
-        </div>
-        <div className="v2-benefits">
-          <div className="v2-benefit"><i>↓</i><h3>New leads show up on their own</h3><p>A lead comes in from your CRM or website and it's waiting in ClearDeals, ready to quote.</p></div>
-          <div className="v2-benefit"><i>↺</i><h3>Signed jobs go back to your CRM</h3><p>When the customer signs or pays, your CRM gets updated. No typing it in twice.</p></div>
-          <div className="v2-benefit"><i>✓</i><h3>We set it up for you</h3><p>No tech skills needed. We hook it all up on your onboarding call.</p></div>
-        </div>
-        <div className="v2-integ-foot">Not sure what you use? We'll figure it out together. <a href="#book" className="v2-btn ghost" style={{padding:'10px 16px',fontSize:14}}>{CTA.integrations} →</a></div>
+        <div className="v2-integ-foot">Running something else? We'll connect it through our API or webhooks. <a href="#book" className="v2-btn ghost" style={{padding:'10px 16px',fontSize:14}}>{CTA.integrations} →</a></div>
       </div>
     </section>
   );
