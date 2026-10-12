@@ -1903,19 +1903,14 @@ function Pricing() {
   // Trial language is monthly-only — annual bills up front, so the button and
   // the line under it must never promise a free trial while isYear.
   const ctaFor = name => isYear ? ('Get ' + name + ' →') : ('Try ' + name + ' free →');
-  const billedFor = key => {
-    const amt = money(amountFor(key));
-    return isYear
-      ? amt + ' due today, then ' + amt + '/year'
-      : '$0 due today — free for 30 days, then ' + amt + '/month';
-  };
+  // One short line under each buy button. The trial itself is said once in the
+  // banner and once on the button; annual has no trial and renews up front.
+  const billedFor = () => isYear ? 'Renews yearly' : 'Cancel anytime';
 
   const noteFor = key => {
     // The 30-day trial is monthly-only, matching /sales/checkout-v2 — annual
     // bills up front, so nothing here may promise a trial while isYear.
-    if(!isYear) return (
-      <><span className="pr-note-save">First 30 days free</span> · then billed monthly</>
-    );
+    if(!isYear) return null;
     const perMonth = Math.round(PRICING_PLANS[key].year / 12);
     const saved = PRICING_PLANS[key].month * 12 - PRICING_PLANS[key].year;
     return (
@@ -1978,7 +1973,7 @@ function Pricing() {
         <div className="pricing-head reveal">
           <div className="eyebrow">Pricing</div>
           <h2 className="section-title">Dealer pricing,<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>with nothing hidden.</em></h2>
-          <p className="pricing-sub">Setup, catalog build, customization and team training are <strong>included free</strong> on both plans. Monthly plans start with a <strong>30-day free trial</strong> — no contracts, cancel anytime.</p>
+          <p className="pricing-sub">Setup, catalog build, customization and team training are <strong>included free</strong> on both plans.</p>
         </div>
 
         <div className="pr-promo-wrap reveal">
@@ -1986,7 +1981,7 @@ function Pricing() {
             <svg width="15" height="15" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
             {isYear
               ? <span>The <strong>30-day free trial</strong> runs on monthly billing — switch to Monthly to start free, then move to annual whenever you like.</span>
-              : <span><strong>30-day free trial on both plans.</strong> Run Starter or Pro free for 30 days — cancel before day 30 and you’re never charged.</span>}
+              : <span><strong>30-day free trial on both plans.</strong></span>}
           </div>
         </div>
 
@@ -2025,12 +2020,6 @@ function Pricing() {
         </div>
 
         <div className="pr-trust reveal">
-          {!isYear && (
-            <div className="pr-trust-item">
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
-              30-day free trial
-            </div>
-          )}
           <div className="pr-trust-item">
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
             No setup fee
