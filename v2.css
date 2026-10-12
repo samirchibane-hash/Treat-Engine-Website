@@ -681,3 +681,5 @@ body.drawer-locked{overflow:hidden;}
 /* Nav without a CTA (blog): a logo-width spacer keeps the links centred */
 .v2-nav .nav-inner.no-cta::after{content:'';width:150px;flex-shrink:0;}
 @media (max-width:900px){ .v2-nav .nav-inner.no-cta::after{display:none;} }
+/* …and no booking button in the mobile drawer on those pages either */
+body:has(.v2-nav .no-cta) .mobile-drawer-foot .drawer-cta{display:none;}
