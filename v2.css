@@ -683,3 +683,9 @@ body.drawer-locked{overflow:hidden;}
 @media (max-width:900px){ .v2-nav .nav-inner.no-cta::after{display:none;} }
 /* …and no booking button in the mobile drawer on those pages either */
 body:has(.v2-nav .no-cta) .mobile-drawer-foot .drawer-cta{display:none;}
+
+/* Desktop: every client logo on one line — logos shrink to fit instead of wrapping. */
+@media (min-width:1025px){
+  .v2-logos{flex-wrap:nowrap;justify-content:space-between;gap:24px;}
+  .v2-logos img{flex:0 1 auto;min-width:0;}
+}

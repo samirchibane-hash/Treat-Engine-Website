@@ -793,6 +793,11 @@ gtag('config', 'AW-16631843401');
 .v2-logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:28px 44px;max-width:1180px;margin:0 auto;}
 .v2-logos img{height:32px;width:auto;max-width:130px;object-fit:contain;filter:grayscale(1);opacity:.55;}
 .v2-logos img.tall{height:40px;}
+/* Desktop: every client logo on one line — logos shrink to fit instead of wrapping. */
+@media (min-width:1025px){
+  .v2-logos{flex-wrap:nowrap;justify-content:space-between;gap:24px;}
+  .v2-logos img{flex:0 1 auto;min-width:0;}
+}
 .v2-stats{max-width:1180px;margin:48px auto 0;display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border:1px solid var(--cream-dark);border-radius:16px;box-shadow:0 1px 3px rgba(28,24,20,.06);text-align:left;}
 .v2-stat{padding:36px 40px;}
 .v2-stat+.v2-stat{border-left:1px solid var(--cream-dark);}
