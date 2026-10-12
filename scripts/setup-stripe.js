@@ -41,7 +41,7 @@ async function main() {
   // ── Water Leads — Meta Ads Management ($599/month) ───────────────────────
   const leadsMetaProduct = await stripe.products.create({
     name: 'Water Leads — Meta Ads Management',
-    description: '2 new video ads + 3 new image ads per month, unlimited optimizations, territory exclusivity.',
+    description: '2 new video ads + 3 new image ads per month, unlimited optimizations, weekly reporting.',
   });
   const leadsMetaPrice = await stripe.prices.create({
     product: leadsMetaProduct.id,

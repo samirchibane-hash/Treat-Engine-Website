@@ -16,8 +16,8 @@
 .h-hero h1 em{display:block;font-style:italic;color:var(--navy);}
 .h-hero-sub{font-size:19px;line-height:1.63;color:var(--ink-muted);max-width:680px;}
 .h-show{display:flex;align-items:flex-start;justify-content:center;gap:28px;padding-top:40px;}
-.h-stage{background:#fff;border:1px solid var(--cream-dark);border-radius:22px;padding:12px;box-shadow:var(--shadow-stage);flex-shrink:0;}
-.h-stage img{display:block;width:560px;height:540px;object-fit:cover;border-radius:18px;}
+.h-stage{flex-shrink:0;}
+.h-stage img{display:block;width:580px;height:auto;aspect-ratio:1/1;}
 .h-side{flex-shrink:0;}
 .h-side.left{padding-top:200px;}
 .h-side.right{padding-top:90px;}
@@ -31,35 +31,21 @@
 .h-chip div span{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-mid);margin-top:3px;}
 .h-chip div span::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);}
 
-/* Demand · Close */
-.h-dc{padding:72px 32px;background:var(--cream);}
-.h-dc-row{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:24px;}
-.h-dc-card{background:#fff;border:1px solid var(--cream-dark);border-radius:20px;padding:36px 40px;display:flex;flex-direction:column;gap:14px;}
-.h-dc-card.navy{background:var(--navy);border-color:var(--navy);}
-.h-dc-card h3{font-size:30px;font-weight:600;line-height:1.2;letter-spacing:-.02em;color:var(--ink);}
-.h-dc-card h3 em{display:block;font-style:italic;color:var(--navy);}
-.h-dc-card.navy h3,.h-dc-card.navy h3 em{color:#fff;}
-.h-dc-card p{font-size:15.5px;line-height:1.6;color:var(--ink-muted);}
-.h-dc-card.navy p{color:rgba(255,255,255,.75);}
 
 /* The system */
 .h-ways{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
 .h-way{background:#fff;border:1px solid var(--cream-dark);border-radius:20px;overflow:hidden;box-shadow:var(--shadow-card);display:flex;flex-direction:column;}
 .h-way.navy{background:var(--navy);border-color:var(--navy);}
-.h-way-media{height:260px;padding:28px;display:flex;flex-direction:column;justify-content:center;gap:14px;background:var(--cream-mid);}
-.h-way.navy .h-way-media{background:var(--navy-deep);align-items:center;gap:16px;}
-.h-way-tags{display:flex;align-items:center;gap:8px;}
-.h-way-tags small{font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--ink-muted);margin-left:2px;}
-.h-lead{background:#fff;border:1px solid var(--cream-dark);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;}
-.h-lead-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;color:var(--ink);}
-.h-lead i{display:block;height:6px;border-radius:6px;background:var(--cream-dark);}
-.h-lead i.short{width:220px;max-width:50%;}
-.h-bars-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);}
-.h-bars{display:flex;align-items:flex-end;gap:22px;}
-.h-bar{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;font-weight:600;color:rgba(255,255,255,.55);}
-.h-bar i{display:block;width:44px;border-radius:6px;background:#fff;}
-.h-bar i.hi{background:var(--blue);}
-.h-bar small{font-size:10.5px;font-weight:400;}
+.h-services{padding-top:96px;}
+.h-way-media{position:relative;height:320px;overflow:hidden;background:var(--cream-mid);}
+.h-reel{display:flex;align-items:center;}
+.h-reel-track{display:flex;gap:16px;padding-left:16px;width:max-content;animation:h-reel 28s linear infinite;}
+.h-reel:hover .h-reel-track{animation-play-state:paused;}
+.h-reel-track img{display:block;width:192px;height:240px;object-fit:cover;border-radius:12px;box-shadow:0 12px 28px -8px rgba(28,24,20,.28);}
+@keyframes h-reel{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.h-reel-tag{position:absolute;left:16px;bottom:14px;background:rgba(15,27,51,.78);color:#fff;border-radius:999px;padding:6px 11px;font-size:11px;font-weight:600;letter-spacing:.06em;}
+.h-photo img{display:block;width:100%;height:100%;object-fit:cover;}
+@media (prefers-reduced-motion:reduce){.h-reel-track{animation:none;}}
 .h-way-body{padding:32px 36px 36px;display:flex;flex-direction:column;align-items:flex-start;gap:16px;flex:1;}
 .h-way-body h3{font-size:30px;font-weight:600;line-height:1.2;color:var(--ink);}
 .h-way.navy .h-way-body h3{color:#fff;}
@@ -110,7 +96,7 @@
 .h-post-body .v2-link{margin-top:auto;}
 
 @media (max-width:1180px){
-  .h-stage img{width:460px;height:444px;}
+  .h-stage img{width:470px;}
 }
 @media (max-width:1024px){
   .h-show{flex-direction:column;align-items:center;gap:16px;}
@@ -128,16 +114,15 @@
   .h-hero-sub{font-size:16.5px;}
   .h-hero-in>.v2-btn{width:100%;}
   .h-show{padding-top:4px;gap:20px;width:100%;}
-  .h-stage{width:100%;padding:10px;border-radius:18px;}
-  .h-stage img{width:100%;height:auto;aspect-ratio:1/1;border-radius:12px;}
+  .h-stage{width:100%;}
+  .h-stage img{width:100%;}
   .h-side{max-width:none;}
   .h-chip{width:100%;padding:12px 14px;}
-  .h-dc{padding:48px 20px;}
-  .h-dc-row,.h-ways,.h-values,.h-vids,.h-posts{grid-template-columns:1fr;gap:16px;}
-  .h-dc-card{padding:28px 24px;}
-  .h-dc-card h3{font-size:24px;}
+  .h-ways,.h-values,.h-vids,.h-posts{grid-template-columns:1fr;gap:16px;}
   .h-way.navy{order:2;}
-  .h-way-media{height:auto;min-height:190px;padding:22px 18px;}
+  .h-way-media{height:240px;}
+  .h-reel-track img{width:152px;height:190px;}
+  .h-services{padding-top:56px;}
   .h-way-body{padding:26px 22px 28px;}
   .h-way-body h3{font-size:26px;}
   .h-way-cta{flex-direction:column;align-items:stretch;width:100%;gap:12px;text-align:center;}
@@ -236,43 +221,28 @@ gtag('config', 'AW-16631843401');
     <div class="v2-ticker-track" id="ticker"></div>
   </div>
 
-  <section class="h-dc">
-    <div class="h-dc-row">
-      <div class="h-dc-card reveal">
-        <div class="eyebrow">01 · Demand</div>
-        <h3>Booked appointments, <em>every week.</em></h3>
-        <p>Done-for-you ads and pre-qualified homeowners delivered straight to your calendar.</p>
-      </div>
-      <div class="h-dc-card navy reveal">
-        <div class="eyebrow dark">02 · Close</div>
-        <h3>Signatures at <em>the kitchen table.</em></h3>
-        <p>A tablet-based proposal and closing tool built for water treatment technicians, not salespeople.</p>
-      </div>
-    </div>
-  </section>
 
-  <section class="v2-sec white" id="services">
+  <section class="v2-sec white h-services" id="services">
     <div class="v2-in">
-      <div class="v2-split reveal">
-        <div class="v2-head">
-          <div class="eyebrow">The system</div>
-          <h2>Two services.<br><em>One complete engine.</em></h2>
-        </div>
-        <p>Most agencies handle one part of the growth equation. Treat Engine covers both — filling your calendar with qualified homeowners, then closing them in the home.</p>
-      </div>
       <div class="h-ways">
         <article class="h-way reveal">
-          <div class="h-way-media" aria-hidden="true">
-            <div class="h-way-tags"><span class="v2-pill outline">Facebook</span><span class="v2-pill outline">Google</span><small>APR 2026</small></div>
-            <div class="h-lead">
-              <div class="h-lead-row">Qualified <span class="v2-pill success">Appointment set</span></div>
-              <i></i><i class="short"></i>
+          <div class="h-way-media h-reel" aria-label="A few of the Facebook and Instagram ads we run for dealers">
+            <div class="h-reel-track">
+              <img src="/uploads/home-ad-1.webp" alt="Water treatment ad: drink, shower and cook with toxin-free water" width="432" height="540">
+              <img src="/uploads/home-ad-2.webp" alt="Water treatment ad: upgrade to premium water quality" width="432" height="540">
+              <img src="/uploads/home-ad-3.webp" alt="Water treatment ad: premium water from every tap" width="432" height="540">
+              <img src="/uploads/home-ad-5.webp" alt="Water treatment ad: schedule a free water test" width="432" height="540">
+              <img src="/uploads/home-ad-1.webp" alt="" aria-hidden="true" width="432" height="540">
+              <img src="/uploads/home-ad-2.webp" alt="" aria-hidden="true" width="432" height="540">
+              <img src="/uploads/home-ad-3.webp" alt="" aria-hidden="true" width="432" height="540">
+              <img src="/uploads/home-ad-5.webp" alt="" aria-hidden="true" width="432" height="540">
             </div>
+            <span class="h-reel-tag">Facebook · Instagram · Google</span>
           </div>
           <div class="h-way-body">
             <span class="v2-pill">Stage 01 · Water Leads</span>
             <h3>Fill the calendar.</h3>
-            <p>Exclusive, pre-qualified appointments with homeowners who are ready to buy — delivered to your calendar every week.</p>
+            <p>Pre-qualified appointments with homeowners who are ready to buy — delivered to your calendar every week.</p>
             <ul class="v2-checks">
               <li class="v2-check"><i>✓</i>Facebook &amp; Google campaigns built for water treatment</li>
               <li class="v2-check"><i>✓</i>Pre-qualified and appointment-set before they reach you</li>
@@ -281,19 +251,13 @@ gtag('config', 'AW-16631843401');
             </ul>
             <div class="h-way-cta">
               <a class="v2-btn primary" href="/ads">Get Water Leads →</a>
-              <span>Check territory availability</span>
+              <span>Free 30-minute strategy call</span>
             </div>
           </div>
         </article>
         <article class="h-way navy reveal">
-          <div class="h-way-media" aria-hidden="true">
-            <div class="h-bars-label">First-visit close rate</div>
-            <div class="h-bars">
-              <div class="h-bar">42%<i style="height:70px"></i><small>Q1</small></div>
-              <div class="h-bar">58%<i style="height:96px"></i><small>Q2</small></div>
-              <div class="h-bar">61%<i style="height:104px"></i><small>Q3</small></div>
-              <div class="h-bar">68%<i class="hi" style="height:120px"></i><small>Q4</small></div>
-            </div>
+          <div class="h-way-media h-photo">
+            <img src="/uploads/cleardeals-in-use.webp" alt="A water treatment technician walking a homeowner through a ClearDeals proposal on a tablet at the kitchen table" width="1160" height="767" loading="lazy">
           </div>
           <div class="h-way-body">
             <span class="v2-pill onnavy">Stage 02 · Water Sales</span>
@@ -444,7 +408,7 @@ gtag('config', 'AW-16631843401');
 
 <script>
 (function(){
-  var items=['Water Leads','Done-for-you ads','Pre-qualified appointments','Exclusive territories','Water Sales','ClearDeals','E-signatures','In-home proposals','Integrated financing','Real-time analytics'];
+  var items=['Water Leads','Done-for-you ads','Pre-qualified appointments','Appointment setting','Water Sales','ClearDeals','E-signatures','In-home proposals','Integrated financing','Real-time analytics'];
   document.getElementById('ticker').innerHTML=items.concat(items).map(function(t){return '<span class="v2-ticker-item">'+t+'</span>';}).join('');
   var vids=[
     {id:'962w9l5cvf',name:'Kinetico Water of SW ID',role:'Meridian, ID'},
