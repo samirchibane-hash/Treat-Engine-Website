@@ -1910,7 +1910,7 @@ function Pricing() {
   const noteFor = key => {
     // The 30-day trial is monthly-only, matching /sales/checkout-v2 — annual
     // bills up front, so nothing here may promise a trial while isYear.
-    if(!isYear) return null;
+    if(!isYear) return <span className="pr-note-save">First 30 days free</span>;
     const perMonth = Math.round(PRICING_PLANS[key].year / 12);
     const saved = PRICING_PLANS[key].month * 12 - PRICING_PLANS[key].year;
     return (
@@ -1974,15 +1974,6 @@ function Pricing() {
           <div className="eyebrow">Pricing</div>
           <h2 className="section-title">Dealer pricing,<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>with nothing hidden.</em></h2>
           <p className="pricing-sub">Setup, catalog build, customization and team training are <strong>included free</strong> on both plans.</p>
-        </div>
-
-        <div className="pr-promo-wrap reveal">
-          <div className={isYear ? 'pr-promo muted' : 'pr-promo'}>
-            <svg width="15" height="15" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
-            {isYear
-              ? <span>The <strong>30-day free trial</strong> runs on monthly billing — switch to Monthly to start free, then move to annual whenever you like.</span>
-              : <span><strong>30-day free trial on both plans.</strong></span>}
-          </div>
         </div>
 
         <div className="pr-grid reveal">
