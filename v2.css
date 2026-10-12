@@ -677,3 +677,7 @@ body.drawer-locked{overflow:hidden;}
   .v2-legal .legal h2{font-size:24px;margin-top:32px;padding-top:24px;}
   .v2-legal .legal p,.v2-legal .legal li{font-size:15.5px;}
 }
+
+/* Nav without a CTA (blog): a logo-width spacer keeps the links centred */
+.v2-nav .nav-inner.no-cta::after{content:'';width:150px;flex-shrink:0;}
+@media (max-width:900px){ .v2-nav .nav-inner.no-cta::after{display:none;} }
