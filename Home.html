@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Treat Engine — The Complete Growth System for Water Treatment Dealers</title>
-<meta name="description" content="Treat Engine is a boutique agency built exclusively for residential water treatment dealers: pre-qualified appointments (Water Leads) and in-home closing with ClearDeals (Water Sales).">
+<meta name="description" content="Treat Engine is a boutique agency built exclusively for residential water treatment dealers: pre-qualified appointments (Water Leads) and in-home and remote closing with ClearDeals (Water Sales).">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -45,6 +45,7 @@
 @keyframes h-reel{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 .h-reel-tag{position:absolute;left:16px;bottom:14px;background:rgba(15,27,51,.78);color:#fff;border-radius:999px;padding:6px 11px;font-size:11px;font-weight:600;letter-spacing:.06em;}
 .h-photo img{display:block;width:100%;height:100%;object-fit:cover;}
+.h-photo .h-reel-tag{z-index:1;}
 @media (prefers-reduced-motion:reduce){.h-reel-track{animation:none;}}
 .h-way-body{padding:32px 36px 36px;display:flex;flex-direction:column;align-items:flex-start;gap:16px;flex:1;}
 .h-way-body h3{font-size:30px;font-weight:600;line-height:1.2;color:var(--ink);}
@@ -197,7 +198,7 @@ gtag('config', 'AW-16631843401');
     <div class="h-hero-in">
       <span class="v2-badge">Water treatment's only end-to-end growth agency</span>
       <h1>More water system installs. <em>Less guesswork.</em></h1>
-      <p class="h-hero-sub">Treat Engine is a boutique agency built exclusively for residential water treatment dealerships. We fill your calendar with pre-qualified appointments and arm your technicians to close them — all under one roof.</p>
+      <p class="h-hero-sub">Treat Engine is a boutique agency built exclusively for residential water treatment dealerships. We fill your calendar with pre-qualified appointments and give your team the tools to close them — in the home or remotely, all under one roof.</p>
       <a class="v2-btn primary" href="#services">Explore our services →</a>
       <div class="h-show">
         <div class="h-side left">
@@ -210,7 +211,7 @@ gtag('config', 'AW-16631843401');
         <div class="h-side right">
           <a class="h-chip" href="/sales">
             <span class="h-chip-ic ws" aria-hidden="true">WS</span>
-            <div><small>02 · Close</small><b>ClearDeals</b><span>$8,420 signed at the door</span></div>
+            <div><small>02 · Close</small><b>ClearDeals</b><span>$8,420 signed today</span></div>
           </a>
         </div>
       </div>
@@ -257,17 +258,18 @@ gtag('config', 'AW-16631843401');
         </article>
         <article class="h-way navy reveal">
           <div class="h-way-media h-photo">
+            <span class="h-reel-tag">Kitchen table · Remote link</span>
             <img src="/uploads/cleardeals-in-use.webp" alt="A water treatment technician walking a homeowner through a ClearDeals proposal on a tablet at the kitchen table" width="1160" height="767" loading="lazy">
           </div>
           <div class="h-way-body">
             <span class="v2-pill onnavy">Stage 02 · Water Sales</span>
-            <h3>Close at the door.</h3>
-            <p>ClearDeals gives your technicians everything they need to present, quote, and sign on the very first visit.</p>
+            <h3>Close in the home — or from anywhere.</h3>
+            <p>One proposal your team can present, quote, and sign at the kitchen table — or send as a link the homeowner opens from their couch.</p>
             <ul class="v2-checks dark">
-              <li class="v2-check"><i>✓</i>Branded proposals built in 5 minutes on a tablet</li>
-              <li class="v2-check"><i>✓</i>E-signatures, financing options, and deposits on the spot</li>
+              <li class="v2-check"><i>✓</i>Branded proposals with the water test, system and price — built in minutes</li>
+              <li class="v2-check"><i>✓</i>Remote close: build it from the office and send one link to review and sign</li>
+              <li class="v2-check"><i>✓</i>E-signatures, financing, and deposits — in person or online</li>
               <li class="v2-check"><i>✓</i>Dealer-controlled pricing floors protect your margins</li>
-              <li class="v2-check"><i>✓</i>30%+ increase in average first-visit close rate</li>
             </ul>
             <div class="h-way-cta">
               <a class="v2-btn light" href="/sales">Demo ClearDeals →</a>
@@ -408,7 +410,7 @@ gtag('config', 'AW-16631843401');
 
 <script>
 (function(){
-  var items=['Water Leads','Done-for-you ads','Pre-qualified appointments','Appointment setting','Water Sales','ClearDeals','E-signatures','In-home proposals','Integrated financing','Real-time analytics'];
+  var items=['Water Leads','Done-for-you ads','Pre-qualified appointments','Appointment setting','Water Sales','ClearDeals','E-signatures','In-home & remote proposals','Integrated financing','Real-time analytics'];
   document.getElementById('ticker').innerHTML=items.concat(items).map(function(t){return '<span class="v2-ticker-item">'+t+'</span>';}).join('');
   var vids=[
     {id:'962w9l5cvf',name:'Kinetico Water of SW ID',role:'Meridian, ID'},
