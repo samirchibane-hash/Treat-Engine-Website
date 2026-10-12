@@ -2510,15 +2510,16 @@ function V2Steps() {
 
 function V2Integrations() {
   // Logos of the software ClearDeals connects to. Real connection paths only: a built-in
-  // CRM webhook, a public API and webhooks (with GoHighLevel / Zapier / n8n guides),
-  // Stripe payments. Add a logo here only once there is a working way to connect it.
+  // CRM webhook, a public API and webhooks (with GoHighLevel / Zapier / n8n guides);
+  // the rest connect through Zapier or the API, set up for the dealer. Add a logo here
+  // only once there is a working way to connect it.
   const tools = [
     ['servicetitan.svg', 'ServiceTitan'],
     ['housecall-pro.webp', 'Housecall Pro', 'dim'],
     ['jobber.svg', 'Jobber'],
     ['highlevel.svg', 'HighLevel'],
     ['zapier.svg', 'Zapier'],
-    ['n8n.svg', 'n8n'],
+    ['hubspot.svg', 'HubSpot'],
   ];
   return (
     <section className="v2-sec cream" id="integrations">
@@ -2529,7 +2530,6 @@ function V2Integrations() {
           {tools.map(([f, name, cls]) => (
             <div className="v2-integ" key={name}><img loading="lazy" src={`uploads/integrations/${f}`} alt={name} className={cls || ''}/></div>
           ))}
-          <div className="v2-integ"><img loading="lazy" src="uploads/whats-inside/stripe-wordmark.svg" alt="Stripe"/></div>
         </div>
         <div className="v2-integ-foot">Running something else? We'll connect it through our API or webhooks. <a href="#book" className="v2-btn ghost" style={{padding:'10px 16px',fontSize:14}}>{CTA.integrations} →</a></div>
       </div>
