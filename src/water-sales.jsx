@@ -1991,7 +1991,7 @@ function Pricing() {
 
               <button
                 type="button"
-                className={`pr-btn ${p.featured ? 'solid' : 'outline'}${pending === p.key ? ' loading' : ''}`}
+                className={`pr-btn solid${pending === p.key ? ' loading' : ''}`}
                 disabled={pending !== null}
                 onClick={() => startCheckout(p.key)}
               >
