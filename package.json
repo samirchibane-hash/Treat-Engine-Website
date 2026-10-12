@@ -4,7 +4,8 @@
   "description": "Treat Engine website and backend",
   "scripts": {
     "dev": "node server.js",
-    "setup-stripe": "node scripts/setup-stripe.js"
+    "setup-stripe": "node scripts/setup-stripe.js",
+    "build:sales": "node scripts/build-sales.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.47.0",
@@ -13,5 +14,8 @@
   },
   "engines": {
     "node": "24.x"
+  },
+  "devDependencies": {
+    "@babel/standalone": "7.29.0"
   }
 }
