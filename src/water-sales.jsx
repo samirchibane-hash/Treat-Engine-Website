@@ -1838,7 +1838,7 @@ function PrIco({kind}) {
 }
 
 function Pricing() {
-  const billing = 'month'; // monthly only on this page — no annual toggle
+  const [billing, setBilling] = useState('month');
   const [volIdx, setVolIdx] = useState(1);
   const [pending, setPending] = useState(null);
 
@@ -1972,8 +1972,15 @@ function Pricing() {
       <div className="pricing-inner">
         <div className="pricing-head reveal">
           <div className="eyebrow">Pricing</div>
-          <h2 className="section-title">Dealer pricing,<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>with nothing hidden.</em></h2>
-          <p className="pricing-sub">Setup, catalog build, customization and team training are <strong>included free</strong> on both plans.</p>
+          <h2 className="section-title">Pick a plan.<br/><em style={{fontStyle:'italic',color:'var(--navy)'}}>Quick setup.</em></h2>
+          <p className="pricing-sub">Customize your account in minutes, then run your first presentation and send your first proposal.</p>
+        </div>
+
+        <div className="pr-toggle-wrap reveal">
+          <div className="pr-toggle" role="group" aria-label="Billing interval">
+            <button type="button" className="pr-opt" aria-pressed={!isYear} onClick={() => setBilling('month')}>Monthly</button>
+            <button type="button" className="pr-opt" aria-pressed={isYear} onClick={() => setBilling('year')}>Annual</button>
+          </div>
         </div>
 
         <div className="pr-grid reveal">
