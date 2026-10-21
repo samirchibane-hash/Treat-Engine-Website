@@ -2595,78 +2595,32 @@ function V2Final() {
   );
 }
 
-// ── Social proof: recent dealer signups ──────────────────────────────────────
+// ── Social proof: dealers on ClearDeals ──────────────────────────────────────
 // Bottom-left on desktop, just above the sticky CTA on phones. Real dealerships from
-// ClearDeals' public `signup-feed` edge function (name, state, logo, signup day only).
+// ClearDeals' public `signup-feed` edge function, shuffled, with no dates or totals:
+// the point is "dealers like you (maybe your competitor) are on this", not our numbers.
 const SIGNUP_FEED = 'https://ykplghimbbnakdojrpfm.supabase.co/functions/v1/signup-feed';
-const SP_FIRST = 7000;     // first toast after the visitor has settled in
+const SP_FIRST = 3000;     // first toast 3s after load
 const SP_SHOW = 6500;      // on screen
-const SP_GAP = 11000;      // quiet time between toasts
+const SP_GAP = 9000;       // quiet time between toasts
 const SP_MAX = 6;          // per visit, so it never nags
 const SP_DISMISS_KEY = 'te-signup-toast-off';
 
-function startOfWeek(d) {
-  const s = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  s.setDate(s.getDate() - ((s.getDay() + 6) % 7));   // weeks start Monday
-  return s;
+const SP_JOINED = ['Recently joined ClearDeals', 'Just signed up for ClearDeals', 'Started closing with ClearDeals'];
+const SP_UPGRADED = ['Just upgraded their plan', 'Recently upgraded their plan', 'Upgraded to a paid plan'];
+const pick = (list) => list[Math.floor(Math.random() * list.length)];
+
+function buildToasts({dealers = []}) {
+  return dealers.map(d => ({...d, line: pick(d.upgraded ? SP_UPGRADED : SP_JOINED)}));
 }
 
-function signupPeriods(now = new Date()) {
-  const week = startOfWeek(now);
-  const lastWeek = new Date(week); lastWeek.setDate(week.getDate() - 7);
-  const month = new Date(now.getFullYear(), now.getMonth(), 1);
-  const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-  return {week, lastWeek, month, lastMonth};
-}
-
-function whenLabel(iso, p) {
-  const d = new Date(iso);
-  if (d >= p.week) return 'this week';
-  if (d >= p.lastWeek) return 'last week';
-  if (d >= p.month) return 'this month';
-  if (d >= p.lastMonth) return 'last month';
-  return null;
-}
-
-function buildToasts({recent = [], signups = []}) {
-  const p = signupPeriods();
-  const dates = signups.map(s => new Date(s));
-  const counts = {
-    week: dates.filter(d => d >= p.week).length,
-    lastWeek: dates.filter(d => d >= p.lastWeek && d < p.week).length,
-    month: dates.filter(d => d >= p.month).length,
-    lastMonth: dates.filter(d => d >= p.lastMonth && d < p.month).length,
-  };
-  const people = recent
-    .map(r => ({...r, when: whenLabel(r.signed_up, p)}))
-    .filter(r => r.when)
-    .map(r => ({kind: 'dealer', ...r}));
-
-  // Lead with the biggest honest number; skip the summary when it would read as tiny.
-  const lead = counts.week >= 3 ? ['this week', counts.week]
-    : counts.month >= 3 ? ['this month', counts.month]
-    : counts.lastMonth >= 3 ? ['last month', counts.lastMonth] : null;
-  const rest = [
-    ['last week', counts.lastWeek], ['this month', counts.month], ['last month', counts.lastMonth],
-  ].filter(([label, n]) => n > 0 && (!lead || label !== lead[0]));
-  const summary = lead && {
-    kind: 'summary', title: `${lead[1]} dealers signed up ${lead[0]}`,
-    meta: rest.slice(0, 2).map(([label, n]) => `${n} ${label}`).join(' · '),
-    logos: recent.slice(0, 4),
-  };
-
-  const out = [...people];
-  if (summary) out.splice(Math.min(2, out.length), 0, summary);
-  return out;
-}
-
-function DealerLogo({src, name, size = 44, ring}) {
+function DealerLogo({src, name}) {
   const [broken, setBroken] = React.useState(!src);
   return (
-    <span className="sp-logo" style={{width: size, height: size, boxShadow: ring ? '0 0 0 2px var(--white)' : undefined}}>
+    <span className="sp-logo">
       {broken
         ? <b aria-hidden="true">{(name || '?').trim().charAt(0).toUpperCase()}</b>
-        : <img src={src} alt="" loading="lazy" onError={() => setBroken(true)}/>}
+        : <img src={src} alt="" onError={() => setBroken(true)}/>}
     </span>
   );
 }
@@ -2679,18 +2633,17 @@ function SignupToast() {
     try { return sessionStorage.getItem(SP_DISMISS_KEY) === '1'; } catch { return false; }
   });
   const hover = React.useRef(false);
+  const mounted = React.useRef(performance.now());
 
   React.useEffect(() => {
     if (off) return;
     const ctl = new AbortController();
-    // Fetch after the page has painted so the toast never competes with the hero.
-    const t = setTimeout(() => {
-      fetch(SIGNUP_FEED, {signal: ctl.signal})
-        .then(r => r.ok ? r.json() : null)
-        .then(d => { if (d) setItems(buildToasts(d)); })
-        .catch(() => {});   // decoration only: no feed, no toast
-    }, 2500);
-    return () => { clearTimeout(t); ctl.abort(); };
+    // Tiny cached JSON; fetched once React has painted the hero.
+    fetch(SIGNUP_FEED, {signal: ctl.signal})
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d) setItems(buildToasts(d)); })
+      .catch(() => {});   // decoration only: no feed, no toast
+    return () => ctl.abort();
   }, [off]);
 
   React.useEffect(() => {
@@ -2708,7 +2661,7 @@ function SignupToast() {
       };
       timer = setTimeout(hide, SP_SHOW);
     };
-    timer = setTimeout(next, SP_FIRST - 2500);
+    timer = setTimeout(next, Math.max(0, SP_FIRST - (performance.now() - mounted.current)));
     return () => clearTimeout(timer);
   }, [items, off]);
 
@@ -2720,29 +2673,14 @@ function SignupToast() {
   };
 
   return (
-    <aside className={'sp-toast' + (open ? ' is-open' : '')} aria-label="Recent ClearDeals signups" aria-hidden={!open}
+    <aside className={'sp-toast' + (open ? ' is-open' : '')} aria-label="Dealers using ClearDeals" aria-hidden={!open}
       onMouseEnter={() => { hover.current = true; }} onMouseLeave={() => { hover.current = false; }}>
-      {item.kind === 'dealer' ? (
-        <>
-          <DealerLogo src={item.logo} name={item.name}/>
-          <div className="sp-body">
-            <span className="sp-eyebrow">New dealer{item.state ? ` · ${item.state}` : ''}</span>
-            <b className="sp-title">{item.name}</b>
-            <span className="sp-meta"><i className="sp-dot" aria-hidden="true"/>Signed up {item.when}</span>
-          </div>
-        </>
-      ) : (
-        <>
-          <span className="sp-stack" aria-hidden="true">
-            {item.logos.map((l, k) => <DealerLogo key={k} src={l.logo} name={l.name} size={30} ring/>)}
-          </span>
-          <div className="sp-body">
-            <span className="sp-eyebrow">Water dealers on ClearDeals</span>
-            <b className="sp-title">{item.title}</b>
-            {item.meta && <span className="sp-meta">{item.meta}</span>}
-          </div>
-        </>
-      )}
+      <DealerLogo src={item.logo} name={item.name}/>
+      <div className="sp-body">
+        <span className="sp-eyebrow">Water dealer{item.state ? ` · ${item.state}` : ''}</span>
+        <b className="sp-title">{item.name}</b>
+        <span className="sp-meta"><i className="sp-dot" aria-hidden="true"/>{item.line}</span>
+      </div>
       <button type="button" className="sp-close" onClick={dismiss} aria-label="Hide signup notifications" tabIndex={open ? 0 : -1}>
         <Ic n="X" size={14}/>
       </button>
