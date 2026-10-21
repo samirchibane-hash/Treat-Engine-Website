@@ -2595,6 +2595,161 @@ function V2Final() {
   );
 }
 
+// ── Social proof: recent dealer signups ──────────────────────────────────────
+// Bottom-left on desktop, just above the sticky CTA on phones. Real dealerships from
+// ClearDeals' public `signup-feed` edge function (name, state, logo, signup day only).
+const SIGNUP_FEED = 'https://ykplghimbbnakdojrpfm.supabase.co/functions/v1/signup-feed';
+const SP_FIRST = 7000;     // first toast after the visitor has settled in
+const SP_SHOW = 6500;      // on screen
+const SP_GAP = 11000;      // quiet time between toasts
+const SP_MAX = 6;          // per visit, so it never nags
+const SP_DISMISS_KEY = 'te-signup-toast-off';
+
+function startOfWeek(d) {
+  const s = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  s.setDate(s.getDate() - ((s.getDay() + 6) % 7));   // weeks start Monday
+  return s;
+}
+
+function signupPeriods(now = new Date()) {
+  const week = startOfWeek(now);
+  const lastWeek = new Date(week); lastWeek.setDate(week.getDate() - 7);
+  const month = new Date(now.getFullYear(), now.getMonth(), 1);
+  const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  return {week, lastWeek, month, lastMonth};
+}
+
+function whenLabel(iso, p) {
+  const d = new Date(iso);
+  if (d >= p.week) return 'this week';
+  if (d >= p.lastWeek) return 'last week';
+  if (d >= p.month) return 'this month';
+  if (d >= p.lastMonth) return 'last month';
+  return null;
+}
+
+function buildToasts({recent = [], signups = []}) {
+  const p = signupPeriods();
+  const dates = signups.map(s => new Date(s));
+  const counts = {
+    week: dates.filter(d => d >= p.week).length,
+    lastWeek: dates.filter(d => d >= p.lastWeek && d < p.week).length,
+    month: dates.filter(d => d >= p.month).length,
+    lastMonth: dates.filter(d => d >= p.lastMonth && d < p.month).length,
+  };
+  const people = recent
+    .map(r => ({...r, when: whenLabel(r.signed_up, p)}))
+    .filter(r => r.when)
+    .map(r => ({kind: 'dealer', ...r}));
+
+  // Lead with the biggest honest number; skip the summary when it would read as tiny.
+  const lead = counts.week >= 3 ? ['this week', counts.week]
+    : counts.month >= 3 ? ['this month', counts.month]
+    : counts.lastMonth >= 3 ? ['last month', counts.lastMonth] : null;
+  const rest = [
+    ['last week', counts.lastWeek], ['this month', counts.month], ['last month', counts.lastMonth],
+  ].filter(([label, n]) => n > 0 && (!lead || label !== lead[0]));
+  const summary = lead && {
+    kind: 'summary', title: `${lead[1]} dealers signed up ${lead[0]}`,
+    meta: rest.slice(0, 2).map(([label, n]) => `${n} ${label}`).join(' · '),
+    logos: recent.slice(0, 4),
+  };
+
+  const out = [...people];
+  if (summary) out.splice(Math.min(2, out.length), 0, summary);
+  return out;
+}
+
+function DealerLogo({src, name, size = 44, ring}) {
+  const [broken, setBroken] = React.useState(!src);
+  return (
+    <span className="sp-logo" style={{width: size, height: size, boxShadow: ring ? '0 0 0 2px var(--white)' : undefined}}>
+      {broken
+        ? <b aria-hidden="true">{(name || '?').trim().charAt(0).toUpperCase()}</b>
+        : <img src={src} alt="" loading="lazy" onError={() => setBroken(true)}/>}
+    </span>
+  );
+}
+
+function SignupToast() {
+  const [items, setItems] = React.useState([]);
+  const [index, setIndex] = React.useState(-1);
+  const [open, setOpen] = React.useState(false);
+  const [off, setOff] = React.useState(() => {
+    try { return sessionStorage.getItem(SP_DISMISS_KEY) === '1'; } catch { return false; }
+  });
+  const hover = React.useRef(false);
+
+  React.useEffect(() => {
+    if (off) return;
+    const ctl = new AbortController();
+    // Fetch after the page has painted so the toast never competes with the hero.
+    const t = setTimeout(() => {
+      fetch(SIGNUP_FEED, {signal: ctl.signal})
+        .then(r => r.ok ? r.json() : null)
+        .then(d => { if (d) setItems(buildToasts(d)); })
+        .catch(() => {});   // decoration only: no feed, no toast
+    }, 2500);
+    return () => { clearTimeout(t); ctl.abort(); };
+  }, [off]);
+
+  React.useEffect(() => {
+    if (off || !items.length) return;
+    const shown = Math.min(SP_MAX, items.length);
+    let i = -1, timer;
+    const next = () => {
+      i += 1;
+      if (i >= shown) return;
+      setIndex(i); setOpen(true);
+      const hide = () => {
+        if (hover.current) { timer = setTimeout(hide, 800); return; }
+        setOpen(false);
+        timer = setTimeout(next, SP_GAP);
+      };
+      timer = setTimeout(hide, SP_SHOW);
+    };
+    timer = setTimeout(next, SP_FIRST - 2500);
+    return () => clearTimeout(timer);
+  }, [items, off]);
+
+  if (off || index < 0) return null;
+  const item = items[index];
+  const dismiss = () => {
+    setOpen(false); setOff(true);
+    try { sessionStorage.setItem(SP_DISMISS_KEY, '1'); } catch {}
+  };
+
+  return (
+    <aside className={'sp-toast' + (open ? ' is-open' : '')} aria-label="Recent ClearDeals signups" aria-hidden={!open}
+      onMouseEnter={() => { hover.current = true; }} onMouseLeave={() => { hover.current = false; }}>
+      {item.kind === 'dealer' ? (
+        <>
+          <DealerLogo src={item.logo} name={item.name}/>
+          <div className="sp-body">
+            <span className="sp-eyebrow">New dealer{item.state ? ` · ${item.state}` : ''}</span>
+            <b className="sp-title">{item.name}</b>
+            <span className="sp-meta"><i className="sp-dot" aria-hidden="true"/>Signed up {item.when}</span>
+          </div>
+        </>
+      ) : (
+        <>
+          <span className="sp-stack" aria-hidden="true">
+            {item.logos.map((l, k) => <DealerLogo key={k} src={l.logo} name={l.name} size={30} ring/>)}
+          </span>
+          <div className="sp-body">
+            <span className="sp-eyebrow">Water dealers on ClearDeals</span>
+            <b className="sp-title">{item.title}</b>
+            {item.meta && <span className="sp-meta">{item.meta}</span>}
+          </div>
+        </>
+      )}
+      <button type="button" className="sp-close" onClick={dismiss} aria-label="Hide signup notifications" tabIndex={open ? 0 : -1}>
+        <Ic n="X" size={14}/>
+      </button>
+    </aside>
+  );
+}
+
 function App() {
   useReveal();
   return (
@@ -2614,6 +2769,7 @@ function App() {
       <V2FAQ/>
       <V2Final/>
       <Footer/>
+      <SignupToast/>
     </>
   );
 }
