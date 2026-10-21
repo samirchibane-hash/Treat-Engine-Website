@@ -2156,7 +2156,7 @@ function V2Hero() {
     <header className="v2-hero">
       <span className="v2-badge">#1 proposal &amp; sales tool for water treatment dealers</span>
       <h1>Guided water proposals that<br/><em>close up to 30% more sales</em></h1>
-      <p className="v2-hero-sub">One guided proposal — water test, system, savings math, financing and signature — built live at the kitchen table or sent as a link to close remotely.</p>
+      <p className="v2-hero-sub">In a few clicks, pull the water quality report, lay out system and service options, visualize the savings, and handle financing, invoicing and signatures — whether you're closing at the kitchen table or remotely.</p>
       <div className="v2-hero-ctas">
         <a href="#plan-starter" className="v2-btn primary">{CTA.hero} →</a>
         <a href="#flow" className="v2-btn ghost">▶&nbsp; {CTA.heroWatch}</a>
