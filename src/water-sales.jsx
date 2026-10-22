@@ -582,70 +582,131 @@ const AREA = {
     {label: 'PFBA', value: '25.2 ppt', benchmark: null},
     {label: 'Lead', value: '0 ppb', benchmark: 'EPA action level 15 ppb', zeroGoal: true},
   ],
-  nonDetect: 28,
 };
 
-/** WaterTestStep.tsx shows AreaWaterPreview.tsx until the first reading is logged. */
-function AreaWaterPreview() {
-  const badge = (label, outline) => (
-    <span style={{fontSize: 12, fontWeight: 600, padding: '2px 10px', borderRadius: 999, background: outline ? 'transparent' : APP.secondary,
-      border: outline ? `1px solid ${APP.border}` : '1px solid transparent', color: APP.fg}}>{label}</span>
-  );
-  return (
-    <div style={{marginTop: 20, borderRadius: 12, border: `1px solid hsla(213, 93%, 28%, 0.3)`, background: 'hsla(213, 93%, 28%, 0.03)', padding: 16}}>
-      <div style={{display: 'flex', gap: 12}}>
-        <Ic n="Droplets" size={16} color={APP.primary} style={{marginTop: 2, flexShrink: 0}}/>
-        <div>
-          <div style={{fontSize: 14, fontWeight: 500, color: APP.fg}}>No test results? We’ll show the public report for ZIP {AREA.zip}.</div>
-          <div style={{fontSize: 14, color: APP.mutedFg, marginTop: 2}}>{AREA.utilityName} · serving {AREA.populationServed.toLocaleString()} people</div>
-        </div>
-      </div>
-      <div style={{display: 'flex', flexWrap: 'wrap', gap: 8, paddingLeft: 28, marginTop: 12}}>
-        {badge(`${AREA.hardness.gpg} gpg · ${AREA.hardness.band}`)}
-        {badge(`${AREA.detected.length} detected`)}
-        {badge(`${AREA.nonDetect} tested, not detected`, true)}
-      </div>
-      <div style={{paddingLeft: 28, marginTop: 12, fontSize: 12, color: APP.mutedFg}}>Logging a real test always replaces this.</div>
-    </div>
-  );
+/* WaterTestStep.tsx today: the ZIP's public report (AreaWaterPreview → AreaWaterStep) always
+ * shows; "+ Log water test" opens a sheet, and the saved readings sit above the report as
+ * tiles, with the tap hardness set against the area's on the hardness card. Like the app,
+ * no "not detected" tallies. Colours are AreaWaterStep's own hexes. */
+const WS = {ink: '#0f1c2e', body: '#4b5b72', faint: '#8592a6', navy: '#05418a', line: '#e6e8ec', red: '#b42318', redBg: '#fdecec', green: '#157f3d', greenBg: '#e9f8ef'};
+const WS_CARD = {background: '#fff', border: `1px solid ${WS.line}`, borderRadius: 14, boxShadow: '0 1px 3px rgba(15,26,46,.06)'};
+const WS_EYEBROW = {fontSize: 10.5, fontWeight: 600, letterSpacing: '.06em', textTransform: 'uppercase'};
+const WT_READINGS = [
+  {label: 'Hardness', value: '18', unit: 'gpg', needs: true},
+  {label: 'Iron', value: '0.4', unit: 'ppm', needs: true},
+  {label: 'TDS', value: '350', unit: 'ppm', needs: false},
+];
+const HARD_BANDS = [['soft', '#cde9d6'], ['moderately hard', '#dce6f2'], ['hard', '#f6d9a8'], ['very hard', '#e9a3a3']];
+const WT_PRESS = 1450;              // "+ Log water test" tapped
+const WT_TILES = 1750;              // in-home tiles start landing
+
+function Shimmer({w, h = 12, r = 6, style}) {
+  return <div style={{width: w, height: h, borderRadius: r, background: 'linear-gradient(90deg, #eef0f3 0%, #f7f8fa 50%, #eef0f3 100%)', ...style}}/>;
 }
 
-const WT_FIELDS = [
-  {label: 'Hardness', unit: 'Grains', value: '18'},
-  {label: 'Iron', unit: 'ppm', value: '0.4'},
-  {label: 'TDS', unit: 'ppm', value: '350'},
-  {label: 'Chlorine', unit: 'ppm', value: '1.5'},
-];
-
-function WaterTestCard({t}) {
+function WaterStepCard({t}) {
+  const loaded = t >= 520;
+  const logged = t >= WT_PRESS + 120;
+  const open = easeInOut(prog(t, WT_PRESS + 120, 420));     // in-home block grows in
+  const pt = pointer(t, [400, 210], [436, 52], 650, 650, WT_PRESS);
+  const r = AREA.hardness;
   return (
-    <div style={{...cardBase, padding: 24, width: 520}}>
-      <StepHeader title="Water Test Results" description="Enter water quality test measurements"/>
-      <div style={{display: 'inline-flex', gap: 4, padding: 4, background: APP.muted, borderRadius: 8}}>
-        <span style={{fontSize: 12, fontWeight: 500, padding: '6px 12px', borderRadius: 6, color: APP.fg}}>Pass / Fail</span>
-        <span style={{fontSize: 12, fontWeight: 500, padding: '6px 12px', borderRadius: 6, background: APP.primary, color: '#fff'}}>Exact Values</span>
+    <div style={{...cardBase, padding: '18px 20px', width: 520, position: 'relative', fontFamily: APP.font}}>
+      <div style={{...WS_EYEBROW, display: 'flex', alignItems: 'center', gap: 6, color: WS.navy}}>
+        <Ic n="MapPin" size={12} sw={1.75}/>Water test · ZIP {AREA.zip}
       </div>
-      <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 20}}>
-        {WT_FIELDS.map((f, i) => {
-          const at = 1700 + i * 520;
-          const v = typed(f.value, t, at, 130);
-          const focused = t >= at - 150 && t < at + f.value.length * 130 + 200;
-          return (
-            <div key={f.label}>
-              <div style={{fontSize: 14, fontWeight: 500, color: APP.fg, marginBottom: 8}}>
-                {f.label} <span style={{color: APP.mutedFg, fontWeight: 400}}>({f.unit})</span>
-              </div>
-              <div style={{height: 48, borderRadius: 10, border: `1px solid ${focused ? APP.primary : APP.border}`, boxShadow: focused ? `0 0 0 3px ${APP.primary10}` : 'none',
-                display: 'flex', alignItems: 'center', padding: '0 12px', fontSize: 15, color: v ? APP.fg : APP.mutedFg, fontVariantNumeric: 'tabular-nums'}}>
-                {v || `e.g., ${['15', '0.3', '350', '1.5'][i]}`}
-                <Caret h={18} on={focused && blink(t)}/>
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 6}}>
+        <div style={{fontSize: 22, fontWeight: 700, letterSpacing: '-0.02em', color: WS.ink}}>
+          {logged ? 'Sarah’s water test results' : 'What’s in your area’s water'}
+        </div>
+        <div style={{display: 'inline-flex', alignItems: 'center', gap: 6, height: 34, padding: '0 13px', borderRadius: 10, flexShrink: 0,
+          border: `1.5px solid ${WS.navy}`, color: WS.navy, background: t >= WT_PRESS && t < WT_PRESS + 180 ? '#eef4fc' : '#fff',
+          fontSize: 13, fontWeight: 600, transform: `scale(${t >= WT_PRESS && t < WT_PRESS + 160 ? 0.96 : 1})`}}>
+          <Ic n={logged ? 'PenLine' : 'Plus'} size={14} sw={logged ? 1.75 : 2}/>{logged ? 'Edit readings' : 'Log water test'}
+        </div>
+      </div>
+
+      {/* Your in-home test — the readings the rep just logged. */}
+      <div style={{height: open * 104, overflow: 'hidden'}}>
+        <div style={{paddingTop: 12}}>
+          <div style={{...WS_EYEBROW, display: 'flex', alignItems: 'center', gap: 6, color: WS.navy}}>
+            <Ic n="FlaskConical" size={13} sw={1.75}/>Your in-home test
+            <span style={{textTransform: 'none', letterSpacing: 0, fontWeight: 500, color: WS.body, fontSize: 12, opacity: prog(t, WT_TILES + 900, 300)}}>· 2 need treatment · 1 within range</span>
+          </div>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginTop: 8}}>
+            {WT_READINGS.map((x, i) => {
+              const at = WT_TILES + i * 260;
+              return (
+                <div key={x.label} style={{...WS_CARD, position: 'relative', overflow: 'hidden', padding: '8px 10px 9px 13px',
+                  transform: `scale(${lerp(0.9, 1, Math.min(1, pop(t, at, 380)))})`, opacity: prog(t, at, 160)}}>
+                  <span style={{position: 'absolute', left: 0, top: 0, bottom: 0, width: 4, background: x.needs ? '#dc2626' : '#16a34a'}}/>
+                  <div style={{fontSize: 12, fontWeight: 500, color: WS.body}}>{x.label}</div>
+                  <div style={{display: 'flex', alignItems: 'baseline', gap: 4, marginTop: 2}}>
+                    <span style={{fontSize: 19, fontWeight: 700, color: WS.ink, fontVariantNumeric: 'tabular-nums'}}>{x.value}</span>
+                    <span style={{fontSize: 11.5, fontWeight: 600, color: WS.body}}>{x.unit}</span>
+                  </div>
+                  <span style={{display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 3, padding: '2px 7px', borderRadius: 999, fontSize: 10.5, fontWeight: 600,
+                    background: x.needs ? WS.redBg : WS.greenBg, color: x.needs ? WS.red : WS.green, transform: `scale(${pop(t, at + 220, 360)})`, transformOrigin: 'left center'}}>
+                    <Ic n={x.needs ? 'AlertTriangle' : 'Check'} size={11} sw={1.75}/>{x.needs ? 'Needs treatment' : 'Within range'}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <div style={{...WS_EYEBROW, color: WS.faint, marginTop: lerp(12, 12, open), height: open * 14, overflow: 'hidden', opacity: open}}>{logged ? 'Your area’s water' : ''}</div>
+
+      {/* The ZIP's public report: ready before any test is run. */}
+      {!loaded ? (
+        <div style={{marginTop: 4}}>
+          <div style={{...WS_CARD, padding: 14, display: 'flex', gap: 12, alignItems: 'center'}}>
+            <Shimmer w={36} h={36} r={10}/><div style={{flex: 1}}><Shimmer w="40%" h={9}/><Shimmer w="70%" style={{marginTop: 8}}/></div>
+          </div>
+          <div style={{...WS_CARD, padding: 14, marginTop: 10}}><Shimmer w="30%"/><Shimmer w="55%" h={26} style={{marginTop: 10}}/><Shimmer w="100%" h={8} style={{marginTop: 12}}/></div>
+        </div>
+      ) : (
+        <div style={{marginTop: 4}}>
+          <div style={{...WS_CARD, padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 12, ...rise(t, 520, 10, 360)}}>
+            <span style={{width: 36, height: 36, borderRadius: 10, background: '#ebf2fc', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
+              <Ic n="Building2" size={18} color={WS.navy} sw={1.75}/>
+            </span>
+            <div style={{minWidth: 0}}>
+              <div style={{...WS_EYEBROW, color: WS.faint}}>Your water utility</div>
+              <div style={{fontSize: 14, color: WS.body, marginTop: 2}}><span style={{fontWeight: 600, color: WS.ink}}>{AREA.utilityName}</span> · serving {AREA.populationServed.toLocaleString()} people · {AREA.source}</div>
+              <div style={{fontSize: 12, color: WS.body, marginTop: 3, display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap'}}>
+                Detected:{AREA.detected.map((c) => (
+                  <span key={c.label} style={{display: 'inline-flex', gap: 4, padding: '1px 8px', borderRadius: 999, background: '#eef0f3'}}>
+                    <span style={{fontWeight: 600, color: WS.ink}}>{c.label}</span>{c.value}
+                  </span>
+                ))}
               </div>
             </div>
-          );
-        })}
-      </div>
-      {/* hasAnyReading flips on the first keystroke, and the preview gives way to the real test. */}
-      {t < 1700 && <AreaWaterPreview/>}
+          </div>
+          <div style={{...WS_CARD, padding: '14px 16px', marginTop: 10, display: 'flex', gap: 18, alignItems: 'center', ...rise(t, 640, 10, 360)}}>
+            <div style={{flexShrink: 0}}>
+              <div style={{fontSize: 12, fontWeight: 500, color: WS.body}}>Water hardness</div>
+              <div style={{display: 'flex', alignItems: 'baseline', gap: 4}}>
+                <span style={{fontSize: 36, fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1, color: WS.ink}}>{r.gpg}</span>
+                <span style={{fontSize: 13, fontWeight: 600, color: WS.body}}>gpg</span>
+              </div>
+              <span style={{display: 'inline-block', marginTop: 4, padding: '3px 9px', borderRadius: 999, fontSize: 11, fontWeight: 600, background: WS.redBg, color: WS.red}}>Typically {r.band}</span>
+            </div>
+            <div style={{flex: 1, minWidth: 0}}>
+              <div style={{fontSize: 12.5, lineHeight: 1.45, color: WS.body}}>Typically {r.band} ({r.mgL} mg/L) across {r.county}.</div>
+              <div style={{display: 'flex', gap: 3, marginTop: 9, alignItems: 'center'}}>
+                {HARD_BANDS.map(([b, c]) => <span key={b} style={{flex: 1, height: b === r.band ? 9 : 6, borderRadius: 999, background: c}}/>)}
+              </div>
+              <div style={{display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 9, padding: '4px 9px', borderRadius: 8, background: '#f4f5f7', fontSize: 11.5, color: WS.body,
+                transform: `scale(${pop(t, WT_TILES + 950, 400)})`, transformOrigin: 'left center'}}>
+                <Ic n="FlaskConical" size={12} sw={1.75}/>Your tap, from the in-home test: <span style={{fontWeight: 600, color: WS.ink}}>18 gpg</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {t < WT_PRESS + 350 && <Cursor x={pt.x} y={pt.y} down={pt.down}/>}
     </div>
   );
 }
@@ -830,7 +891,7 @@ function PresentationBeat({beat, t}) {
     <>
       <ProductBleed p={WI_P.wwhs} side="right" t={t}/>
       <AudiencePill label="Sales Reps" side="left"/>
-      <div style={{position: 'absolute', left: 36, top: 104, ...rise(t, 80)}}><Scaled s={1.36} width={520}><WaterTestCard t={t}/></Scaled></div>
+      <div style={{position: 'absolute', left: 36, top: 104, ...rise(t, 80)}}><Scaled s={1.36} width={520}><WaterStepCard t={t}/></Scaled></div>
     </>
   );
   if (beat === 1) return (
@@ -955,10 +1016,6 @@ function AreaWaterJourney() {
             {c.zeroGoal && <div style={{fontSize: 12.5, color: APP.mutedFg, marginTop: 4, lineHeight: 1.5}}>EPA’s health goal for lead is zero — there is no amount it considers safe to drink.</div>}
           </div>
         ))}
-      </div>
-      <div style={{...card, border: '1px solid rgba(16,185,129,.25)', background: 'rgba(16,185,129,.04)', display: 'flex', gap: 10}}>
-        <Ic n="ShieldCheck" size={18} color="#059669" style={{flexShrink: 0, marginTop: 1}}/>
-        <div style={{fontSize: 14, color: APP.mutedFg, lineHeight: 1.5}}><span style={{fontWeight: 600, color: APP.fg}}>{AREA.nonDetect} other contaminants</span> were tested for and not detected.</div>
       </div>
     </>
   );
@@ -1655,7 +1712,7 @@ const wiVars = (p) => ({'--wi-solid': p.color.solid, '--wi-tint': p.color.tint, 
  * at most one plays at a time.
  */
 const FEATURES = [
-  {prop: 'presentation', beat: 0, icon: 'Droplets',    label: 'Water test',      title: 'Show them their water.',              sub: 'Their ZIP’s public report is ready before you test. Log your results and they take over.'},
+  {prop: 'presentation', beat: 0, icon: 'Droplets',    label: 'Water test',      dy: 58,      title: 'Show them their water.',              sub: 'Their ZIP’s local water report loads on its own. Log your test and it sits right on top.'},
   {prop: 'presentation', beat: 1, icon: 'Package',     label: 'System buildout', title: 'Build the system in front of them.',  sub: 'The monthly payment updates at your financing rate as you go.'},
   {prop: 'presentation', beat: 3, icon: 'TrendingUp',  label: 'Savings',         title: 'Close on the savings.',               sub: 'A 20-year comparison against what they spend today.'},
   {prop: 'pricing',      beat: 1, icon: 'ShieldCheck', label: 'Red-line pricing', dy: -56, title: 'Nobody sells below your floor.',     sub: 'Set a red line on any product. Reps can’t quote under it.'},
