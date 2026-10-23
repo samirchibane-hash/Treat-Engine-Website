@@ -10,7 +10,7 @@ const {useState, useEffect} = React;
 // since Clarity truncates and masks digits) whenever you add or reword one.
 const CTA = {
   nav:          'Start free trial',
-  navDemo:      'Book a demo',
+  navLogin:     'Log in',
   hero:         'Start my 30-day free trial',
   heroWatch:    'Watch the 2-min walkthrough',
   features:     'Start My Free Trial',
@@ -19,6 +19,7 @@ const CTA = {
   integrations: 'Talk to us about setup',
   faqDemo:      'Book a 30-min demo',
   final:        'Get my free 30 days',
+  finalDemo:    'Book a live demo',
 };
 
 function useReveal() {
@@ -2029,7 +2030,7 @@ function Pricing() {
         </div>
 
         <div className="pr-alt reveal">
-          Want to see it run first? <a href="#book">Request a 30-minute demo</a> — we'll build a proposal with your catalog and your pricing, then send you the link so you can read it the way your customers will.
+          Want to see it run first? <a href="/sales/demo" target="_blank" rel="noopener">Request a 30-minute demo</a> — we'll build a proposal with your catalog and your pricing, then send you the link so you can read it the way your customers will.
         </div>
 
         <div className="pr-trust reveal">
@@ -2165,7 +2166,7 @@ function V2Nav() {
           <a href="/blog">Blog</a>
         </div>
         <div className="nav-actions">
-          <a href="#book" className="nav-cta-ghost">{CTA.navDemo}</a>
+          <a href="https://cleardeals.treatengine.com" className="nav-cta-ghost">{CTA.navLogin}</a>
           <a href="#plan-starter" className="nav-cta">{CTA.nav} →</a>
         </div>
       </div>
@@ -2533,7 +2534,7 @@ function V2Integrations() {
             <div className="v2-integ" key={name}><img loading="lazy" src={`uploads/integrations/${f}`} alt={name} className={cls || ''}/></div>
           ))}
         </div>
-        <div className="v2-integ-foot">Running something else? We'll connect it through our API or webhooks. <a href="#book" className="v2-btn ghost" style={{padding:'10px 16px',fontSize:14}}>{CTA.integrations} →</a></div>
+        <div className="v2-integ-foot">Running something else? We'll connect it through our API or webhooks. <a href="/sales/demo" target="_blank" rel="noopener" className="v2-btn ghost" style={{padding:'10px 16px',fontSize:14}}>{CTA.integrations} →</a></div>
       </div>
     </section>
   );
@@ -2571,7 +2572,7 @@ function V2FAQ() {
         <div className="v2-faq-left">
           <V2Head eyebrow="Common questions" l1="Questions about" l2="ClearDeals."/>
           <p>Still deciding? See it run with your own catalog and pricing.</p>
-          <a href="#book" className="v2-btn ghost" style={{padding:'11px 18px',fontSize:14}}>{CTA.faqDemo} →</a>
+          <a href="/sales/demo" target="_blank" rel="noopener" className="v2-btn ghost" style={{padding:'11px 18px',fontSize:14}}>{CTA.faqDemo} →</a>
         </div>
         <div className="faq-list">
           {FAQS.map((f, i) => (
@@ -2605,12 +2606,12 @@ function V2Final() {
           </ul>
           <div className="v2-final-ctas">
             <a href="#plan-starter" className="v2-btn primary">{CTA.final} →</a>
-            <span style={{alignSelf:'center',fontSize:14,color:'rgba(255,255,255,.6)'}}>or pick a demo time →</span>
           </div>
         </div>
-        <div className="v2-book">
-          <div className="v2-book-head"><b>Book a 30-min ClearDeals demo</b><span>Live, on your device, with your catalog.</span></div>
-          <iframe src="https://api.leadconnectorhq.com/widget/booking/Z49wIzGc7lzyMtCA05BW" style={{width:'100%',border:'none',minHeight:680,display:'block'}} scrolling="no" id="Z49wIzGc7lzyMtCA05BW_1776993941101" title="Book a ClearDeals demo"></iframe>
+        <div className="v2-demo">
+          <b>Want to see it first?</b>
+          <span>30 minutes, live on your device. We build a proposal with your catalog and pricing, then send you the link so you see what your customers see.</span>
+          <a href="/sales/demo" target="_blank" rel="noopener" className="v2-btn ghost">{CTA.finalDemo} ↗</a>
         </div>
       </div>
     </section>
@@ -2745,13 +2746,3 @@ if (location.hash.length > 1) {
   };
   requestAnimationFrame(() => jump(30));
 }
-// Load the booking iframe resizer AFTER React has mounted the iframes,
-// so the script's DOMContentLoaded-time scan finds them.
-requestAnimationFrame(() => {
-  requestAnimationFrame(() => {
-    const s = document.createElement('script');
-    s.src = 'https://link.msgsndr.com/js/form_embed.js';
-    s.type = 'text/javascript';
-    document.body.appendChild(s);
-  });
-});

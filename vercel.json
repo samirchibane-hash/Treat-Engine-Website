@@ -39,6 +39,7 @@
     { "src": "/sales-v2",              "status": 301, "headers": { "Location": "/sales" } },
     { "src": "/sales-v2/start",        "dest": "/checkout/sales-start.html" },
     { "src": "/sales/start",           "dest": "/checkout/sales-start.html" },
+    { "src": "/sales/demo",            "dest": "/Sales%20Demo.html" },
     { "src": "/sales/checkout",        "dest": "/checkout/sales.html" },
     { "src": "/sales/checkout-v2",     "dest": "/checkout/sales-v2.html" },
     { "src": "/sales/welcome",         "dest": "/welcome/sales.html" },

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a ClearDeals Demo — Treat Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══ /sales/demo: ClearDeals demo booking (cloned from /booking) ═══ */
+.b-grid{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:32px;align-items:start;}
+.b-cal{background:#fff;border:1px solid var(--cream-dark);border-radius:24px;box-shadow:var(--shadow-float);padding:28px;display:flex;flex-direction:column;gap:18px;}
+.b-cal-head{display:flex;align-items:center;gap:12px;}
+.b-cal-head>div{flex:1;min-width:0;}
+.b-cal-head .b-cal-title{font-family:'DM Sans',sans-serif;font-size:18px;font-weight:600;color:var(--ink);}
+.b-cal-head .b-cal-sub{font-size:14px;line-height:1.4;color:var(--ink-muted);margin-top:4px;}
+.b-embed{min-height:680px;border-radius:14px;overflow:hidden;}
+.b-embed iframe{display:block;width:100%;min-height:680px;border:none;overflow:hidden;}
+.b-side{display:flex;flex-direction:column;gap:16px;}
+.b-card{background:#fff;border:1px solid var(--cream-dark);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:18px;}
+.b-card.shadow{box-shadow:var(--shadow-card);}
+.b-steps{list-style:none;display:flex;flex-direction:column;gap:18px;}
+.b-step{display:flex;gap:14px;align-items:flex-start;}
+.b-step-no{width:32px;height:32px;flex-shrink:0;border-radius:9px;background:var(--blue-light);color:var(--blue-dark);font-family:'Playfair Display',serif;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;}
+.b-step>div>b{display:block;font-size:15px;font-weight:600;color:var(--ink);}
+.b-step>div>span{display:block;margin-top:3px;font-size:13.5px;line-height:1.55;color:var(--ink-muted);}
+.b-quote{background:var(--navy);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow-card);}
+.b-quote .v2-side-label{color:rgba(255,255,255,.6);}
+.b-quote blockquote{font-family:'Playfair Display',serif;font-style:italic;font-weight:600;font-size:20px;line-height:1.45;color:#fff;}
+.b-who{display:flex;align-items:center;gap:12px;}
+.b-avatar{width:38px;height:38px;flex-shrink:0;border-radius:999px;background:#fff;color:var(--navy);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.b-who>div{flex:1;min-width:0;}
+.b-who>div>b{display:block;font-size:14px;font-weight:600;color:#fff;}
+.b-who>div>span{display:block;margin-top:2px;font-size:12.5px;color:rgba(255,255,255,.6);}
+.b-who .stars{color:#f59e0b;font-size:12px;letter-spacing:1px;}
+.b-guar{background:var(--green-light);border-radius:16px;padding:20px;display:flex;gap:14px;align-items:flex-start;}
+.b-guar-ic{width:44px;height:44px;flex-shrink:0;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.b-guar>div>b{display:block;font-size:15px;font-weight:600;color:var(--ink);}
+.b-guar>div>span{display:block;margin-top:4px;font-size:13.5px;line-height:1.55;color:var(--ink-mid);}
+@media (max-width:1024px){
+  .b-grid{grid-template-columns:1fr;}
+}
+@media (max-width:768px){
+  .b-cal{padding:16px;border-radius:18px;gap:14px;}
+  .b-card,.b-quote{padding:22px;}
+  .b-quote blockquote{font-size:18px;}
+}
+</style>
+<link rel="stylesheet" href="/v2.css"/>
+<!-- Meta Pixel — Treat Engine (1134033977806212) -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1134033977806212');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1134033977806212&ev=PageView&noscript=1" alt=""/></noscript>
+<!-- End Meta Pixel -->
+<!-- Google tag — Google Ads (AW-16631843401) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-16631843401"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-16631843401');
+</script>
+<!-- End Google tag -->
+<!-- Microsoft Clarity — Treat Engine (y7pouto6cn) -->
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "y7pouto6cn");
+</script>
+<!-- End Microsoft Clarity -->
+</head>
+<body>
+
+<header class="v2-chead">
+  <div class="v2-chead-in">
+    <div class="v2-chead-left">
+      <a href="/home"><img src="/uploads/Treat Engine Logo .png" alt="Treat Engine"></a>
+      <div class="v2-crumb"><a class="hide-sm" href="/sales">Water Sales</a><b><span class="hide-sm">› </span>Book a demo</b></div>
+    </div>
+  </div>
+</header>
+<div class="v2-trustbar">
+  <span>Built only for water treatment dealers</span>
+  <span>No setup fee · Cancel anytime</span>
+  <span class="hide-sm">30-day results guarantee</span>
+</div>
+
+<main class="v2-flow">
+  <div class="v2-flow-intro">
+    <a class="v2-back" href="/sales">← Back to ClearDeals</a>
+    <div class="eyebrow">ClearDeals — Live Demo</div>
+    <h1>Book your demo. <em>See your proposal.</em></h1>
+    <p>In 30 minutes, we'll build a guided proposal with your own catalog and pricing, live on your device, then send you the link so you see exactly what your customers will.</p>
+  </div>
+
+  <div class="b-grid">
+    <section class="b-cal" aria-labelledby="cal-title">
+      <div class="b-cal-head">
+        <div>
+          <p class="b-cal-title" id="cal-title">30-Minute ClearDeals Demo</p>
+          <p class="b-cal-sub">Pick a time that works for you — we'll confirm by email.</p>
+        </div>
+        <span class="v2-pill">30 min</span>
+      </div>
+      <div class="b-embed">
+        <iframe src="https://api.leadconnectorhq.com/widget/booking/Z49wIzGc7lzyMtCA05BW" style="width:100%;border:none;overflow:hidden;min-height:680px;" scrolling="no" id="Z49wIzGc7lzyMtCA05BW_1776993941101" title="Book a ClearDeals demo"></iframe>
+      </div>
+    </section>
+
+    <aside class="b-side">
+      <div class="b-card shadow">
+        <div class="v2-side-label">What happens on the call</div>
+        <ol class="b-steps">
+          <li class="b-step"><span class="b-step-no">1</span><div><b>Your catalog, loaded</b><span>We pull in your equipment, pricing and maintenance plans, so the demo looks like your business.</span></div></li>
+          <li class="b-step"><span class="b-step-no">2</span><div><b>A real proposal, start to finish</b><span>Water report, options, savings, financing and signature, the same steps your rep walks at the kitchen table.</span></div></li>
+          <li class="b-step"><span class="b-step-no">3</span><div><b>Plans &amp; setup</b><span>No hard sell. Clear pricing and how fast you can be live.</span></div></li>
+        </ol>
+      </div>
+      <div class="b-card">
+        <div class="v2-side-label">Rather jump in?</div>
+        <span style="font-size:14px;line-height:1.55;color:var(--ink-muted);">Start the 30-day free trial and have your first proposal out today. No setup fee, cancel anytime.</span>
+        <a class="v2-btn primary" href="/sales#plan-starter">Start my free trial →</a>
+      </div>
+      <div class="b-guar">
+        <span class="b-guar-ic" aria-hidden="true">🛡️</span>
+        <div><b>30-Day Results Guarantee</b><span>Try ClearDeals on real deals for 30 days. If it isn't helping you close, we make it right.</span></div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="v2-minifoot">
+  <div class="v2-minifoot-in">
+    <span>© 2026 Treat Engine. All rights reserved.</span>
+    <nav><a href="/privacypolicy">Privacy</a><a href="/termsofservice">Terms</a><a href="/home">Home</a></nav>
+  </div>
+</footer>
+
+<script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
+</body>
+</html>
