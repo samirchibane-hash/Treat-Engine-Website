@@ -1829,18 +1829,12 @@ function WhatsInside() {
   );
 }
 
-// Plan pricing and per-asset rates mirror /sales/checkout-v2 — keep the two
-// in sync when either changes.
+// Plan pricing mirrors /sales/checkout-v2, /sales/start and the Treat Engine,
+// Inc prices in lib/stripe.js — keep them in sync when any changes.
 const PRICING_PLANS = {
   starter: {month:97,  year:997},
-  pro:     {month:297, year:2997},
+  pro:     {month:299, year:2999},
 };
-const USAGE_TIERS = [
-  {vol:'100',    label:'Up to 100 proposals', rate:3.50},
-  {vol:'250',    label:'Up to 250 proposals', rate:2.75},
-  {vol:'750',    label:'Up to 750 proposals', rate:2.13},
-  {vol:'1,500+', label:'1,500+ proposals',    rate:1.88},
-];
 
 function PrIco({kind}) {
   return (
@@ -1854,7 +1848,6 @@ function PrIco({kind}) {
 
 function Pricing() {
   const [billing, setBilling] = useState('month');
-  const [volIdx, setVolIdx] = useState(1);
   const [pending, setPending] = useState(null);
 
   const isYear = billing === 'year';
@@ -1933,11 +1926,9 @@ function Pricing() {
     );
   };
 
-  const tier = USAGE_TIERS[volIdx];
-  const pct = (volIdx / (USAGE_TIERS.length - 1)) * 100;
-
   const starterFeatures = [
     {kind:'head', text:"What's included"},
+    {kind:'yes',  text:<><span className="pr-lead">10 credits</span> included every month</>},
     {kind:'yes',  text:<><span className="pr-lead">Residential</span> sales flow</>},
     {kind:'lim',  text:<><span className="pr-lead">1</span> office</>},
     {kind:'lim',  text:<>Up to <span className="pr-lead">5</span> users</>},
@@ -1948,6 +1939,7 @@ function Pricing() {
   ];
   const proFeatures = [
     {kind:'head', text:'Everything in Starter, plus'},
+    {kind:'yes',  text:<><span className="pr-lead">10 credits</span> included every month</>},
     {kind:'plus', text:<><span className="pr-lead">Unlimited</span> users</>},
     {kind:'plus', text:<><span className="pr-lead">Unlimited</span> offices</>},
     {kind:'plus', text:<><span className="pr-lead">Commercial</span> sales flow</>},
@@ -2043,39 +2035,9 @@ function Pricing() {
           </div>
         </div>
 
-        <div className="pr-est reveal">
-          <div className="pr-est-label">Usage estimator</div>
-          <div className="pr-est-title">What's your monthly proposal volume?</div>
-          <div className="pr-est-sub">Every proposal you generate — each presentation and each contract — is billed per asset, at the same rates on both plans. Move the slider to your expected volume — higher volume earns a lower per-asset rate, billed automatically at month's end.</div>
-
-          <input
-            type="range"
-            className="pr-slider"
-            min="0" max={USAGE_TIERS.length - 1} step="1"
-            value={volIdx}
-            onChange={e => setVolIdx(parseInt(e.target.value, 10))}
-            aria-label="Monthly proposal volume"
-            style={{background:`linear-gradient(to right, var(--blue) ${pct}%, var(--cream-mid) ${pct}%)`}}
-          />
-          <div className="pr-slider-labels">
-            {USAGE_TIERS.map(t => <span key={t.vol}>{t.vol}</span>)}
-          </div>
-
-          <div className="pr-est-result">
-            <div>
-              <div className="pr-est-vol">{tier.vol} proposals / month</div>
-              <div className="pr-est-tier">{tier.label}</div>
-            </div>
-            <div className="pr-est-right">
-              <div className="pr-est-cost">${tier.rate.toFixed(2)}</div>
-              <div className="pr-est-cost-label">per asset generated</div>
-            </div>
-          </div>
-        </div>
-
         <div className="pr-foot reveal">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5"><circle cx="7" cy="7" r="6"/><path d="M7 5v3"/><circle cx="7" cy="9.5" r=".5" fill="var(--ink-muted)"/></svg>
-          <span>Usage — every asset generated across your dealership — is tracked and invoiced automatically at month-end. You can upgrade, downgrade, or cancel at any time.</span>
+          <span>Every plan includes 10 credits a month: 1 credit per custom presentation, agreement or install document. Need more? 10 more for $35, and credits never expire. Upgrade, downgrade or cancel any time.</span>
         </div>
       </div>
     </section>

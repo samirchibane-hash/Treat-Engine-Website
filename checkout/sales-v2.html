@@ -306,7 +306,7 @@ gtag('config', 'AW-16631843401');
       <div class="plan-for">For dealers running multiple offices, or selling commercial and rentals.</div>
 
       <div class="plan-price">
-        <span class="plan-amt" id="pro-amt">$297</span>
+        <span class="plan-amt" id="pro-amt">$299</span>
         <span class="plan-per" id="pro-per">/ month</span>
       </div>
       <div class="plan-note" id="pro-note"><span class="plan-save">First 30 days free</span> · then billed monthly</div>
@@ -315,7 +315,7 @@ gtag('config', 'AW-16631843401');
         <span class="btn-text" id="pro-btn-text">Start 30-day free trial</span>
         <div class="spinner"></div>
       </button>
-      <div class="plan-billed" id="pro-billed">$0 due today — free for 30 days, then $297/month</div>
+      <div class="plan-billed" id="pro-billed">$0 due today — free for 30 days, then $299/month</div>
 
       <div class="plan-divider"></div>
       <ul class="plan-features">
@@ -419,9 +419,9 @@ gtag('config', 'AW-16631843401');
             <td class="col-pro"><span class="cell-val">Included</span></td>
           </tr>
           <tr>
-            <td>Per-asset usage rates</td>
-            <td><span class="cell-val">Same</span></td>
-            <td class="col-pro"><span class="cell-val">Same</span></td>
+            <td>Credits included</td>
+            <td><span class="cell-val">10 / month</span></td>
+            <td class="col-pro"><span class="cell-val">10 / month</span></td>
           </tr>
           <tr class="compare-cta">
             <td></td>
@@ -432,7 +432,7 @@ gtag('config', 'AW-16631843401');
             </td>
             <td class="col-pro">
               <button class="compare-btn solid" id="btn2-pro" onclick="startCheckout('pro')">
-                <span class="btn-text" id="btn2-pro-text">Start free trial<span class="btn-price">then $297/mo</span></span>
+                <span class="btn-text" id="btn2-pro-text">Start free trial<span class="btn-price">then $299/mo</span></span>
               </button>
             </td>
           </tr>
@@ -441,70 +441,21 @@ gtag('config', 'AW-16631843401');
     </div>
   </div>
 
-  <!-- ── Usage estimator ── -->
-  <div class="estimator-card">
-    <div class="estimator-label">Usage estimator</div>
-    <div class="estimator-title">What's your monthly proposal volume?</div>
-    <div class="estimator-sub">Every proposal you generate — each presentation and each contract — is billed per asset, at the same rates on both plans. Move the slider to your expected volume — higher volume earns a lower per-asset rate, billed automatically at month's end, never today.</div>
-
-    <input type="range" class="slider" id="vol-slider" min="0" max="3" step="1" value="1" oninput="updateEstimator()">
-    <div class="slider-labels">
-      <span>100</span>
-      <span>250</span>
-      <span>750</span>
-      <span>1,500+</span>
-    </div>
-
-    <div class="estimate-result">
-      <div class="estimate-left">
-        <div class="estimate-volume" id="est-volume">250 proposals / month</div>
-        <div class="estimate-tier" id="est-tier">Up to 250 proposals</div>
-      </div>
-      <div class="estimate-right">
-        <div class="estimate-cost" id="est-cost">$2.75</div>
-        <div class="estimate-cost-label">per asset generated</div>
-      </div>
-    </div>
-  </div>
-
   <div class="foot">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="var(--ink-muted)" stroke-width="1.5"><circle cx="7" cy="7" r="6"/><path d="M7 5v3"/><circle cx="7" cy="9.5" r=".5" fill="var(--ink-muted)"/></svg>
-    <span>Usage — every asset generated across your dealership — is tracked and invoiced automatically at month-end via Stripe. Nothing beyond your plan is due today, and you can upgrade, downgrade, or cancel at any time.</span>
+    <span>Every plan includes 10 credits a month: 1 credit per custom presentation, agreement or install document. Need more? 10 more for $35, and credits never expire. Nothing beyond your plan is due today, and you can upgrade, downgrade, or cancel at any time.</span>
   </div>
 
   <a class="back-link" href="/sales">← Back to Water Sales</a>
 </div>
 
 <script>
-// ── Usage estimator (same per-asset rates on both plans) ──
-const tiers = [
-  { vol: '100',    label: 'Up to 100 proposals', rate: 3.50 },
-  { vol: '250',    label: 'Up to 250 proposals', rate: 2.75 },
-  { vol: '750',    label: 'Up to 750 proposals', rate: 2.13 },
-  { vol: '1,500+', label: '1,500+ proposals',    rate: 1.88 },
-];
-
-function updateEstimator() {
-  const pos = parseInt(document.getElementById('vol-slider').value);
-  const tier = tiers[pos];
-
-  document.getElementById('est-volume').textContent = tier.vol + ' proposals / month';
-  document.getElementById('est-tier').textContent = tier.label;
-  document.getElementById('est-cost').textContent = '$' + tier.rate.toFixed(2);
-
-  const pct = (pos / (tiers.length - 1) * 100) + '%';
-  document.getElementById('vol-slider').style.background =
-    `linear-gradient(to right, var(--blue) ${pct}, var(--cream-mid) ${pct})`;
-}
-
-updateEstimator();
-
 // ── Plans ──
 // Amounts here are display only — /api/checkout resolves the real Stripe price
 // from the plan and interval it is sent.
 const PLANS = {
   starter: { month: 97,  year: 997  },
-  pro:     { month: 297, year: 2997 },
+  pro:     { month: 299, year: 2999 },
 };
 
 let billing = 'month';

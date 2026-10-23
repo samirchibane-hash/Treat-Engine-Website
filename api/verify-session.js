@@ -1,4 +1,4 @@
-const Stripe = require('stripe');
+const { retrieveCheckoutSession } = require('../lib/stripe');
 const { STOCK: TABLET_STOCK, PRICE: TABLET_PRICE } = require('../lib/tablets');
 
 module.exports = async (req, res) => {
@@ -8,7 +8,6 @@ module.exports = async (req, res) => {
   const { session_id } = req.query;
   if (!session_id) return res.status(400).json({ error: 'Missing session_id' });
 
-  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
   try {
     // The subscription is expanded so /sales/welcome can quote the real trial end
@@ -18,7 +17,7 @@ module.exports = async (req, res) => {
     // default_payment_method is expanded so /sales/welcome can name the card the
     // tablet add-on would charge ("the Visa ending 4242 you just used"). Naming
     // it is the whole basis for asking someone to buy with one click.
-    const session = await stripe.checkout.sessions.retrieve(session_id, {
+    const { session } = await retrieveCheckoutSession(session_id, {
       expand: ['subscription', 'subscription.default_payment_method'],
     });
 

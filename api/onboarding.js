@@ -1,4 +1,4 @@
-const Stripe = require('stripe');
+const { retrieveCheckoutSession } = require('../lib/stripe');
 const { crm, onboardingLink, onboardingFields } = require('../lib/crm');
 
 module.exports = async (req, res) => {
@@ -13,11 +13,10 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
   try {
     // Verify payment is complete
-    const session = await stripe.checkout.sessions.retrieve(session_id);
+    const { session } = await retrieveCheckoutSession(session_id);
     if (session.payment_status !== 'paid' && session.status !== 'complete') {
       return res.status(402).json({ error: 'Payment not verified' });
     }

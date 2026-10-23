@@ -1,4 +1,4 @@
-const Stripe = require('stripe');
+const { retrieveCheckoutSession, tabletPriceId } = require('../lib/stripe');
 const { STOCK, PRICE } = require('../lib/tablets');
 
 /**
@@ -33,7 +33,6 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
   const origin = process.env.SITE_URL || `https://${req.headers.host}`;
 
   const sessionId = String((req.body && req.body.session_id) || '').trim();
@@ -43,19 +42,22 @@ module.exports = async (req, res) => {
   if (!(quantity >= 1 && quantity <= STOCK)) {
     return res.status(400).json({ error: 'That tablet quantity isn’t available.' });
   }
-  if (!process.env.STRIPE_PRICE_TABLET_BUNDLE) {
-    console.error('Tablet order: STRIPE_PRICE_TABLET_BUNDLE is not set');
-    return res.status(500).json({ error: 'Tablet ordering is not configured.' });
-  }
-
   try {
     // The session id is the only thing the browser sends that identifies the
     // buyer, so everything else — customer, card, price, address — is read back
     // from Stripe here. Nothing about the charge is taken from the request body
     // except the quantity, which is bounded above.
-    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+    //
+    // The tablet is charged on the same Stripe account the signup was, so the
+    // saved card is there: Treat Engine, Inc for new signups, eComm before.
+    const { session, account, stripe } = await retrieveCheckoutSession(sessionId, {
       expand: ['subscription', 'subscription.default_payment_method', 'customer'],
     });
+    const tabletPrice = tabletPriceId(account);
+    if (!tabletPrice) {
+      console.error(`Tablet order: no tablet price for the ${account} account`);
+      return res.status(500).json({ error: 'Tablet ordering is not configured.' });
+    }
 
     const settled =
       session.status === 'complete' ||
@@ -82,7 +84,7 @@ module.exports = async (req, res) => {
     // The charge is built from the live Stripe price, never from PRICE. But if
     // the two disagree, the page has been quoting a number we're about to not
     // charge — refuse rather than surprise the dealer in either direction.
-    const price = await stripe.prices.retrieve(process.env.STRIPE_PRICE_TABLET_BUNDLE);
+    const price = await stripe.prices.retrieve(tabletPrice);
     if (price.unit_amount !== PRICE * 100) {
       console.error(
         `Tablet price drift: Stripe says ${price.unit_amount}, lib/tablets.js says ${PRICE * 100}`
@@ -121,7 +123,7 @@ module.exports = async (req, res) => {
     // the $0 trial) means there is nothing to do off-session. Fall through to
     // the hosted-checkout path, same as a card that wants 3-D Secure.
     if (!paymentMethodId) {
-      return res.json(await hostedFallback(stripe, { customerId, quantity, metadata, sessionId, origin }));
+      return res.json(await hostedFallback(stripe, { customerId, quantity, metadata, sessionId, origin, priceId: tabletPrice }));
     }
 
     let intent;
@@ -147,7 +149,7 @@ module.exports = async (req, res) => {
       // dealer present. Rather than dead-end a $299 sale, hand them a hosted
       // Stripe page that can prompt for it. Plain declines are reported as-is.
       if (err.code === 'authentication_required') {
-        return res.json(await hostedFallback(stripe, { customerId, quantity, metadata, sessionId, origin }));
+        return res.json(await hostedFallback(stripe, { customerId, quantity, metadata, sessionId, origin, priceId: tabletPrice }));
       }
       if (err.type === 'StripeCardError') {
         return res.status(402).json({
@@ -159,7 +161,7 @@ module.exports = async (req, res) => {
     }
 
     if (intent.status !== 'succeeded') {
-      return res.json(await hostedFallback(stripe, { customerId, quantity, metadata, sessionId, origin }));
+      return res.json(await hostedFallback(stripe, { customerId, quantity, metadata, sessionId, origin, priceId: tabletPrice }));
     }
 
     await recordOrder(stripe, { sub, sessionId, quantity, reference: intent.id });
@@ -215,11 +217,11 @@ async function recordOrder(stripe, { sub, sessionId, quantity, reference }) {
  * api/webhook.js finishes this path on checkout.session.completed, keying on
  * metadata.kind === 'tablet_order'.
  */
-async function hostedFallback(stripe, { customerId, quantity, metadata, sessionId, origin }) {
+async function hostedFallback(stripe, { customerId, quantity, metadata, sessionId, origin, priceId }) {
   const checkout = await stripe.checkout.sessions.create({
     mode: 'payment',
     customer: customerId,
-    line_items: [{ price: process.env.STRIPE_PRICE_TABLET_BUNDLE, quantity }],
+    line_items: [{ price: priceId, quantity }],
     shipping_address_collection: { allowed_countries: ['US'] },
     metadata,
     success_url: `${origin}/sales/welcome?session_id=${encodeURIComponent(sessionId)}`,

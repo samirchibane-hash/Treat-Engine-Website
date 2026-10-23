@@ -1,4 +1,4 @@
-const Stripe = require('stripe');
+const { teStripe, ecommStripe, TE_PRICES } = require('../lib/stripe');
 const { postLead, parseLead, ATTRIBUTION_KEYS } = require('../lib/leads');
 
 module.exports = async (req, res) => {
@@ -8,7 +8,10 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+  // New sales (ClearDeals plans, Leads) check out on Treat Engine, Inc. The
+  // legacy /sales/checkout page and Websites still sell eComm prices, so they
+  // stay there. See lib/stripe.js.
+  let stripe = ecommStripe();
   const origin = process.env.SITE_URL || `https://${req.headers.host}`;
 
   const { service, plan } = req.body || {};
@@ -26,15 +29,17 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: 'Cannot select both appointment setter tiers' });
       }
 
+      stripe = teStripe();
+      // Meta Ads + the Treat Engine CRM are always included.
       const lineItems = [
-        { price: process.env.STRIPE_PRICE_LEADS_META_ADS, quantity: 1 },
-        { price: process.env.STRIPE_PRICE_WEBSITES_MONTHLY, quantity: 1 },
+        { price: TE_PRICES.leads.meta_ads, quantity: 1 },
+        { price: TE_PRICES.leads.crm, quantity: 1 },
       ];
 
       const ADDON_PRICE_MAP = {
-        google_ads:             process.env.STRIPE_PRICE_LEADS_GOOGLE_ADS,
-        appointment_setters_pt: process.env.STRIPE_PRICE_LEADS_APPT_SETTERS_PT,
-        appointment_setters_ft: process.env.STRIPE_PRICE_LEADS_APPT_SETTERS_FT,
+        google_ads:             TE_PRICES.leads.google_ads,
+        appointment_setters_pt: TE_PRICES.leads.appointment_setters_pt,
+        appointment_setters_ft: TE_PRICES.leads.appointment_setters_ft,
       };
 
       for (const addon of addons) {
@@ -101,17 +106,13 @@ module.exports = async (req, res) => {
       // The server picks the price ID — the page only sends tier and interval.
       // Requests without an explicit tier fall through to the legacy branch
       // below, which still serves the original /sales/checkout page.
-      const SALES_PRICE_MAP = {
-        'starter:month': process.env.STRIPE_PRICE_SALES_STARTER_MONTHLY,
-        'starter:year':  process.env.STRIPE_PRICE_SALES_STARTER_ANNUAL,
-        'pro:month':     process.env.STRIPE_PRICE_SALES_PRO_MONTHLY,
-        'pro:year':      process.env.STRIPE_PRICE_SALES_PRO_ANNUAL,
-      };
+      stripe = teStripe();
+      const SALES_PRICE_MAP = TE_PRICES.sales;
 
       const interval = String((req.body && req.body.interval) || 'month').toLowerCase();
       const priceKey = `${plan}:${interval}`;
 
-      if (!(priceKey in SALES_PRICE_MAP)) {
+      if (!Object.prototype.hasOwnProperty.call(SALES_PRICE_MAP, priceKey)) {
         return res.status(400).json({ error: 'Invalid ClearDeals billing interval' });
       }
 
@@ -121,7 +122,7 @@ module.exports = async (req, res) => {
       }
 
       // 30-day free trial on the month-to-month plans only. Annual keeps billing
-      // up front: a first-ever $997/$2,997 charge landing on day 31, with no
+      // up front: a first-ever $997/$2,999 charge landing on day 31, with no
       // prior successful payment to prove the card, is the highest decline risk
       // in this funnel.
       const trialDays = interval === 'month' ? 30 : 0;
@@ -136,7 +137,7 @@ module.exports = async (req, res) => {
         mode: 'subscription',
         line_items: lineItems,
         // ── Cross-repo contract — read by ClearDeals, not just by this repo ──
-        // ClearDeals (separate repo, same Stripe account) provisions dealership
+        // ClearDeals (separate repo, same Stripe accounts) provisions dealership
         // accounts off checkout.session.completed, filtering on
         // `service === 'sales' && tier`. Renaming or dropping either key
         // silently stops account provisioning there, with no error on this side.
@@ -162,9 +163,8 @@ module.exports = async (req, res) => {
         // migrations off the legacy /sales/checkout page).
         //
         // payment_method_collection stays at its 'always' default on purpose: the
-        // usage subscription the dealer starts inside ClearDeals charges the card
-        // saved here, so a trial that skipped card collection would leave that
-        // in-app signup with nothing to bill.
+        // plan bills this card after the trial, and ClearDeals' credit packs and
+        // auto-reload can reuse it.
         sessionParams.subscription_data = {
           trial_period_days: trialDays,
           trial_settings: { end_behavior: { missing_payment_method: 'cancel' } },

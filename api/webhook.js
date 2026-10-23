@@ -1,4 +1,4 @@
-const Stripe = require('stripe');
+const { teStripe, ecommStripe } = require('../lib/stripe');
 const { crm, onboardingLink } = require('../lib/crm');
 const { postLead, leadFromSession } = require('../lib/leads');
 
@@ -13,18 +13,36 @@ const getRawBody = (req) =>
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
   const db = crm();
 
   const rawBody = await getRawBody(req);
   const sig = req.headers['stripe-signature'];
 
+  // One endpoint per Stripe account, both pointed here. Whichever signing secret
+  // verifies the event says which account sent it — and so which client to use
+  // for any follow-up call. eComm keeps sending events for everything already
+  // running there (e.g. Leads cancellations).
   let event;
-  try {
-    event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
-  } catch (err) {
-    console.error('Webhook signature error:', err.message);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
+  let stripe;
+  let lastError;
+  const accounts = [
+    ['te', process.env.STRIPE_TE_WEBHOOK_SECRET],
+    ['ecomm', process.env.STRIPE_WEBHOOK_SECRET],
+  ];
+  for (const [account, secret] of accounts) {
+    if (!secret) continue;
+    try {
+      const client = account === 'te' ? teStripe() : ecommStripe();
+      event = client.webhooks.constructEvent(rawBody, sig, secret);
+      stripe = client;
+      break;
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  if (!event) {
+    console.error('Webhook signature error:', lastError && lastError.message);
+    return res.status(400).send(`Webhook Error: ${lastError ? lastError.message : 'no signing secret configured'}`);
   }
 
   if (event.type === 'checkout.session.completed') {
