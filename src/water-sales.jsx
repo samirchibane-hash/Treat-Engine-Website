@@ -2228,7 +2228,7 @@ function V2Hero() {
       <div className="v2-hero-meta">No setup fee · Cancel anytime · Live in minutes</div>
       <div className="v2-show">
         <div className="v2-video">
-          <wistia-player media-id="0xlqtl7x8b" aspect="1.7777777777777777"></wistia-player>
+          <wistia-player media-id="9aa3hagnby" aspect="1.5434083601286173"></wistia-player>
         </div>
         <div className="v2-chip signed"><i>✓</i><div><b>Agreement signed</b><span>Deposit collected · Stripe</span></div></div>
         <div className="v2-chip opened"><i>↗</i><div><b>Proposal opened</b><span>Customer journey link · 2 views</span></div></div>
