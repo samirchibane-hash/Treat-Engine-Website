@@ -1846,6 +1846,49 @@ function PrIco({kind}) {
   );
 }
 
+// "10 credits included every month" with an (i) that says what a credit buys.
+// Opens on hover, focus or tap; Escape or tapping away closes it.
+function CreditsIncluded() {
+  const [open, setOpen] = useState(false);
+  const wrap = React.useRef(null);
+  useEffect(() => {
+    if (!open) return;
+    const away = e => { if (wrap.current && !wrap.current.contains(e.target)) setOpen(false); };
+    const esc = e => { if (e.key === 'Escape') setOpen(false); };
+    document.addEventListener('pointerdown', away);
+    document.addEventListener('keydown', esc);
+    return () => { document.removeEventListener('pointerdown', away); document.removeEventListener('keydown', esc); };
+  }, [open]);
+  return (
+    <>
+      <span className="pr-lead">10 credits</span> included every month
+      <span className="pr-info-wrap" ref={wrap} onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+        <button
+          type="button"
+          className="pr-info"
+          aria-label="What credits are for"
+          aria-expanded={open}
+          onClick={() => setOpen(o => !o)}
+          onFocus={() => setOpen(true)}
+          onBlur={() => setOpen(false)}
+        >
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M8 7.2v4"/><circle cx="8" cy="4.9" r=".6" fill="currentColor" stroke="none"/></svg>
+        </button>
+        {open && (
+          <span className="pr-info-pop" role="tooltip">
+            Credits pay for the custom documents you make for each customer. Unused credits carry over.
+            <ul>
+              <li><b>Presentation · 1 credit</b> — made for every proposal you start</li>
+              <li><b>Agreement · 1 credit</b> — only when you generate one to close the deal</li>
+              <li><b>Install document · 1 credit</b> — only when you generate one for the install</li>
+            </ul>
+          </span>
+        )}
+      </span>
+    </>
+  );
+}
+
 function Pricing() {
   const [billing, setBilling] = useState('month');
   const [pending, setPending] = useState(null);
@@ -1928,7 +1971,7 @@ function Pricing() {
 
   const starterFeatures = [
     {kind:'head', text:"What's included"},
-    {kind:'yes',  text:<><span className="pr-lead">10 credits</span> included every month</>},
+    {kind:'yes',  text:<CreditsIncluded/>},
     {kind:'yes',  text:<><span className="pr-lead">Residential</span> sales flow</>},
     {kind:'lim',  text:<><span className="pr-lead">1</span> office</>},
     {kind:'lim',  text:<>Up to <span className="pr-lead">5</span> users</>},
@@ -1939,7 +1982,7 @@ function Pricing() {
   ];
   const proFeatures = [
     {kind:'head', text:'Everything in Starter, plus'},
-    {kind:'yes',  text:<><span className="pr-lead">10 credits</span> included every month</>},
+    {kind:'yes',  text:<CreditsIncluded/>},
     {kind:'plus', text:<><span className="pr-lead">Unlimited</span> users</>},
     {kind:'plus', text:<><span className="pr-lead">Unlimited</span> offices</>},
     {kind:'plus', text:<><span className="pr-lead">Commercial</span> sales flow</>},
@@ -2037,7 +2080,7 @@ function Pricing() {
 
         <div className="pr-foot reveal">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5"><circle cx="7" cy="7" r="6"/><path d="M7 5v3"/><circle cx="7" cy="9.5" r=".5" fill="var(--ink-muted)"/></svg>
-          <span>Every plan includes 10 credits a month: 1 credit per custom presentation, agreement or install document. Need more? 10 more for $35, and credits never expire. Upgrade, downgrade or cancel any time.</span>
+          <span>Every plan includes 10 credits a month. Need more? Credit packs start at 10 for $35, or turn on auto-reload and we'll add 10 for $35 whenever you run low. Credits never expire, and you can upgrade, downgrade or cancel any time.</span>
         </div>
       </div>
     </section>
