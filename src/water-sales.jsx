@@ -17,7 +17,6 @@ const CTA = {
   comparison:   'Claim my 30-day free trial',
   steps:        'Start my free trial today',
   integrations: 'Talk to us about setup',
-  flow:         'Get Started in Minutes',
   faqDemo:      'Book a 30-min demo',
   final:        'Get my free 30 days',
 };
@@ -1830,47 +1829,6 @@ function WhatsInside() {
   );
 }
 
-function DealFlow() {
-  return (
-    <section className="flow-section" id="flow">
-      <div className="flow-inner">
-        <div className="flow-header reveal">
-          <div>
-            <div className="flow-eyebrow">The walkthrough</div>
-            <h2 className="flow-title">From the first screen<br/><em>to the signature.</em></h2>
-          </div>
-          <div>
-            <p className="flow-sub">One guided sequence: water data, presentation, recommended system, savings math, financing, invoice, signature. Your rep walks the homeowner through it at the table — or the homeowner walks it alone. Same order, same argument, every time.</p>
-          </div>
-        </div>
-        <div className="reveal">
-          <div className="flow-video">
-            <iframe
-              src="https://www.youtube.com/embed/rXBfCwLqgyI?si=SZKA-OKiA71WC-6U"
-              title="ClearDeals walkthrough demo"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            />
-          </div>
-          <div className="flow-caption">Full walkthrough — a real proposal, start to signature.</div>
-        </div>
-        <div className="reveal" style={{marginTop:56,paddingTop:48,borderTop:'1px solid rgba(255,255,255,0.08)',textAlign:'center'}}>
-          <div className="cta-pair">
-            <a href="#plan-starter" className="btn-dark btn-stacked" style={{fontSize:15,padding:'12px 34px'}}>
-              <span>{CTA.flow} →</span>
-              <span className="btn-sub">30-day free trial</span>
-            </a>
-          </div>
-          <div style={{marginTop:12,fontSize:13,color:'rgba(255,255,255,0.35)'}}>No commitment · Live on your device</div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
 // Plan pricing and per-asset rates mirror /sales/checkout-v2 — keep the two
 // in sync when either changes.
 const PRICING_PLANS = {
@@ -2223,10 +2181,10 @@ function V2Hero() {
       <p className="v2-hero-sub">In a few clicks, pull the water quality report, lay out system and service options, visualize the savings, and handle financing, invoicing and signatures — whether you're closing at the kitchen table or remotely.</p>
       <div className="v2-hero-ctas">
         <a href="#plan-starter" className="v2-btn primary">{CTA.hero} →</a>
-        <a href="#flow" className="v2-btn ghost">▶&nbsp; {CTA.heroWatch}</a>
+        <a href="#demo" className="v2-btn ghost">▶&nbsp; {CTA.heroWatch}</a>
       </div>
       <div className="v2-hero-meta">No setup fee · Cancel anytime · Live in minutes</div>
-      <div className="v2-show">
+      <div className="v2-show" id="demo">
         <div className="v2-video">
           <wistia-player media-id="9aa3hagnby" aspect="1.5434083601286173"></wistia-player>
         </div>
@@ -2765,7 +2723,6 @@ function App() {
       <V2Compare/>
       <V2Steps/>
       <V2Integrations/>
-      <DealFlow/>
       <V2Results/>
       <Pricing/>
       <V2FAQ/>

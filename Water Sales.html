@@ -280,17 +280,6 @@ a{text-decoration:none;color:inherit;}
 @media (max-width:640px){.wig{grid-template-columns:1fr;gap:18px;}}
 
 /* FLOW — how a deal works */
-.flow-section{background:var(--navy);padding:110px 32px;}
-.flow-inner{max-width:1180px;margin:0 auto;}
-.flow-eyebrow{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
-.flow-eyebrow::before{content:'';display:block;width:20px;height:1.5px;background:var(--blue);}
-.flow-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:64px;padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,0.08);}
-.flow-title{font-size:clamp(30px,3.8vw,50px);font-weight:600;color:#fff;letter-spacing:-.02em;}
-.flow-title em{font-style:italic;opacity:.55;}
-.flow-sub{font-size:16px;color:rgba(255,255,255,0.5);line-height:1.8;}
-.flow-video{position:relative;width:100%;max-width:960px;margin:0 auto;aspect-ratio:16/9;border:1px solid rgba(255,255,255,0.08);background:#000;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,0.45);}
-.flow-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;}
-.flow-caption{margin-top:18px;text-align:center;font-size:13px;color:rgba(255,255,255,0.35);}
 
 /* COMPARISON */
 .compare-section{background:var(--white);padding:110px 32px;}
@@ -502,8 +491,7 @@ a{text-decoration:none;color:inherit;}
 .reveal.visible{opacity:1;transform:none;}
 
 @media(max-width:960px){
-  .features-header,.flow-header,.ways-header,.ways-grid,.compare-grid,.testi-grid{grid-template-columns:1fr;}
-  .features-grid{grid-template-columns:1fr 1fr;}
+  .features-header,  .features-grid{grid-template-columns:1fr 1fr;}
   .nav-pill{display:none;}
   .footer-top{grid-template-columns:1fr 1fr;gap:32px;}
   .ways-header{gap:28px;}
