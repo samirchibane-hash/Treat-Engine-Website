@@ -19,7 +19,6 @@ const CTA = {
   integrations: 'Talk to us about setup',
   faqDemo:      'Book a 30-min demo',
   final:        'Get my free 30 days',
-  finalDemo:    'Book a live demo',
 };
 
 function useReveal() {
@@ -2595,7 +2594,7 @@ function V2Final() {
     <section className="v2-final" id="book">
       <div className="v2-final-card">
         <div>
-          <div className="eyebrow">ClearDeals</div>
+          <img src="uploads/cleardeals-logo-white.png" alt="ClearDeals by Treat Engine" className="v2-final-logo" width="345" height="143"/>
           <h2>Turn every proposal<br/><em>into an install.</em></h2>
           <p>Five minutes at the kitchen table, or one link to an address nobody is driving to.</p>
           <ul className="v2-checks">
@@ -2604,14 +2603,10 @@ function V2Final() {
             <Ck>Live on your device in minutes</Ck>
             <Ck>30-day results guarantee</Ck>
           </ul>
-          <div className="v2-final-ctas">
-            <a href="#plan-starter" className="v2-btn primary">{CTA.final} →</a>
-          </div>
         </div>
-        <div className="v2-demo">
-          <b>Want to see it first?</b>
-          <span>30 minutes, live on your device. We build a proposal with your catalog and pricing, then send you the link so you see what your customers see.</span>
-          <a href="/sales/demo" target="_blank" rel="noopener" className="v2-btn ghost">{CTA.finalDemo} ↗</a>
+        <div className="v2-final-go">
+          <a href="#plan-starter" className="v2-btn primary">{CTA.final} →</a>
+          <span>30 days free · No setup fee · Cancel anytime</span>
         </div>
       </div>
     </section>
