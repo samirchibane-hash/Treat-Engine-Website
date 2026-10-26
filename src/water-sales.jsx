@@ -21,6 +21,17 @@ const CTA = {
   final:        'Get my free 30 days',
 };
 
+// The 30-day free trial is a limited offer: it ends Dec 31, 2026 (Eastern).
+// Every "ends Dec 31" line on the page checks this, so the deadline copy drops
+// off by itself on Jan 1 instead of promising an offer that's already over.
+const TRIAL_OFFER_ENDS = 'Dec 31, 2026';
+const TRIAL_OFFER_LIVE = Date.now() < new Date('2027-01-01T00:00:00-05:00').getTime();
+if (TRIAL_OFFER_LIVE) {
+  // The mobile sticky bar is static HTML in "Water Sales.html".
+  const stickySub = document.querySelector('.mobile-sticky-cta .scta-sub');
+  if (stickySub) stickySub.textContent = '30-day free trial · ends Dec 31';
+}
+
 function useReveal() {
   useEffect(() => {
     const obs = new IntersectionObserver(entries => {
@@ -1961,7 +1972,9 @@ function Pricing() {
   const noteFor = key => {
     // The 30-day trial is monthly-only, matching /sales/checkout-v2 — annual
     // bills up front, so nothing here may promise a trial while isYear.
-    if(!isYear) return <span className="pr-note-save">First 30 days free</span>;
+    if(!isYear) return TRIAL_OFFER_LIVE
+      ? <><span className="pr-note-save">First 30 days free</span> · Offer ends Dec 31</>
+      : <span className="pr-note-save">First 30 days free</span>;
     const perMonth = Math.round(PRICING_PLANS[key].year / 12);
     const saved = PRICING_PLANS[key].month * 12 - PRICING_PLANS[key].year;
     return (
@@ -2188,7 +2201,11 @@ function V2Hero() {
         <a href="#plan-starter" className="v2-btn primary">{CTA.hero} →</a>
         <a href="#demo" className="v2-btn ghost">▶&nbsp; {CTA.heroWatch}</a>
       </div>
-      <div className="v2-hero-meta">No setup fee · Cancel anytime · Live in minutes</div>
+      <div className="v2-hero-meta">
+        {TRIAL_OFFER_LIVE
+          ? <><strong className="v2-offer-ends">Free trial offer ends {TRIAL_OFFER_ENDS}</strong> · No setup fee · Cancel anytime</>
+          : 'No setup fee · Cancel anytime · Live in minutes'}
+      </div>
       <div className="v2-show" id="demo">
         <div className="v2-video">
           <wistia-player media-id="9aa3hagnby" aspect="1.5434083601286173"></wistia-player>
@@ -2611,7 +2628,7 @@ function V2Final() {
         </div>
         <div className="v2-final-go">
           <a href="#plan-starter" className="v2-btn primary">{CTA.final} →</a>
-          <span>30 days free · No setup fee · Cancel anytime</span>
+          <span>{TRIAL_OFFER_LIVE ? '30 days free · Offer ends Dec 31 · Cancel anytime' : '30 days free · No setup fee · Cancel anytime'}</span>
         </div>
       </div>
     </section>
