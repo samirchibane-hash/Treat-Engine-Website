@@ -49,19 +49,25 @@ module.exports = async (req, res) => {
       }
 
       // ── /ads/checkout-q: first 90 days paid up front ──
-      // Same monthly prices, then month-to-month. Today's invoice carries each
-      // service as a one-time charge × 3 (amount read off the live Price, so
-      // the two pages can't drift), and the subscription trials for 90 days
-      // so its first monthly charge lands on day 91.
+      // Same monthly prices, then month-to-month. The checkout is a one-time
+      // payment: each service × 3, amount read off the live Price so the two
+      // pages can't drift. api/webhook.js then starts the monthly subscription
+      // on the saved card with a 90-day trial, so its first charge lands on
+      // day 91. Not a subscription-mode checkout with a trial: Stripe's page
+      // would list every service twice, half of them as "90 days free".
       const prepay = req.body.term === '90';
       const PREPAY_DAYS = 90;
       const PREPAY_MONTHS = 3;
+      let prepayItems = null;
+      let monthlyCents = 0;
 
       if (prepay) {
         const prices = await Promise.all(lineItems.map(li => stripe.prices.retrieve(li.price)));
+        prepayItems = [];
         for (const p of prices) {
           if (p.unit_amount == null) return res.status(500).json({ error: `Price ${p.id} has no flat amount` });
-          lineItems.push({
+          monthlyCents += p.unit_amount;
+          prepayItems.push({
             price_data: { currency: p.currency, product: p.product, unit_amount: p.unit_amount },
             quantity: PREPAY_MONTHS,
           });
@@ -107,13 +113,20 @@ module.exports = async (req, res) => {
       };
 
       if (prepay) {
+        Object.assign(sessionParams, {
+          mode: 'payment',
+          line_items: prepayItems,
+          customer_creation: 'always',
+          payment_intent_data: { setup_future_usage: 'off_session' },
+        });
+        // api/webhook.js subscribes the customer to exactly these prices.
         sessionParams.metadata.prepay_days = String(PREPAY_DAYS);
-        sessionParams.subscription_data = { trial_period_days: PREPAY_DAYS };
-        // Stripe's hosted page words the 90 days as a "trial" — this says what it really is.
+        sessionParams.metadata.subscription_prices = lineItems.map(li => li.price).join(',');
+        const monthly = (monthlyCents / 100).toLocaleString('en-US', { minimumFractionDigits: monthlyCents % 100 ? 2 : 0 });
         sessionParams.custom_text = {
           submit: {
-            message: `Today's payment covers your first ${PREPAY_DAYS} days. Monthly billing starts on ` +
-              `day ${PREPAY_DAYS + 1} at the same rate, month-to-month from there.`,
+            message: `Today's payment covers your first ${PREPAY_DAYS} days. From day ${PREPAY_DAYS + 1} ` +
+              `it's $${monthly}/month on this card, month-to-month.`,
           },
         };
       }

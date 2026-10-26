@@ -125,6 +125,29 @@ module.exports = async (req, res) => {
       }
     }
 
+    // For /ads/checkout-q: the 90 days were a one-time payment, so start the
+    // monthly Leads subscription now, trialing until day 91, on the card just
+    // used. Idempotency key: Stripe retries webhooks, and a retry must not
+    // start a second subscription.
+    if (service === 'leads' && plan === 'prepay-90' && session.customer) {
+      try {
+        const prices = String(session.metadata.subscription_prices || '').split(',').filter(Boolean);
+        const pi = await stripe.paymentIntents.retrieve(session.payment_intent);
+        const subscription = await stripe.subscriptions.create({
+          customer: session.customer,
+          items: prices.map(price => ({ price, quantity: 1 })),
+          trial_period_days: Number(session.metadata.prepay_days) || 90,
+          default_payment_method: pi.payment_method,
+          metadata: { service, plan, checkout_session: session.id },
+        }, { idempotencyKey: `prepay-sub-${session.id}` });
+        await db.from('clients')
+          .update({ stripe_subscription_id: subscription.id })
+          .eq('session_id', session.id);
+      } catch (err) {
+        console.error('Prepay subscription creation error:', err.message);
+      }
+    }
+
     // For Water Websites installment: auto-cancel subscription after 2 billing cycles
     if (service === 'websites' && plan === 'installment' && session.subscription) {
       try {
