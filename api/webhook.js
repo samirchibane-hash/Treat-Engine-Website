@@ -107,14 +107,20 @@ module.exports = async (req, res) => {
     }).eq('session_id', session.id);
     if (idsError) console.error('CRM Stripe ID update error:', idsError.message);
 
-    // For Water Websites CRM: auto-start $199/mo subscription with 30-day trial
+    // For Water Websites CRM: auto-start $199/mo subscription with 30-day trial.
+    // A payment-mode checkout saves the card to the customer but not as their
+    // default, so the subscription names it — otherwise the first invoice after
+    // the trial has no card to charge. Idempotency key: a webhook retry must
+    // not start a second subscription.
     if (service === 'websites' && plan === 'websites-crm' && session.customer) {
       try {
+        const pi = await stripe.paymentIntents.retrieve(session.payment_intent);
         const subscription = await stripe.subscriptions.create({
           customer: session.customer,
           items: [{ price: process.env.STRIPE_PRICE_WEBSITES_MONTHLY }],
           trial_period_days: 30,
-        });
+          default_payment_method: pi.payment_method,
+        }, { idempotencyKey: `websites-sub-${session.id}` });
         // The checkout itself was a one-time payment, so this is the subscription
         // a later cancellation will reference.
         await db.from('clients')
