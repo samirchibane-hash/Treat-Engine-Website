@@ -33,6 +33,7 @@
     { "src": "/home",                  "dest": "/Home.html" },
     { "src": "/ads",                   "dest": "/Water%20Leads.html" },
     { "src": "/ads/checkout",          "dest": "/checkout/leads.html" },
+    { "src": "/ads/checkout-q",        "dest": "/checkout/leads-q.html" },
     { "src": "/ads/onboarding",        "dest": "/onboarding/leads.html" },
     { "src": "/booking",               "dest": "/Water%20Leads%20Booking.html" },
     { "src": "/sales",                 "dest": "/Water%20Sales.html" },

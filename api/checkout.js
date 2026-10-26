@@ -48,6 +48,26 @@ module.exports = async (req, res) => {
         lineItems.push({ price: priceId, quantity: 1 });
       }
 
+      // ── /ads/checkout-q: first 90 days paid up front ──
+      // Same monthly prices, then month-to-month. Today's invoice carries each
+      // service as a one-time charge × 3 (amount read off the live Price, so
+      // the two pages can't drift), and the subscription trials for 90 days
+      // so its first monthly charge lands on day 91.
+      const prepay = req.body.term === '90';
+      const PREPAY_DAYS = 90;
+      const PREPAY_MONTHS = 3;
+
+      if (prepay) {
+        const prices = await Promise.all(lineItems.map(li => stripe.prices.retrieve(li.price)));
+        for (const p of prices) {
+          if (p.unit_amount == null) return res.status(500).json({ error: `Price ${p.id} has no flat amount` });
+          lineItems.push({
+            price_data: { currency: p.currency, product: p.product, unit_amount: p.unit_amount },
+            quantity: PREPAY_MONTHS,
+          });
+        }
+      }
+
       // Promo code — looked up live in Stripe, so the discount, its expiry and
       // any redemption limits are all managed from the Stripe Dashboard rather
       // than from this file. TRUEH20 (50% off, duration 'once') halves the first
@@ -58,7 +78,10 @@ module.exports = async (req, res) => {
       // reads `promo` into a Stripe discount and no session here sets
       // allow_promotion_codes — so a leads code cannot be redeemed on the sales
       // or websites checkouts.
-      const promo = String(req.body.promo || '').trim().toUpperCase();
+      //
+      // Never on the 90-day prepay: a 'once' coupon would discount all three
+      // prepaid months, not one.
+      const promo = prepay ? '' : String(req.body.promo || '').trim().toUpperCase();
       let promotionCodeId = null;
 
       if (promo) {
@@ -75,13 +98,25 @@ module.exports = async (req, res) => {
         line_items: lineItems,
         metadata: {
           service: 'leads',
-          plan: 'ala-carte',
+          plan: prepay ? 'prepay-90' : 'ala-carte',
           addons: addons.join(',') || 'none',
           promo: promo || 'none',
         },
         success_url: `${origin}/ads/onboarding?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${origin}/ads/checkout`,
+        cancel_url: `${origin}${prepay ? '/ads/checkout-q' : '/ads/checkout'}`,
       };
+
+      if (prepay) {
+        sessionParams.metadata.prepay_days = String(PREPAY_DAYS);
+        sessionParams.subscription_data = { trial_period_days: PREPAY_DAYS };
+        // Stripe's hosted page words the 90 days as a "trial" — this says what it really is.
+        sessionParams.custom_text = {
+          submit: {
+            message: `Today's payment covers your first ${PREPAY_DAYS} days. Monthly billing starts on ` +
+              `day ${PREPAY_DAYS + 1} at the same rate, month-to-month from there.`,
+          },
+        };
+      }
 
       if (promotionCodeId) {
         sessionParams.discounts = [{ promotion_code: promotionCodeId }];

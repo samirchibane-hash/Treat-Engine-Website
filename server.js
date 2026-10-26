@@ -35,6 +35,7 @@ const pages = {
   '/sales-v2/start':      'checkout/sales-start.html',
   '/sales/start':         'checkout/sales-start.html',
   '/ads/checkout':        'checkout/leads.html',
+  '/ads/checkout-q':      'checkout/leads-q.html',
   '/ads/onboarding':      'onboarding/leads.html',
   '/websites/onboarding': 'onboarding/websites.html',
   '/sales/welcome':       'welcome/sales.html',
