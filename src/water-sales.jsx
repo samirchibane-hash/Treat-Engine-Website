@@ -2080,17 +2080,6 @@ function Pricing() {
           Want to see it run first? <a href="/sales/demo" target="_blank" rel="noopener">Request a 30-minute demo</a> — we'll build a proposal with your catalog and your pricing, then send you the link so you can read it the way your customers will.
         </div>
 
-        <div className="pr-trust reveal">
-          <div className="pr-trust-item">
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
-            No setup fee
-          </div>
-          <div className="pr-trust-item">
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="7" cy="7" r="6"/><polyline points="5,7 7,9 10,5"/></svg>
-            No contracts
-          </div>
-        </div>
-
         <div className="pr-foot reveal">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5"><circle cx="7" cy="7" r="6"/><path d="M7 5v3"/><circle cx="7" cy="9.5" r=".5" fill="var(--ink-muted)"/></svg>
           <span>Every plan includes 10 credits a month. Need more? Credit packs start at 10 for $35, or turn on auto-reload and we'll add 10 for $35 whenever you run low. Credits never expire, and you can upgrade, downgrade or cancel any time.</span>
@@ -2203,8 +2192,8 @@ function V2Hero() {
       </div>
       <div className="v2-hero-meta">
         {TRIAL_OFFER_LIVE
-          ? <><strong className="v2-offer-ends">Free trial offer ends {TRIAL_OFFER_ENDS}</strong> · No setup fee · Cancel anytime</>
-          : 'No setup fee · Cancel anytime · Live in minutes'}
+          ? <><strong className="v2-offer-ends">Free trial offer ends {TRIAL_OFFER_ENDS}</strong> · Cancel anytime</>
+          : 'Cancel anytime · Live in minutes'}
       </div>
       <div className="v2-show" id="demo">
         <div className="v2-video">
@@ -2628,7 +2617,7 @@ function V2Final() {
         </div>
         <div className="v2-final-go">
           <a href="#plan-starter" className="v2-btn primary">{CTA.final} →</a>
-          <span>{TRIAL_OFFER_LIVE ? '30 days free · Offer ends Dec 31 · Cancel anytime' : '30 days free · No setup fee · Cancel anytime'}</span>
+          <span>{TRIAL_OFFER_LIVE ? '30 days free · Offer ends Dec 31 · Cancel anytime' : '30 days free · Cancel anytime'}</span>
         </div>
       </div>
     </section>
