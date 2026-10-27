@@ -170,5 +170,21 @@ s.parentNode.insertBefore(b, s);})(window.lintrk);
 </footer>
 
 <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
+<script>
+// The GHL calendar lives in a cross-origin iframe; on a booking it posts
+// ["msgsndr-booking-complete", …] to this page. Fire LinkedIn "ClearDeals Demo"
+// once per page load.
+(function () {
+  var sent = false;
+  window.addEventListener('message', function (e) {
+    if (sent || !/^https:\/\/([a-z0-9-]+\.)*(leadconnectorhq|msgsndr)\.com$/.test(e.origin)) return;
+    var d = e.data;
+    var name = Array.isArray(d) ? d[0] : (typeof d === 'string' ? d : '');
+    if (String(name).indexOf('msgsndr-booking-complete') === -1) return;
+    sent = true;
+    try { if (typeof window.lintrk === 'function') window.lintrk('track', { conversion_id: 30109724 }); } catch (err) {}
+  });
+})();
+</script>
 </body>
 </html>
