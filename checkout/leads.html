@@ -334,6 +334,8 @@ gtag('config', 'AW-16631843401');
           <span class="btn-text">Start my subscription — $798/mo</span>
           <div class="spinner"></div>
         </button>
+        <p class="agree-note">After checkout you'll e-sign our Master Services Agreement with your order details.
+          <button type="button" class="agree-link" id="ag-open" aria-haspopup="dialog">Preview the agreement</button></p>
         <button class="btn-ghost" onclick="window.location='/ads'">← Back to Water Leads</button>
 
         <div class="trust-row">
@@ -363,6 +365,7 @@ gtag('config', 'AW-16631843401');
   </div>
 </footer>
 
+<script src="/agreement-preview.js"></script>
 <script>
 const STATE = { appt: false, apptTier: 'pt', google: false };
 const PRICES = { meta: 599, crm: 199, appt_pt: 699, appt_ft: 1300, google: 799 };
@@ -459,6 +462,9 @@ function renderSummary() {
     promoApplied ? 'then $' + money(monthly) + '/month' : '/ month';
   document.querySelector('#checkout-btn .btn-text').textContent =
     'Start my subscription — $' + money(dueToday) + (promoApplied ? ' today' : '/mo');
+  if (window.AgreementPreview) {
+    AgreementPreview.setCta('Start my subscription — $' + money(dueToday) + (promoApplied ? ' today' : '/mo'));
+  }
 }
 
 async function startCheckout() {
@@ -496,6 +502,18 @@ async function startCheckout() {
     btn.disabled = false;
   }
 }
+
+// ── Agreement preview (agreement-preview.js) ──
+AgreementPreview.init({
+  plan: 'ala-carte',
+  getAddons: function() {
+    const addons = [];
+    if (STATE.google) addons.push('google_ads');
+    if (STATE.appt) addons.push(STATE.apptTier === 'pt' ? 'appointment_setters_pt' : 'appointment_setters_ft');
+    return addons;
+  },
+  onContinue: startCheckout,
+});
 
 // Initialize summary on load
 renderSummary();

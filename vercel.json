@@ -18,6 +18,7 @@
     { "src": "*.webp",            "use": "@vercel/static" },
     { "src": "*.css",             "use": "@vercel/static" },
     { "src": "mobile-nav.js",     "use": "@vercel/static" },
+    { "src": "agreement-preview.js", "use": "@vercel/static" },
     { "src": "v2.js",             "use": "@vercel/static" },
     { "src": "water-sales.js",    "use": "@vercel/static" }
   ],
