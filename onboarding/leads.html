@@ -364,8 +364,8 @@ gtag('config', 'AW-16631843401');
     <!-- Service agreement -->
     <div class="form-section" data-step="7">
       <div class="section-eyebrow">Final Step</div>
-      <div class="section-title">Sign your service agreement</div>
-      <p style="font-size:14px;color:var(--ink-muted);margin:-4px 0 24px;line-height:1.7;">This puts what you just bought in writing: your services, your monthly fee and how to cancel. Read it over, then sign below. We'll email you a signed copy.</p>
+      <div class="section-title">Sign your agreement</div>
+      <p style="font-size:14px;color:var(--ink-muted);margin:-4px 0 24px;line-height:1.7;">Our Master Services Agreement, with an Order Form for exactly what you bought. Read it over, then sign below. We'll email you a signed copy.</p>
 
       <div id="ag-loading" class="ag-state" role="status"><div class="spinner-lg"></div>Preparing your agreement…</div>
       <div id="ag-load-error" class="ag-state" style="display:none;">
@@ -395,7 +395,7 @@ gtag('config', 'AW-16631843401');
         </div>
 
         <div class="ag-doc-wrap" id="ag-doc-wrap">
-          <iframe class="ag-doc" id="ag-doc" title="Water Leads service order" sandbox="allow-same-origin"></iframe>
+          <iframe class="ag-doc" id="ag-doc" title="Master Services Agreement and Order Form" sandbox="allow-same-origin"></iframe>
           <div class="ag-doc-bar">
             <span>Scroll to read the full agreement</span>
             <button type="button" id="ag-expand" aria-expanded="false">Expand</button>
@@ -442,7 +442,7 @@ gtag('config', 'AW-16631843401');
 
           <label class="ag-consent" id="ag-consent-wrap">
             <input type="checkbox" id="ag-consent">
-            <span>I've read this service order, I'm authorized to sign for this business, and I agree to sign electronically. It's as binding as a handwritten signature.</span>
+            <span>I've read the Master Services Agreement and Order Form, I'm authorized to sign for this business, and I agree to sign electronically. It's as binding as a handwritten signature.</span>
           </label>
           <div class="field-error" id="err-consent" hidden style="margin-top:6px;"></div>
 
@@ -781,7 +781,7 @@ function renderOrder(order) {
   const total = `<div class="ag-line total"><span>${prepay ? 'From day ' + ((order.prepay_days || 90) + 1) : 'Monthly total'}</span><span>${usd(order.monthly_cents)}/mo</span></div>`;
   const paid = `<div class="ag-line"><span>Paid at checkout${prepay ? ' (first ' + (order.prepay_days || 90) + ' days)' : ''}</span><span>${usd(order.due_today_cents)}</span></div>`;
   $('ag-lines').innerHTML = lines + total + paid;
-  $('ag-term').textContent = prepay ? '90 days prepaid, then month-to-month' : 'Month-to-month · cancel anytime';
+  $('ag-term').textContent = prepay ? 'First 90 days prepaid' : 'Billed monthly';
 }
 
 function escapeHtml(v) {
@@ -1051,7 +1051,7 @@ function showOverlay(type) {
     restoreProgress();
     // Answers already saved on an earlier visit: pick up at the agreement.
     const saved = savedState();
-    onboardingSaved = !!(saved && saved.onboarded);
+    onboardingSaved = !!(saved && saved.onboarded) || (IS_PREVIEW && params.get('step') === 'agreement');
     if (onboardingSaved) buildReview();
     goToStep(onboardingSaved ? AGREEMENT_STEP : 1);
     // Fetch the agreement now so the last step opens instantly.
