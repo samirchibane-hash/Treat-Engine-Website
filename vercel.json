@@ -57,6 +57,7 @@
     { "src": "/privacypolicy",         "dest": "/privacy-policy.html" },
     { "src": "/termsofservice",        "dest": "/terms-of-service.html" },
     { "src": "/blog/water-treatment-sales-follow-up-customer-proposal-link", "status": 301, "headers": { "Location": "/blog/interactive-proposals-for-water-treatment-sales" } },
+    { "src": "/blog/cleardeals-fall-2026-texting-calendar-deal-board", "dest": "/blog/cleardeals-fall-2026-texting-calendar-deal-board.html" },
     { "src": "/blog/presentation-styles-for-water-treatment-proposals", "dest": "/blog/presentation-styles-for-water-treatment-proposals.html" },
     { "src": "/blog/interactive-proposals-for-water-treatment-sales", "dest": "/blog/interactive-proposals-for-water-treatment-sales.html" },
     { "src": "/blog/water-treatment-in-home-sales-tool-value-comparison", "dest": "/blog/water-treatment-in-home-sales-tool-value-comparison.html" },
