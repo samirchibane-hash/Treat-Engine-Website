@@ -2015,9 +2015,6 @@ const wiVars = (p) => ({'--wi-solid': p.color.solid, '--wi-tint': p.color.tint, 
  * at most one plays at a time.
  */
 const FEATURES = [
-  {prop: 'followup',     beat: 0, icon: 'MessagesSquare', label: 'Texting & calls', isNew: true, title: 'Text and call from the deal.',      sub: 'Text, email and call homeowners right from the deal. Every reply stays with the customer it’s about.'},
-  {prop: 'followup',     beat: 1, icon: 'CalendarDays',   label: 'Calendar',        isNew: true, title: 'Book the install. It’s on Google too.', sub: 'Installs and water tests land on your team’s calendar and sync to Google Calendar.'},
-  {prop: 'followup',     beat: 2, icon: 'Columns3',       label: 'Pipelines',       isNew: true, title: 'A deal board that moves itself.',   sub: 'Cards move on their own when customers open, sign, pay or book. No dragging cards around.'},
   {prop: 'presentation', beat: 0, icon: 'Droplets',    label: 'Water test',      dy: 58,      title: 'Show them their water.',              sub: 'Their ZIP’s local water report loads on its own. Log your test and it sits right on top.'},
   {prop: 'presentation', beat: 1, icon: 'Package',     label: 'System buildout', title: 'Build the system in front of them.',  sub: 'The monthly payment updates at your financing rate as you go.'},
   {prop: 'presentation', beat: 3, icon: 'TrendingUp',  label: 'Savings',         title: 'Close on the savings.',               sub: 'A 20-year comparison against what they spend today.'},
@@ -2027,6 +2024,9 @@ const FEATURES = [
   {prop: 'virtual',      beat: 2, icon: 'Smartphone',  label: 'Remote sales',    title: 'They choose from their couch.',       sub: 'Send one link. They compare your options and pick one from their phone.'},
   {prop: 'payments',     beat: 0, icon: 'Landmark',    label: 'Financing',       title: 'Financing right in the proposal.',    sub: 'Apply with your lender, or pay by card or bank through Stripe.'},
   {prop: 'payments',     beat: 2, icon: 'PenLine',     label: 'E-signature',     title: 'Signed on any device.',               sub: 'Draw it or type it, and the agreement is done.'},
+  {prop: 'followup',     beat: 0, icon: 'MessagesSquare', label: 'Texting & calls', isNew: true, title: 'Text and call from the deal.',      sub: 'Text, email and call homeowners right from the deal. Every reply stays with the customer it’s about.'},
+  {prop: 'followup',     beat: 1, icon: 'CalendarDays',   label: 'Calendar',        isNew: true, title: 'Book the install. It’s on Google too.', sub: 'Installs and water tests land on your team’s calendar and sync to Google Calendar.'},
+  {prop: 'followup',     beat: 2, icon: 'Columns3',       label: 'Pipelines',       isNew: true, title: 'A deal board that moves itself.',   sub: 'Cards move on their own when customers open, sign, pay or book. No dragging cards around.'},
 ];
 const REST_T = BEAT * 0.9;          // finished state shown while a card is idle
 const HOLD = 900;                   // linger on the finished state before replaying
