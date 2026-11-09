@@ -1591,6 +1591,289 @@ function GrowBeat({beat, t}) {
   );
 }
 
+/* ═════════════════════ 7 · FOLLOW-UP (Fall 2026: texting, calendar, pipelines) ═════════════════════
+ * One deal's story, same as the "What's new" launch ad (campaigns/src/compositions/WhatsNew.tsx):
+ *   beat 0  ConversationThread ← comms/ConversationPanel + ThreadView + Composer
+ *   beat 1  CalendarWeek       ← dashboard/calendar/TimeGrid (Installs = emerald, Google busy = hatched)
+ *   beat 2  Pipeline columns   ← dashboard/pipelines/PipelineBoard + DealCard
+ * Strings are verbatim from the app: "Delivered", "Outgoing call · 3:24", "You called Jamie",
+ * "Enter to send · Shift+Enter for a new line", 'Install · ' || customer_name, "Busy",
+ * stage names/colors from ensure_default_pipeline(), reasons from pipeline_card_reason().
+ * Customers and messages are a fictional demo; deal values are Commers' real retail prices.
+ */
+const FU = {
+  sheetTitle: '#0f1c2e', sheetDesc: '#8592a6', sheetIcon: '#4b5b72', sheetRule: '#eef0f3', sheetFooter: '#fafbfc',
+  peachBg: '#fdf0e6', peachFg: '#9a4a0b', avatarBg: '#e8eef9', avatarFg: '#1e40af',
+  emerald50: '#ecfdf5', emerald500: '#10b981', emerald950: '#022c22',
+  violet50: '#f5f3ff', violet500: '#8b5cf6', violet700: '#6d28d9',
+  amber50: '#fffbeb', amber500: '#f59e0b', mutedSolid: 'hsl(220, 15%, 97%)', muted70: 'hsla(220, 15%, 94%, 0.7)',
+  primaryFg: 'hsl(40, 25%, 98%)',
+};
+const fuPanel = {background: APP.card, borderRadius: 12, overflow: 'hidden', border: `1px solid ${APP.border}`, boxShadow: '0 24px 60px hsla(216, 30%, 15%, 0.18)'};
+/** A thread item / card landing: fade, lift and settle. */
+const land = (p) => ({opacity: Math.min(1, p * 2.5), transform: `translateY(${(1 - p) * 14}px) scale(${0.94 + 0.06 * p})`});
+
+/* ── beat 0 · texting & calls ── */
+const FU_THREAD = [
+  {kind: 'sms', out: true, body: 'Hi Jamie, your proposal is in your inbox.', meta: 'You · 10:12 AM · Delivered', at: 150},
+  {kind: 'sms', out: false, body: 'Can we do the install Thursday?', meta: 'Jamie · 10:20 AM', at: 800},
+  {kind: 'call', label: 'Outgoing call · 3:24', meta: 'You called Jamie · 10:31 AM', at: 1450},
+  {kind: 'sms', out: true, body: 'Booked for Thursday at 9. See you then!', meta: 'You · 10:35 AM · Delivered', at: 3000},
+];
+const FU_TYPE_AT = 1900;            // the reply is typed into the composer, then sent
+
+function ConversationThread({t}) {
+  const reply = FU_THREAD[3];
+  const draft = t >= reply.at ? '' : typed(reply.body, t, FU_TYPE_AT, 26);
+  const meta = (right, children) => (
+    <p style={{margin: '2px 0 0', display: 'flex', alignItems: 'center', gap: 4, padding: '0 4px 6px', fontSize: 11, color: APP.mutedFg, justifyContent: right ? 'flex-end' : 'flex-start'}}>{children}</p>
+  );
+  return (
+    <div style={{width: 520, ...fuPanel}}>
+      <div style={{display: 'flex', alignItems: 'flex-start', gap: 10, borderBottom: `1px solid ${FU.sheetRule}`, padding: '18px 16px 14px 20px'}}>
+        <span style={{width: 36, height: 36, borderRadius: 999, background: FU.peachBg, color: FU.peachFg, fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>JS</span>
+        <div style={{flex: 1, display: 'flex', flexDirection: 'column', gap: 3}}>
+          <span style={{fontSize: 16, fontWeight: 600, lineHeight: 1.2, color: FU.sheetTitle}}>Jamie Smith</span>
+          <span style={{fontSize: 12, color: FU.sheetDesc}}>(585) 555-0142 · jamie@example.com</span>
+        </div>
+        <span style={{width: 32, height: 32, marginTop: -6, display: 'flex', alignItems: 'center', justifyContent: 'center', color: FU.sheetIcon}}><Ic n="Phone" size={16}/></span>
+        <Ic n="X" size={16} sw={1.75} color={FU.sheetIcon} style={{opacity: 0.7}}/>
+      </div>
+      <div style={{padding: '10px 20px 8px', display: 'flex', flexDirection: 'column', gap: 4, minHeight: 306}}>
+        <p style={{margin: 0, padding: '4px 0 8px', textAlign: 'center', fontSize: 11, fontWeight: 500, color: APP.mutedFg}}>Today</p>
+        {FU_THREAD.map((it, i) => {
+          const p = easeOut(prog(t, it.at, 380));
+          if (p <= 0) return null;
+          if (it.kind === 'call') {
+            return (
+              <div key={i} style={{display: 'flex', justifyContent: 'center', padding: '6px 0', ...land(p)}}>
+                <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, borderRadius: 12, border: `1px dashed ${APP.border}`, padding: '10px 12px'}}>
+                  <p style={{margin: 0, display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 500, color: APP.fg}}><Ic n="PhoneOutgoing" size={14}/> {it.label}</p>
+                  <p style={{margin: 0, fontSize: 11, color: APP.mutedFg}}>{it.meta}</p>
+                </div>
+              </div>
+            );
+          }
+          return (
+            <div key={i} style={{display: 'flex', flexDirection: 'column', alignItems: it.out ? 'flex-end' : 'flex-start', ...land(p)}}>
+              <p style={{margin: 0, maxWidth: '85%', padding: '8px 14px', fontSize: 14, lineHeight: 1.4, borderRadius: 16,
+                ...(it.out ? {borderBottomRightRadius: 6, background: APP.primary, color: FU.primaryFg} : {borderBottomLeftRadius: 6, background: APP.muted, color: APP.fg})}}>
+                {it.body}
+              </p>
+              {meta(it.out, <><Ic n="MessageSquare" size={12}/> {it.meta}</>)}
+            </div>
+          );
+        })}
+      </div>
+      <div style={{borderTop: `1px solid ${FU.sheetRule}`, background: FU.sheetFooter, padding: '12px 16px 12px 20px', display: 'flex', flexDirection: 'column', gap: 10}}>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+          <div style={{display: 'flex', borderRadius: 8, background: APP.muted, padding: 2}}>
+            <span style={{height: 32, display: 'flex', alignItems: 'center', gap: 6, padding: '0 12px', borderRadius: 6, fontSize: 12, fontWeight: 500, background: APP.bg, boxShadow: '0 1px 2px rgba(0,0,0,0.05)', color: APP.fg}}><Ic n="MessageSquare" size={14}/> Text</span>
+            <span style={{height: 32, display: 'flex', alignItems: 'center', gap: 6, padding: '0 12px', fontSize: 12, fontWeight: 500, color: APP.mutedFg}}><Ic n="Mail" size={14}/> Email</span>
+          </div>
+          <span style={{fontSize: 12, color: APP.mutedFg, fontVariantNumeric: 'tabular-nums'}}>To (585) 555-0142</span>
+        </div>
+        <div style={{minHeight: 56, borderRadius: 8, border: `1px solid ${draft ? APP.primary20 : APP.border}`, background: APP.bg, padding: '8px 12px', fontSize: 14, color: draft ? APP.fg : APP.mutedFg}}>
+          {draft || 'Text Jamie…'}{draft && <Caret h={16} on={blink(t)}/>}
+        </div>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+          <span style={{fontSize: 12, color: APP.mutedFg}}>Enter to send · Shift+Enter for a new line</span>
+          <span style={{height: 44, minWidth: 96, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, borderRadius: 8, background: APP.primary, color: FU.primaryFg, fontSize: 14, fontWeight: 500, opacity: draft ? 1 : 0.5}}>
+            <Ic n="Send" size={16}/> Send
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── beat 1 · calendar ── */
+const CAL = {hour: 56, first: 9, hours: 6, gutter: 56, col: 172};
+const CAL_W = CAL.gutter + CAL.col * 3;
+const CAL_DAYS = [['Wed', '11'], ['Thu', '12'], ['Fri', '13']];
+const CAL_DROP = 1100;              // "Install · Jamie Smith" lands on Thursday
+const CAL_SYNCED = 2500;            // Google sync finishes
+const hourLabel = (h) => `${h > 12 ? h - 12 : h} ${h >= 12 ? 'PM' : 'AM'}`;
+
+function CalAppt({b, drop = 1, syncing, highlight = 0}) {
+  const emerald = b.tone === 'emerald';
+  const h = (b.end - b.start) * CAL.hour;
+  return (
+    <div style={{position: 'absolute', top: (b.start - CAL.first) * CAL.hour, height: h, left: CAL.gutter + b.day * CAL.col + 2, width: CAL.col - 4,
+      opacity: Math.min(1, drop * 2), transform: `translateY(${(1 - drop) * -40}px) scale(${1 + 0.04 * highlight})`}}>
+      <div style={{height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 6, padding: '4px 6px',
+        borderLeft: `3px solid ${emerald ? FU.emerald500 : APP.primary}`, background: emerald ? FU.emerald50 : APP.primary10, color: emerald ? FU.emerald950 : APP.fg,
+        boxShadow: highlight ? `0 0 0 ${2 * highlight}px ${FU.emerald500}, 0 1px 3px hsla(216, 30%, 15%, 0.08)` : '0 1px 3px hsla(216, 30%, 15%, 0.08)'}}>
+        <span style={{display: 'flex', alignItems: 'center', gap: 4}}>
+          <span style={{fontSize: 12, fontWeight: 600, lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{b.title}</span>
+          {syncing && <Ic n="Loader2" size={12} style={{marginLeft: 'auto', opacity: 0.6, flexShrink: 0}}/>}
+        </span>
+        <span style={{fontSize: 11, lineHeight: 1.2, opacity: 0.8, fontVariantNumeric: 'tabular-nums'}}>{b.time}</span>
+        {h >= 64 && b.owner && <span style={{fontSize: 11, lineHeight: 1.2, opacity: 0.7}}>{b.owner}</span>}
+      </div>
+    </div>
+  );
+}
+
+function CalendarWeek({t}) {
+  const drop = t >= CAL_DROP ? back(prog(t, CAL_DROP, 520)) : 0;
+  const syncing = t >= CAL_DROP && t < CAL_SYNCED;
+  const hl = prog(t, CAL_SYNCED, 600);
+  const highlight = hl <= 0 ? 0 : hl < 0.5 ? hl * 2 : 1 - (hl - 0.5) * 1.3;
+  const H = CAL.hour;
+  return (
+    <div style={{width: CAL_W, ...fuPanel}}>
+      <div style={{display: 'grid', gridTemplateColumns: `${CAL.gutter}px repeat(3, ${CAL.col}px)`, borderBottom: `1px solid ${APP.border}`}}>
+        <div/>
+        {CAL_DAYS.map(([dow, d]) => (
+          <div key={d} style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, padding: '8px 0', borderLeft: `1px solid ${APP.border60}`}}>
+            <span style={{fontSize: 11, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.025em', color: APP.mutedFg}}>{dow}</span>
+            <span style={{width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 999, fontSize: 15, fontWeight: 600, color: APP.fg}}>{d}</span>
+          </div>
+        ))}
+      </div>
+      <div style={{position: 'relative', height: CAL.hours * H + 10}}>
+        {Array.from({length: CAL.hours + 1}, (_, i) => (
+          <React.Fragment key={i}>
+            {i > 0 && <span style={{position: 'absolute', right: CAL_W - CAL.gutter + 8, top: i * H, transform: 'translateY(-50%)', fontSize: 11, color: APP.mutedFg, fontVariantNumeric: 'tabular-nums'}}>{hourLabel(CAL.first + i)}</span>}
+            <div style={{position: 'absolute', left: CAL.gutter, right: 0, top: i * H, borderTop: `1px solid ${APP.border60}`}}/>
+          </React.Fragment>
+        ))}
+        {[0, 1, 2].map((c) => <div key={c} style={{position: 'absolute', top: 0, bottom: 0, left: CAL.gutter + c * CAL.col, borderLeft: `1px solid ${APP.border60}`}}/>)}
+        <div style={{position: 'absolute', top: 2 * H, height: 1.5 * H, left: CAL.gutter + 2 * CAL.col + 2, width: CAL.col - 4, borderRadius: 6, border: `1px dashed ${APP.border}`,
+          background: FU.muted70, padding: '2px 6px', fontSize: 11, color: APP.mutedFg, backgroundImage: `repeating-linear-gradient(135deg, transparent 0 6px, ${APP.border60} 6px 7px)`}}>Busy</div>
+        <CalAppt b={{day: 0, start: 9, end: 10, title: 'Water test · Ruiz', time: '9 – 10 AM', tone: 'blue'}}/>
+        <CalAppt b={{day: 0, start: 13, end: 15, title: 'Install · Owen Gallagher', time: '1 – 3 PM', owner: 'Maria Chen', tone: 'emerald'}}/>
+        <CalAppt b={{day: 1, start: 13, end: 14, title: 'Water test · Okafor', time: '1 – 2 PM', tone: 'blue'}}/>
+        <CalAppt b={{day: 2, start: 12, end: 13, title: 'Water test · Patel', time: '12 – 1 PM', tone: 'blue'}}/>
+        {drop > 0 && <CalAppt b={{day: 1, start: 9, end: 11, title: 'Install · Jamie Smith', time: '9 – 11 AM', owner: 'Jake Reynolds', tone: 'emerald'}}
+          drop={drop} syncing={syncing} highlight={highlight}/>}
+      </div>
+    </div>
+  );
+}
+
+/* ── beat 2 · pipelines ── */
+const PIPE_COL = 284;
+const PIPE_CARD = 130;
+const PIPE_LIFT = 900;              // Jamie's card lifts…
+const PIPE_MOVE = 700;              // …glides from Signed to Installed…
+const PIPE_LAND = PIPE_LIFT + 200 + PIPE_MOVE;  // …and lands as "Install scheduled"
+
+function PipeSignal({tag}) {
+  const base = {display: 'inline-flex', alignItems: 'center', gap: 4, height: 20, padding: '0 6px', borderRadius: 6, fontSize: 11, fontWeight: 500, background: APP.muted, color: APP.mutedFg};
+  if (tag === 'signed') return <span style={{...base, background: FU.violet50, color: FU.violet700}}><Ic n="FileCheck2" size={12}/> Signed</span>;
+  if (tag === 'paid') return <span style={{...base, background: FU.emerald50, color: APP.emerald700}}><Ic n="CircleDollarSign" size={12}/> Paid</span>;
+  return <span style={base}><Ic n="CalendarCheck" size={12}/> {tag.install}</span>;
+}
+
+function DealCard({deal, lifted = 0, style}) {
+  return (
+    <div style={{position: 'relative', display: 'flex', flexDirection: 'column', gap: 8, padding: 12, borderRadius: 8, border: `1px solid ${APP.border}`, background: APP.card, width: PIPE_COL - 16,
+      boxShadow: lifted ? APP.lg : '0 1px 2px rgba(15,26,46,0.06)', outline: lifted ? `1px solid ${APP.primary20}` : undefined, ...style}}>
+      <div style={{display: 'flex', alignItems: 'flex-start', gap: 8}}>
+        <p style={{margin: 0, flex: 1, fontSize: 13, fontWeight: 600, lineHeight: '20px', color: APP.fg}}>{deal.name}</p>
+        <span style={{fontSize: 13, fontWeight: 600, lineHeight: '20px', color: APP.fg, fontVariantNumeric: 'tabular-nums'}}>{deal.value}</span>
+      </div>
+      <div style={{display: 'flex', flexWrap: 'wrap', gap: 4}}>{deal.tags.map((tg, i) => <PipeSignal key={i} tag={tg}/>)}</div>
+      <div style={{display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: APP.mutedFg}}>
+        <span style={{display: 'flex', alignItems: 'center', gap: 6}}>
+          <span style={{width: 20, height: 20, borderRadius: 999, background: FU.avatarBg, color: FU.avatarFg, fontSize: 9, fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>{deal.rep[0]}</span>
+          {deal.rep[1]}
+        </span>
+        <span style={{marginLeft: 'auto', fontVariantNumeric: 'tabular-nums'}}>{deal.days}</span>
+      </div>
+      <p style={{margin: 0, display: 'flex', alignItems: 'center', gap: 4, borderTop: `1px solid ${APP.border60}`, paddingTop: 8, fontSize: 11, lineHeight: '16px', color: APP.mutedFg}}>
+        <Ic n="Zap" size={12} color={APP.primary}/> {deal.reason}
+      </p>
+    </div>
+  );
+}
+
+function StageColumn({name, dot, soft, count, total, height, over = 0, children}) {
+  return (
+    <section style={{width: PIPE_COL, height, display: 'flex', flexDirection: 'column', borderRadius: 12, background: FU.mutedSolid, flexShrink: 0}}>
+      <header style={{display: 'flex', flexDirection: 'column', gap: 2, padding: '10px 12px 8px', borderRadius: '12px 12px 0 0', background: soft}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
+          <span style={{width: 8, height: 8, borderRadius: 999, background: dot}}/>
+          <h4 style={{margin: 0, fontSize: 13, fontWeight: 600, color: APP.fg}}>{name}</h4>
+          <span style={{borderRadius: 6, background: APP.card, padding: '0 6px', fontSize: 11, fontWeight: 600, color: APP.mutedFg, fontVariantNumeric: 'tabular-nums'}}>{count}</span>
+          <Ic n="Zap" size={14} color={APP.primary} style={{marginLeft: 'auto'}}/>
+        </div>
+        <p style={{margin: 0, paddingLeft: 16, fontSize: 12, fontWeight: 500, color: APP.mutedFg, fontVariantNumeric: 'tabular-nums'}}>{total}</p>
+      </header>
+      <div style={{position: 'relative', flex: 1, borderRadius: '0 0 12px 12px', background: over ? APP.primary5 : undefined, boxShadow: over ? `inset 0 0 0 2px ${APP.primary20}` : undefined}}>{children}</div>
+    </section>
+  );
+}
+
+const JAKE = ['JR', 'Jake Reynolds'], MARIA = ['MC', 'Maria Chen'], TYLER = ['TB', 'Tyler Brooks'];
+const DEAL = {
+  jamieSigned: {name: 'Jamie Smith', value: '$5,799', tags: ['signed'], days: '2d', reason: 'Customer signed', rep: JAKE},
+  jamieBooked: {name: 'Jamie Smith', value: '$5,799', tags: ['signed', {install: 'Install Nov 12'}], days: 'Today', reason: 'Install scheduled', rep: JAKE},
+  dana: {name: 'Dana Whitfield', value: '$4,399', tags: ['signed'], days: '1d', reason: 'Customer signed', rep: MARIA},
+  noah: {name: 'Noah Patel', value: '$4,899', tags: ['signed'], days: '4d', reason: 'Customer signed', rep: TYLER},
+  marcus: {name: 'Marcus Hill', value: '$4,899', tags: ['signed', 'paid', {install: 'Installed'}], days: '3d', reason: 'Install scheduled', rep: JAKE},
+  sam: {name: 'Sam Delgado', value: '$5,799', tags: ['signed', 'paid', {install: 'Installed'}], days: '5d', reason: 'Install scheduled', rep: MARIA},
+};
+
+function PipelineColumns({t}) {
+  const step = PIPE_CARD + 8;
+  const lift = easeOut(prog(t, PIPE_LIFT, 260));
+  const move = easeInOut(prog(t, PIPE_LIFT + 200, PIPE_MOVE));
+  const landed = t >= PIPE_LAND;
+  const settle = prog(t, PIPE_LAND, 300);
+  const liftAmt = landed ? 1 - settle : lift;
+  const slot = (i) => 8 + i * step;
+  // Signed: Jamie, Dana, Noah → Dana and Noah slide up. Installed: Marcus, Sam → slide down for Jamie.
+  const up = easeInOut(prog(move, 0.2, 0.6));
+  const down = easeInOut(prog(move, 0.5, 0.5));
+  const H = 3 * step + 62;
+  return (
+    <div style={{position: 'relative', width: PIPE_COL * 2 + 12, display: 'flex', gap: 12}}>
+      <StageColumn name="Signed" dot={FU.violet500} soft={FU.violet50} count={landed ? 2 : 3} total={landed ? '$9,298' : '$15,097'} height={H}/>
+      <StageColumn name="Installed" dot={FU.amber500} soft={FU.amber50} count={landed ? 3 : 2} total={landed ? '$16,497' : '$10,698'} height={H} over={!landed && move > 0.5 ? 1 : 0}/>
+      <div style={{position: 'absolute', top: 54, left: 0, right: 0, bottom: 0}}>
+        <DealCard deal={DEAL.dana} style={{position: 'absolute', left: 8, top: lerp(slot(1), slot(0), up)}}/>
+        <DealCard deal={DEAL.noah} style={{position: 'absolute', left: 8, top: lerp(slot(2), slot(1), up)}}/>
+        <DealCard deal={DEAL.marcus} style={{position: 'absolute', left: PIPE_COL + 20, top: lerp(slot(0), slot(1), down)}}/>
+        <DealCard deal={DEAL.sam} style={{position: 'absolute', left: PIPE_COL + 20, top: lerp(slot(1), slot(2), down)}}/>
+        <DealCard deal={landed ? DEAL.jamieBooked : DEAL.jamieSigned} lifted={liftAmt}
+          style={{position: 'absolute', zIndex: 2, left: 8 + move * (PIPE_COL + 12), top: slot(0) - 10 * liftAmt,
+            transform: `rotate(${1.5 * liftAmt}deg) scale(${1 + 0.04 * liftAmt})`}}/>
+      </div>
+    </div>
+  );
+}
+
+function FollowUpBeat({beat, t}) {
+  if (beat === 0) {
+    return (
+      <>
+        <ProductBleed p={WI_P.wwhs} side="left" t={t} height={560} inset={-60}/>
+        <AudiencePill label="Sales Reps" side="right"/>
+        <div style={{position: 'absolute', right: 40, top: 70, ...rise(t, 0)}}><Scaled s={1.12} origin="top right" width={520}><ConversationThread t={t}/></Scaled></div>
+      </>
+    );
+  }
+  if (beat === 1) {
+    return (
+      <>
+        <ProductBleed p={WI_P.vortex} side="right" t={t} height={560} inset={-80}/>
+        <AudiencePill label="Your whole team" side="left"/>
+        <div style={{position: 'absolute', left: 40, top: 96, ...rise(t, 0)}}><Scaled s={1.18} width={CAL_W}><CalendarWeek t={t}/></Scaled></div>
+      </>
+    );
+  }
+  return (
+    <>
+      <ProductBleed p={WI_P.evolve} side="right" t={t} height={560} inset={-90}/>
+      <AudiencePill label="Owners & Managers" side="left"/>
+      <div style={{position: 'absolute', left: 40, top: 92, ...rise(t, 0)}}><Scaled s={1.2} width={PIPE_COL * 2 + 12}><PipelineColumns t={t}/></Scaled></div>
+    </>
+  );
+}
+
 /* ═════════════════════ copy + section ═════════════════════ */
 const WI_PROPS = [
   {
@@ -1658,6 +1941,15 @@ const WI_PROPS = [
       'They sign on any device. Draw it or type it, and the agreement is done.',
       'Every admin and manager hears the moment the deal closes.',
     ],
+  },  {
+    key: 'followup', color: {solid: '#c026d3', tint: '#fdf4ff', ink: '#a21caf'}, focus: ['right', 'left', 'left'], label: 'Follow-up & scheduling', icon: 'MessagesSquare', Beat: FollowUpBeat,
+    title: 'Keep every water deal moving.',
+    summary: 'Talk to the homeowner, book the install and watch the deal move, all from the deal itself.',
+    bullets: [
+      'Text, email and call homeowners right from the deal.',
+      'Book the install, and it lands on Google Calendar too.',
+      'Your deal board moves itself when customers open, sign, pay or book.',
+    ],
   },
 ];
 
@@ -1680,7 +1972,8 @@ const WI_MOBILE = {
   grow: [M([191, 96, 739], 'vortex', 'right', 'Sales Reps'), M([36, 110, 676], 'wwhs', 'right', 'Sales Reps'),
          M([337, 76, 583], 'wwhs', 'left', 'Sales Reps'), M([337, 76, 583], 'wwhs', 'left', 'Owners & Managers')],
   payments: [M([190, 44, 730], 'wwhs', 'right', 'Homeowners'), M([40, 170, 638], 'wwhs', 'right', 'Homeowners'),
-             M([286, 76, 634], 'wwhs', 'left', 'Homeowners'), M([40, 110, 616], 'wwhs', 'right', 'Owners & Managers')],
+             M([286, 76, 634], 'wwhs', 'left', 'Homeowners'), M([40, 110, 616], 'wwhs', 'right', 'Owners & Managers')],  followup: [M([271, 122, 715], 'wwhs', 'left', 'Sales Reps'), M([53, 127, 648], 'vortex', 'right', 'Your whole team'),
+             M([28, 141, 720], 'evolve', 'right', 'Owners & Managers')],
 };
 
 function usePrefersReducedMotion() {
@@ -1716,12 +2009,15 @@ function useWidth(ref, fallback) {
 const wiVars = (p) => ({'--wi-solid': p.color.solid, '--wi-tint': p.color.tint, '--wi-ink': p.color.ink});
 
 /* ── Feature grid ──────────────────────────────────────────────────────
- * Nine cards, one function each. A card plays ONE beat of an existing value-prop scene,
+ * Twelve cards, one function each. A card plays ONE beat of an existing value-prop scene,
  * cropped to that beat's control (WI_MOBILE boxes). Cards rest on the beat's finished
  * frame and only animate while hovered (mouse) or while centred on screen (touch), so
  * at most one plays at a time.
  */
 const FEATURES = [
+  {prop: 'followup',     beat: 0, icon: 'MessagesSquare', label: 'Texting & calls', isNew: true, title: 'Text and call from the deal.',      sub: 'Text, email and call homeowners right from the deal. Every reply stays with the customer it’s about.'},
+  {prop: 'followup',     beat: 1, icon: 'CalendarDays',   label: 'Calendar',        isNew: true, title: 'Book the install. It’s on Google too.', sub: 'Installs and water tests land on your team’s calendar and sync to Google Calendar.'},
+  {prop: 'followup',     beat: 2, icon: 'Columns3',       label: 'Pipelines',       isNew: true, title: 'A deal board that moves itself.',   sub: 'Cards move on their own when customers open, sign, pay or book. No dragging cards around.'},
   {prop: 'presentation', beat: 0, icon: 'Droplets',    label: 'Water test',      dy: 58,      title: 'Show them their water.',              sub: 'Their ZIP’s local water report loads on its own. Log your test and it sits right on top.'},
   {prop: 'presentation', beat: 1, icon: 'Package',     label: 'System buildout', title: 'Build the system in front of them.',  sub: 'The monthly payment updates at your financing rate as you go.'},
   {prop: 'presentation', beat: 3, icon: 'TrendingUp',  label: 'Savings',         title: 'Close on the savings.',               sub: 'A 20-year comparison against what they spend today.'},
@@ -1804,7 +2100,7 @@ function WiCard({f}) {
         {canHover && !reduced && <span className="wig-play" title="Hover to play"><Ic n="Play" size={12}/></span>}
       </div>
       <div className="wig-body">
-        <span className="wig-label"><Ic n={f.icon} size={14}/>{f.label}</span>
+        <span className="wig-tags"><span className="wig-label"><Ic n={f.icon} size={14}/>{f.label}</span>{f.isNew && <span className="wig-new">New</span>}</span>
         <h3 className="wig-title">{f.title}</h3>
         <p className="wig-sub">{f.sub}</p>
       </div>
