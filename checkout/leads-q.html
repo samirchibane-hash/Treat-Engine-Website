@@ -45,6 +45,8 @@
 .card-body{margin-top:16px;padding-top:16px;border-top:1px solid var(--cream-dark);}
 .card-features{list-style:none;display:flex;flex-direction:column;gap:12px;}
 .card-features li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.5;color:var(--ink-mid);}
+.card-learn{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:14px;font-weight:600;color:var(--blue-dark);text-decoration:none;}
+.card-learn:hover{text-decoration:underline;}
 .check-icon{flex-shrink:0;width:18px;height:18px;margin-top:2px;border-radius:999px;background:var(--blue-light);color:var(--blue-dark);display:flex;align-items:center;justify-content:center;}
 .check-icon svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 .tier-picker{display:none;gap:3px;margin-top:16px;padding:3px;background:var(--cream-mid);border-radius:9px;}
@@ -205,7 +207,7 @@ gtag('config', 'AW-16631843401');
         </div>
       </div>
 
-      <!-- Card 2: Treat Engine CRM (locked) -->
+      <!-- Card 2: ClearDeals - Opportunity Management (locked) — TE Stripe Starter price, upsell to Pro for more users -->
       <div class="service-card is-locked is-active">
         <div class="card-header">
           <div class="card-header-left">
@@ -213,8 +215,8 @@ gtag('config', 'AW-16631843401');
               <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg>
               Included
             </div>
-            <div class="card-title">Treat Engine CRM</div>
-            <div class="card-price-line"><strong>$199</strong> / month</div>
+            <div class="card-title">ClearDeals - Opportunity Management</div>
+            <div class="card-price-line"><strong>$97</strong> / month</div>
           </div>
           <div class="card-right">
             <div class="lock-icon">
@@ -224,12 +226,13 @@ gtag('config', 'AW-16631843401');
         </div>
         <div class="card-body">
           <ul class="card-features">
-            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Email &amp; SMS Automation Flows</li>
-            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Calendar &amp; Phone System</li>
-            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>AI Voice Agent — answers &amp; qualifies leads 24/7</li>
-            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Tracking &amp; Reporting Dashboard</li>
-            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Unlimited Users</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Every lead from your ads lands in your pipeline</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Text and call leads from one inbox</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Email &amp; SMS automation flows</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Calendar that syncs with Google</li>
+            <li><div class="check-icon"><svg viewBox="0 0 9 9"><polyline points="1.5,4.5 3.5,6.5 7.5,2"/></svg></div>Guided water proposals, e-signed agreements &amp; financing</li>
           </ul>
+          <a class="card-learn" href="/sales" target="_blank" rel="noopener">Learn more about ClearDeals <span aria-hidden="true">→</span></a>
         </div>
       </div>
 
@@ -366,7 +369,7 @@ gtag('config', 'AW-16631843401');
 <script src="/agreement-preview.js"></script>
 <script>
 const STATE = { appt: false, apptTier: 'pt', google: false };
-const PRICES = { meta: 599, crm: 199, appt_pt: 699, appt_ft: 1300, google: 799 };
+const PRICES = { meta: 599, cleardeals: 97, appt_pt: 699, appt_ft: 1300, google: 799 };
 
 function toggleCard(id) {
   STATE[id] = !STATE[id];
@@ -398,7 +401,7 @@ const PREPAY_MONTHS = 3;
 function renderSummary() {
   const rows = [
     { name: 'Meta Ads Management', amt: PRICES.meta },
-    { name: 'Treat Engine CRM', amt: PRICES.crm },
+    { name: 'ClearDeals - Opportunity Management', amt: PRICES.cleardeals },
   ];
   if (STATE.appt) {
     const price = STATE.apptTier === 'pt' ? PRICES.appt_pt : PRICES.appt_ft;

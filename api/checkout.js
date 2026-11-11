@@ -30,10 +30,14 @@ module.exports = async (req, res) => {
       }
 
       stripe = teStripe();
-      // Meta Ads + the Treat Engine CRM are always included.
+      // /ads/checkout-q (term '90') — see the prepay block below.
+      const prepay = req.body.term === '90';
+      // Meta Ads + software are always included. /ads/checkout-q bundles
+      // ClearDeals Starter ($97, the same TE Price /sales sells — more users =
+      // upsell to Pro); /ads/checkout still carries the $199 Treat Engine CRM.
       const lineItems = [
         { price: TE_PRICES.leads.meta_ads, quantity: 1 },
-        { price: TE_PRICES.leads.crm, quantity: 1 },
+        { price: prepay ? TE_PRICES.sales['starter:month'] : TE_PRICES.leads.crm, quantity: 1 },
       ];
 
       const ADDON_PRICE_MAP = {
@@ -55,7 +59,6 @@ module.exports = async (req, res) => {
       // on the saved card with a 90-day trial, so its first charge lands on
       // day 91. Not a subscription-mode checkout with a trial: Stripe's page
       // would list every service twice, half of them as "90 days free".
-      const prepay = req.body.term === '90';
       const PREPAY_DAYS = 90;
       const PREPAY_MONTHS = 3;
       let prepayItems = null;
