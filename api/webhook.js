@@ -149,6 +149,31 @@ module.exports = async (req, res) => {
         await db.from('clients')
           .update({ stripe_subscription_id: subscription.id })
           .eq('session_id', session.id);
+
+        // ClearDeals Starter, as its own subscription on the same card and
+        // trial. Tagged service:'sales' + tier like /sales/checkout-v2, plus
+        // source:'leads-prepay': the ClearDeals app's stripe-billing-webhook
+        // provisions the workspace, owner account + invite email from it on
+        // customer.subscription.created.
+        if (session.metadata.cleardeals_price) {
+          const details = session.customer_details || {};
+          await stripe.subscriptions.create({
+            customer: session.customer,
+            items: [{ price: session.metadata.cleardeals_price, quantity: 1 }],
+            trial_period_days: Number(session.metadata.prepay_days) || 90,
+            default_payment_method: pi.payment_method,
+            metadata: {
+              service: 'sales',
+              tier: 'starter',
+              interval: 'month',
+              source: 'leads-prepay',
+              checkout_session: session.id,
+              owner_email: details.email || '',
+              owner_name: details.name || '',
+              owner_phone: details.phone || '',
+            },
+          }, { idempotencyKey: `prepay-cd-sub-${session.id}` });
+        }
       } catch (err) {
         console.error('Prepay subscription creation error:', err.message);
       }

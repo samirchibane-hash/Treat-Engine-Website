@@ -122,9 +122,14 @@ module.exports = async (req, res) => {
           customer_creation: 'always',
           payment_intent_data: { setup_future_usage: 'off_session' },
         });
-        // api/webhook.js subscribes the customer to exactly these prices.
+        // api/webhook.js subscribes the customer to exactly these prices —
+        // the leads services on one subscription, and ClearDeals Starter on its
+        // own, tagged like a /sales signup so the ClearDeals app provisions the
+        // workspace + owner invite from it (and Pro upgrades work in-app).
+        const cdPrice = TE_PRICES.sales['starter:month'];
         sessionParams.metadata.prepay_days = String(PREPAY_DAYS);
-        sessionParams.metadata.subscription_prices = lineItems.map(li => li.price).join(',');
+        sessionParams.metadata.subscription_prices = lineItems.map(li => li.price).filter(p => p !== cdPrice).join(',');
+        sessionParams.metadata.cleardeals_price = cdPrice;
         const monthly = (monthlyCents / 100).toLocaleString('en-US', { minimumFractionDigits: monthlyCents % 100 ? 2 : 0 });
         sessionParams.custom_text = {
           submit: {
