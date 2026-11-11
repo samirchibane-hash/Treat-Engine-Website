@@ -78,6 +78,9 @@ gtag('config', 'AW-16631843401');
 .v2-ob .ag-signed{display:flex;gap:14px;align-items:flex-start;padding:18px 20px;border-radius:14px;background:var(--green-light);border:1px solid #bbf7d0;color:#14532d;font-size:14.5px;line-height:1.55;}
 .v2-ob .ag-download{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:11px 18px;border-radius:9px;background:#fff;border:1px solid rgba(28,24,20,.16);color:var(--ink);font-size:14px;font-weight:600;text-decoration:none;}
 .v2-ob .ag-download:hover{border-color:var(--ink-muted);}
+.v2-ob .cd-invite{margin:6px 0 4px;padding:16px 18px;border-radius:12px;background:#eff6ff;border:1px solid #bfdbfe;text-align:left;max-width:460px;}
+.v2-ob .cd-invite strong{display:block;color:var(--navy);font-size:15px;margin-bottom:4px;}
+.v2-ob .cd-invite span{display:block;color:var(--ink-mid);font-size:14px;line-height:1.6;}
 .v2-ob :focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
 @media (max-width:768px){
   .v2-ob .ag-doc{height:380px;}
@@ -122,6 +125,10 @@ gtag('config', 'AW-16631843401');
   <h2 style="color:var(--navy)">You're all set!</h2>
   <p>Your onboarding is complete and your service agreement is signed. We'll review everything and reach out within 24 hours to kick off your campaign.</p>
   <p id="success-emailed" style="display:none;"></p>
+  <div class="cd-invite" id="success-cleardeals" style="display:none;">
+    <strong>Your ClearDeals login is on its way</strong>
+    <span id="success-cleardeals-msg">Look for an email titled "Your ClearDeals workspace is ready." Open it to set your password and get into your pipeline.</span>
+  </div>
   <a id="success-download" class="ag-download" href="#" style="display:none;" download>
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M2.5 13.5h11"/></svg>
     Download signed agreement
@@ -1031,6 +1038,14 @@ async function verifyAndLoad() {
     if (session.customerName) {
       const nameField = document.querySelector('[name="fullName"]');
       if (nameField) nameField.value = session.customerName;
+    }
+    // checkout-q: ClearDeals is included and its invite email went out at payment.
+    if (session.cleardeals) {
+      if (session.customerEmail) {
+        $('success-cleardeals-msg').textContent = `We sent an invite to ${session.customerEmail} titled "Your ClearDeals workspace is ready." ` +
+          'Open it to set your password and get into your pipeline.';
+      }
+      $('success-cleardeals').style.display = 'block';
     }
     showOverlay(null);
   } catch {

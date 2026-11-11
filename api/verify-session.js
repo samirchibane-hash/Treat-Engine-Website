@@ -54,6 +54,8 @@ module.exports = async (req, res) => {
       plan: session.metadata?.plan,
       userCount: session.metadata?.userCount,
       customerEmail: session.customer_details?.email,
+      // /ads/checkout-q bundles ClearDeals: the app emails the owner an invite.
+      cleardeals: !!session.metadata?.cleardeals_price,
       customerName: session.customer_details?.name,
       customerPhone: session.customer_details?.phone,
       amountTotal: session.amount_total,
