@@ -65,10 +65,11 @@ gtag('config', 'AW-16631843401');
 /* Real ClearDeals UI cards (App UI V2), shown near native size on a cream stage so nothing reads squeezed */
 .v2-post .ui-stage{margin:22px 0 34px;}
 .v2-post .ui-stage .stage{background:var(--cream-mid);border:1px solid var(--cream-dark);border-radius:20px;padding:clamp(16px,4vw,32px);display:flex;justify-content:center;}
+.v2-post .ui-stage picture{display:block;width:100%;}
 .v2-post .ui-stage img{display:block;width:100%;height:auto;border-radius:14px;box-shadow:var(--shadow-float);background:#fff;}
 .v2-post .ui-stage figcaption{margin-top:12px;font-size:14px;line-height:1.57;color:var(--ink-muted);text-align:center;}
 .v2-post .ui-stage.narrow img{max-width:402px;}
-.v2-post .ui-stage.menu img{max-width:364px;box-shadow:none;background:none;}
+.v2-post .ui-stage.menu img{max-width:298px;}
 .v2-post .adv-soft{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--blue-light);border:1px solid #dbeafe;border-radius:16px;padding:20px 22px;margin:34px 0;}
 .v2-post .adv-soft p{margin:0;flex:1 1 280px;font-size:16px;line-height:1.55;}
 .v2-post .post-body .adv-soft a{font-weight:600;white-space:nowrap;}
@@ -83,7 +84,7 @@ gtag('config', 'AW-16631843401');
 .adv-sticky .t b{display:block;color:#fff;font-size:15px;font-weight:600;}
 .adv-sticky a{flex-shrink:0;display:inline-flex;align-items:center;min-height:44px;padding:11px 18px;border-radius:9px;background:#fff;color:var(--ink);font-weight:600;font-size:15px;}
 .adv-sticky a:focus-visible,.v2-post .cta-btn:focus-visible{outline:3px solid var(--blue);outline-offset:3px;}
-@media (max-width:640px){.adv-sticky .t span{display:none;}.v2-post .post-body .lead{font-size:21px;}}
+@media (max-width:640px){.v2-post .ui-stage .stage{padding:12px;border-radius:16px;}.v2-post .ui-stage.narrow .stage,.v2-post .ui-stage.menu .stage{padding:20px 14px;}.adv-sticky .t span{display:none;}.v2-post .post-body .lead{font-size:21px;}}
 @media (prefers-reduced-motion:reduce){.adv-sticky{transition:none;}}
 </style>
 </head>
@@ -175,7 +176,7 @@ gtag('config', 'AW-16631843401');
 
     <div class="step"><span class="step-n">1</span><p><strong>Their water, explained.</strong> Your rep logs the in-home test, and the water report for the homeowner’s ZIP code sits right beside it. It’s their water, not a brochure.</p></div>
     <figure class="ui-stage">
-      <div class="stage"><img src="/uploads/advertorial/ui-water-report.webp" width="776" height="475" loading="lazy" alt="ClearDeals water step: contaminants detected in the local utility's testing, like PFOA and lead, each against its EPA limit."></div>
+      <div class="stage"><picture><source media="(max-width:640px)" srcset="/uploads/advertorial/ui-water-report-m.webp" width="383" height="278"><img src="/uploads/advertorial/ui-water-report.webp" width="776" height="453" loading="lazy" alt="ClearDeals water step: contaminants detected in the local utility's testing, like PFOA and lead, each against its EPA limit."></picture></div>
       <figcaption>What the local utility’s own testing detected, shown against EPA limits. (Demo data.)</figcaption>
     </figure>
 
@@ -183,13 +184,13 @@ gtag('config', 'AW-16631843401');
 
     <div class="step"><span class="step-n">3</span><p><strong>Options they can compare.</strong> Good, better, best, built from <em>your</em> catalog in a few taps, with a maintenance plan attached. That plan bills monthly, so every install adds recurring revenue.</p></div>
     <figure class="ui-stage">
-      <div class="stage"><img src="/uploads/advertorial/ui-options-good-better-best.webp" width="1120" height="617" loading="lazy" alt="Three options side by side, Good, Better and Best, each with a system photo, an estimated monthly price and a Choose button."></div>
+      <div class="stage"><picture><source media="(max-width:640px)" srcset="/uploads/advertorial/ui-options-m.webp" width="363" height="618"><img src="/uploads/advertorial/ui-options-good-better-best.webp" width="1120" height="617" loading="lazy" alt="Three options side by side, Good, Better and Best, each with a system photo, an estimated monthly price and a Choose button."></picture></div>
       <figcaption>Good, better, best, from your own catalog. (Demo dealer.)</figcaption>
     </figure>
 
     <div class="step"><span class="step-n">4</span><p><strong>The money, side by side.</strong> What hard water already costs them every month, against owning the system. Most homeowners have never seen it laid out this way.</p></div>
     <figure class="ui-stage">
-      <div class="stage"><img src="/uploads/advertorial/ui-spending-vs-own.webp" width="760" height="394" loading="lazy" alt="Current spending of $181 a month broken into soap, energy, appliances, plumbing, clothing and bottled water, next to owning the system for $108 a month."></div>
+      <div class="stage"><picture><source media="(max-width:640px)" srcset="/uploads/advertorial/ui-spending-vs-own-m.webp" width="374" height="802"><img src="/uploads/advertorial/ui-spending-vs-own.webp" width="760" height="394" loading="lazy" alt="Current spending of $181 a month broken into soap, energy, appliances, plumbing, clothing and bottled water, next to owning the system for $108 a month."></picture></div>
       <figcaption>Current spending vs. owning the system. (Demo data.)</figcaption>
     </figure>
 
@@ -208,7 +209,7 @@ gtag('config', 'AW-16631843401');
     <p>Here’s what usually happens next: your rep drives back across town. Or calls. And calls again. And the deal gets colder every day.</p>
     <p>Here’s the other way: your rep sends <strong>one link</strong>.</p>
     <figure class="ui-stage menu">
-      <div class="stage"><img src="/uploads/advertorial/ui-share-customer-journey.webp" width="364" height="276" loading="lazy" alt="Share menu, Customer journey: Copy customer link, Email to customer, Preview as customer."></div>
+      <div class="stage"><img src="/uploads/advertorial/ui-share-customer-journey.webp" width="298" height="210" loading="lazy" alt="Share menu, Customer journey: Copy customer link, Email to customer, Preview as customer."></div>
       <figcaption>Share → Customer journey. Copy the link or email it in one tap.</figcaption>
     </figure>
     <p>The homeowner opens it on their phone, from the couch, and gets the same experience your rep gave at the table: their water, their options, their savings. Then they finance or pay, and sign.</p>
