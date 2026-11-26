@@ -12,7 +12,7 @@ const CTA = {
   nav:          'Start free trial',
   navLogin:     'Log in',
   hero:         'Start my 30-day free trial',
-  heroWatch:    'Watch the 2-min walkthrough',
+  heroWatch:    'See it in action',
   features:     'Start My Free Trial',
   comparison:   'Claim my 30-day free trial',
   steps:        'Start my free trial today',
@@ -2476,6 +2476,20 @@ function V2Nav() {
   );
 }
 
+/* The hero clip: the real app, recorded (not a mock) in the Tarheel Pure Water demo workspace.
+ * Puronics softener + RO with an add-on → care plan → Guided Proposal → costs & savings. Muted,
+ * looping, no controls; reduced-motion visitors get the first frame as a still. */
+function HeroClip() {
+  const reduced = usePrefersReducedMotion();
+  return (
+    <video className="v2-clip" poster="uploads/hero/cleardeals-hero-poster.jpg" autoPlay={!reduced} muted loop playsInline
+      preload={reduced ? 'none' : 'auto'} aria-label="ClearDeals in action: building a water treatment proposal, then the homeowner's guided proposal">
+      <source src="uploads/hero/cleardeals-hero.webm" type="video/webm"/>
+      <source src="uploads/hero/cleardeals-hero.mp4" type="video/mp4"/>
+    </video>
+  );
+}
+
 function V2Hero() {
   return (
     <header className="v2-hero">
@@ -2493,10 +2507,8 @@ function V2Hero() {
       </div>
       <div className="v2-show" id="demo">
         <div className="v2-video">
-          <wistia-player media-id="9aa3hagnby" aspect="1.5434083601286173"></wistia-player>
+          <HeroClip/>
         </div>
-        <div className="v2-chip signed"><i>✓</i><div><b>Agreement signed</b><span>Deposit collected · Stripe</span></div></div>
-        <div className="v2-chip opened"><i>↗</i><div><b>Proposal opened</b><span>Customer journey link · 2 views</span></div></div>
       </div>
     </header>
   );
